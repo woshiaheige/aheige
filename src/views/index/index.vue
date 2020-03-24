@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+  <a-card :bordered="false" class="index">
     <span slot="title"><a-icon type="arrow-left" />首页</span>
     <a-form layout="inline">
       <a-form-item>
@@ -48,7 +48,7 @@
         </a-tag>
       </span>
       <span slot="action">
-        <a>查看</a>
+        <a @click="show = true">查看</a>
         <a-divider type="vertical" />
         <a>删除</a>
       </span>
@@ -61,13 +61,18 @@
       :defaultCurrent="3"
       :total="500"
     />
+
+    <modal :visible="show"> </modal>
   </a-card>
 </template>
 
 <script>
+import modal from "@/components/common/modal";
 export default {
+  components: { modal },
   data() {
     return {
+      show: false,
       columns: [
         {
           dataIndex: "name",
