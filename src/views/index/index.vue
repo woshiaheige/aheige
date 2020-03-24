@@ -1,0 +1,126 @@
+<template>
+  <a-card :bordered="false">
+    <span slot="title"><a-icon type="arrow-left" />首页</span>
+    <a-form layout="inline">
+      <a-form-item>
+        <a-input placeholder="输入"></a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-select placeholder="下拉" v-width="150">
+          <a-select-option value="1">
+            Option 1
+          </a-select-option>
+          <a-select-option value="2">
+            Option 2
+          </a-select-option>
+          <a-select-option value="3">
+            Option 3
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item>
+        <a-date-picker placeholder="时间" />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" html-type="submit">
+          查询
+        </a-button>
+      </a-form-item>
+    </a-form>
+
+    <a-table
+      :columns="columns"
+      :dataSource="data"
+      v-margin:top="16"
+      :pagination="false"
+    >
+      <a slot="name" slot-scope="text">{{ text }}</a>
+      <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+      <span slot="tags" slot-scope="tags">
+        <a-tag
+          v-for="tag in tags"
+          :color="
+            tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'
+          "
+          :key="tag"
+        >
+          {{ tag.toUpperCase() }}
+        </a-tag>
+      </span>
+      <span slot="action">
+        <a>查看</a>
+        <a-divider type="vertical" />
+        <a>删除</a>
+      </span>
+    </a-table>
+
+    <a-pagination
+      v-margin:top="16"
+      showQuickJumper
+      showSizeChanger
+      :defaultCurrent="3"
+      :total="500"
+    />
+  </a-card>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      columns: [
+        {
+          dataIndex: "name",
+          key: "name",
+          slots: { title: "customTitle" },
+          scopedSlots: { customRender: "name" }
+        },
+        {
+          title: "Age",
+          dataIndex: "age",
+          key: "age"
+        },
+        {
+          title: "Address",
+          dataIndex: "address",
+          key: "address"
+        },
+        {
+          title: "Tags",
+          key: "tags",
+          dataIndex: "tags",
+          scopedSlots: { customRender: "tags" }
+        },
+        {
+          title: "Action",
+          key: "action",
+          scopedSlots: { customRender: "action" }
+        }
+      ],
+      data: [
+        {
+          key: "1",
+          name: "John Brown",
+          age: 32,
+          address: "New York No. 1 Lake Park",
+          tags: ["nice", "developer"]
+        },
+        {
+          key: "2",
+          name: "Jim Green",
+          age: 42,
+          address: "London No. 1 Lake Park",
+          tags: ["loser"]
+        },
+        {
+          key: "3",
+          name: "Joe Black",
+          age: 32,
+          address: "Sidney No. 1 Lake Park",
+          tags: ["cool", "teacher"]
+        }
+      ]
+    };
+  }
+};
+</script>

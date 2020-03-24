@@ -3,9 +3,19 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+//自定义指令
+import "@/directive/index";
+
 //UI
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
+
+//自定义样式
+import "@/assets/style/common.less";
+import "@/assets/style/home/home.less";
+
+//mock
+require("@/mock/index");
 
 Vue.use(Antd);
 

@@ -5,109 +5,36 @@
       :style="{ position: 'fixed', height: '100vh', left: 0, overflow: 'auto' }"
     >
       <div class="logo">
-        <!-- <img src="@/assets/logo.svg" width="60%" /> -->
-        <a-icon type="md-cloudy" size="28" />
+        <a-icon
+          type="alipay-circle"
+          theme="filled"
+          :style="{ fontSize: '28px' }"
+        />
         <span>博控智维云</span>
       </div>
       <a-menu
         active-name="1-1"
         theme="dark"
         width="auto"
-        :open-names="['1']"
-        accordion
         mode="inline"
+        @click="changeMenu"
+        :defaultOpenKeys="openMenu"
+        :defaultSelectedKeys="selectedMenu"
       >
-        <a-sub-menu name="1">
-          <template slot="title"> <a-icon type="md-home" />控制台 </template>
-          <a-menu-item name="1-1" to="/">主控台</a-menu-item>
-          <a-menu-item name="1-2" to="/dashboard/my">工作台</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="2">
-          <template slot="title"> <a-icon type="md-paper" />任务审批 </template>
-          <a-menu-item name="2-1" to="/examine/my">等待我审批</a-menu-item>
-          <a-menu-item name="2-2" to="/examine/partake"
-            >我参与的审批</a-menu-item
-          >
-          <a-menu-item name="2-3" to="/examine/initiate"
-            >我发起的审批</a-menu-item
-          >
-          <a-menu-item name="2-4" to="/examine/create">新建审批</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="3">
-          <template slot="title">
-            <a-icon type="md-construct" />运维管理
-          </template>
-          <a-menu-item name="3-1" to="/task/list">任务一览</a-menu-item>
-          <a-menu-item name="3-2">任务配置</a-menu-item>
-          <a-menu-item name="3-3">上报投诉</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="4">
-          <template slot="title"> <a-icon type="md-stats" />报表统计 </template>
-          <a-menu-item name="4-1">绩效考核</a-menu-item>
-          <a-menu-item name="4-2">统计分析</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="5">
-          <template slot="title"> <a-icon type="md-pulse" />智能维护 </template>
-          <a-menu-item name="5-1">实时监控</a-menu-item>
-          <a-menu-item name="5-2">运行日志</a-menu-item>
-          <a-menu-item name="5-3">异常报警</a-menu-item>
-          <a-menu-item name="5-4">远程控制</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="6">
-          <template slot="title">
-            <a-icon type="md-people" />客户管理
-          </template>
-          <a-menu-item name="6-1">企业信息</a-menu-item>
-          <a-menu-item name="6-2">运维站点</a-menu-item>
-          <a-menu-item name="6-3">合同管理</a-menu-item>
-          <a-menu-item name="6-4">一企一档</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="7">
-          <template slot="title"> <a-icon type="md-cube" />资产管理 </template>
-          <a-menu-item name="7-1">药品试剂</a-menu-item>
-          <a-menu-item name="7-2">备品备件</a-menu-item>
-          <a-menu-item name="7-3">出库入库</a-menu-item>
-          <a-menu-item name="7-4">车辆管理</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="8">
-          <template slot="title">
-            <a-icon type="md-contacts" />供应商管理
-          </template>
-          <a-menu-item name="8-1">供应商信息</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="9">
-          <template slot="title">
-            <a-icon type="md-basket" />采购管理
-          </template>
-          <a-menu-item name="9-1">采购申请</a-menu-item>
-          <a-menu-item name="9-2">采购订单</a-menu-item>
-          <a-menu-item name="9-3">采购入库</a-menu-item>
-          <a-menu-item name="9-4">退货管理</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="10">
-          <template slot="title">
-            <a-icon type="md-flask" />实验室管理
-          </template>
-          <a-menu-item name="10-1">任务管理</a-menu-item>
-          <a-menu-item name="10-2">采样管理</a-menu-item>
-          <a-menu-item name="10-3">分样管理</a-menu-item>
-          <a-menu-item name="10-4">检验分析</a-menu-item>
-          <a-menu-item name="10-5">质量控制</a-menu-item>
-          <a-menu-item name="10-6">检测报告</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="11">
-          <template slot="title">
-            <a-icon type="md-list-box" />运维知识库
-          </template>
-          <a-menu-item name="11-1">知识库</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu name="12">
-          <template slot="title">
-            <a-icon type="md-cog"></a-icon>平台配置
-          </template>
-          <a-menu-item name="12-1">组织架构</a-menu-item>
-          <a-menu-item name="13-1">组织架构</a-menu-item>
-        </a-sub-menu>
+        <template v-for="item in menuList">
+          <a-menu-item v-if="!item.children" :key="item.key">
+            <a-icon :type="item.icon" />
+            {{ item.title }}
+          </a-menu-item>
+          <a-sub-menu v-if="item.children" :key="item.key">
+            <span slot="title"
+              ><a-icon :type="item.icon" /><span>{{ item.title }}</span></span
+            >
+            <a-menu-item v-for="subItem in item.children" :key="subItem.key">{{
+              subItem.title
+            }}</a-menu-item>
+          </a-sub-menu>
+        </template>
       </a-menu>
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '256px' }">
@@ -119,58 +46,314 @@
       >
         <ul class="header-menu">
           <li>
-            <a-icon type="md-barcode" size="18" />
+            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
           </li>
           <li>
-            <a-icon type="md-expand" size="18" />
+            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
           </li>
           <li>
-            <a-icon type="md-notifications" size="18" />
+            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
           </li>
           <li>凌可佳</li>
+          <li>
+            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
+          </li>
         </ul>
       </a-layout-header>
-      <a-layout-content :style="{ padding: '16px' }">
+      <a-layout-content v-padding="30">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
   </div>
 </template>
 <script>
-export default {};
+import routeTable from "@/router/routerTable";
+export default {
+  data() {
+    return {
+      menuList: [
+        {
+          title: "首页",
+          key: "index",
+          icon: "alipay-circle",
+          url: ""
+        },
+        {
+          title: "工作台",
+          key: "workbench",
+          icon: "alipay-circle",
+          url: ""
+        },
+        {
+          title: "任务审批",
+          key: "examination",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "等待审批",
+              key: "wait",
+              url: ""
+            },
+            {
+              title: "参与的审批",
+              key: "participate",
+              url: ""
+            },
+            {
+              title: "发起的审批",
+              key: "start",
+              url: ""
+            },
+            {
+              title: "发起审批",
+              key: "to-start",
+              url: ""
+            }
+          ]
+        },
+        {
+          title: "运维管理",
+          key: "maintain",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "任务一览",
+              key: "mission",
+              url: ""
+            },
+            {
+              title: "站点任务管理",
+              key: "station-mission",
+              url: ""
+            },
+            {
+              title: "运维地图",
+              key: "map",
+              url: ""
+            },
+            {
+              title: "车辆使用记录",
+              key: "car-usage",
+              url: ""
+            },
+            {
+              title: "违章管理",
+              key: "violation",
+              url: ""
+            },
+            {
+              title: "上报投诉",
+              key: "complaint",
+              url: ""
+            }
+          ]
+        },
+        {
+          title: "运维报表",
+          key: "report",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "运维记录报告",
+              key: "maintain-log",
+              url: ""
+            },
+            {
+              title: "智能报表",
+              key: "i-report",
+              url: ""
+            },
+            {
+              title: "巡检记录",
+              key: "inspection",
+              url: ""
+            },
+            {
+              title: "发起的审批",
+              key: "start",
+              url: ""
+            },
+            {
+              title: "仪器汇总",
+              key: "device",
+              url: ""
+            },
+            {
+              title: "每日运维",
+              key: "daily",
+              url: ""
+            },
+            {
+              title: "小组汇总",
+              key: "team",
+              url: ""
+            }
+          ]
+        },
+        {
+          title: "智能维护",
+          key: "i-maintain",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "运行日志",
+              key: "operation-log",
+              url: ""
+            },
+            {
+              title: "报警管理",
+              key: "warning",
+              url: ""
+            },
+            {
+              title: "远程控制",
+              key: "remote",
+              url: ""
+            },
+            {
+              title: "运维方案",
+              key: "scheme",
+              url: ""
+            },
+            {
+              title: "运维计划",
+              key: "plan",
+              url: ""
+            },
+            {
+              title: "报告模板",
+              key: "template",
+              url: ""
+            },
+            {
+              title: "实时动态",
+              key: "realtime",
+              url: ""
+            }
+          ]
+        },
+        {
+          title: "客户管理",
+          key: "customer",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "一企一档",
+              key: "enterprise",
+              url: ""
+            },
+            {
+              title: "站点管理",
+              key: "station",
+              url: ""
+            },
+            {
+              title: "合同管理",
+              key: "contract",
+              url: ""
+            }
+          ]
+        },
+        {
+          title: "台账管理",
+          key: "standing",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "车辆管理",
+              key: "car",
+              url: ""
+            },
+            {
+              title: "供应商管理",
+              key: "supplier",
+              url: ""
+            },
+            {
+              title: "物品管理",
+              key: "product",
+              url: ""
+            }
+          ]
+        },
+        {
+          title: "系统公告",
+          key: "announcement",
+          icon: "alipay-circle",
+          url: ""
+        },
+        {
+          title: "运维知识库",
+          key: "knowledge",
+          icon: "alipay-circle",
+          url: ""
+        },
+        {
+          title: "平台配置",
+          key: "platform",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "组织架构",
+              key: "organization",
+              url: ""
+            },
+            {
+              title: "企业设置",
+              key: "enterprise-setup",
+              url: ""
+            },
+            {
+              title: "基础数据",
+              key: "basic-data",
+              url: ""
+            },
+            {
+              title: "设备设置",
+              key: "device-setup",
+              url: ""
+            }
+          ]
+        }
+      ]
+    };
+  },
+  computed: {
+    selectedMenu() {
+      let selectedMenuArr = [];
+      for (let i in routeTable[1].children) {
+        if (this.$route.path.indexOf(routeTable[1].children[i].path) > -1) {
+          if (routeTable[1].children[i].key) {
+            selectedMenuArr.push(routeTable[1].children[i].key);
+            break;
+          }
+        }
+      }
+
+      return selectedMenuArr;
+    },
+    openMenu() {
+      let openMenuArr = [];
+      for (let i in this.menuList) {
+        if (this.$route.path.indexOf(this.menuList[i].key) > -1) {
+          openMenuArr.push(this.menuList[i].key);
+          break;
+        }
+      }
+
+      return openMenuArr;
+    }
+  },
+  mounted() {},
+  methods: {
+    changeMenu(object) {
+      for (let i in routeTable[1].children) {
+        if (routeTable[1].children[i].key == object.key) {
+          this.$router.push(routeTable[1].children[i].path);
+        }
+      }
+    }
+  }
+};
 </script>
-<style lang="less">
-.layout {
-  position: relative;
-  overflow: hidden;
-  .layout-header-bar {
-    background: #fff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  }
-  .ant-layout-sider {
-    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .logo {
-    height: 64px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    color: #fff;
-    i {
-      margin-right: 5px;
-    }
-  }
-  .header-menu {
-    float: right;
-    list-style: none;
-    li {
-      display: inline;
-      margin-left: 24px;
-    }
-  }
-}
-</style>
+<style lang="less"></style>
