@@ -13,7 +13,13 @@ const RouterTable = [
     path: "/",
     component: () =>
       import(/* webpackChunkName: "view-home" */ "@/views/Home.vue"),
-    children: [...indexRoutes, ...maintainRoutes,...approvalRoute,...iMaintainRoutes,...customerRoutes]
+    children: [
+      ...indexRoutes,
+      ...maintainRoutes,
+      ...approvalRoute,
+      ...iMaintainRoutes,
+      ...customerRoutes
+    ]
   }
 ];
 
