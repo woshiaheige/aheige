@@ -13,9 +13,12 @@ import "ant-design-vue/dist/antd.css";
 //自定义样式
 import "@/assets/style/common.less";
 import "@/assets/style/home/home.less";
+import "@/assets/style/i-maintain/plan/plan.less";
+import "@/assets/style/i-maintain/plan/plan-week-drag-list.less";
 
 //mock
 require("@/mock/index");
+require("@/mock/maintain");
 
 //自定义组件
 import api from "@/api/index";
