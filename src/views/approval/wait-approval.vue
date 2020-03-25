@@ -1,53 +1,23 @@
 <template>
   <a-card :bordered="false" class="index">
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="输入"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-select placeholder="下拉" v-width="150">
-          <a-select-option value="1">
-            Option 1
-          </a-select-option>
-          <a-select-option value="2">
-            Option 2
-          </a-select-option>
-          <a-select-option value="3">
-            Option 3
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item>
-        <a-date-picker placeholder="时间" />
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查询
-        </a-button>
-      </a-form-item>
-    </a-form>
-
+    <a-tabs @change="callback" type="card">
+      <a-tab-pane tab="等待我审批" key="1"></a-tab-pane>
+      <a-tab-pane tab="我参与的审批" key="2"></a-tab-pane>
+      <a-tab-pane tab="我发起的审批" key="3"></a-tab-pane>
+      <a-tab-pane tab="发起审批" key="4"></a-tab-pane>
+    </a-tabs>
     <a-table
+      :rowSelection="{
+        selectedRowKeys: selectedRowKeys,
+        onChange: onSelectChange
+      }"
       :columns="columns"
       :dataSource="data"
       v-margin:top="16"
       :pagination="false"
     >
-      <a slot="name" slot-scope="text">{{ text }}</a>
-      <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-      <span slot="tags" slot-scope="tags">
-        <a-tag
-          v-for="tag in tags"
-          :color="
-            tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'
-          "
-          :key="tag"
-        >
-          {{ tag.toUpperCase() }}
-        </a-tag>
-      </span>
       <span slot="action">
-        <a @click="show = true">查看</a>
+        <a @click="check()">查看</a>
         <a-divider type="vertical" />
         <a>删除</a>
       </span>
@@ -57,60 +27,93 @@
       v-margin:top="16"
       showQuickJumper
       showSizeChanger
-      :defaultCurrent="3"
       :total="500"
+      :current="current"
     />
-
-    <modal :visible="show"> </modal>
+    <modal v-model="modalInfo"> </modal>
   </a-card>
 </template>
 
 <script>
-import modal from "@/components/common/modal";
+import modal from "@/components/approval/wait-modal";
 export default {
   components: { modal },
   data() {
     return {
-      show: false,
+      modalInfo: { show: false },
+      current: 1,
       columns: [
         {
-          dataIndex: "name",
+          title: "序号",
+          key: "key",
+          dataIndex: "key",
+          align: "center"
+        },
+        {
+          title: "标题",
           key: "name",
-          slots: { title: "customTitle" },
-          scopedSlots: { customRender: "name" }
+          dataIndex: "name",
+          align: "center"
         },
         {
-          title: "Age",
-          dataIndex: "age",
-          key: "age"
+          title: "状态",
+          key: "status",
+          dataIndex: "status",
+          align: "center"
         },
         {
-          title: "Address",
-          dataIndex: "address",
-          key: "address"
+          title: "申请者",
+          key: "people",
+          dataIndex: "people",
+          align: "center"
         },
         {
-          title: "Tags",
-          key: "tags",
-          dataIndex: "tags",
-          scopedSlots: { customRender: "tags" }
+          title: "提交时间",
+          key: "time",
+          dataIndex: "time",
+          align: "center"
         },
         {
-          title: "Action",
+          title: "操作",
           key: "action",
+          dataIndex: "action",
+          align: "center",
           scopedSlots: { customRender: "action" }
         }
       ],
       data: [
         {
-          key: "1",
+          key: 1,
           name: "John Brown",
-          age: 32,
-          address: "New York No. 1 Lake Park",
-          tags: ["nice", "developer"]
+          status: "处理中",
+          people: "陈陈陈",
+          time: "2020.3.2"
         }
-      ]
+      ],
+      selectedRowKeys: []
     };
+  },
+  mounted() {
+    this.mockData();
+  },
+  methods: {
+    callback(key) {
+      console.log(key);
+    },
+    onSelectChange(selectedRowKeys) {
+      console.log("selectedRowKeys changed: ", selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys;
+    },
+    check() {
+      this.modalInfo = {
+        show: true
+      };
+    },
+    mockData() {
+      this.$api.approval.getWaitList().then(res => {
+        console.log(res);
+      });
+    }
   }
 };
 </script>

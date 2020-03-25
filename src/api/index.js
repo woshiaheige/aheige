@@ -5,9 +5,11 @@
 import base from "./base";
 //公用
 import common from "./common";
+import approval from "./approval";
 
 // 导出接口
 export default {
   base,
-  common
+  common,
+  approval
 };
