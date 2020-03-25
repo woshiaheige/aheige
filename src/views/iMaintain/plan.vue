@@ -4,10 +4,16 @@
       <a-row type="flex" justify="space-between" align="middle">
         <a-col>
           <a-form-item>
-            <a-button v-margin:right="20" size="small" type="primary" icon="save"
+            <a-button
+              v-margin:right="20"
+              size="small"
+              type="primary"
+              icon="save"
               >保存计划</a-button
             >
-            <a-button type="primary" size="small" icon="send">立即执行</a-button>
+            <a-button type="primary" size="small" icon="send"
+              >立即执行</a-button
+            >
           </a-form-item>
         </a-col>
         <a-col>
@@ -49,7 +55,9 @@
               这是提示
             </template>
             <div>
-              <span v-margin:right="5" v-margin:left="10" class="tip">未计划站点列表</span>
+              <span v-margin:right="5" v-margin:left="10" class="tip"
+                >未计划站点列表</span
+              >
               <a-icon type="question-circle" />
             </div>
           </a-popover>
@@ -90,61 +98,58 @@ export default {
   },
   data() {
     return {
-      plan: [
-        "A",
-        "B"
-      ],
-      listData:[
-        { 
-          name:'周日',
+      plan: ["A", "B"],
+      listData: [
+        {
+          name: "周日",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",
             "Los Angeles battles huge wildfires."
           ]
         },
-        { 
-          name:'周一',
+        {
+          name: "周一",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",
             "Los Angeles battles huge wildfires."
           ]
         },
-        { 
-          name:'周二',
+        {
+          name: "周二",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",
             "Los Angeles battles huge wildfires."
           ]
         },
-        { 
-          name:'周三',
+        {
+          name: "周三",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",
             "Los Angeles battles huge wildfires."
           ]
         },
-        { 
-          name:'周四',
+        {
+          name: "周四",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",
             "Los Angeles battles huge wildfires."
           ]
         },
-        { 
-          name:'周五',
+        {
+          name: "周五",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",
             "Los Angeles battles huge wildfires."
           ]
         },
-        { 
-          name:'周六',
+        {
+          name: "周六",
           list: [
             "Australian walks 100km after outback crash.",
             "Man charged over missing wedding girl.",

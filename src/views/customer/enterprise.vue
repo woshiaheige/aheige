@@ -1,7 +1,7 @@
 <template>
   <a-card :bordered="false" class="enterprise">
     <span slot="title">
-      <a-button  type="primary">添加运维企业客户</a-button>
+      <a-button type="primary">添加运维企业客户</a-button>
     </span>
 
     <a-table
@@ -12,8 +12,12 @@
     >
       <span slot="stations" slot-scope="stations">
         <a-select placeholder="选择站点" v-width="150">
-          <a-select-option :value="station" v-for="{station,key} of stations" :key="key">
-            {{station}}
+          <a-select-option
+            :value="station"
+            v-for="{ station, key } of stations"
+            :key="key"
+          >
+            {{ station }}
           </a-select-option>
         </a-select>
       </span>
@@ -44,10 +48,10 @@ export default {
     return {
       show: false,
       columns: [
-        { 
-          title:'序号',
+        {
+          title: "序号",
           dataIndex: "num",
-          key: "num",
+          key: "num"
         },
         {
           title: "企业名称",
@@ -89,14 +93,14 @@ export default {
       data: [
         {
           key: "1",
-          num:"1",
+          num: "1",
           name: "腾讯",
-          address:"深圳",
-          stationNum:"2",
-          stations:["A","B"],
-          group:"小组1",
-          principal:"麻花腾"
-        },
+          address: "深圳",
+          stationNum: "2",
+          stations: ["A", "B"],
+          group: "小组1",
+          principal: "麻花腾"
+        }
       ]
     };
   }
