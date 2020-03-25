@@ -6,15 +6,14 @@ Mock.mock("/api/data", () => {
     data: ["a", "b"]
   };
 });
-Mock.mock("/api/approval/wait", () => {
-  return {
-    data: {
-      "object|2": {
-        "310000": "上海市",
-        "320000": "江苏省",
-        "330000": "浙江省",
-        "340000": "安徽省"
-      }
+Mock.mock("/api/approval/wait", {
+  "dataSours|10": [
+    {
+      "key|+1": 1,
+      "name|1": ["事件1", "事件2", "事件3"],
+      "status|1": ["处理中", "通过", "否决"],
+      people: "陈琛琛",
+      time: '@DATETIME("yyyy-MM-dd HH:mm:ss")'
     }
-  };
+  ]
 });
