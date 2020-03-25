@@ -4,10 +4,10 @@
       <a-row type="flex" justify="space-between" align="middle">
         <a-col>
           <a-form-item>
-            <a-button v-margin:right="20" type="primary" icon="save"
+            <a-button v-margin:right="20" size="small" type="primary" icon="save"
               >保存计划</a-button
             >
-            <a-button type="primary" icon="send">立即执行</a-button>
+            <a-button type="primary" size="small" icon="send">立即执行</a-button>
           </a-form-item>
         </a-col>
         <a-col>
@@ -49,7 +49,7 @@
               这是提示
             </template>
             <div>
-              <span v-margin:right="10" class="tip">未计划站点列表</span>
+              <span v-margin:right="5" v-margin:left="10" class="tip">未计划站点列表</span>
               <a-icon type="question-circle" />
             </div>
           </a-popover>
