@@ -13,7 +13,6 @@
         <span>博控智维云</span>
       </div>
       <a-menu
-        active-name="1-1"
         theme="dark"
         width="auto"
         mode="inline"
@@ -293,7 +292,7 @@ export default {
     openMenu() {
       let openMenuArr = [];
       for (let i in this.menuList) {
-        if (this.$route.path.indexOf(this.menuList[i].key) > -1) {
+        if (this.$route.path.indexOf("/" + this.menuList[i].key + "/") > -1) {
           openMenuArr.push(this.menuList[i].key);
           break;
         }
