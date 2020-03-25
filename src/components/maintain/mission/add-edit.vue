@@ -4,8 +4,9 @@
     v-model="status"
     @ok="handleOk"
     @cancel="handleCancel"
+    okText="保存"
   >
-    <a-form :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
+    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="选择站点">
         <a-select v-model="form.station" placeholder="站点">
           <!-- <a-select-option value="1">1</a-select-option> -->
@@ -74,7 +75,9 @@ export default {
     }
   },
   methods: {
-    handleOk() {},
+    handleOk() {
+      this.handleCancel();
+    },
     handleCancel() {
       this.$emit("cancel", false);
     }
