@@ -7,12 +7,12 @@ Mock.mock("/api/data", () => {
   };
 });
 Mock.mock("/api/approval/wait", {
-  "dataSours|3": [
+  "dataSours|10": [
     {
       "key|+1": 1,
       "name|1": ["事件1", "事件2", "事件3"],
       "status|1": ["处理中", "通过", "否决"],
-      people: "people",
+      people: "陈琛琛",
       time: '@DATETIME("yyyy-MM-dd HH:mm:ss")'
     }
   ]
