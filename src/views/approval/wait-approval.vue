@@ -81,15 +81,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      data: [
-        {
-          key: 1,
-          name: "John Brown",
-          status: "处理中",
-          people: "陈陈陈",
-          time: "2020.3.2"
-        }
-      ],
+      data: [],
       selectedRowKeys: []
     };
   },
@@ -111,7 +103,7 @@ export default {
     },
     mockData() {
       this.$api.approval.getWaitList().then(res => {
-        console.log(res);
+        this.data = res.data.dataSours;
       });
     }
   }
