@@ -17,8 +17,11 @@
         width="auto"
         mode="inline"
         @click="changeMenu"
+        @openChange="openChangeMenu"
         :defaultOpenKeys="openMenu"
         :defaultSelectedKeys="selectedMenu"
+        :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
       >
         <template v-for="item in menuList">
           <a-menu-item v-if="!item.children" :key="item.key">
@@ -70,6 +73,8 @@ import routeTable from "@/router/routerTable";
 export default {
   data() {
     return {
+      openKeys: [],
+      selectedKeys: [],
       menuList: [
         {
           title: "首页",
@@ -301,7 +306,14 @@ export default {
       return openMenuArr;
     }
   },
-  mounted() {},
+  watch: {
+    $route() {
+      this.setMenu();
+    }
+  },
+  mounted() {
+    this.setMenu();
+  },
   methods: {
     changeMenu(object) {
       for (let i in routeTable[1].children) {
@@ -309,6 +321,17 @@ export default {
           this.$router.push(routeTable[1].children[i].path);
         }
       }
+    },
+    openChangeMenu(openKeys) {
+      // 只展开一个子菜单
+      let latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
+      this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+    },
+    setMenu() {
+      this.openKeys = this.openMenu;
+      this.selectedKeys = this.selectedMenu;
     }
   }
 };
