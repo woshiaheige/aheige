@@ -23,11 +23,12 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     if (response.status === 200) {
-      if (response.data.state != 0) {
-        return Promise.reject(response);
-      } else {
-        return Promise.resolve(response);
-      }
+      return Promise.resolve(response);
+      // if (response.data.state != 0) {
+      //   return Promise.reject(response);
+      // } else {
+      //   return Promise.resolve(response);
+      // }
     } else {
       return Promise.reject(response);
     }
@@ -45,6 +46,7 @@ instance.interceptors.response.use(
       if (error.status === 500) {
         return Promise.reject(error);
       } else if (error.status === 404 || error.status === 403) {
+        return Promise.reject(error);
       } else {
         return Promise.reject(error);
       }

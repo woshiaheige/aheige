@@ -1,6 +1,6 @@
-import base from "./base";
-import axios from "./axios";
-import qs from "qs";
+// import base from "./base";
+// import axios from "./axios";
+// import qs from "qs";
 
 const common = {};
 
