@@ -1,35 +1,31 @@
-@import url('~@/assets/style/mixin.less');
-.plan{
-    .btn-margin{
-        margin-left: 20px;
+@import url("~@/assets/style/mixin.less");
+.plan {
+  .btn-margin {
+    margin-left: 20px;
+  }
+  .plan-header {
+    .flex(space-between);
+  }
+  .plan-content {
+    .tab-bar {
+      height: 50px;
+      .flex(space-between);
+      .tip {
+        font-weight: 500;
+        margin-right:20px;
+      }
+      .toggle-station {
+          margin-left: auto;
+      }
     }
-    .plan-header{
-        .flex(space-between)
+    .list-group {
+      flex: 1;
+      text-align: center;
+      .list-group-item {
+        border: 1px solid #eee;
+        padding: 5px;
+        .ellipsis(1);
+      }
     }
-    .plan-content{
-        .tab-bar{
-            height: 50px;
-            margin: 0;
-            .tip{
-                font-weight: 500;
-                margin:0 20px;
-            }
-            .toggle-station{
-                float: right;
-            }
-        }
-        .list-group{
-          flex:1;
-          text-align: center;
-          .list-group-item{
-            border: 1px solid #eee;
-            padding: 5px;
-            .ellipsis(1);
-          }
-        }
-
-    }
-    
-
-    
+  }
 }
