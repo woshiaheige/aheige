@@ -218,7 +218,7 @@ export default {
             {
               title: "运维计划",
               key: "plan",
-              url: ""
+              url: "/i-maintain/plan"
             },
             {
               title: "报告模板",
@@ -240,17 +240,17 @@ export default {
             {
               title: "一企一档",
               key: "enterprise",
-              url: ""
+              url: "/customer/enterprise"
             },
             {
               title: "站点管理",
               key: "station",
-              url: ""
+              url: "/customer/station"
             },
             {
               title: "合同管理",
               key: "contract",
-              url: ""
+              url: "/customer/contract"
             }
           ]
         },

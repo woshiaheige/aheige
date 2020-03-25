@@ -17,9 +17,16 @@ import "@/assets/style/home/home.less";
 //mock
 require("@/mock/index");
 
+//自定义组件
+import api from "@/api/index";
+import base from "@/api/base";
+
 Vue.use(Antd);
 
 Vue.config.productionTip = false;
+
+Vue.prototype.$api = api;
+Vue.prototype.$base = base;
 
 new Vue({
   router,
