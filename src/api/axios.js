@@ -46,6 +46,7 @@ instance.interceptors.response.use(
       if (error.status === 500) {
         return Promise.reject(error);
       } else if (error.status === 404 || error.status === 403) {
+        return Promise.reject(error);
       } else {
         return Promise.reject(error);
       }
