@@ -8,11 +8,16 @@
         </a-button>
       </a-form-item>
     </a-form>
-    <a-table :columns="columns" :dataSource="tableData" v-margin:top="16">
+    <a-table
+      :columns="columns"
+      :dataSource="tableData"
+      :pagination="false"
+      v-margin:top="16"
+    >
       <span slot="action">
-        <a>申请延期</a>
+        <a @click="delayShow = true">申请延期</a>
         <a-divider type="vertical" />
-        <a>任务关闭</a>
+        <a @click="closeShow = true">任务关闭</a>
       </span>
       <a slot="check">报告</a>
     </a-table>
@@ -24,44 +29,48 @@
       :total="total"
     />
     <add-edit :visible="show" @cancel="cancel"></add-edit>
+    <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
+    <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
   </a-card>
 </template>
 <script>
 import addEdit from "@/components/maintain/mission/add-edit";
+import delayModal from "@/components/maintain/mission/delay";
+import closeModal from "@/components/maintain/mission/close";
 export default {
-  components: { addEdit },
+  components: { addEdit, delayModal, closeModal },
   data() {
     return {
       current: 1,
-      total: 10,
+      total: 0,
       columns: [
         {
           title: "序号",
-          dataIndex: ""
+          customRender: (text, row, index) => `${index + 1}`
         },
         {
           title: "任务名称（编号）",
-          dataIndex: ""
+          dataIndex: "title"
         },
         {
           title: "站点",
-          dataIndex: ""
+          dataIndex: "station"
         },
         {
           title: "企业名称",
-          dataIndex: ""
+          dataIndex: "company"
         },
         {
           title: "任务状态",
-          dataIndex: ""
+          dataIndex: "status"
         },
         {
           title: "运维小组",
-          dataIndex: ""
+          dataIndex: "team"
         },
         {
           title: "任务时间",
-          dataIndex: ""
+          dataIndex: "time"
         },
         {
           title: "操作",
@@ -75,17 +84,26 @@ export default {
         }
       ],
       tableData: [],
-      show: false
+      show: false,
+      delayShow: false,
+      closeShow: false
     };
   },
   methods: {
-    getTableData() {},
+    getTableData() {
+      this.$api.maintain.getMissionList().then(res => {
+        this.tableData = res.data.data;
+        this.total = res.data.total;
+      });
+    },
     cancel(value) {
       this.show = value;
+      this.delayShow = value;
+      this.closeShow = value;
     }
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
   }
 };
 </script>

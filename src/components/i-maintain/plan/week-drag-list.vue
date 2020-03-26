@@ -1,11 +1,11 @@
 <template>
   <div class="week-drag-list">
-    <div v-for="(item,index) of list" :key="index" class="list-group">
-      <div>
-        {{item.name}}
-        <a-tag v-margin:left="10" color="#87d068">{{item.list.length}}</a-tag>
-        </div>
-      <draggable  :list="item.list" group="people" @change="log">
+    <div v-for="(item, index) of list" :key="index" class="list-group">
+      <div class="list-group-item">
+        {{ item.name }}
+        <a-tag v-margin:left="10" color="#87d068">{{ item.list.length }}</a-tag>
+      </div>
+      <draggable :list="item.list" group="people" @change="log">
         <div
           class="list-group-item"
           :title="element"
@@ -22,20 +22,20 @@
 import draggable from "vuedraggable";
 export default {
   name: "plan",
-  props:{
-    list:{
-      default:function(){
-        return []
+  props: {
+    list: {
+      default: function() {
+        return [];
       },
-      required:true
+      required: true
     }
   },
   components: {
     draggable
   },
-  methods:{
-    log(e){
-      console.log(e)
+  methods: {
+    log(e) {
+      console.log(e);
     }
   }
 };

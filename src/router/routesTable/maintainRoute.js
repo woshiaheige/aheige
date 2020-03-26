@@ -5,7 +5,7 @@ const maintainRoutes = [
     key: "mission",
     component: () =>
       import(
-        /* webpackChunkName: "view-index" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/mission.vue"
       )
   },
@@ -15,7 +15,7 @@ const maintainRoutes = [
     key: "station-mission",
     component: () =>
       import(
-        /* webpackChunkName: "view-index" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/station-mission.vue"
       )
   },
@@ -25,7 +25,7 @@ const maintainRoutes = [
     key: "map",
     component: () =>
       import(
-        /* webpackChunkName: "view-index" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/map.vue"
       )
   },
@@ -35,7 +35,7 @@ const maintainRoutes = [
     key: "car-usage",
     component: () =>
       import(
-        /* webpackChunkName: "view-index" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/car-usage.vue"
       )
   },
@@ -45,7 +45,7 @@ const maintainRoutes = [
     key: "violation",
     component: () =>
       import(
-        /* webpackChunkName: "view-index" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/violation.vue"
       )
   },
@@ -55,7 +55,7 @@ const maintainRoutes = [
     key: "complaint",
     component: () =>
       import(
-        /* webpackChunkName: "view-index" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/complaint.vue"
       )
   }

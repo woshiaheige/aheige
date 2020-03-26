@@ -13,13 +13,15 @@
         <span>博控智维云</span>
       </div>
       <a-menu
-        active-name="1-1"
         theme="dark"
         width="auto"
         mode="inline"
         @click="changeMenu"
+        @openChange="openChangeMenu"
         :defaultOpenKeys="openMenu"
         :defaultSelectedKeys="selectedMenu"
+        :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
       >
         <template v-for="item in menuList">
           <a-menu-item v-if="!item.children" :key="item.key">
@@ -71,45 +73,23 @@ import routeTable from "@/router/routerTable";
 export default {
   data() {
     return {
+      openKeys: [],
+      selectedKeys: [],
       menuList: [
         {
           title: "首页",
           key: "index",
-          icon: "alipay-circle",
-          url: ""
+          icon: "alipay-circle"
         },
         {
           title: "工作台",
           key: "workbench",
-          icon: "alipay-circle",
-          url: ""
+          icon: "alipay-circle"
         },
         {
           title: "任务审批",
-          key: "examination",
-          icon: "alipay-circle",
-          children: [
-            {
-              title: "等待审批",
-              key: "wait",
-              url: ""
-            },
-            {
-              title: "参与的审批",
-              key: "participate",
-              url: ""
-            },
-            {
-              title: "发起的审批",
-              key: "start",
-              url: ""
-            },
-            {
-              title: "发起审批",
-              key: "to-start",
-              url: ""
-            }
-          ]
+          key: "approval",
+          icon: "alipay-circle"
         },
         {
           title: "运维管理",
@@ -118,33 +98,27 @@ export default {
           children: [
             {
               title: "任务一览",
-              key: "mission",
-              url: ""
+              key: "mission"
             },
             {
               title: "站点任务管理",
-              key: "station-mission",
-              url: ""
+              key: "station-mission"
             },
             {
               title: "运维地图",
-              key: "map",
-              url: ""
+              key: "map"
             },
             {
               title: "车辆使用记录",
-              key: "car-usage",
-              url: ""
+              key: "car-usage"
             },
             {
               title: "违章管理",
-              key: "violation",
-              url: ""
+              key: "violation"
             },
             {
               title: "上报投诉",
-              key: "complaint",
-              url: ""
+              key: "complaint"
             }
           ]
         },
@@ -155,38 +129,27 @@ export default {
           children: [
             {
               title: "运维记录报告",
-              key: "maintain-log",
-              url: ""
+              key: "maintain-log"
             },
             {
               title: "智能报表",
-              key: "i-report",
-              url: ""
+              key: "i-report"
             },
             {
               title: "巡检记录",
-              key: "inspection",
-              url: ""
-            },
-            {
-              title: "发起的审批",
-              key: "start",
-              url: ""
+              key: "inspection"
             },
             {
               title: "仪器汇总",
-              key: "device",
-              url: ""
+              key: "device"
             },
             {
               title: "每日运维",
-              key: "daily",
-              url: ""
+              key: "daily"
             },
             {
               title: "小组汇总",
-              key: "team",
-              url: ""
+              key: "team"
             }
           ]
         },
@@ -197,38 +160,31 @@ export default {
           children: [
             {
               title: "运行日志",
-              key: "operation-log",
-              url: ""
+              key: "operation-log"
             },
             {
               title: "报警管理",
-              key: "warning",
-              url: ""
+              key: "warning"
             },
             {
               title: "远程控制",
-              key: "remote",
-              url: ""
+              key: "remote"
             },
             {
               title: "运维方案",
-              key: "scheme",
-              url: ""
+              key: "scheme"
             },
             {
               title: "运维计划",
-              key: "plan",
-              url: "/i-maintain/plan"
+              key: "plan"
             },
             {
               title: "报告模板",
-              key: "template",
-              url: ""
+              key: "template"
             },
             {
               title: "实时动态",
-              key: "realtime",
-              url: ""
+              key: "realtime"
             }
           ]
         },
@@ -239,18 +195,15 @@ export default {
           children: [
             {
               title: "一企一档",
-              key: "enterprise",
-              url: "/customer/enterprise"
+              key: "enterprise"
             },
             {
               title: "站点管理",
-              key: "station",
-              url: "/customer/station"
+              key: "station"
             },
             {
               title: "合同管理",
-              key: "contract",
-              url: "/customer/contract"
+              key: "contract"
             }
           ]
         },
@@ -261,32 +214,27 @@ export default {
           children: [
             {
               title: "车辆管理",
-              key: "car",
-              url: ""
+              key: "car"
             },
             {
               title: "供应商管理",
-              key: "supplier",
-              url: ""
+              key: "supplier"
             },
             {
               title: "物品管理",
-              key: "product",
-              url: ""
+              key: "product"
             }
           ]
         },
         {
           title: "系统公告",
           key: "announcement",
-          icon: "alipay-circle",
-          url: ""
+          icon: "alipay-circle"
         },
         {
           title: "运维知识库",
           key: "knowledge",
-          icon: "alipay-circle",
-          url: ""
+          icon: "alipay-circle"
         },
         {
           title: "平台配置",
@@ -295,23 +243,19 @@ export default {
           children: [
             {
               title: "组织架构",
-              key: "organization",
-              url: ""
+              key: "organization"
             },
             {
               title: "企业设置",
-              key: "enterprise-setup",
-              url: ""
+              key: "enterprise-setup"
             },
             {
               title: "基础数据",
-              key: "basic-data",
-              url: ""
+              key: "basic-data"
             },
             {
               title: "设备设置",
-              key: "device-setup",
-              url: ""
+              key: "device-setup"
             }
           ]
         }
@@ -335,7 +279,7 @@ export default {
     openMenu() {
       let openMenuArr = [];
       for (let i in this.menuList) {
-        if (this.$route.path.indexOf(this.menuList[i].key) > -1) {
+        if (this.$route.path.indexOf("/" + this.menuList[i].key + "/") > -1) {
           openMenuArr.push(this.menuList[i].key);
           break;
         }
@@ -344,7 +288,14 @@ export default {
       return openMenuArr;
     }
   },
-  mounted() {},
+  watch: {
+    $route() {
+      this.setMenu();
+    }
+  },
+  mounted() {
+    this.setMenu();
+  },
   methods: {
     changeMenu(object) {
       for (let i in routeTable[1].children) {
@@ -352,6 +303,17 @@ export default {
           this.$router.push(routeTable[1].children[i].path);
         }
       }
+    },
+    openChangeMenu(openKeys) {
+      // 只展开一个子菜单
+      let latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
+      this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+    },
+    setMenu() {
+      this.openKeys = this.openMenu;
+      this.selectedKeys = this.selectedMenu;
     }
   }
 };

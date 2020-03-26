@@ -1,26 +1,27 @@
 .flex(@justify:center, @align:center) {
-    display:flex;
-    justify-content: @justify;
-    align-items:@align ;
-  }
-  
-  .flexWrap(@justify:center, @align:center) {
-    display:flex;
-    justify-content: @justify;
-    align-content:@align ;
-    flex-wrap: wrap;
-  }
-  
-  .ellipsis(@line:2){//超出多行隐藏
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: @line;
-    overflow: hidden;
-    
-  }
-  
-  .scrolling(@x:visible, @y:visible){ //超出内容滚动
-    white-space: nowrap;
-    overflow-x: $x;
-    overflow-y: $y;
-  }
+  display: flex;
+  justify-content: @justify;
+  align-items: @align;
+}
+
+.flexWrap(@justify:center, @align:center) {
+  display: flex;
+  justify-content: @justify;
+  align-content: @align;
+  flex-wrap: wrap;
+}
+
+.ellipsis(@line:2) {
+  //超出多行隐藏
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+  overflow: hidden;
+}
+
+.scrolling(@x:visible, @y:visible) {
+  //超出内容滚动
+  white-space: nowrap;
+  overflow-x: $x;
+  overflow-y: $y;
+}

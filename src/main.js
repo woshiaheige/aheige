@@ -18,6 +18,7 @@ import "@/assets/style/i-maintain/plan/plan-week-drag-list.less";
 
 //mock
 require("@/mock/index");
+require("@/mock/maintain");
 
 //自定义组件
 import api from "@/api/index";
