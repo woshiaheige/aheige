@@ -6,7 +6,7 @@
     @cancel="handleCancel"
     okText="保存"
   >
-    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
+    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="关闭类型">
         <a-select v-model="form.region" placeholder="关闭类型">
           <!-- <a-select-option value="1">1</a-select-option> -->
@@ -29,8 +29,6 @@ export default {
   },
   data() {
     return {
-      labelCol: { span: 5 },
-      wrapperCol: { span: 18 },
       form: {
         region: undefined,
         desc: ""

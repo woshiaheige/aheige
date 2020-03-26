@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <script type="text/javascript"
+      src="https://webapi.amap.com/maps?v=1.4.15&key=e11147c324e601fc096666373d5a4921&plugin=AMap.MouseTool,AMap.DistrictLayer,AMap.DistrictSearch"></script>
+    <!-- UI组件库 1.0 -->
+    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <title>博控智维云</title>
   </head>
   <body>
@@ -19,3 +23,18 @@
     <!-- built files will be auto injected -->
   </body>
 </html>
+<style>
+  .amap-sug-result {
+    z-index: 99999;
+  }
+
+  .amap-logo {
+    visibility: hidden;
+    display: none;
+  }
+
+  .amap-copyright {
+    visibility: hidden !important;
+    display: none;
+  }
+  </style>

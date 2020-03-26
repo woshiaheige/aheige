@@ -16,7 +16,17 @@ const customer = [
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
-        "@/views/customer/station.vue"
+        "@/views/customer/station/station.vue"
+      )
+  },
+  {
+    path: "/customer/station/detail",
+    name: "customer-station-detail",
+    key: "station-detail",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/station/detail.vue"
       )
   },
   {
