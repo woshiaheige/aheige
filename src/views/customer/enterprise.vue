@@ -1,25 +1,17 @@
 <template>
   <a-card :bordered="false" class="enterprise">
     <span slot="title">
-      <a-button type="primary">添加运维企业客户</a-button>
+      <a-button type="primary" @click="visible=true">添加运维企业客户</a-button>
     </span>
 
     <a-table
       :columns="columns"
-      :dataSource="data"
+      :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
     >
       <span slot="stations" slot-scope="stations">
-        <a-select placeholder="选择站点" v-width="150">
-          <a-select-option
-            :value="station"
-            v-for="{ station, key } of stations"
-            :key="key"
-          >
-            {{ station }}
-          </a-select-option>
-        </a-select>
+        <a-button type="primary" size="small" @click="chooseStation(stations)">选择站点</a-button>
       </span>
       <span slot="action">
         <a @click="show = true">编辑</a>
@@ -36,22 +28,26 @@
       :total="500"
     />
 
-    <modal :visible="show"> </modal>
+    <!-- 新增企业 -->
+    <enterprise-new :visible.sync="visible"/>
+    <!-- 新增企业end -->
   </a-card>
 </template>
 
 <script>
-import modal from "@/components/common/modal";
+import enterpriseNew from '@/components/customer/enterprise-new';
 export default {
-  components: { modal },
+  components:{
+    enterpriseNew
+  },
   data() {
     return {
-      show: false,
+      visible: false,
       columns: [
         {
           title: "序号",
-          dataIndex: "num",
-          key: "num"
+          dataIndex: "order",
+          key: "order"
         },
         {
           title: "企业名称",
@@ -90,10 +86,10 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      data: [
+      tableData: [
         {
           key: "1",
-          num: "1",
+          order: "1",
           name: "腾讯",
           address: "深圳",
           stationNum: "2",
@@ -103,6 +99,11 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+    chooseStation(stations){
+      console.log(stations)
+    }
   }
 };
 </script>
