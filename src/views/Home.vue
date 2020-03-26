@@ -89,25 +89,7 @@ export default {
         {
           title: "任务审批",
           key: "approval",
-          icon: "alipay-circle",
-          children: [
-            {
-              title: "等待审批",
-              key: "wait"
-            },
-            {
-              title: "参与的审批",
-              key: "participate"
-            },
-            {
-              title: "发起的审批",
-              key: "start"
-            },
-            {
-              title: "发起审批",
-              key: "to-start"
-            }
-          ]
+          icon: "alipay-circle"
         },
         {
           title: "运维管理",
