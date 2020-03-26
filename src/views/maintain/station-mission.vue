@@ -1,6 +1,6 @@
 <template>
-  <a-card :bordered="false" class="index">
-    <span slot="title"><a-icon type="arrow-left" />站点任务管理</span>
+  <a-card :bordered="false" class="maintain">
+    <span slot="title">站点任务管理</span>
     <a-form layout="inline">
       <a-form-item>
         <a-select placeholder="企业客户" v-width="150">

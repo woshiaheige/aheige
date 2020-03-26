@@ -14,6 +14,7 @@ import "ant-design-vue/dist/antd.css";
 import "@/assets/style/common.less";
 import "@/assets/style/home/home.less";
 import "@/assets/style/i-maintain/plan.less";
+import "@/assets/style/maintain/maintain.less";
 
 //mock
 require("@/mock/index");
