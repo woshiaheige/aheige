@@ -6,7 +6,7 @@ const maintainRoutes = [
     component: () =>
       import(
         /* webpackChunkName: "view-approval" */
-        "@/views/approval/wait-approval.vue"
+        "@/views/approval/approval-index.vue"
       )
   }
 ];

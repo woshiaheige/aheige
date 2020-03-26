@@ -1,11 +1,5 @@
 <template>
   <a-card :bordered="false" class="index">
-    <a-tabs @change="callback" type="card">
-      <a-tab-pane tab="等待我审批" key="1"></a-tab-pane>
-      <a-tab-pane tab="我参与的审批" key="2"></a-tab-pane>
-      <a-tab-pane tab="我发起的审批" key="3"></a-tab-pane>
-      <a-tab-pane tab="发起审批" key="4"></a-tab-pane>
-    </a-tabs>
     <a-table
       :rowSelection="{
         selectedRowKeys: selectedRowKeys,
