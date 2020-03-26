@@ -1,6 +1,6 @@
 <template>
-  <a-card :bordered="false" class="index">
-    <span slot="title"><a-icon type="arrow-left" />上报投诉</span>
+  <a-card :bordered="false" class="maintain">
+    <span slot="title">上报投诉</span>
     <a-form layout="inline">
       <a-form-item>
         <a-button type="primary" html-type="submit" @click="onEdit()">
