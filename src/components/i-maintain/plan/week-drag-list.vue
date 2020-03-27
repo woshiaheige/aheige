@@ -1,8 +1,13 @@
 <template>
   <div class="week-drag-list">
-    <div v-for="(item, index) of list" :key="index" class="list-group">
+    <div
+      v-for="(item, index) of list"
+      :key="index"
+      class="list-group"
+      :class="{ 'empty-list': item.list.length === 0 }"
+    >
       <div class="list-group-item">
-        {{ item.name }}
+        {{ item.week }}
         <a-tag v-margin:left="10" color="#87d068">{{ item.list.length }}</a-tag>
       </div>
       <draggable :list="item.list" group="people" @change="log">
