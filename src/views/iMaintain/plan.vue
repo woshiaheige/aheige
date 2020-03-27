@@ -22,24 +22,12 @@
               <a-select-option value="1">
                 Option 1
               </a-select-option>
-              <a-select-option value="2">
-                Option 2
-              </a-select-option>
-              <a-select-option value="3">
-                Option 3
-              </a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="客户">
             <a-select placeholder="请选择客户" v-width="150">
               <a-select-option value="1">
                 Option 1
-              </a-select-option>
-              <a-select-option value="2">
-                Option 2
-              </a-select-option>
-              <a-select-option value="3">
-                Option 3
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -62,13 +50,18 @@
             </div>
           </a-popover>
         </div>
-        <draggable class="list-group" :list="plan" group="people" @change="log">
+        <draggable
+          class="list-group"
+          :list="readyPlan"
+          group="people"
+          @change="log"
+        >
           <div
             class="list-group-item"
-            v-for="(element, index) in plan"
+            v-for="(element, index) in readyPlan"
             :key="index"
           >
-            {{ element }}
+            {{ element.name }}
           </div>
         </draggable>
       </a-layout-sider>
@@ -98,71 +91,31 @@ export default {
   },
   data() {
     return {
-      plan: ["A", "B"],
-      listData: [
-        {
-          name: "周日",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        },
-        {
-          name: "周一",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        },
-        {
-          name: "周二",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        },
-        {
-          name: "周三",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        },
-        {
-          name: "周四",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        },
-        {
-          name: "周五",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        },
-        {
-          name: "周六",
-          list: [
-            "Australian walks 100km after outback crash.",
-            "Man charged over missing wedding girl.",
-            "Los Angeles battles huge wildfires."
-          ]
-        }
-      ]
+      readyPlan: ["A", "B"],
+      listData: []
     };
   },
   methods: {
     log(e) {
       console.log(e);
+    },
+    getReadyPlan() {
+      //获取未分配的任务
+      this.$api.iMaintain.getReadyPlan().then(res => {
+        this.readyPlan = res.data.data;
+      });
+    },
+    getWeekPlan() {
+      //获取周任务
+      this.$api.iMaintain.getWeekPlan().then(res => {
+        console.log(res);
+        this.listData = res.data.data;
+      });
     }
+  },
+  mounted() {
+    this.getReadyPlan();
+    this.getWeekPlan();
   }
 };
 </script>

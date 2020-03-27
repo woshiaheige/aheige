@@ -1,6 +1,6 @@
 <template>
-  <a-card :bordered="false" class="index">
-    <span slot="title"><a-icon type="arrow-left" />任务一览</span>
+  <a-card :bordered="false" class="maintain">
+    <span slot="title">任务一览</span>
     <a-form layout="inline">
       <a-form-item>
         <a-button type="primary" html-type="submit" @click="show = true">
@@ -19,7 +19,11 @@
         <a-divider type="vertical" />
         <a @click="closeShow = true">任务关闭</a>
       </span>
-      <a slot="check">报告</a>
+      <a slot="check">
+        <a @click="detailShow = true">详情</a>
+        <a-divider type="vertical" />
+        <a>报告</a>
+      </a>
     </a-table>
     <a-pagination
       v-margin:top="16"
@@ -31,14 +35,20 @@
     <add-edit :visible="show" @cancel="cancel"></add-edit>
     <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
     <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
+    <detail-modal
+      :visible="detailShow"
+      :tableData="tableData"
+      @cancel="cancel"
+    ></detail-modal>
   </a-card>
 </template>
 <script>
 import addEdit from "@/components/maintain/mission/add-edit";
+import detailModal from "@/components/maintain/mission/detail";
 import delayModal from "@/components/maintain/mission/delay";
 import closeModal from "@/components/maintain/mission/close";
 export default {
-  components: { addEdit, delayModal, closeModal },
+  components: { addEdit, delayModal, closeModal, detailModal },
   data() {
     return {
       current: 1,
@@ -86,7 +96,8 @@ export default {
       tableData: [],
       show: false,
       delayShow: false,
-      closeShow: false
+      closeShow: false,
+      detailShow: false
     };
   },
   methods: {
@@ -100,6 +111,7 @@ export default {
       this.show = value;
       this.delayShow = value;
       this.closeShow = value;
+      this.detailShow = value;
     }
   },
   mounted() {

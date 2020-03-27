@@ -5,11 +5,7 @@
       :style="{ position: 'fixed', height: '100vh', left: 0, overflow: 'auto' }"
     >
       <div class="logo">
-        <a-icon
-          type="alipay-circle"
-          theme="filled"
-          :style="{ fontSize: '28px' }"
-        />
+        <a-icon type="alipay-circle" theme="filled" v-fontSize="28" />
         <span>博控智维云</span>
       </div>
       <a-menu
@@ -73,6 +69,7 @@ import routeTable from "@/router/routerTable";
 export default {
   data() {
     return {
+      collapsed: false,
       openKeys: [],
       selectedKeys: [],
       menuList: [

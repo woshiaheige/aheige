@@ -1,75 +1,52 @@
 <template>
-  <a-card :bordered="false" class="index">
-    <span slot="title"><a-icon type="arrow-left" />首页</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="输入"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-select placeholder="下拉" v-width="150">
-          <a-select-option value="1">
-            Option 1
-          </a-select-option>
-          <a-select-option value="2">
-            Option 2
-          </a-select-option>
-          <a-select-option value="3">
-            Option 3
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item>
-        <a-date-picker placeholder="时间" />
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查询
-        </a-button>
-      </a-form-item>
-    </a-form>
-
-    <a-table
-      :columns="columns"
-      :dataSource="data"
-      v-margin:top="16"
-      :pagination="false"
-    >
-      <a slot="name" slot-scope="text">{{ text }}</a>
-      <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-      <span slot="tags" slot-scope="tags">
-        <a-tag
-          v-for="tag in tags"
-          :color="
-            tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'
-          "
-          :key="tag"
+  <a-row :gutter="16">
+    <a-col :span="6">
+      <a-card>
+        <a-statistic
+          title="服务客户"
+          :value="298"
+          :valueStyle="{ color: '#3f8600' }"
+          style="margin-right: 50px"
         >
-          {{ tag.toUpperCase() }}
-        </a-tag>
-      </span>
-      <span slot="action">
-        <a @click="show = true">查看</a>
-        <a-divider type="vertical" />
-        <a>删除</a>
-      </span>
-    </a-table>
-
-    <a-pagination
-      v-margin:top="16"
-      showQuickJumper
-      showSizeChanger
-      :defaultCurrent="3"
-      :total="500"
-    />
-
-    <modal :visible="show"> </modal>
-  </a-card>
+        </a-statistic>
+      </a-card>
+    </a-col>
+    <a-col :span="6">
+      <a-card>
+        <a-statistic
+          title="运维站点"
+          :value="298"
+          :valueStyle="{ color: '#cf1322' }"
+        >
+        </a-statistic>
+      </a-card>
+    </a-col>
+    <a-col :span="6">
+      <a-card>
+        <a-statistic
+          title="维护仪器"
+          :value="298"
+          :valueStyle="{ color: '#cf1322' }"
+        >
+        </a-statistic>
+      </a-card>
+    </a-col>
+    <a-col :span="6">
+      <a-card>
+        <a-statistic
+          title="运维小组"
+          :value="298"
+          suffix="组"
+          :valueStyle="{ color: '#cf1322' }"
+        >
+        </a-statistic>
+      </a-card>
+    </a-col>
+  </a-row>
 </template>
 
 <script>
-import modal from "@/components/common/modal";
 export default {
-  components: { modal },
   data() {
     return {
       show: false,
