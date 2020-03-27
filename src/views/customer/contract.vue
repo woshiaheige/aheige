@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" class="contract">
+  <a-card :bordered="false" class="contract" title="合同管理">
     <a-button type="primary" @click="visible = true">新增合同</a-button>
 
     <a-table

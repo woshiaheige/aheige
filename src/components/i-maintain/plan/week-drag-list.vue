@@ -8,11 +8,11 @@
       <draggable :list="item.list" group="people" @change="log">
         <div
           class="list-group-item"
-          :title="element"
+          :title="element.name"
           v-for="(element, key) in item.list"
           :key="key"
         >
-          {{ element }}
+          {{ element.name }}
         </div>
       </draggable>
     </div>

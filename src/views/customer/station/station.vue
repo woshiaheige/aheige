@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" class="station">
+  <a-card :bordered="false" class="station" title="站点管理">
     <a-form layout="inline">
       <a-form-item>
         <a-select
