@@ -7,11 +7,13 @@ import base from "./base";
 import common from "./common";
 import approval from "./approval";
 import maintain from "./maintain";
+import iMaintain from "./i-maintain";
 
 // 导出接口
 export default {
   base,
   common,
   approval,
-  maintain
+  maintain,
+  iMaintain
 };
