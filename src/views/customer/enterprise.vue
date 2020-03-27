@@ -1,7 +1,9 @@
 <template>
   <a-card :bordered="false" class="enterprise">
     <span slot="title">
-      <a-button type="primary" @click="visible=true">添加运维企业客户</a-button>
+      <a-button type="primary" @click="visible = true"
+        >添加运维企业客户</a-button
+      >
     </span>
 
     <a-table
@@ -11,10 +13,12 @@
       :pagination="false"
     >
       <span slot="stations" slot-scope="stations">
-        <a-button type="primary" size="small" @click="chooseStation(stations)">选择站点</a-button>
+        <a-button type="primary" size="small" @click="chooseStation(stations)"
+          >选择站点</a-button
+        >
       </span>
       <span slot="action">
-        <a @click="show = true">编辑</a>
+        <a @click="editEnterprise">编辑</a>
         <a-divider type="vertical" />
         <a>删除</a>
       </span>
@@ -29,15 +33,15 @@
     />
 
     <!-- 新增企业 -->
-    <enterprise-new :visible.sync="visible"/>
+    <enterprise-new :visible.sync="visible" />
     <!-- 新增企业end -->
   </a-card>
 </template>
 
 <script>
-import enterpriseNew from '@/components/customer/enterprise-new';
+import enterpriseNew from "@/components/customer/enterprise-new";
 export default {
-  components:{
+  components: {
     enterpriseNew
   },
   data() {
@@ -100,9 +104,12 @@ export default {
       ]
     };
   },
-  methods:{
-    chooseStation(stations){
-      console.log(stations)
+  methods: {
+    chooseStation(stations) {
+      console.log(stations);
+    },
+    editEnterprise() {
+      this.visible = true;
     }
   }
 };

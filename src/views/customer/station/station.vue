@@ -46,15 +46,14 @@
     </a-form>
 
     <a-table
-      rowKey='id'
+      rowKey="id"
       :columns="columns"
       :dataSource="data"
       v-margin:top="16"
       :pagination="false"
     >
-      <span slot="period" >
+      <span slot="period">
         <span>2020-1-10 11:22</span>&nbsp;至&nbsp;<span>2020-1-15 11:22</span>
-        
       </span>
       <span slot="action">
         <a-button size="small" @click="selectPeriod()">选择周期</a-button>
@@ -69,7 +68,7 @@
       :total="500"
     />
 
-    <station-period :visible.sync="visible"/>
+    <station-period :visible.sync="visible" />
   </a-card>
 </template>
 
@@ -133,7 +132,7 @@ export default {
       ],
       data: [
         {
-          id:0,
+          id: 0,
           order: "1",
           stationName: "可口可乐（污水）（CT4406050009301",
           enterprise: "腾讯",
@@ -148,9 +147,9 @@ export default {
     toDetail() {
       this.$router.push({ path: "/customer/station/detail" });
     },
-    selectPeriod(period){
+    selectPeriod(period) {
       console.log(period);
-      this.visible=true
+      this.visible = true;
     }
   }
 };

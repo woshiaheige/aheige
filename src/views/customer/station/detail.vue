@@ -1,6 +1,8 @@
 <template>
   <a-card :bordered="false" class="station-detail">
-    <span slot="title"><a-icon type="arrow-left" @click="reBack"/>站点管理</span>
+    <span slot="title"
+      ><a-icon type="arrow-left" @click="reBack" />站点管理</span
+    >
     <a-tabs
       defaultActiveKey="baseData"
       @change="tabChange"
@@ -49,8 +51,8 @@ export default {
     tabChange(e) {
       console.log(e);
     },
-    reBack(){
-      this.$router.replace({path:'/customer/station'})
+    reBack() {
+      this.$router.replace({ path: "/customer/station" });
     }
   }
 };

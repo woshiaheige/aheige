@@ -9,9 +9,10 @@
       v-margin:top="16"
       :pagination="false"
     >
-    <span slot="period" slot-scope="period,row">
-      <span>{{row.startTime}}</span>至<span>{{row.endTime}}</span>
-    </span>
+      <span slot="period" slot-scope="period, row">
+        <span>{{ row.startTime }}</span
+        >至<span>{{ row.endTime }}</span>
+      </span>
       <span slot="action">
         <a @click="visible = true">查看</a>
         <a-divider type="vertical" />
@@ -70,7 +71,7 @@ export default {
         {
           order: "1",
           id: "0",
-          num:"12345678",
+          num: "12345678",
           name: "广东华兴玻璃有限公司",
           startTime: "2019-10-15",
           endTime: "2020-10-15"

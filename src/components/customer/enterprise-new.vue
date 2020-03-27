@@ -1,31 +1,41 @@
 <template>
-  <a-modal title="添加新的企业" :visible="visible" @cancel="closeModal">
+  <a-modal
+    title="添加新的企业"
+    :visible="visible"
+    @cancel="closeModal"
+    @ok="submit"
+  >
     <a-form
       ref="formModal"
-      :model="form"
-      :rules="rules"
+      :form="form"
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 16 }"
     >
-      <a-form-item label="客户企业名称" prop="name">
-        <a-input v-model="form.name" />
+      <a-form-item label="客户企业名称">
+        <a-input
+          placeholder="请输入企业名称"
+          v-decorator="[
+            'name',
+            { rules: [{ required: true, message: '请输入企业名称' }] }
+          ]"
+        />
       </a-form-item>
-      <a-form-item label="组织企业代码证" prop="enterpriseCode">
-        <a-input v-model="form.enterpriseCode" />
+      <a-form-item label="组织企业代码证">
+        <a-input v-decorator="['enterpriseCode']" />
       </a-form-item>
-      <a-form-item label="统一社会信用代码" prop="enterpriseCode">
-        <a-input v-model="form.enterpriseCode" />
+      <a-form-item label="统一社会信用代码">
+        <a-input v-decorator="['creditCode']" />
       </a-form-item>
-      <a-form-item label="联系人" prop="contact">
-        <a-input v-model="form.contact" />
+      <a-form-item label="联系人">
+        <a-input v-decorator="['contact']" />
       </a-form-item>
-      <a-form-item label="企业电话号码" prop="phone">
-        <a-input v-model="form.phone" />
+      <a-form-item label="企业电话号码">
+        <a-input v-decorator="['phone']" />
       </a-form-item>
-      <a-form-item label="简介" prop="detail">
-        <a-input v-model="form.detail" type="textarea" />
+      <a-form-item label="简介">
+        <a-input v-decorator="['intro']" type="textarea" />
       </a-form-item>
-      <a-form-item label="企业LOGO" prop="logo">
+      <a-form-item label="企业LOGO">
         <a-upload
           name="avatar"
           listType="picture-card"
@@ -35,7 +45,7 @@
           :beforeUpload="beforeUpload"
           @change="handleChange"
         >
-          <img v-if="form.logo" :src="form.logo" alt="avatar" />
+          <img v-if="logo.url" :src="logo.url" alt="avatar" />
           <div v-else>
             <a-icon :type="loading ? 'loading' : 'plus'" />
             <div class="ant-upload-text">Upload</div>
@@ -56,15 +66,11 @@ export default {
   },
   data() {
     return {
-      loading:false,
-      form: {
-        name: "",
-        enterpriseCode: "",
-        creditCode: "",
-        contact: "",
-        phone: "",
-        detail: "",
-        logo: ""
+      loading: false,
+      form: this.$form.createForm(this, { name: "enterpriseNew" }),
+      logo: {
+        url: "",
+        id: ""
       },
       rules: {}
     };
@@ -72,6 +78,15 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+      this.form.resetFields();
+    },
+    submit() {
+      this.form.validateFields((err, values) => {
+        if (err) {
+          // 这里做逻辑处理
+          console.log(values); // { name: '' }
+        }
+      });
     },
     handleChange(info) {
       if (info.file.status === "uploading") {
@@ -80,12 +95,11 @@ export default {
       }
       if (info.file.status === "done") {
         // getBase64(info.file.originFileObj, imageUrl => {
-          
         // });
       }
     },
     beforeUpload(file) {
-      console.log(file)
+      console.log(file);
       // const isJpgOrPng =
       //   file.type === "image/jpeg" || file.type === "image/png";
       // if (!isJpgOrPng) {

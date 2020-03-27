@@ -1,5 +1,10 @@
 <template>
-  <a-modal :width="1000" title="新增站点暂停运营周期" :visible="visible" @cancel="closeModal">
+  <a-modal
+    :width="1000"
+    title="新增站点暂停运营周期"
+    :visible="visible"
+    @cancel="closeModal"
+  >
     <a-form
       ref="formModal"
       :model="form"
@@ -7,7 +12,6 @@
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 16 }"
     >
-      
       <a-form-item label="开始时间" prop="startTime">
         <a-date-picker placeholder="选择开始时间" />
       </a-form-item>
@@ -31,11 +35,11 @@ export default {
   },
   data() {
     return {
-      loading:false,
+      loading: false,
       form: {
-        startTime:"",
-        endTime:"",
-        announce:""
+        startTime: "",
+        endTime: "",
+        announce: ""
       },
       rules: {}
     };

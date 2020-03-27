@@ -26,13 +26,9 @@
             <span>至</span>
           </a-col>
           <a-col :span="10">
-            
             <a-date-picker placeholder="选择介绍时间" />
           </a-col>
         </a-row>
-        
-        
-        
       </a-form-item>
       <a-form-item label="合同签署时间" prop="enterpriseCode">
         <a-date-picker placeholder="选择合同签署时间" />
@@ -85,24 +81,24 @@ export default {
       required: true,
       type: Boolean
     },
-    title:{
-      default:'添加新的企业',
-      type:String
+    title: {
+      default: "添加新的企业",
+      type: String
     }
   },
   data() {
     return {
-      loading:false,
+      loading: false,
       form: {
-        num:"",
-        enterprise:"",
+        num: "",
+        enterprise: "",
         startTime: "",
-        endTime:"",
-        signTime:"",
-        principal:"",
-        group:"",
-        money:"",
-        detail:""
+        endTime: "",
+        signTime: "",
+        principal: "",
+        group: "",
+        money: "",
+        detail: ""
       },
       rules: {}
     };
@@ -118,12 +114,11 @@ export default {
       }
       if (info.file.status === "done") {
         // getBase64(info.file.originFileObj, imageUrl => {
-          
         // });
       }
     },
     beforeUpload(file) {
-      console.log(file)
+      console.log(file);
       // const isJpgOrPng =
       //   file.type === "image/jpeg" || file.type === "image/png";
       // if (!isJpgOrPng) {

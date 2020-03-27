@@ -1,5 +1,10 @@
 <template>
-  <a-modal v-model="modalInfo.show" title="地图" @on-cancel="cancel" width="80%;">
+  <a-modal
+    v-model="modalInfo.show"
+    title="地图"
+    @on-cancel="cancel"
+    width="80%;"
+  >
     <div id="myChart" :style="{ width: '100%', height: '450px' }"></div>
     <div class="info">
       <div class="input-item">
