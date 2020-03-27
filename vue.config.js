@@ -1,7 +1,7 @@
-module.exports={
+module.exports = {
   configureWebpack: {
     externals: {
-     AMap: "window.AMap"
+      AMap: "window.AMap"
     }
-   }
-}
+  }
+};
