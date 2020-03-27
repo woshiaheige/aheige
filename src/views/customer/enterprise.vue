@@ -1,11 +1,6 @@
 <template>
-  <a-card :bordered="false" class="enterprise">
-    <span slot="title">
-      <a-button type="primary" @click="visible = true"
-        >添加运维企业客户</a-button
-      >
-    </span>
-
+  <a-card :bordered="false" class="enterprise" title="一企一档">
+    <a-button type="primary" @click="visible = true">添加运维企业客户</a-button>
     <a-table
       :columns="columns"
       :dataSource="tableData"

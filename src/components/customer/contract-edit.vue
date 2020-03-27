@@ -1,57 +1,70 @@
 <template>
-  <a-modal :title="title" :visible="visible" @cancel="closeModal">
+  <a-modal :title="title" :visible="visible" @cancel="closeModal" @ok="submit">
     <a-form
       ref="formModal"
-      :model="form"
-      :rules="rules"
+      :form="form"
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 16 }"
     >
-      <a-form-item label="合同编号" prop="num">
-        <a-input v-model="form.num" />
+      <a-form-item label="合同编号">
+        <a-input
+          v-decorator="[
+            'num',
+            { rules: [{ required: true, message: '请输入合同编号' }] }
+          ]"
+        />
       </a-form-item>
-      <a-form-item label="合同客户企业" prop="enterprise">
-        <a-select placeholder="请选择合同客户企业">
+      <a-form-item label="合同客户企业">
+        <a-select
+          placeholder="请选择合同客户企业"
+          v-decorator="[
+            'enterprise',
+            { rules: [{ required: true, message: '请选择合同客户企业' }] }
+          ]"
+        >
           <a-select-option value="1">
             Option 1
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="合同起止时间" prop="enterpriseCode">
-        <a-row type="flex">
-          <a-col :span="10">
-            <a-date-picker placeholder="选择开始时间" />
-          </a-col>
-          <a-col style="margin:0 10px">
-            <span>至</span>
-          </a-col>
-          <a-col :span="10">
-            <a-date-picker placeholder="选择介绍时间" />
-          </a-col>
-        </a-row>
+      <a-form-item label="合同起止时间">
+        <a-range-picker
+          v-decorator="[
+            'range-time-picker',
+            { rules: [{ required: true, message: '请选择合同起止时间' }] }
+          ]"
+          show-time
+          format="YYYY-MM-DD HH:mm:ss"
+        />
       </a-form-item>
-      <a-form-item label="合同签署时间" prop="enterpriseCode">
-        <a-date-picker placeholder="选择合同签署时间" />
+      <a-form-item label="合同签署时间">
+        <a-date-picker
+          placeholder="选择合同签署时间"
+          v-decorator="[
+            'signTime',
+            { rules: [{ required: true, message: '请选择合同签署时间' }] }
+          ]"
+        />
       </a-form-item>
-      <a-form-item label="合同负责人" prop="principal">
-        <a-select placeholder="请选择合同客户企业">
+      <a-form-item label="合同负责人">
+        <a-select placeholder="请选择合同客户企业" v-decorator="['principal']">
           <a-select-option value="1">
             Option 1
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="主要负责小组" prop="group">
-        <a-select placeholder="请选择主要负责小组">
+      <a-form-item label="主要负责小组">
+        <a-select placeholder="请选择主要负责小组" v-decorator="['group']">
           <a-select-option value="1">
             Option 1
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="合同金额" prop="money">
-        <a-input v-model="form.money" />
+      <a-form-item label="合同金额">
+        <a-input v-decorator="['money']" />
       </a-form-item>
-      <a-form-item label="合同说明" prop="detail">
-        <a-input v-model="form.detail" type="textarea" />
+      <a-form-item label="合同说明">
+        <a-input v-decorator="['detail']" type="textarea" />
       </a-form-item>
       <a-form-item label="合同附件" prop="logo">
         <a-upload
@@ -63,7 +76,7 @@
           :beforeUpload="beforeUpload"
           @change="handleChange"
         >
-          <img v-if="form.logo" :src="form.logo" alt="avatar" />
+          <img v-if="formValidate.logo" :src="formValidate.logo" alt="avatar" />
           <div v-else>
             <a-icon :type="loading ? 'loading' : 'plus'" />
             <div class="ant-upload-text">Upload</div>
@@ -82,14 +95,15 @@ export default {
       type: Boolean
     },
     title: {
-      default: "添加新的企业",
+      default: "新增合同",
       type: String
     }
   },
   data() {
     return {
       loading: false,
-      form: {
+      form: this.$form.createForm(this, { name: "contractEdit" }),
+      formValidate: {
         num: "",
         enterprise: "",
         startTime: "",
@@ -106,6 +120,14 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+    },
+    submit() {
+      this.form.validateFields((err, values) => {
+        if (err) {
+          // 这里做逻辑处理
+          console.log(values); // { name: '' }
+        }
+      });
     },
     handleChange(info) {
       if (info.file.status === "uploading") {

@@ -19,6 +19,7 @@ import "@/assets/style/maintain/maintain.less";
 //mock
 require("@/mock/index");
 require("@/mock/maintain");
+require("@/mock/i-maintain");
 
 //自定义组件
 import api from "@/api/index";

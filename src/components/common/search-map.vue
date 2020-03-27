@@ -19,8 +19,8 @@
       <div style="position:absolute;bottom:-0;left:0; text-align:left">
         经度:{{ lnglat[0] }}<br />纬度:{{ lnglat[1] }}<br />地址:{{ address }}
       </div>
-      <a-button type="primary" @click="Submit()">确定</a-button>
       <a-button @click="cancel()">取消</a-button>
+      <a-button type="primary" @click="Submit()">确定</a-button>
     </div>
   </a-modal>
 </template>
