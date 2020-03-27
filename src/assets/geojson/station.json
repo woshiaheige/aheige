@@ -1,0 +1,95 @@
+[{
+        "name": "阳江市",
+        "point": [
+            111.80, 21.95
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "茂名市",
+        "point": [
+            110.99, 21.88
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "汕头市",
+        "point": [
+            116.59, 23.26
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "珠海市",
+        "point": [
+            113.34, 22.07
+        ],
+        "enterprise": [{
+            "name": "珠海监测中心站",
+            "point": [
+                113.34, 22.07
+            ],
+            "status": 0,
+            "time": 29
+        }],
+        "order": 0
+    },
+    {
+        "name": "韶关市",
+        "point": [
+            113.60, 24.82
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "揭阳市",
+        "point": [
+            116.01, 23.27
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "深圳市",
+        "point": [
+            114.07, 22.62
+        ],
+        "enterprise": [{
+            "name": "深圳监测中心站",
+            "point": [
+                114.07, 22.62
+            ],
+            "status": 0,
+            "time": 29
+        }],
+        "order": 100
+    },
+    {
+        "name": "潮州市",
+        "point": [
+            116.83, 23.66
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "河源市",
+        "point": [
+            114.90, 23.95
+        ],
+        "enterprise": [],
+        "order": 100
+    },
+    {
+        "name": "肇庆市",
+        "point": [
+            112.25, 23.49
+        ],
+        "enterprise": [],
+        "order": 100
+    }
+]

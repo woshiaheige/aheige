@@ -5,9 +5,9 @@
 import base from "./base";
 //公用
 import common from "./common";
-import approval from "./approval";
-import maintain from "./maintain";
-import iMaintain from "./i-maintain";
+import approval from "./approval/approval";
+import maintain from "./maintain/maintain";
+import iMaintain from "./i-maintain/i-maintain";
 
 // 导出接口
 export default {

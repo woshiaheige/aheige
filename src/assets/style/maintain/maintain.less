@@ -1,3 +1,113 @@
+.maintain {
+
+  //运维地图
+  .map {
+    #container {
+      height: calc(100vh - 264px);
+    }
+
+    .info {
+      position: absolute;
+      z-index: 1;
+      border: 1px solid #999;
+      padding: 3px;
+      background-color: rgba(255, 255, 255, .6);
+
+      #mapView {
+        margin-right: 8px;
+      }
+    }
+
+    .marker-label {
+      width: 49px;
+      height: 52px;
+      background: url(../../img/marker.png) no-repeat 100% 100%;
+      text-align: center;
+      padding-top: 8px;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    //信息窗体
+    .amap-info-contentContainer.bottom-left,
+    .amap-info-contentContainer.bottom-center,
+    .amap-info-contentContainer.bottom-right {
+      padding-bottom: 8px;
+    }
+
+    .content-window {
+      border-radius: .25rem;
+      box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.75rem 1.25rem;
+
+      ul,
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .content-window-card {
+      position: relative;
+      box-shadow: none;
+      bottom: 0;
+      left: 0;
+      width: auto;
+      padding: 0;
+      border: solid 1px silver;
+      border-radius: 4px;
+    }
+
+    //title
+    div.info-top {
+      border-bottom: 1px solid #CCC;
+      border-radius: 4px 4px 0 0;
+      background: none repeat scroll 0 0 #F9F9F9;
+
+      // background-color: #3792f7;
+      div {
+        display: inline-block;
+        color: #333333;
+        padding: 0 10px;
+        line-height: 31px;
+      }
+
+      img {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        transition-duration: 0.25s;
+      }
+    }
+
+    div.info-middle {
+      font-size: 12px;
+      padding: 15px;
+      line-height: 20px;
+
+      .title {
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+
+    div.info-bottom {
+      height: 0px;
+      width: 100%;
+      clear: both;
+      text-align: center;
+
+      img {
+        position: relative;
+        z-index: 104;
+      }
+    }
+  }
+}
+
 //弹框
 .maintain-modal {
 

@@ -1,5 +1,5 @@
-import base from "./base";
-import axios from "./axios";
+import base from "./../base";
+import axios from "./../axios";
 
 const approval = {
   getWaitList(data) {
