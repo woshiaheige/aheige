@@ -15,7 +15,7 @@
       <span slot="action">
         <a @click="editEnterprise">编辑</a>
         <a-divider type="vertical" />
-        <a>删除</a>
+        <a @click="deleteEnterprise">删除</a>
       </span>
     </a-table>
 
@@ -105,6 +105,19 @@ export default {
     },
     editEnterprise() {
       this.visible = true;
+    },
+    deleteEnterprise(row) {
+      console.log(row);
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
     }
   }
 };
