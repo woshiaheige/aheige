@@ -32,6 +32,7 @@
 import modal from "@/components/approval/wait-modal";
 export default {
   components: { modal },
+  props: ["value"],
   data() {
     return {
       modalInfo: { show: false },
@@ -107,6 +108,14 @@ export default {
           console.log("Cancel");
         }
       });
+    }
+  },
+  watch: {
+    value(n) {
+      if (n == "wait") {
+        // 当前选择的tab为wait
+        // console.log(n);
+      }
     }
   }
 };

@@ -1,17 +1,17 @@
 <template>
   <a-card :bordered="false" class="index">
-    <a-tabs @change="callback" type="card">
-      <a-tab-pane tab="等待我审批" key="1">
-        <wait-approval></wait-approval>
+    <a-tabs @change="callback" type="card" v-model="tabSelected">
+      <a-tab-pane tab="等待我审批" key="wait">
+        <wait-approval v-model="tabSelected"></wait-approval>
       </a-tab-pane>
-      <a-tab-pane tab="我参与的审批" key="2">
-        <approval-participate></approval-participate>
+      <a-tab-pane tab="我参与的审批" key="participate">
+        <approval-participate v-model="tabSelected"></approval-participate>
       </a-tab-pane>
-      <a-tab-pane tab="我发起的审批" key="3">
-        <start-approval></start-approval>
+      <a-tab-pane tab="我发起的审批" key="start">
+        <start-approval v-model="tabSelected"></start-approval>
       </a-tab-pane>
-      <a-tab-pane tab="发起审批" key="4">
-        <to-start></to-start>
+      <a-tab-pane tab="发起审批" key="tostart">
+        <to-start v-model="tabSelected"></to-start>
       </a-tab-pane>
     </a-tabs>
   </a-card>
@@ -24,12 +24,19 @@ import ToStart from "@/components/approval/to-start";
 export default {
   components: { WaitApproval, ApprovalParticipate, StartApproval, ToStart },
   data() {
-    return {};
+    return {
+      tabSelected: ""
+    };
   },
-  mounted() {},
+  mounted() {
+    this.tabSelected = this.$route.query.activeKey
+      ? this.$route.query.activeKey
+      : "wait";
+  },
   methods: {
     callback(key) {
-      console.log(key);
+      this.tabSelected = key;
+      this.$router.push({ query: { activeKey: key } });
     }
   }
 };
