@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" class="index">
+  <a-card :bordered="false" class="approval">
     <a-table
       :rowSelection="{
         selectedRowKeys: selectedRowKeys,
@@ -43,32 +43,27 @@ export default {
         },
         {
           title: "标题",
-          key: "name",
           dataIndex: "name",
           align: "center"
         },
         {
           title: "状态",
-          key: "status",
           dataIndex: "status",
           align: "center"
         },
         {
           title: "申请者",
-          key: "people",
           dataIndex: "people",
           align: "center"
         },
         {
           title: "提交时间",
-          key: "time",
           dataIndex: "time",
           align: "center"
         },
         {
           title: "操作",
           key: "action",
-          dataIndex: "action",
           align: "center",
           scopedSlots: { customRender: "action" }
         }
@@ -78,7 +73,7 @@ export default {
     };
   },
   mounted() {
-    this.mockData();
+    this.getTableData();
   },
   methods: {
     callback(key) {
@@ -94,7 +89,7 @@ export default {
         info: row
       };
     },
-    mockData() {
+    getTableData() {
       this.$api.approval.getWaitList().then(res => {
         this.data = res.data.dataSours;
       });
