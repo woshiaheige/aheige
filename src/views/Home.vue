@@ -5,7 +5,7 @@
       :style="{ position: 'fixed', height: '100vh', left: 0, overflow: 'auto' }"
     >
       <div class="logo">
-        <a-icon type="alipay-circle" theme="filled" v-fontSize="28" />
+        <a-icon type="alipay-circle" theme="filled" v-fontsize="28" />
         <span>博控智维云</span>
       </div>
       <a-menu
