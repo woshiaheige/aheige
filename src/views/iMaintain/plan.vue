@@ -50,20 +50,27 @@
             </div>
           </a-popover>
         </div>
-        <draggable
-          class="list-group"
-          :list="readyPlan"
-          group="people"
-          @change="log"
+        <div
+          ref="listGroup"
+          :style="{ height: listHight, overflowY: 'scroll' }"
         >
-          <div
-            class="list-group-item"
-            v-for="(element, index) in readyPlan"
-            :key="index"
+          <draggable
+            class="list-group"
+            :list="readyPlan"
+            group="people"
+            @change="log"
           >
-            {{ element.name }}
-          </div>
-        </draggable>
+            <div
+              class="list-group-item"
+              :class="{ 'no-ellpsis': ellipsisFlag == false }"
+              v-for="(element, index) in readyPlan"
+              :key="index"
+              :title="element.name"
+            >
+              {{ element.name }}
+            </div>
+          </draggable>
+        </div>
       </a-layout-sider>
       <!-- 中间表格 -->
       <a-layout-content v-margin:left="20">
@@ -73,9 +80,13 @@
           <a-button type="primary" v-margin:left="5" size="small" icon="table"
             >月计划</a-button
           >
-          <a-checkbox class="toggle-station">省略显示站点名</a-checkbox>
+          <a-checkbox class="toggle-station" v-model="ellipsisFlag"
+            >省略显示站点名</a-checkbox
+          >
         </div>
-        <week-drag-list :list="listData"></week-drag-list>
+        <div :style="{ height: listHight, overflowY: 'scroll' }">
+          <week-drag-list :list="listData"></week-drag-list>
+        </div>
       </a-layout-content>
     </a-layout>
   </a-card>
@@ -91,8 +102,10 @@ export default {
   },
   data() {
     return {
+      ellipsisFlag: true,
       readyPlan: ["A", "B"],
-      listData: []
+      listData: [],
+      listHight: "" //各列表的高度
     };
   },
   methods: {
@@ -111,12 +124,23 @@ export default {
         console.log(res);
         this.listData = res.data.data;
       });
+    },
+    getListHeight() {
+      //获取list的最大高度
+      const offsetTop = this.$refs.listGroup.getBoundingClientRect().top;
+      const box =
+        document.documentElement || document.body || window.pageYOffset;
+      const height = box.offsetHeight - offsetTop - 80;
+      return height + "px";
     }
   },
   mounted() {
     this.getReadyPlan();
     this.getWeekPlan();
+    this.$nextTick(() => {
+      this.listHight = this.getListHeight();
+    });
   }
 };
 </script>
->
+<style lang="less" scoped></style>

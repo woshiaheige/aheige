@@ -13,10 +13,10 @@
         <span>{{ row.startTime }}</span
         >至<span>{{ row.endTime }}</span>
       </span>
-      <span slot="action">
+      <span slot="action" slot-scope="row">
         <a @click="visible = true">查看</a>
         <a-divider type="vertical" />
-        <a>删除</a>
+        <a @click="deleteContract(row)">删除</a>
       </span>
     </a-table>
 
@@ -78,6 +78,21 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    deleteContract(row) {
+      console.log(row);
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    }
   }
 };
 </script>
