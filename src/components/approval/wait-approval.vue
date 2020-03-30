@@ -10,10 +10,10 @@
       v-margin:top="16"
       :pagination="false"
     >
-      <span slot="action">
-        <a @click="check()">查看</a>
+      <span slot="action" slot-scope="row">
+        <a @click="check(row)">查看</a>
         <a-divider type="vertical" />
-        <a>删除</a>
+        <a @click="delect(row)">删除</a>
       </span>
     </a-table>
 
@@ -39,9 +39,7 @@ export default {
       columns: [
         {
           title: "序号",
-          key: "key",
-          dataIndex: "key",
-          align: "center"
+          customRender: (text, row, index) => `${index + 1}`
         },
         {
           title: "标题",
@@ -90,14 +88,29 @@ export default {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
     },
-    check() {
+    check(row) {
       this.modalInfo = {
-        show: true
+        show: true,
+        info: row
       };
     },
     mockData() {
       this.$api.approval.getWaitList().then(res => {
         this.data = res.data.dataSours;
+      });
+    },
+    delect(row) {
+      console.log(row);
+      this.$confirm({
+        title: "确定删除" + row.name + "吗?",
+        okText: "确定",
+        cancelText: "取消",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
       });
     }
   }
