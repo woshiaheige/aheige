@@ -28,82 +28,81 @@
       color: #fff;
     }
 
-    //信息窗体
-    .amap-info-contentContainer.bottom-left,
-    .amap-info-contentContainer.bottom-center,
-    .amap-info-contentContainer.bottom-right {
-      padding-bottom: 8px;
-    }
+  }
+}
 
-    .content-window {
-      border-radius: .25rem;
-      box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
-      bottom: 1rem;
-      right: 1rem;
-      padding: 0.75rem 1.25rem;
+//信息窗体
+.amap-info-contentContainer {
+  .amap-ui-smp-ifwn-content-body {
+    border-radius: 5px;
+    padding: 0;
+  }
 
-      ul,
-      li {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-    }
+  .amap-ui-smp-ifwn-info-title {
+    background-color: #3792f7;
+    padding: 5px 25px 5px 10px;
+    color: #fff;
+  }
 
-    .content-window-card {
-      position: relative;
-      box-shadow: none;
-      bottom: 0;
-      left: 0;
-      width: auto;
-      padding: 0;
-      border: solid 1px silver;
-      border-radius: 4px;
-    }
+  .amap-ui-smp-ifwn-def-tr-close {
+    line-height: 30px;
+  }
 
-    //title
-    div.info-top {
-      border-bottom: 1px solid #CCC;
-      border-radius: 4px 4px 0 0;
-      background: none repeat scroll 0 0 #F9F9F9;
+  .amap-ui-smp-ifwn-def-tr-close:hover {
+    color: #fff;
+    background: transparent;
+  }
 
-      // background-color: #3792f7;
-      div {
-        display: inline-block;
-        color: #333333;
-        padding: 0 10px;
-        line-height: 31px;
-      }
+  .tabs {
+    width: 100%;
+    height: 34px;
+    line-height: 34px;
+  }
 
-      img {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        transition-duration: 0.25s;
-      }
-    }
+  .tabs ul,
+  #tabs-body ul,
+  #tabs-body li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    div.info-middle {
-      font-size: 12px;
-      padding: 15px;
-      line-height: 20px;
+  .tabs ul li {
+    display: inline-flex;
+    line-height: 24px;
+    margin: 0;
+    padding: 2px 20px 5px 15px;
+  }
 
-      .title {
-        font-weight: bold;
-        font-size: 14px;
-      }
-    }
+  .tab-nav {
+    cursor: pointer;
+  }
 
-    div.info-bottom {
-      height: 0px;
-      width: 100%;
-      clear: both;
-      text-align: center;
+  .active {
+    color: #1890ff;
+    border-bottom: 2px solid #1890ff;
+  }
 
-      img {
-        position: relative;
-        z-index: 104;
-      }
+  #tabs-body {
+    padding: 5px 0 0;
+    width: 100%;
+  }
+
+  #tabs-body div {
+    padding: 10px;
+  }
+
+  #tabs-body li {
+    line-height: 34px;
+  }
+
+  .tabs-button {
+    text-align: right;
+
+    .mybtn {
+      background: #3792f7;
+      border: 0;
+      color: #fff;
     }
   }
 }

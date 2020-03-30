@@ -19,6 +19,8 @@
 </template>
 <script>
 import AMap from "AMap";
+import AMapUI from "AMapUI";
+import $ from "jquery";
 import Point from "@/assets/geojson/enterprise.json";
 import Station from "@/assets/geojson/station.json";
 import stationModal from "@/components/maintain/map/station";
@@ -102,68 +104,50 @@ export default {
     },
     //自定义窗体
     showInfo(marker, e) {
-      var title = e.target.w.title,
-        content = [];
-      content.push(
-        "<div><p class='title'>任务信息</p><ul><li>1、" +
-          e.target.w.title +
-          "任务信息1</li><li>2、" +
-          e.target.w.title +
-          "任务信息2</li><li>3、" +
-          e.target.w.title +
-          "任务信息3</li></div>"
-      );
-      // content.push("<a-button>查看更多任务</a-button>");
-      var infoWindow = new AMap.InfoWindow({
-        isCustom: true, //使用自定义窗体
-        content: this.createInfoWindow(title, content.join("<br/>")),
-        offset: new AMap.Pixel(0, -60)
+      let that = this;
+      AMapUI.loadUI(["overlay/SimpleInfoWindow"], function(SimpleInfoWindow) {
+        var infoWindow = new SimpleInfoWindow({
+          infoTitle: e.target.w.title,
+          infoBody: [
+            '<div class="guideWrapper content-window">',
+            '<div class="tabs"><ul id="tabs">',
+            '<li class="tab-nav active">站点信息</li>',
+            '<li class="tab-nav">任务信息</li>',
+            '<li class="tab-nav">实时数据</li>',
+            "</ul></div>",
+            '<div id="tabs-body">',
+            //第一个tabs
+            '<div style="display:block"><li>1.站点信息 2020-3-16</li><li>2.站点信息 2020-3-15</li><li>3.站点信息 2020-3-14</li></ul></div>',
+            //第二个tabs
+            '<div style="display:none"><ul><li>1.监测中心 2020-3-16</li><li>2.监测中心 2020-3-15</li><li>3.监测中心 2020-3-14</li></ul></div>',
+            //第三个tabs
+            '<div style="display:none"><li>1.实时数据 2020-3-16</li><li>2.实时数据 2020-3-15</li><li>3.实时数据 2020-3-14</li></ul></div>',
+            "</div>",
+            '<div class="tabs-button"><button class="mybtn">查看更多任务</button></div>',
+            "</div>"
+          ].join(""),
+          // 基点指向marker的头部位置（信息窗体的具体位置）
+          offset: new AMap.Pixel(-10, -40)
+        });
+
+        //监听事件
+        infoWindow.get$InfoBody().on("click", ".mybtn", function(event) {
+          event.stopPropagation(); //阻止冒泡
+          console.log("点击查看更多任务");
+        });
+        infoWindow.open(that.map, e.target.getPosition());
+        //切换事件
+        $("body").on("click", "#tabs li", function() {
+          var index = $(this).index();
+          var divs = $("#tabs-body > div");
+          $(this)
+            .siblings("li")
+            .removeClass("active");
+          $(this).addClass("active");
+          divs.hide(); //隐藏所有选中项内容
+          divs.eq(index).show(); //显示选中项对应内容
+        });
       });
-      infoWindow.open(this.map, e.target.getPosition());
-    },
-
-    //构建自定义信息窗体
-    createInfoWindow(title, content) {
-      var info = document.createElement("div");
-      info.className = "content-window content-window-card";
-
-      //可以通过下面的方式修改自定义窗体的宽高
-      //info.style.width = "400px";
-      // 定义顶部标题
-      var top = document.createElement("div");
-      var titleD = document.createElement("div");
-      var closeX = document.createElement("img");
-      top.className = "info-top";
-      titleD.innerHTML = title;
-      closeX.src = "https://webapi.amap.com/images/close2.gif";
-      closeX.onclick = this.closeInfoWindow();
-
-      top.appendChild(titleD);
-      top.appendChild(closeX);
-      info.appendChild(top);
-
-      // 定义中部内容
-      var middle = document.createElement("div");
-      middle.className = "info-middle";
-      middle.style.backgroundColor = "white";
-      middle.innerHTML = content;
-      info.appendChild(middle);
-
-      // 定义底部内容
-      var bottom = document.createElement("div");
-      bottom.className = "info-bottom";
-      bottom.style.position = "relative";
-      bottom.style.top = "-1px";
-      bottom.style.margin = "0 auto";
-      var sharp = document.createElement("img");
-      sharp.src = "https://webapi.amap.com/images/sharp.png";
-      bottom.appendChild(sharp);
-      info.appendChild(bottom);
-      return info;
-    },
-    //关闭信息窗体
-    closeInfoWindow() {
-      this.map.clearInfoWindow();
     },
     cancel(value) {
       this.modelShow = value;
