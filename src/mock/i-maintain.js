@@ -7,11 +7,15 @@ Mock.mock("/api/operation/ready-plan", {
   "data|10": [
     {
       "key|+1": 1,
-      "name|1": ["东南污水厂（出水口）", "佛山南海区桂城年顺酒楼", "沙岗污水厂"]
+      "name|1": [
+        "东南污水厂（出水口）",
+        "广东省佛山市区南海区桂城年顺酒楼",
+        "沙岗污水厂"
+      ]
     }
   ]
 });
-//未计划站点列表
+//周站点列表
 Mock.mock("/api/operation/week-plan", {
   "data|7": [
     {
@@ -24,7 +28,7 @@ Mock.mock("/api/operation/week-plan", {
         "星期五",
         "星期六"
       ],
-      "list|2": [
+      "list|3": [
         { name: "东南污水厂（出水口）" },
         { name: "佛山南海区桂城年顺酒楼" },
         { name: "沙岗污水厂" }
