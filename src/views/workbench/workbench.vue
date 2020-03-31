@@ -114,7 +114,7 @@
               >
             </a-card>
             <a-card title="系统消息">
-              <div class="system-messages-back-class">
+              <div class="system-messages-back">
                 <a-icon type="left-square" /><a-icon type="right-square" />
               </div>
               <div
