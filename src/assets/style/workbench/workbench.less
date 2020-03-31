@@ -1,27 +1,30 @@
 #workbench {
   .ant-layout {
     //工作台外联样式
-    margin-right: 10px;
-    .ant-layout-header {
+    //margin-right: 10px;
+    .top-header {
       //头部样式集
-      background-color: transparent;
-      padding: 0;
-      height: 108px;
-      margin-bottom: 10px;
+      .ant-layout-header {
+        background-color: transparent;
+        padding: 0;
+        height: 108px;
+        margin-bottom: 16px;
 
-      .ant-card {
-        .ant-card-head {
-          border-bottom: none;
-        }
-        .ant-card-head-title,
-        .ant-card-body {
-          text-align: center;
-          font-weight: 900;
-          width: 100%;
+        .ant-card {
+          .ant-card-head {
+            border-bottom: none;
+          }
+          .ant-card-head-title,
+          .ant-card-body {
+            text-align: center;
+            font-weight: 900;
+            width: 100%;
+          }
         }
       }
     }
-    .left-bottom-sider {
+
+    .left-sider {
       //左侧 sider样式集
       .ant-layout-has-sider {
         margin-right: 0;
@@ -39,7 +42,7 @@
               width: 100%;
               border: "1px solid #d9d9d9";
               border-radius: "4px";
-              margin-bottom: 30px;
+              margin-bottom: 16px;
               .ant-fullcalendar-header {
                 text-align: center;
               }
@@ -74,9 +77,9 @@
     }
 
     .center-content {
+      //中间 content样式集
       .ant-layout-content {
         min-height: 100% !important;
-        //中间 content样式集
         .ant-card-head-title {
           font-weight: 600;
           font-size: 17px;
@@ -85,7 +88,7 @@
     }
   }
 
-  .layout-right {
+  .right-sider {
     //右侧sider样式集
 
     display: inline-block;
@@ -105,7 +108,7 @@
           &:nth-child(2) {
             float: right;
             width: 180px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             span {
               padding: 5px;
               &:nth-child(1) {

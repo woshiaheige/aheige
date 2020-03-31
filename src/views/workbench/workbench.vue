@@ -2,8 +2,9 @@
   <div id="workbench">
     <a-layout>
       <a-layout>
-        <a-layout-header>
-          <div class="header-body">
+        <div class="top-header">
+          <!-- 头部 -->
+          <a-layout-header>
             <div>
               <a-row :gutter="16">
                 <a-col v-for="(item, index) in cardList" :key="index" :span="6">
@@ -18,9 +19,10 @@
                 </a-col>
               </a-row>
             </div>
-          </div>
-        </a-layout-header>
-        <div class="left-bottom-sider">
+          </a-layout-header>
+        </div>
+        <div class="left-sider">
+          <!-- 左侧sider -->
           <a-layout>
             <a-layout-sider width="35%">
               <div class="calendar-body">
@@ -45,6 +47,7 @@
               </div>
             </a-layout-sider>
             <div class="center-content">
+              <!-- 中间content -->
               <a-layout-content width="100%">
                 <a-card title="待完成的任务">
                   <a-table :columns="columns" :dataSource="data3">
@@ -83,7 +86,8 @@
           </a-layout>
         </div>
       </a-layout>
-      <div class="layout-right">
+      <div class="right-sider">
+        <!-- 右边sider -->
         <a-layout-sider>
           <div class="calendar-body">
             <a-card hoverable>
