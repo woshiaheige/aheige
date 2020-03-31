@@ -1,100 +1,146 @@
 <template>
-  <a-layout>
+  <div id="workbench">
     <a-layout>
-      <a-layout-header>
-        <div class="header-body">
-          <div v-for="(item, index) of cardList" :key="index" class="Card-body">
-            <a-card
-              :class="[item.CardClass]"
-              :title="item.header"
-              :bordered="false"
-            >
-              <p>{{ item.content }}</p>
-            </a-card>
-          </div>
-        </div>
-      </a-layout-header>
       <a-layout>
-        <a-layout-sider width="35%">
+        <div class="top-header">
+          <!-- 头部 -->
+          <a-layout-header>
+            <div>
+              <a-row :gutter="16">
+                <a-col v-for="(item, index) in cardList" :key="index" :span="6">
+                  <a-card>
+                    <a-statistic
+                      :title="item.title"
+                      :value="item.content"
+                      :valueStyle="{ color: item.color }"
+                    >
+                    </a-statistic>
+                  </a-card>
+                </a-col>
+              </a-row>
+            </div>
+          </a-layout-header>
+        </div>
+        <div class="left-sider">
+          <!-- 左侧sider -->
+          <a-layout>
+            <a-layout-sider width="35%">
+              <div class="calendar-body">
+                <a-card>
+                  <a-calendar :fullscreen="false" @panelChange="onPanelChange"
+                /></a-card>
+              </div>
+              <div class="calendar-body">
+                <a-card title="负责的站点(20个)">
+                  <div
+                    v-for="(item, index) in stationData"
+                    :key="index"
+                    class="station-list"
+                  >
+                    <p>{{ item.title }}</p>
+                    <div class="item-box">
+                      <span>{{ item.value1 }}</span
+                      ><span>{{ item.value2 }}</span>
+                    </div>
+                  </div>
+                </a-card>
+              </div>
+            </a-layout-sider>
+            <div class="center-content">
+              <!-- 中间content -->
+              <a-layout-content width="100%">
+                <a-card title="待完成的任务">
+                  <a-table :columns="columns" :dataSource="data3">
+                    <a slot="name" slot-scope="text">{{ text }}</a>
+                    <span slot="customTitle"
+                      ><a-icon type="smile-o" /> Name</span
+                    >
+                    <span slot="tags" slot-scope="tags">
+                      <a-tag
+                        v-for="tag in tags"
+                        :color="
+                          tag === 'loser'
+                            ? 'volcano'
+                            : tag.length > 5
+                            ? 'geekblue'
+                            : 'green'
+                        "
+                        :key="tag"
+                      >
+                        {{ tag.toUpperCase() }}
+                      </a-tag>
+                    </span>
+                    <span slot="action" slot-scope="text, record">
+                      <a>Invite 一 {{ record.name }}</a>
+                      <a-divider type="vertical" />
+                      <a>Delete</a>
+                      <a-divider type="vertical" />
+                      <a class="ant-dropdown-link">
+                        More actions <a-icon type="down" />
+                      </a>
+                    </span>
+                  </a-table>
+                </a-card>
+              </a-layout-content>
+            </div>
+          </a-layout>
+        </div>
+      </a-layout>
+      <div class="right-sider">
+        <!-- 右边sider -->
+        <a-layout-sider>
           <div class="calendar-body">
-            <a-card>
-              <a-calendar :fullscreen="false" @panelChange="onPanelChange"
-            /></a-card>
-          </div>
-          <div class="calendar-body">
-            <a-card title="负责的站点(20个)">
-              <p>务庄污水(污水)</p>
-              <p>务庄污水(污水)</p>
-              <p>务庄污水(污水)</p>
-              <p>务庄污水(污水)</p>
-              <p>务庄污水(污水)</p>
-              <p>务庄污水(污水)</p>
+            <a-card hoverable>
+              <div class="right-top">
+                <div>
+                  <a-avatar
+                    :size="64"
+                    icon="user"
+                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  />
+                </div>
+                <div>
+                  <span>Defined</span>
+                  <span>未设置职位</span>
+                  <span>暂无评分</span>
+                </div>
+              </div>
+              <a-divider />
+              <a-tag
+                v-for="(item, index) in tagData"
+                :key="index"
+                color="blue"
+                >{{ item.title }}</a-tag
+              >
+            </a-card>
+            <a-card title="系统消息">
+              <div class="system-messages-back">
+                <a-icon type="left-square" /><a-icon type="right-square" />
+              </div>
+              <div
+                v-for="(item, index) in systemMessagesdata"
+                :key="index"
+                class="system-messages-item-box"
+              >
+                <div class="system-messages-add">
+                  <a-icon type="plus-circle" />
+                </div>
+                <div class="system-messages-item">
+                  <div>
+                    <span>{{ item.title }}</span
+                    ><span>{{ item.time }}</span>
+                  </div>
+                  <div>
+                    <span>{{ item.content }}</span>
+                  </div>
+                </div>
+              </div>
             </a-card>
           </div>
         </a-layout-sider>
-        <a-layout-content width="100%">
-          <a-card title="待完成的任务"></a-card>
-        </a-layout-content>
-      </a-layout>
+      </div>
     </a-layout>
-    <div class="layout-right">
-      <a-layout-sider width="95.8%">
-        <div class="calendar-body">
-          <a-card hoverable style="width: 300px">
-            <div class="right-top">
-              <a-avatar
-                :size="64"
-                icon="user"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              />
-              <div class="info">
-                <span>Defined</span>
-                <span>未设置职位</span>
-                <span>暂无评分</span>
-              </div>
-            </div>
-
-            <a-divider />
-            <template class="ant-card-actions" slot="actions">
-              <a-icon type="setting" key="setting" />
-              <a-icon type="edit" key="edit" />
-              <a-icon type="ellipsis" key="ellipsis" />
-            </template>
-            <a-card-meta
-              title="Card title"
-              description="This is the description"
-            >
-              <a-avatar
-                slot="avatar"
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              />
-            </a-card-meta>
-          </a-card>
-          <a-card>
-            <a-list itemLayout="horizontal" :dataSource="data">
-              <a-list-item
-                slot="renderItem"
-                slot-scope="item, index"
-                :key="index"
-              >
-                <a-list-item-meta
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                >
-                  <a slot="title" href="https://www.antdv.com/">{{
-                    item.title
-                  }}</a>
-                  <a-avatar
-                    slot="avatar"
-                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                  />
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-card>
-        </div>
-      </a-layout-sider>
-    </div>
-  </a-layout>
+  </div>
 </template>
 
 <script>
@@ -102,28 +148,178 @@ import "@/assets/style/workbench/workbench.less";
 
 export default {
   data() {
-    const data = [
-      {
-        title: "Ant Design Title 1"
-      },
-      {
-        title: "Ant Design Title 2"
-      },
-      {
-        title: "Ant Design Title 3"
-      },
-      {
-        title: "Ant Design Title 4"
-      }
-    ];
     return {
       cardList: [
-        { header: "待完成任务", content: 5, CardClass: "unfinished" },
-        { header: "今日计划任务", content: 3, CardClass: "today" },
-        { header: "所有完成任务", content: 120, CardClass: "all" },
-        { header: "待完成报告", content: 0, CardClass: "report" }
+        { title: "待完成任务", content: 5, color: "#3f8600" },
+        { title: "今日计划任务", content: 3, color: "#cf1322" },
+        { title: "所有完成任务", content: 120, color: "#1e1e1e" },
+        { title: "待完成报告", content: 0, color: "#4f6fcf" }
       ],
-      data
+      columns: [
+        {
+          dataIndex: "name",
+          key: "name",
+          slots: { title: "customTitle" },
+          scopedSlots: { customRender: "name" }
+        },
+        {
+          title: "Age",
+          dataIndex: "age",
+          key: "age"
+        },
+        {
+          title: "Address",
+          dataIndex: "address",
+          key: "address"
+        },
+        {
+          title: "Tags",
+          key: "tags",
+          dataIndex: "tags",
+          scopedSlots: { customRender: "tags" }
+        },
+        {
+          title: "Action",
+          key: "action",
+          scopedSlots: { customRender: "action" }
+        }
+      ],
+      data3: [
+        {
+          key: "1",
+          name: "John Brown",
+          age: 32,
+          address: "New York No. 1 Lake Park",
+          tags: ["nice", "developer"]
+        },
+        {
+          key: "2",
+          name: "Jim Green",
+          age: 42,
+          address: "London No. 1 Lake Park",
+          tags: ["loser"]
+        },
+        {
+          key: "3",
+          name: "Joe Black",
+          age: 32,
+          address: "Sidney No. 1 Lake Park",
+          tags: ["cool", "teacher"]
+        }
+      ],
+      data: [
+        {
+          title: "Ant Design Title 1"
+        },
+        {
+          title: "Ant Design Title 2"
+        },
+        {
+          title: "Ant Design Title 3"
+        },
+        {
+          title: "Ant Design Title 4"
+        }
+      ],
+      stationData: [
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 32
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 3
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 5
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 8
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 12
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 15
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 1
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 1,
+          value2: 3
+        }
+      ],
+      systemMessagesdata: [
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新(烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新`
+        }
+      ],
+      tagData: [
+        {
+          title: "运维高手"
+        },
+        {
+          title: "准时高手"
+        },
+        {
+          title: "运维高手"
+        },
+        {
+          title: "准时高手"
+        },
+        {
+          title: "运维高手"
+        },
+        {
+          title: "准时高手"
+        }
+      ]
     };
   },
   mounted() {},

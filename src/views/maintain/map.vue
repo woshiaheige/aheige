@@ -2,11 +2,75 @@
   <a-card :bordered="false" class="maintain">
     <span slot="title">运维地图</span>
     <div class="map">
-      <div class="info">
+      <div class="map-info">
         搜索点数：<span id="mapView">{{
           markers.length + pointMarkers.length
         }}</span>
         显示站点数：<span id="massNumber">{{ pointMarkers.length }}</span>
+      </div>
+
+      <div class="map-tabs">
+        <a-tabs defaultActiveKey="1" tabPosition="left">
+          <a-tab-pane key="1">
+            <span slot="tab">
+              <a-icon type="apple" />
+              站点
+            </span>
+            <a-form :form="form" v-show="collapsed" @submit="handleSubmit">
+              <a-form-item v-padding:top="15">
+                <a-input placeholder="站点名称、编号" />
+              </a-form-item>
+              <a-form-item>
+                <a-select placeholder="客户企业">
+                  <!-- <a-select-option :value=""></a-select-option> -->
+                </a-select>
+              </a-form-item>
+              <a-form-item>
+                <a-select placeholder="企业行政区域"> </a-select>
+              </a-form-item>
+              <a-form-item>
+                <a-select placeholder="运维小组"> </a-select>
+              </a-form-item>
+              <a-form-item>
+                <a-select placeholder="运维方案"> </a-select>
+              </a-form-item>
+              <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                <a-button type="primary" icon="search" html-type="submit">
+                  搜索
+                </a-button>
+              </a-form-item>
+            </a-form>
+          </a-tab-pane>
+          <a-tab-pane key="2">
+            <span slot="tab">
+              <a-icon type="apple" />
+              车辆
+            </span>
+            <a-form :form="form" v-show="collapsed" @submit="handleSubmit">
+              <a-form-item v-padding:top="15">
+                <a-input placeholder="站点名称、编号" />
+              </a-form-item>
+              <a-form-item>
+                <a-select placeholder="客户企业">
+                  <!-- <a-select-option :value=""></a-select-option> -->
+                </a-select>
+              </a-form-item>
+              <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                <a-button type="primary" icon="search" html-type="submit">
+                  搜索
+                </a-button>
+              </a-form-item>
+            </a-form>
+          </a-tab-pane>
+        </a-tabs>
+        <a-button-group>
+          <a-button type="link" v-if="collapsed" @click="changeVisible">
+            <a-icon type="right" />
+          </a-button>
+          <a-button type="link" v-else @click="changeVisible">
+            <a-icon type="left" />
+          </a-button>
+        </a-button-group>
       </div>
       <div id="container"></div>
     </div>
@@ -28,6 +92,7 @@ export default {
   components: { stationModal },
   data() {
     return {
+      collapsed: true,
       map: null,
       markers: [],
       pointMarkers: [],
@@ -151,6 +216,11 @@ export default {
     },
     cancel(value) {
       this.modelShow = value;
+    },
+    handleSubmit() {},
+    //收缩
+    changeVisible() {
+      this.collapsed = !this.collapsed;
     }
   },
   mounted() {

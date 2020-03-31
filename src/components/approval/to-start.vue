@@ -100,7 +100,7 @@ export default {
     },
 
     handleReset() {
-      // this.form.resetFields();
+      this.form.resetFields();
     }
   }
 };
