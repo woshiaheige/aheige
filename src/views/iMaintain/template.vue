@@ -1,6 +1,6 @@
 <template>
-  <a-card :bordered="false" class="contract" title="合同管理">
-    <a-button type="primary" @click="visible = true">新增合同</a-button>
+  <a-card :bordered="false" class="template" title="报告模板">
+    <a-button type="primary" @click="visible = true">新增报告模板</a-button>
 
     <a-table
       rowKey="id"
@@ -14,9 +14,7 @@
         >至<span>{{ row.endTime }}</span>
       </span>
       <span slot="action" slot-scope="row">
-        <a @click="visible = true">查看</a>
-        <a-divider type="vertical" />
-        <a @click="deleteContract(row)">删除</a>
+        <a @click="showTemplateEdit(row)">编辑</a>
       </span>
     </a-table>
 
@@ -27,15 +25,14 @@
       :defaultCurrent="current"
       :total="total"
     />
-
-    <contract-edit :visible.sync="visible"> </contract-edit>
+    <template-edit :visible.sync="visible" />
   </a-card>
 </template>
 
 <script>
-import contractEdit from "@/components/customer/contract-edit";
+import templateEdit from "@/components/i-maintain/template/template-edit";
 export default {
-  components: { contractEdit },
+  components: { templateEdit },
   data() {
     return {
       current: 1,
@@ -48,20 +45,24 @@ export default {
           key: "order"
         },
         {
-          title: "合同编号",
-          dataIndex: "num",
-          key: "num"
-        },
-        {
-          title: "企业名称",
+          title: "模板名称",
           dataIndex: "name",
           key: "name"
         },
         {
-          title: "合同起止时间",
-          key: "period",
-          dataIndex: "period",
-          scopedSlots: { customRender: "period" }
+          title: "适用对象",
+          dataIndex: "object",
+          key: "object"
+        },
+        {
+          title: "上传人",
+          dataIndex: "createdBy",
+          key: "createdBy"
+        },
+        {
+          title: "上传时间",
+          dataIndex: "createdAt",
+          key: "createdAt"
         },
         {
           title: "操作",
@@ -73,10 +74,10 @@ export default {
         {
           order: "1",
           id: "0",
-          num: "12345678",
-          name: "广东华兴玻璃有限公司",
-          startTime: "2019-10-15",
-          endTime: "2020-10-15"
+          name: "日常巡检",
+          object: "对象A",
+          createdBy: "鲁迅",
+          createdAt: "2019-10-15 15:12:11"
         }
       ]
     };
@@ -94,6 +95,9 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    showTemplateEdit() {
+      this.visible = true;
     }
   }
 };

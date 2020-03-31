@@ -23,8 +23,8 @@
       v-margin:top="16"
       showQuickJumper
       showSizeChanger
-      :defaultCurrent="3"
-      :total="500"
+      :defaultCurrent="current"
+      :total="total"
     />
 
     <!-- 新增企业 -->
@@ -41,6 +41,8 @@ export default {
   },
   data() {
     return {
+      current: 1,
+      total: 1,
       visible: false,
       columns: [
         {

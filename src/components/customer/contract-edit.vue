@@ -66,7 +66,7 @@
       <a-form-item label="合同说明">
         <a-input v-decorator="['detail']" type="textarea" />
       </a-form-item>
-      <a-form-item label="合同附件" prop="logo">
+      <a-form-item label="合同附件">
         <a-upload
           name="avatar"
           listType="picture-card"
