@@ -6,6 +6,16 @@ const maintain = {
     return axios.get(base.api + "mission/list", {
       params: data
     });
+  },
+  getCarList(data) {
+    return axios.get(base.api + "car/list", {
+      params: data
+    });
+  },
+  getViolationList(data) {
+    return axios.get(base.api + "violation/list", {
+      params: data
+    });
   }
 };
 
