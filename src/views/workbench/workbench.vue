@@ -4,18 +4,19 @@
       <a-layout>
         <a-layout-header>
           <div class="header-body">
-            <div
-              v-for="(item, index) of cardList"
-              :key="index"
-              class="Card-body"
-            >
-              <a-card
-                :class="[item.CardClass]"
-                :title="item.header"
-                :bordered="false"
-              >
-                <p>{{ item.content }}</p>
-              </a-card>
+            <div>
+              <a-row :gutter="16">
+                <a-col v-for="(item, index) in cardList" :key="index" :span="6">
+                  <a-card>
+                    <a-statistic
+                      :title="item.title"
+                      :value="item.content"
+                      :valueStyle="{ color: item.color }"
+                    >
+                    </a-statistic>
+                  </a-card>
+                </a-col>
+              </a-row>
             </div>
           </div>
         </a-layout-header>
@@ -70,13 +71,7 @@
               <a-tag color="blue">准时完成</a-tag>
             </a-card>
             <a-card title="系统消息">
-              <div>
-                <a-list :dataSource="data1">
-                  <a-list-item slot="renderItem" slot-scope="item">{{
-                    item
-                  }}</a-list-item>
-                </a-list>
-              </div>
+              <div></div>
             </a-card>
           </div>
         </a-layout-sider>
@@ -106,10 +101,10 @@ export default {
     ];
     return {
       cardList: [
-        { header: "待完成任务", content: 5, CardClass: "unfinished" },
-        { header: "今日计划任务", content: 3, CardClass: "today" },
-        { header: "所有完成任务", content: 120, CardClass: "all" },
-        { header: "待完成报告", content: 0, CardClass: "report" }
+        { title: "待完成任务", content: 5, color: "#3f8600" },
+        { title: "今日计划任务", content: 3, color: "#cf1322" },
+        { title: "所有完成任务", content: 120, color: "#1e1e1e" },
+        { title: "待完成报告", content: 0, color: "#4f6fcf" }
       ],
       data,
       data1: [
