@@ -20,57 +20,64 @@
             </div>
           </div>
         </a-layout-header>
-        <a-layout>
-          <a-layout-sider width="35%">
-            <div class="calendar-body">
-              <a-card>
-                <a-calendar :fullscreen="false" @panelChange="onPanelChange"
-              /></a-card>
-            </div>
-            <div class="calendar-body">
-              <a-card title="负责的站点(20个)">
-                <p>务庄污水(污水)</p>
-                <p>务庄污水(污水)</p>
-                <p>务庄污水(污水)</p>
-                <p>务庄污水(污水)</p>
-                <p>务庄污水(污水)</p>
-                <p>务庄污水(污水)</p>
-              </a-card>
-            </div>
-          </a-layout-sider>
-          <a-layout-content width="100%">
-            <a-card title="待完成的任务">
-              <a-table :columns="columns" :dataSource="data3">
-                <a slot="name" slot-scope="text">{{ text }}</a>
-                <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-                <span slot="tags" slot-scope="tags">
-                  <a-tag
-                    v-for="tag in tags"
-                    :color="
-                      tag === 'loser'
-                        ? 'volcano'
-                        : tag.length > 5
-                        ? 'geekblue'
-                        : 'green'
-                    "
-                    :key="tag"
+        <div class="left-bottom-sider">
+          <a-layout>
+            <a-layout-sider width="35%">
+              <div class="calendar-body">
+                <a-card>
+                  <a-calendar :fullscreen="false" @panelChange="onPanelChange"
+                /></a-card>
+              </div>
+              <div class="calendar-body">
+                <a-card title="负责的站点(20个)">
+                  <div
+                    v-for="(item, index) in stationData"
+                    :key="index"
+                    class="station-list"
                   >
-                    {{ tag.toUpperCase() }}
-                  </a-tag>
-                </span>
-                <span slot="action" slot-scope="text, record">
-                  <a>Invite 一 {{ record.name }}</a>
-                  <a-divider type="vertical" />
-                  <a>Delete</a>
-                  <a-divider type="vertical" />
-                  <a class="ant-dropdown-link">
-                    More actions <a-icon type="down" />
-                  </a>
-                </span>
-              </a-table>
-            </a-card>
-          </a-layout-content>
-        </a-layout>
+                    <p>{{ item.title }}</p>
+                    <div class="item-box">
+                      <span>{{ item.value1 }}</span
+                      ><span>{{ item.value2 }}</span>
+                    </div>
+                  </div>
+                </a-card>
+              </div>
+            </a-layout-sider>
+            <a-layout-content width="100%">
+              <a-card title="待完成的任务">
+                <a-table :columns="columns" :dataSource="data3">
+                  <a slot="name" slot-scope="text">{{ text }}</a>
+                  <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+                  <span slot="tags" slot-scope="tags">
+                    <a-tag
+                      v-for="tag in tags"
+                      :color="
+                        tag === 'loser'
+                          ? 'volcano'
+                          : tag.length > 5
+                          ? 'geekblue'
+                          : 'green'
+                      "
+                      :key="tag"
+                    >
+                      {{ tag.toUpperCase() }}
+                    </a-tag>
+                  </span>
+                  <span slot="action" slot-scope="text, record">
+                    <a>Invite 一 {{ record.name }}</a>
+                    <a-divider type="vertical" />
+                    <a>Delete</a>
+                    <a-divider type="vertical" />
+                    <a class="ant-dropdown-link">
+                      More actions <a-icon type="down" />
+                    </a>
+                  </span>
+                </a-table>
+              </a-card>
+            </a-layout-content>
+          </a-layout>
+        </div>
       </a-layout>
       <div class="layout-right">
         <a-layout-sider>
@@ -189,12 +196,48 @@ export default {
         }
       ],
       data,
-      data1: [
-        "Racing car sprays burning fuel into crowd.",
-        "Japanese princess to wed commoner.",
-        "Australian walks 100km after outback crash.",
-        "Man charged over missing wedding girl.",
-        "Los Angeles battles huge wildfires."
+
+      stationData: [
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 32
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 3
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 5
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 8
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 12
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 15
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 0,
+          value2: 1
+        },
+        {
+          title: "务庄污水 (污水)",
+          value1: 1,
+          value2: 3
+        }
       ]
     };
   },

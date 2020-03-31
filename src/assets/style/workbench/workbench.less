@@ -22,27 +22,52 @@
         }
       }
     }
-
-    .ant-layout-has-sider {
-      margin-right: 0;
-      .ant-layout-sider {
-        //左侧
-        background-color: transparent;
-        box-shadow: none;
-        margin-right: 1%;
-        .ant-layout-sider-children {
-          .calendar-body {
-            .ant-card-body {
+    .left-bottom-sider {
+      //左侧 sider样式
+      .ant-layout-has-sider {
+        margin-right: 0;
+        .ant-layout-sider {
+          background-color: transparent;
+          box-shadow: none;
+          margin-right: 1%;
+          .ant-layout-sider-children {
+            .calendar-body {
+              .ant-card-body {
+                width: 100%;
+                text-align: left;
+              }
+              //日历样式
               width: 100%;
-              text-align: left;
-            }
-            //日历样式
-            width: 100%;
-            border: "1px solid #d9d9d9";
-            border-radius: "4px";
-            margin-bottom: 30px;
-            .ant-fullcalendar-header {
-              text-align: center;
+              border: "1px solid #d9d9d9";
+              border-radius: "4px";
+              margin-bottom: 30px;
+              .ant-fullcalendar-header {
+                text-align: center;
+              }
+              .station-list {
+                //左下 list样式
+                display: flex;
+                justify-content: space-between;
+                .item-box {
+                  span {
+                    display: inline-block;
+                    width: 25px;
+                    height: 25px;
+                    text-align: center;
+                    line-height: 25px;
+                    color: #fff;
+                    font-weight: 600;
+                    &:nth-child(1) {
+                      background-color: #ffa616;
+                      margin-right: 5px;
+                    }
+                    &:nth-child(2) {
+                      background-color: #28b3cb;
+                      margin-left: 5px;
+                    }
+                  }
+                }
+              }
             }
           }
         }
