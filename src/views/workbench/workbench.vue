@@ -1,4 +1,4 @@
-<template>
+<template id="workbench">
   <a-layout>
     <a-layout>
       <a-layout-header>
@@ -57,41 +57,21 @@
             </div>
 
             <a-divider />
-            <template class="ant-card-actions" slot="actions">
-              <a-icon type="setting" key="setting" />
-              <a-icon type="edit" key="edit" />
-              <a-icon type="ellipsis" key="ellipsis" />
-            </template>
-            <a-card-meta
-              title="Card title"
-              description="This is the description"
-            >
-              <a-avatar
-                slot="avatar"
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              />
-            </a-card-meta>
+            <a-tag color="blue">运维高手</a-tag>
+            <a-tag color="blue">准时完成</a-tag>
+            <a-tag color="blue">运维高手</a-tag>
+            <a-tag color="blue">准时完成</a-tag>
+            <a-tag color="blue">运维高手</a-tag>
+            <a-tag color="blue">准时完成</a-tag>
           </a-card>
-          <a-card>
-            <a-list itemLayout="horizontal" :dataSource="data">
-              <a-list-item
-                slot="renderItem"
-                slot-scope="item, index"
-                :key="index"
-              >
-                <a-list-item-meta
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                >
-                  <a slot="title" href="https://www.antdv.com/">{{
-                    item.title
-                  }}</a>
-                  <a-avatar
-                    slot="avatar"
-                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                  />
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
+          <a-card title="系统消息">
+            <div>
+              <a-list :dataSource="data1">
+                <a-list-item slot="renderItem" slot-scope="item">{{
+                  item
+                }}</a-list-item>
+              </a-list>
+            </div>
           </a-card>
         </div>
       </a-layout-sider>
@@ -125,7 +105,14 @@ export default {
         { header: "所有完成任务", content: 120, CardClass: "all" },
         { header: "待完成报告", content: 0, CardClass: "report" }
       ],
-      data
+      data,
+      data1: [
+        "Racing car sprays burning fuel into crowd.",
+        "Japanese princess to wed commoner.",
+        "Australian walks 100km after outback crash.",
+        "Man charged over missing wedding girl.",
+        "Los Angeles battles huge wildfires."
+      ]
     };
   },
   mounted() {},
