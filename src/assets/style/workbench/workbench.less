@@ -1,7 +1,7 @@
 #workbench {
   .ant-layout {
     //工作台外联样式
-    //margin-right: 10px;
+    margin-right: 16px;
     .top-header {
       //头部样式集
       .ant-layout-header {
@@ -31,7 +31,7 @@
         .ant-layout-sider {
           background-color: transparent;
           box-shadow: none;
-          margin-right: 1%;
+          margin-right: 16px;
           .ant-layout-sider-children {
             .calendar-body {
               .ant-card-body {
@@ -92,7 +92,7 @@
     //右侧sider样式集
 
     display: inline-block;
-    width: 20%;
+    width: 19%;
     .ant-layout-sider {
       width: 100% !important;
       max-width: 100% !important;
@@ -133,9 +133,9 @@
         font-weight: 900;
         font-size: 17px;
       }
-      .back-class {
+      .system-messages-back-class {
         position: absolute;
-        top: 12%;
+        top: 2%;
         right: 5%;
         font-size: 25px;
         .anticon-left-square {
@@ -143,6 +143,41 @@
         }
         i {
           cursor: pointer;
+        }
+      }
+      .system-messages-item-box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        .system-messages-add {
+          width: 65px;
+          padding: 3px 15px 0 0;
+          text-align: center;
+          .anticon-plus-circle {
+            font-size: 28px;
+          }
+        }
+        .system-messages-item {
+          div {
+            &:nth-child(1) {
+              span {
+                &:nth-child(1) {
+                  font-size: 17px;
+                  font-weight: 900;
+                  color: #1a85e6;
+                  margin-right: 16px;
+                }
+                &:nth-child(2) {
+                  color: #ccc;
+                }
+              }
+            }
+            &:nth-child(2) {
+              span {
+                font-size: 16px;
+              }
+            }
+          }
         }
       }
     }

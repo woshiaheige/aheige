@@ -114,8 +114,26 @@
               <a-tag color="blue">准时完成</a-tag>
             </a-card>
             <a-card title="系统消息">
-              <div class="back-class">
+              <div class="system-messages-back-class">
                 <a-icon type="left-square" /><a-icon type="right-square" />
+              </div>
+              <div
+                v-for="(item, index) in systemMessagesdata"
+                :key="index"
+                class="system-messages-item-box"
+              >
+                <div class="system-messages-add">
+                  <a-icon type="plus-circle" />
+                </div>
+                <div class="system-messages-item">
+                  <div>
+                    <span>{{ item.title }}</span
+                    ><span>{{ item.time }}</span>
+                  </div>
+                  <div>
+                    <span>{{ item.content }}</span>
+                  </div>
+                </div>
               </div>
             </a-card>
           </div>
@@ -245,6 +263,38 @@ export default {
           title: "务庄污水 (污水)",
           value1: 1,
           value2: 3
+        }
+      ],
+      systemMessagesdata: [
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
+                      (烟气)]增加了新任...`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
+                      (烟气)]增加了新任...`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
+                      (烟气)]增加了新任...`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
+                      (烟气)]增加了新任...`
+        },
+        {
+          title: "新任务通知",
+          time: "03-12 09:00",
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
+                      (烟气)]增加了新任...`
         }
       ]
     };
