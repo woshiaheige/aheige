@@ -58,7 +58,7 @@
           </li>
         </ul>
       </a-layout-header>
-      <a-layout-content v-padding="30">
+      <a-layout-content v-padding="30" class="main-content">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
