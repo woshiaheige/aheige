@@ -106,12 +106,12 @@
                 </div>
               </div>
               <a-divider />
-              <a-tag color="blue">运维高手</a-tag>
-              <a-tag color="blue">准时完成</a-tag>
-              <a-tag color="blue">运维高手</a-tag>
-              <a-tag color="blue">准时完成</a-tag>
-              <a-tag color="blue">运维高手</a-tag>
-              <a-tag color="blue">准时完成</a-tag>
+              <a-tag
+                v-for="(item, index) in tagData"
+                :key="index"
+                color="blue"
+                >{{ item.title }}</a-tag
+              >
             </a-card>
             <a-card title="系统消息">
               <div class="system-messages-back-class">
@@ -148,20 +148,6 @@ import "@/assets/style/workbench/workbench.less";
 
 export default {
   data() {
-    const data = [
-      {
-        title: "Ant Design Title 1"
-      },
-      {
-        title: "Ant Design Title 2"
-      },
-      {
-        title: "Ant Design Title 3"
-      },
-      {
-        title: "Ant Design Title 4"
-      }
-    ];
     return {
       cardList: [
         { title: "待完成任务", content: 5, color: "#3f8600" },
@@ -221,8 +207,20 @@ export default {
           tags: ["cool", "teacher"]
         }
       ],
-      data,
-
+      data: [
+        {
+          title: "Ant Design Title 1"
+        },
+        {
+          title: "Ant Design Title 2"
+        },
+        {
+          title: "Ant Design Title 3"
+        },
+        {
+          title: "Ant Design Title 4"
+        }
+      ],
       stationData: [
         {
           title: "务庄污水 (污水)",
@@ -269,32 +267,47 @@ export default {
         {
           title: "新任务通知",
           time: "03-12 09:00",
-          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
-                      (烟气)]增加了新任...`
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新...`
         },
         {
           title: "新任务通知",
           time: "03-12 09:00",
-          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
-                      (烟气)]增加了新任...`
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新...`
         },
         {
           title: "新任务通知",
           time: "03-12 09:00",
-          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
-                      (烟气)]增加了新任...`
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新...`
         },
         {
           title: "新任务通知",
           time: "03-12 09:00",
-          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
-                      (烟气)]增加了新任...`
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新...`
         },
         {
           title: "新任务通知",
           time: "03-12 09:00",
-          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#
-                      (烟气)]增加了新任...`
+          content: `站点[建铧玻璃1# (烟气)]增加了新任务[建铧玻璃1#(烟气)]增加了新...`
+        }
+      ],
+      tagData: [
+        {
+          title: "运维高手"
+        },
+        {
+          title: "准时高手"
+        },
+        {
+          title: "运维高手"
+        },
+        {
+          title: "准时高手"
+        },
+        {
+          title: "运维高手"
+        },
+        {
+          title: "准时高手"
         }
       ]
     };
