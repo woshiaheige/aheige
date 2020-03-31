@@ -9,42 +9,42 @@
       <a-row>
         <a-col :span="24">
           <a-form-item label="警报信息">
-            <a-input readonly v-model="form.msg" />
+            <a-input readOnly v-model="form.msg" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="警报状态">
-            <a-input readonly v-model="form.status" />
+            <a-input readOnly v-model="form.status" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="任务名称">
-            <a-input readonly v-model="form.mission" />
+            <a-input readOnly v-model="form.mission" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="所属仪器">
-            <a-input readonly v-model="form.instrument" />
+            <a-input readOnly v-model="form.instrument" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="所属因子">
-            <a-input readonly v-model="form.factor" />
+            <a-input readOnly v-model="form.factor" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="报警时间">
-            <a-input readonly v-model="form.warnTime" />
+            <a-input readOnly v-model="form.warnTime" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="报警接受次数">
-            <a-input readonly v-model="form.frequency" />
+            <a-input readOnly v-model="form.frequency" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="首次接收时间">
-            <a-input readonly v-model="form.firstTime" />
+            <a-input readOnly v-model="form.firstTime" />
           </a-form-item>
         </a-col>
       </a-row>
