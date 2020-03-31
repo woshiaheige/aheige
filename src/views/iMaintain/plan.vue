@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" class="plan">
+  <a-card :bordered="false" class="plan" title="运维计划">
     <a-form layout="inline">
       <a-row type="flex" justify="space-between" align="middle">
         <a-col>
@@ -121,7 +121,6 @@ export default {
     getWeekPlan() {
       //获取周任务
       this.$api.iMaintain.getWeekPlan().then(res => {
-        console.log(res);
         this.listData = res.data.data;
       });
     },

@@ -48,7 +48,7 @@
     <a-table
       rowKey="id"
       :columns="columns"
-      :dataSource="data"
+      :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
     >
@@ -64,8 +64,8 @@
       v-margin:top="16"
       showQuickJumper
       showSizeChanger
-      :defaultCurrent="3"
-      :total="500"
+      :defaultCurrent="current"
+      :total="total"
     />
 
     <station-period :visible.sync="visible" />
@@ -78,6 +78,8 @@ export default {
   components: { stationPeriod },
   data() {
     return {
+      current: 1,
+      total: 1,
       visible: false,
       enterprise: [],
       group: [],
@@ -130,7 +132,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      data: [
+      tableData: [
         {
           id: 0,
           order: "1",
