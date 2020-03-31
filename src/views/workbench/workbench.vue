@@ -44,38 +44,42 @@
                 </a-card>
               </div>
             </a-layout-sider>
-            <a-layout-content width="100%">
-              <a-card title="待完成的任务">
-                <a-table :columns="columns" :dataSource="data3">
-                  <a slot="name" slot-scope="text">{{ text }}</a>
-                  <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-                  <span slot="tags" slot-scope="tags">
-                    <a-tag
-                      v-for="tag in tags"
-                      :color="
-                        tag === 'loser'
-                          ? 'volcano'
-                          : tag.length > 5
-                          ? 'geekblue'
-                          : 'green'
-                      "
-                      :key="tag"
+            <div class="center-content">
+              <a-layout-content width="100%">
+                <a-card title="待完成的任务">
+                  <a-table :columns="columns" :dataSource="data3">
+                    <a slot="name" slot-scope="text">{{ text }}</a>
+                    <span slot="customTitle"
+                      ><a-icon type="smile-o" /> Name</span
                     >
-                      {{ tag.toUpperCase() }}
-                    </a-tag>
-                  </span>
-                  <span slot="action" slot-scope="text, record">
-                    <a>Invite 一 {{ record.name }}</a>
-                    <a-divider type="vertical" />
-                    <a>Delete</a>
-                    <a-divider type="vertical" />
-                    <a class="ant-dropdown-link">
-                      More actions <a-icon type="down" />
-                    </a>
-                  </span>
-                </a-table>
-              </a-card>
-            </a-layout-content>
+                    <span slot="tags" slot-scope="tags">
+                      <a-tag
+                        v-for="tag in tags"
+                        :color="
+                          tag === 'loser'
+                            ? 'volcano'
+                            : tag.length > 5
+                            ? 'geekblue'
+                            : 'green'
+                        "
+                        :key="tag"
+                      >
+                        {{ tag.toUpperCase() }}
+                      </a-tag>
+                    </span>
+                    <span slot="action" slot-scope="text, record">
+                      <a>Invite 一 {{ record.name }}</a>
+                      <a-divider type="vertical" />
+                      <a>Delete</a>
+                      <a-divider type="vertical" />
+                      <a class="ant-dropdown-link">
+                        More actions <a-icon type="down" />
+                      </a>
+                    </span>
+                  </a-table>
+                </a-card>
+              </a-layout-content>
+            </div>
           </a-layout>
         </div>
       </a-layout>
