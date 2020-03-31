@@ -38,16 +38,18 @@
       </a-layout>
     </a-layout>
     <div class="layout-right">
-      <a-layout-sider width="95.8%">
+      <a-layout-sider>
         <div class="calendar-body">
-          <a-card hoverable style="width: 300px">
+          <a-card hoverable>
             <div class="right-top">
-              <a-avatar
-                :size="64"
-                icon="user"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              />
-              <div class="info">
+              <div>
+                <a-avatar
+                  :size="64"
+                  icon="user"
+                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                />
+              </div>
+              <div>
                 <span>Defined</span>
                 <span>未设置职位</span>
                 <span>暂无评分</span>

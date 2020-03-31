@@ -66,30 +66,38 @@
   //右侧
   display: inline-block;
   width: 20%;
+  .ant-layout-sider {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
   .calendar-body {
     .right-top {
-      .ant-avatar {
-        float: left;
-      }
-      .info {
-        float: right;
-        width: 68%;
-        margin-bottom: 20px;
-        span {
-          padding: 5px;
-          &:nth-child(1) {
-            font-weight: 900;
-            font-size: 18px;
-          }
-          &:nth-child(2) {
-            font-weight: 900;
-            font-size: 16px;
-            color: #ccc;
-          }
-          &:nth-child(3) {
-            font-weight: 500;
-            font-size: 22px;
-            color: #c9cad1;
+      width: 260px;
+      div {
+        &:nth-child(1) {
+          float: left;
+        }
+        &:nth-child(2) {
+          float: right;
+          width: 180px;
+          margin-bottom: 20px;
+          span {
+            padding: 5px;
+            &:nth-child(1) {
+              font-weight: 900;
+              font-size: 18px;
+            }
+            &:nth-child(2) {
+              font-weight: 900;
+              font-size: 16px;
+              color: #ccc;
+            }
+            &:nth-child(3) {
+              font-weight: 500;
+              font-size: 22px;
+              color: #c9cad1;
+            }
           }
         }
       }
