@@ -1,6 +1,8 @@
 <template>
   <a-card :bordered="false" class="maintain">
-    <span slot="title">运维地图</span>
+    <span slot="title"
+      ><a-icon type="arrow-left" @click="$router.back(-1)" />行驶路径</span
+    >
     <div class="map">
       <div class="map-info">
         搜索点数：<span id="mapView">{{
@@ -8,9 +10,9 @@
         }}</span>
         显示站点数：<span id="massNumber">{{ pointMarkers.length }}</span>
       </div>
-
+      <!--search start-->
       <div class="map-tabs">
-        <a-tabs defaultActiveKey="1" tabPosition="left" @change="changeTabs">
+        <a-tabs defaultActiveKey="1" tabPosition="left">
           <a-tab-pane key="1">
             <span slot="tab">
               <a-icon type="apple" />
@@ -46,6 +48,35 @@
               <a-icon type="apple" />
               车辆
             </span>
+            <a-form v-show="collapsed" @submit="handleSubmit">
+              <p class="car-tabs-form-p">
+                <a-icon type="car" v-margin:right="8" />展示车辆实时位置
+              </p>
+              <!-- <a-form-item style="border:1px solid #E4E4E4;">
+                <a-icon type="car" v-margin:right="8" />展示车辆实时位置
+              </a-form-item> -->
+              <a-form-item v-margin:bottom="0">
+                <b>车辆历史轨迹</b>
+              </a-form-item>
+              <a-form-item>
+                <a-select placeholder="车辆">
+                  <!-- <a-select-option :value=""></a-select-option> -->
+                </a-select>
+              </a-form-item>
+              <a-form-item>
+                <a-date-picker
+                  show-time
+                  type="date"
+                  placeholder="日期"
+                  style="width: 100%;"
+                />
+              </a-form-item>
+              <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                <a-button type="primary" icon="search" html-type="submit">
+                  搜索
+                </a-button>
+              </a-form-item>
+            </a-form>
           </a-tab-pane>
         </a-tabs>
         <a-button-group>
@@ -57,13 +88,9 @@
           </a-button>
         </a-button-group>
       </div>
+      <!--search over-->
       <div id="container"></div>
     </div>
-    <station-modal
-      :show="modelShow"
-      :model="model"
-      @cancel="cancel"
-    ></station-modal>
   </a-card>
 </template>
 <script>
@@ -72,9 +99,8 @@ import AMapUI from "AMapUI";
 import $ from "jquery";
 import Point from "@/assets/geojson/enterprise.json";
 import Station from "@/assets/geojson/station.json";
-import stationModal from "@/components/maintain/map/station";
 export default {
-  components: { stationModal },
+  components: {},
   data() {
     return {
       collapsed: true,
@@ -82,7 +108,6 @@ export default {
       markers: [],
       pointMarkers: [],
       colors: {},
-      modelShow: false,
       model: {
         title: "",
         status: ""
@@ -107,7 +132,7 @@ export default {
       this.showPlacePoint();
       this.showStationPoint();
     },
-    //显示地标
+    //显示站点
     showPlacePoint() {
       this.map.remove(this.markers);
       this.markers = [];
@@ -118,19 +143,27 @@ export default {
           position: new AMap.LngLat(item.point[0], item.point[1]), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           title: item.name
         });
+        marker.on("click", e => {
+          this.model.title = e.target.w.title;
+          this.model.status = e.target.status;
+          this.showInfo(marker, e);
+        });
         this.markers.push(marker);
       });
 
       this.map.add(this.markers);
     },
-    //显示站点
+    //显示车辆
     showStationPoint() {
       this.map.remove(this.pointMarkers);
       this.pointMarkers = [];
+
       Station.forEach(item => {
         let marker;
         let content =
-          '<div class="marker-label">' + item.enterprise.length + "</div>";
+          '<div class="marker-label-car"><a-icon type="car" />' +
+          item.carName +
+          "</div>";
         // 创建一个 Marker 实例：
         marker = new AMap.Marker({
           position: new AMap.LngLat(item.point[0], item.point[1]), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -139,18 +172,11 @@ export default {
           anchor: "center"
         });
 
-        marker.status = item.status;
-        marker.on("click", e => {
-          this.model.title = e.target.w.title;
-          this.model.status = e.target.status;
-          this.showInfo(marker, e);
-          // this.modelShow = true;
-        });
-
         this.pointMarkers.push(marker);
       });
 
       this.map.add(this.pointMarkers);
+      this.map.setFitView();
     },
     //自定义窗体
     showInfo(marker, e) {
@@ -199,20 +225,10 @@ export default {
         });
       });
     },
-    cancel(value) {
-      this.modelShow = value;
-    },
     handleSubmit() {},
     //收缩
     changeVisible() {
       this.collapsed = !this.collapsed;
-    },
-    changeTabs(key) {
-      if (key == 2) {
-        this.$router.push({
-          path: "/maintain/car-usage/detail"
-        });
-      }
     }
   },
   mounted() {

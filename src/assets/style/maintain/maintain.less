@@ -11,7 +11,7 @@
       z-index: 1;
       border: 1px solid #999;
       padding: 3px;
-      background-color: rgba(255, 255, 255, .6);
+      background-color: rgba(255, 255, 255, 1);
 
       #mapView {
         margin-right: 8px;
@@ -49,6 +49,14 @@
         margin-bottom: 10px;
         padding: 0 15px;
       }
+
+      .car-tabs-form-p {
+        border: 1px solid #d9d9d9;
+        margin: 15px;
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
     }
 
     .marker-label {
@@ -59,6 +67,25 @@
       padding-top: 8px;
       font-size: 22px;
       color: #fff;
+    }
+
+    .marker-label-car {
+      width: 30px;
+      height: 23px;
+      background: url(../../img/car.png) no-repeat 100% 100%;
+      text-align: center;
+      // padding-top: 8px;
+      font-size: 12px;
+
+      a-icon {
+        background-color: #BA0011;
+        color: #fff;
+        white-space: nowrap;
+        position: absolute;
+        top: -20px;
+        left: -11px;
+        padding: 0 2px;
+      }
     }
 
   }

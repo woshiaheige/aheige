@@ -40,6 +40,16 @@ const maintainRoutes = [
       )
   },
   {
+    path: "/maintain/car-usage/detail",
+    name: "maintain-car-usage-detail",
+    key: "car-usage-detail",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-maintain" */
+        "@/components/maintain/car/detail.vue"
+      )
+  },
+  {
     path: "/maintain/violation",
     name: "maintain-violation",
     key: "violation",

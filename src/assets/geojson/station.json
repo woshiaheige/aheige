@@ -4,7 +4,8 @@
             111.80, 21.95
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12345"
     },
     {
         "name": "茂名市",
@@ -12,7 +13,8 @@
             110.99, 21.88
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A8888"
     },
     {
         "name": "汕头市",
@@ -20,7 +22,8 @@
             116.59, 23.26
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A9999"
     },
     {
         "name": "珠海市",
@@ -35,7 +38,8 @@
             "status": 0,
             "time": 29
         }],
-        "order": 0
+        "order": 0,
+        "carName": "粤A11111"
     },
     {
         "name": "韶关市",
@@ -43,7 +47,8 @@
             113.60, 24.82
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12446"
     },
     {
         "name": "揭阳市",
@@ -51,7 +56,8 @@
             116.01, 23.27
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12366"
     },
     {
         "name": "深圳市",
@@ -66,7 +72,8 @@
             "status": 0,
             "time": 29
         }],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12555"
     },
     {
         "name": "潮州市",
@@ -74,7 +81,8 @@
             116.83, 23.66
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12345"
     },
     {
         "name": "河源市",
@@ -82,7 +90,8 @@
             114.90, 23.95
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12336"
     },
     {
         "name": "肇庆市",
@@ -90,6 +99,7 @@
             112.25, 23.49
         ],
         "enterprise": [],
-        "order": 100
+        "order": 100,
+        "carName": "粤A12341"
     }
 ]
