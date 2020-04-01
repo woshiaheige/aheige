@@ -18,7 +18,7 @@
         label="关联类型"
         extra="注：关联类型在新建模板时选定后，以后无法修改"
       >
-        <a-radio-group v-decorator="['relationType']">
+        <a-radio-group v-decorator="['relationType', { initialValue: 1 }]">
           <a-radio
             :value="item.id"
             v-for="(item, index) of relationTypeList"
@@ -45,7 +45,7 @@
         label="合并生成报告"
         extra="选中后，相关任务项中的数据将会合并"
       >
-        <a-switch v-decorator="['switch', { valuePropName: 'checked' }]" />
+        <a-switch v-decorator="['switch']" defaultChecked />
       </a-form-item>
     </a-form>
   </a-modal>

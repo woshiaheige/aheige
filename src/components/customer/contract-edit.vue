@@ -68,19 +68,13 @@
       </a-form-item>
       <a-form-item label="合同附件">
         <a-upload
-          name="avatar"
-          listType="picture-card"
-          class="avatar-uploader"
-          :showUploadList="false"
+          name="file"
+          :multiple="true"
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          :beforeUpload="beforeUpload"
           @change="handleChange"
+          v-decorator="['files', { rules: [{ message: '请上传文件' }] }]"
         >
-          <img v-if="formValidate.logo" :src="formValidate.logo" alt="avatar" />
-          <div v-else>
-            <a-icon :type="loading ? 'loading' : 'plus'" />
-            <div class="ant-upload-text">Upload</div>
-          </div>
+          <a-button> <a-icon type="upload" /> 选择文件 </a-button>
         </a-upload>
       </a-form-item>
     </a-form>
