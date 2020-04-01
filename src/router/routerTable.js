@@ -4,6 +4,7 @@ import iMaintainRoutes from "../router/routesTable/iMaintainRoute";
 import customerRoutes from "../router/routesTable/customerRoute";
 import approvalRoute from "../router/routesTable/approvalRoute";
 import workbenchRoute from "../router/routesTable/workbenchRoute";
+import reportRoute from "../router/routesTable/reportRoute";
 
 const RouterTable = [
   {
@@ -20,7 +21,8 @@ const RouterTable = [
       ...approvalRoute,
       ...iMaintainRoutes,
       ...customerRoutes,
-      ...workbenchRoute
+      ...workbenchRoute,
+      ...reportRoute
     ]
   }
 ];
