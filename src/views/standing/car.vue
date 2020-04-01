@@ -1,17 +1,16 @@
 <template>
-  <a-card :bordered="false" class="index">
+  <a-card :bordered="false" class="standing" title="车辆管理">
+    <a-button type="primary" slot="extra" @click="edit('', 'add')"
+      >新增</a-button
+    >
     <a-table
-      :rowSelection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange
-      }"
       :columns="columns"
       :dataSource="data"
       v-margin:top="16"
       :pagination="false"
     >
       <span slot="action" slot-scope="row">
-        <a @click="check(row)">查看</a>
+        <a @click="edit(row, 'edit')">编辑</a>
         <a-divider type="vertical" />
         <a @click="delect(row)">删除</a>
       </span>
@@ -29,7 +28,7 @@
 </template>
 
 <script>
-import modal from "@/components/approval/participate-modal";
+import modal from "@/components/standing/car-modal";
 export default {
   components: { modal },
   data() {
@@ -44,23 +43,23 @@ export default {
           customRender: (text, row, index) => `${index + 1}`
         },
         {
-          title: "标题",
+          title: "车辆",
           dataIndex: "name",
           align: "center"
         },
         {
-          title: "状态",
+          title: "品牌型号",
+          dataIndex: "brand",
+          align: "center"
+        },
+        {
+          title: "可用状态",
           dataIndex: "status",
           align: "center"
         },
         {
-          title: "申请者",
-          dataIndex: "people",
-          align: "center"
-        },
-        {
-          title: "提交时间",
-          dataIndex: "time",
+          title: "默认使用小组",
+          dataIndex: "group",
           align: "center"
         },
         {
@@ -70,31 +69,24 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      data: [],
-      selectedRowKeys: []
+      data: []
     };
   },
   mounted() {
     this.getTableData();
   },
   methods: {
-    callback(key) {
-      console.log(key);
-    },
-    onSelectChange(selectedRowKeys) {
-      console.log("selectedRowKeys changed: ", selectedRowKeys);
-      this.selectedRowKeys = selectedRowKeys;
-    },
     getTableData() {
-      this.$api.approval.getWaitList().then(res => {
+      this.$api.standing.getCarList().then(res => {
         this.data = res.data.data;
         this.total = res.data.total;
       });
     },
-    check(row) {
+    edit(row, type) {
       this.modalInfo = {
         show: true,
-        info: row
+        info: row,
+        type: type
       };
     },
     delect(row) {
