@@ -21,7 +21,7 @@
       v-margin:top="16"
       showQuickJumper
       showSizeChanger
-      :total="500"
+      :total="total"
       :current="current"
     />
     <modal v-model="modalInfo"> </modal>
@@ -36,6 +36,7 @@ export default {
     return {
       modalInfo: { show: false },
       current: 1,
+      total: 0,
       columns: [
         {
           title: "序号",
@@ -92,7 +93,8 @@ export default {
     },
     getTableData() {
       this.$api.approval.getWaitList().then(res => {
-        this.data = res.data.dataSours;
+        this.data = res.data.data;
+        this.total = res.data.total;
       });
     },
     delect(row) {

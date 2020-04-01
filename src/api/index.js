@@ -8,6 +8,7 @@ import common from "./common";
 import approval from "./approval/approval";
 import maintain from "./maintain/maintain";
 import iMaintain from "./i-maintain/i-maintain";
+import standing from "./standing/standing";
 
 // 导出接口
 export default {
@@ -15,5 +16,6 @@ export default {
   common,
   approval,
   maintain,
-  iMaintain
+  iMaintain,
+  standing
 };
