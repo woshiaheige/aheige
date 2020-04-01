@@ -166,15 +166,15 @@
         <div id="container"></div>
       </a-col>
     </a-row>
-    <charts-section></charts-section>
+    <histogram-charts></histogram-charts>
   </div>
 </template>
 
 <script>
 import AMap from "AMap";
-import chartsSection from "./charts";
+import histogramCharts from "@/components/index/histogram-charts";
 export default {
-  components: { chartsSection },
+  components: { histogramCharts },
   data() {
     return {
       map: null,
@@ -225,17 +225,11 @@ export default {
       this.map = new AMap.Map("container", {
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 11, //初始化地图层级
-        center: [116.397428, 39.90923], //初始化地图中心点
+        center: [113.53, 23.36], //初始化地图中心点
+        doubleClickZoom: false, // 地图是否可通过双击鼠标放大地图
         mapStyle: "amap://styles/darkblue"
       });
-      // this.map = new AMap.Map("container", {
-      //   center: [113.53, 23.36],
-      //   resizeEnable: true, //是否监控地图容器尺寸变化
-      //   zoom: 8,
-      //   // zoomEnable: false, //地图是否可缩放
-      //   doubleClickZoom: false // 地图是否可通过双击鼠标放大地图
-      // });
-      // this.map.setZoomAndCenter(8, [113.53, 23.36]);
+      this.map.setZoomAndCenter(8, [113.53, 23.36]);
     }
   }
 };
