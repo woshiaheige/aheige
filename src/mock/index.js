@@ -7,7 +7,7 @@ Mock.mock("/api/data", () => {
   };
 });
 Mock.mock("/api/approval/wait", {
-  "dataSours|10": [
+  "data|10": [
     {
       "key|+1": 1,
       "name|1": ["事件1", "事件2", "事件3"],
@@ -15,5 +15,33 @@ Mock.mock("/api/approval/wait", {
       people: "陈琛琛",
       time: '@DATETIME("yyyy-MM-dd HH:mm:ss")'
     }
-  ]
+  ],
+  total: 10
+});
+Mock.mock("/api/standing/car", {
+  "data|10": [
+    {
+      "key|+1": 1,
+      "name|1": [
+        "粤A▪52200",
+        "粤A▪52121",
+        "粤A▪88888",
+        "粤B▪66666",
+        "粤C▪77777",
+        "粤A▪56789"
+      ],
+      "brand|1": [
+        "世爵C8Laviolette",
+        "玛莎拉蒂grancabrio",
+        "劳斯莱斯幻影",
+        "保时捷卡宴GTS",
+        "福特野马ShelbyGT500",
+        "宝马7系",
+        "奔驰SLSAMG"
+      ],
+      "status|1": ["可用", "停用"],
+      "group|1": ["A小组", "B小组"]
+    }
+  ],
+  total: 10
 });
