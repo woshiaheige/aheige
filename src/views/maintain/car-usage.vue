@@ -7,8 +7,8 @@
       :pagination="false"
       v-margin:top="16"
     >
-      <a slot="check">
-        <a>查看</a>
+      <a slot="check" slot-scope="row">
+        <a @click="goDetail(row)">查看</a>
       </a>
     </a-table>
     <a-pagination
@@ -78,6 +78,12 @@ export default {
       this.$api.maintain.getCarList().then(res => {
         this.tableData = res.data.data;
         this.total = res.data.total;
+      });
+    },
+    goDetail(row) {
+      console.log(row);
+      this.$router.push({
+        path: "/maintain/car-usage/detail"
       });
     }
   },
