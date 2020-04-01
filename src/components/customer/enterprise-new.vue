@@ -21,19 +21,37 @@
         />
       </a-form-item>
       <a-form-item label="组织企业代码证">
-        <a-input v-decorator="['enterpriseCode']" />
+        <a-input
+          placeholder="请输入组织企业代码证"
+          v-decorator="['enterpriseCode']"
+        />
       </a-form-item>
       <a-form-item label="统一社会信用代码">
-        <a-input v-decorator="['creditCode']" />
+        <a-input
+          placeholder="请输入统一社会信用代码"
+          v-decorator="['creditCode']"
+        />
       </a-form-item>
-      <a-form-item label="联系人">
-        <a-input v-decorator="['contact']" />
+      <a-form-item label="企业联系人">
+        <a-input v-decorator="['contact']" placeholder="请输入企业联系人" />
       </a-form-item>
       <a-form-item label="企业电话号码">
-        <a-input v-decorator="['phone']" />
+        <a-input
+          v-decorator="[
+            'phone',
+            {
+              rules: [{ validator: ruleValidate.validatePhone }]
+            }
+          ]"
+          placeholder="如13512345670或020-87654321"
+        />
       </a-form-item>
       <a-form-item label="简介">
-        <a-input v-decorator="['intro']" type="textarea" />
+        <a-input
+          v-decorator="['intro']"
+          type="textarea"
+          placeholder="请输入简介"
+        />
       </a-form-item>
       <a-form-item label="企业LOGO">
         <a-upload
@@ -44,11 +62,12 @@
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           :beforeUpload="beforeUpload"
           @change="handleChange"
+          v-decorator="['url']"
         >
           <img v-if="logo.url" :src="logo.url" alt="avatar" />
           <div v-else>
             <a-icon :type="loading ? 'loading' : 'plus'" />
-            <div class="ant-upload-text">Upload</div>
+            <div class="ant-upload-text">上传</div>
           </div>
         </a-upload>
       </a-form-item>
@@ -65,7 +84,22 @@ export default {
     }
   },
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        //非必须输入
+        callback();
+        return;
+      }
+      if (!/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/.test(value)) {
+        callback("电话号格式不正确");
+      } else {
+        callback();
+      }
+    };
     return {
+      ruleValidate: {
+        validatePhone
+      },
       loading: false,
       form: this.$form.createForm(this, { name: "enterpriseNew" }),
       logo: {
@@ -84,7 +118,8 @@ export default {
       this.form.validateFields((err, values) => {
         if (err) {
           // 这里做逻辑处理
-          console.log(values); // { name: '' }
+        } else {
+          console.log(values);
         }
       });
     },
@@ -111,6 +146,7 @@ export default {
       // }
       // return isJpgOrPng && isLt2M;
     }
-  }
+  },
+  mounted() {}
 };
 </script>
