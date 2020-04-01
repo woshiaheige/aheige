@@ -6,15 +6,56 @@
       height: calc(100vh - 264px);
     }
 
-    .info {
+    .map-info {
       position: absolute;
       z-index: 1;
       border: 1px solid #999;
       padding: 3px;
-      background-color: rgba(255, 255, 255, .6);
+      background-color: rgba(255, 255, 255, 1);
 
       #mapView {
         margin-right: 8px;
+      }
+    }
+
+    .map-tabs {
+      position: absolute;
+      z-index: 1;
+      background-color: #fff;
+      height: calc(100vh - 264px);
+      right: 24px;
+      border: 1px solid #e4e4e4;
+
+      .ant-btn-group {
+        position: absolute;
+        bottom: 0;
+        width: 86px;
+        text-align: center;
+      }
+
+      .ant-tabs {
+        height: 100%;
+
+        .ant-tabs-left-content {
+          padding: 0px;
+        }
+
+        .ant-tabs-left-bar .ant-tabs-tab {
+          padding: 8px 20px 8px 12px;
+        }
+      }
+
+      .ant-form-item {
+        margin-bottom: 10px;
+        padding: 0 15px;
+      }
+
+      .car-tabs-form-p {
+        border: 1px solid #d9d9d9;
+        margin: 15px;
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
       }
     }
 
@@ -26,6 +67,25 @@
       padding-top: 8px;
       font-size: 22px;
       color: #fff;
+    }
+
+    .marker-label-car {
+      width: 30px;
+      height: 23px;
+      background: url(../../img/car.png) no-repeat 100% 100%;
+      text-align: center;
+      // padding-top: 8px;
+      font-size: 12px;
+
+      a-icon {
+        background-color: #BA0011;
+        color: #fff;
+        white-space: nowrap;
+        position: absolute;
+        top: -20px;
+        left: -11px;
+        padding: 0 2px;
+      }
     }
 
   }
@@ -103,6 +163,7 @@
       background: #3792f7;
       border: 0;
       color: #fff;
+      cursor: pointer;
     }
   }
 }

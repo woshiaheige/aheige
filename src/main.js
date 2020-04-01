@@ -14,18 +14,24 @@ import "ant-design-vue/dist/antd.css";
 import "@/assets/style/common.less";
 import "@/assets/style/home/home.less";
 import "@/assets/style/i-maintain/plan.less";
+import "@/assets/style/i-maintain/scheme.less";
 import "@/assets/style/maintain/maintain.less";
+import "@/assets/style/index/index.less";
 
 //mock
 require("@/mock/index");
 require("@/mock/maintain");
 require("@/mock/i-maintain");
 
+//图表
+import VCharts from 'v-charts'
+
 //自定义组件
 import api from "@/api/index";
 import base from "@/api/base";
 
 Vue.use(Antd);
+Vue.use(VCharts);
 
 Vue.config.productionTip = false;
 

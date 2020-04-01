@@ -36,13 +36,13 @@
       :defaultCurrent="current"
       :total="total"
     />
-    <!-- <add-edit :visible="show" @cancel="cancel"></add-edit> -->
+    <add-edit :visible="show" @cancel="cancel"></add-edit>
   </a-card>
 </template>
 <script>
-// import addEdit from "@/components/maintain/station/add-edit";
+import addEdit from "@/components/maintain/station/add-edit";
 export default {
-  components: {},
+  components: { addEdit },
   data() {
     return {
       current: 1,
