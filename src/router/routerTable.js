@@ -7,6 +7,7 @@ import workbenchRoute from "../router/routesTable/workbenchRoute";
 import reportRoute from "../router/routesTable/reportRoute";
 import standingRoute from "../router/routesTable/standingRoute";
 import announcement from "../router/routesTable/announcement";
+import knowledge from "../router/routesTable/knowledge";
 
 const RouterTable = [
   {
@@ -26,7 +27,8 @@ const RouterTable = [
       ...workbenchRoute,
       ...reportRoute,
       ...standingRoute,
-      ...announcement
+      ...announcement,
+      ...knowledge
     ]
   }
 ];
