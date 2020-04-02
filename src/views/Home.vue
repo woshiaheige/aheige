@@ -239,20 +239,39 @@ export default {
           icon: "alipay-circle",
           children: [
             {
-              title: "组织架构",
-              key: "organization"
+              title: "设置运维参数",
+              key: "operation"
             },
             {
-              title: "企业设置",
-              key: "enterprise-setup"
+              title: "仪器型号设置",
+              key: "device"
             },
             {
-              title: "基础数据",
-              key: "basic-data"
+              title: "监测因子一览表",
+              key: "factors"
+            }
+          ]
+        },
+        {
+          title: "组织架构",
+          key: "organization",
+          icon: "alipay-circle",
+          children: [
+            {
+              title: "部门管理",
+              key: "department"
             },
             {
-              title: "设备设置",
-              key: "device-setup"
+              title: "成员管理",
+              key: "member"
+            },
+            {
+              title: "角色管理",
+              key: "role"
+            },
+            {
+              title: "权限管理",
+              key: "permission"
             }
           ]
         }
