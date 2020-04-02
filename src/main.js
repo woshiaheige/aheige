@@ -24,7 +24,7 @@ require("@/mock/maintain");
 require("@/mock/i-maintain");
 
 //图表
-import VCharts from 'v-charts'
+import VCharts from "v-charts";
 
 //自定义组件
 import api from "@/api/index";
