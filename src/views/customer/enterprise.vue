@@ -1,6 +1,8 @@
 <template>
   <a-card :bordered="false" class="enterprise" title="一企一档">
-    <a-button type="primary" @click="visible = true">添加运维企业客户</a-button>
+    <a-button type="primary" @click="editEnterprise('')"
+      >添加运维企业客户</a-button
+    >
     <a-table
       :columns="columns"
       :dataSource="tableData"
@@ -12,8 +14,8 @@
           >选择站点</a-button
         >
       </span>
-      <span slot="action">
-        <a @click="editEnterprise">编辑</a>
+      <span slot="action" slot-scope="row">
+        <a @click="editEnterprise(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="deleteEnterprise">删除</a>
       </span>
@@ -28,7 +30,7 @@
     />
 
     <!-- 新增企业 -->
-    <enterprise-new :visible.sync="visible" />
+    <enterprise-new :visible.sync="visible" :enterpriseId="enterpriseId" />
     <!-- 新增企业end -->
   </a-card>
 </template>
@@ -43,6 +45,7 @@ export default {
     return {
       current: 1,
       total: 1,
+      enterpriseId: "",
       visible: false,
       columns: [
         {
@@ -90,6 +93,7 @@ export default {
       tableData: [
         {
           key: "1",
+          id: "0",
           order: "1",
           name: "腾讯",
           address: "深圳",
@@ -105,7 +109,13 @@ export default {
     chooseStation(stations) {
       console.log(stations);
     },
-    editEnterprise() {
+    editEnterprise(row) {
+      if (row) {
+        this.enterpriseId = row.id;
+      } else {
+        this.enterpriseId = "";
+      }
+      console.log(this.enterpriseId);
       this.visible = true;
     },
     deleteEnterprise(row) {

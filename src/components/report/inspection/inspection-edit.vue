@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="新增巡检" :visible="visible" @cancel="closeModal">
+  <a-modal :title="title" :visible="visible" @cancel="closeModal">
     <a-form
       ref="formModal"
       :form="form"
@@ -43,6 +43,12 @@ export default {
     visible: {
       required: true,
       type: Boolean
+    },
+    inspectionId: {
+      //详情id
+      required: false,
+      default: "",
+      type: String || Number
     }
   },
   data() {
@@ -51,6 +57,11 @@ export default {
       form: this.$form.createForm(this, { name: "InspectionEdit" }),
       rules: {}
     };
+  },
+  computed: {
+    title() {
+      return this.inspectionId ? "编辑巡查" : "添加巡查";
+    }
   },
   methods: {
     closeModal() {

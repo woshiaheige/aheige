@@ -1,5 +1,8 @@
 <template>
   <a-card :bordered="false" class="inspection" title="巡检记录">
+    <a-button type="primary" @click="editorInspection('')"
+      >添加巡检报告</a-button
+    >
     <a-table
       rowKey="id"
       :columns="columns"
@@ -21,7 +24,7 @@
       :defaultCurrent="current"
       :total="total"
     />
-    <inspection-edit :visible.sync="editVisible" />
+    <inspection-edit :visible.sync="editVisible" :inspectionId="inspectionId" />
   </a-card>
 </template>
 
@@ -34,6 +37,7 @@ export default {
       current: 1,
       total: 1,
       editVisible: false,
+      inspectionId: "",
       columns: [
         {
           title: "序号",
@@ -92,7 +96,13 @@ export default {
     };
   },
   methods: {
-    editorInspection() {
+    editorInspection(row) {
+      console.log(row);
+      if (row) {
+        this.inspectionId = row.id;
+      } else {
+        this.inspectionId = "";
+      }
       this.editVisible = true;
     },
     showInspection() {}
