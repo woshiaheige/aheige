@@ -60,3 +60,18 @@ Mock.mock("/api/violation/list", {
   ],
   total: 10
 });
+
+//系统平台
+Mock.mock("/api/announcement/list", {
+  "data|10": [
+    {
+      "key|+1": 1,
+      "title|1": ["运维平台APP", "运维平台"],
+      "content|1": ["下载地址", "更新版本"],
+      "type|1": ["开发", "维护"],
+      "name|1": ["张三", "李四"],
+      "time|1": ["2020-2-5 12:32:00", "2020-2-15 12:32:00"]
+    }
+  ],
+  total: 10
+});

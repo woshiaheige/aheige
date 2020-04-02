@@ -98,7 +98,7 @@
               </a-statistic>
             </a-card>
           </a-col>
-          <a-col :span="12">
+          <!-- <a-col :span="12">
             <a-card>
               <a-statistic
                 title="任务一览"
@@ -107,7 +107,7 @@
               >
               </a-statistic>
             </a-card>
-          </a-col>
+          </a-col> -->
         </a-row>
       </a-col>
       <!--饼图-->
@@ -178,6 +178,7 @@ export default {
   data() {
     return {
       map: null,
+      place: null,
       colors: ["#1890ff", "orange", "#cf1322"],
       title: {
         text: "完成情况",
@@ -230,6 +231,39 @@ export default {
         mapStyle: "amap://styles/darkblue"
       });
       this.map.setZoomAndCenter(8, [113.53, 23.36]);
+      this.createCityPolygon("广州市");
+    },
+    //创建行政区划覆盖物
+    createCityPolygon(city) {
+      // 创建行政区查询对象
+      this.place = new AMap.DistrictSearch({
+        // 返回行政区边界坐标等具体信息
+        extensions: "all",
+        // 设置查询行政区级别为 区
+        level: "district"
+      });
+      let that = this;
+      this.place.search(city, function(status, result) {
+        // 获取city的边界信息
+        var bounds = result.districtList[0].boundaries;
+        var polygons = [];
+        if (bounds) {
+          for (var i = 0, l = bounds.length; i < l; i++) {
+            //生成行政区划polygon
+            var polygon = new AMap.Polygon({
+              map: that.map,
+              strokeWeight: 1,
+              path: bounds[i],
+              fillOpacity: 0.7,
+              fillColor: "#80d8ff",
+              strokeColor: "#0091ea"
+            });
+            polygons.push(polygon);
+          }
+          // 地图自适应
+          that.map.setFitView();
+        }
+      });
     }
   }
 };

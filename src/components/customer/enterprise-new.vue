@@ -1,10 +1,5 @@
 <template>
-  <a-modal
-    title="添加新的企业"
-    :visible="visible"
-    @cancel="closeModal"
-    @ok="submit"
-  >
+  <a-modal :title="title" :visible="visible" @cancel="closeModal" @ok="submit">
     <a-form
       ref="formModal"
       :form="form"
@@ -81,6 +76,12 @@ export default {
     visible: {
       required: true,
       type: Boolean
+    },
+    enterpriseId: {
+      //详情id
+      required: false,
+      default: "",
+      type: String || Number
     }
   },
   data() {
@@ -108,6 +109,11 @@ export default {
       },
       rules: {}
     };
+  },
+  computed: {
+    title() {
+      return this.enterpriseId ? "编辑企业" : "添加新的企业";
+    }
   },
   methods: {
     closeModal() {
