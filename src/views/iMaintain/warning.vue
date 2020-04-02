@@ -4,7 +4,6 @@
       <a-col>
         <a-button type="primary" @click="handleWarn">处理</a-button>
         <a-button v-margin="'0 20'" @click="ignoreWarn">忽略</a-button>
-        <a-button type="danger" @click="deleteWarn">删除</a-button>
       </a-col>
     </a-row>
     <a-table
@@ -134,22 +133,6 @@ export default {
       this.$confirm({
         title: "忽略",
         content: `忽略这${this.selectedRows.length}条警告吗？`,
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {
-          console.log("Cancel");
-        }
-      });
-    },
-    deleteWarn() {
-      if (this.selectedRows.length == 0) {
-        this.$message.info("先选择数据");
-        return;
-      }
-      this.$confirm({
-        title: "删除",
-        content: `删除这${this.selectedRows.length}条警告吗？`,
         onOk() {
           console.log("OK");
         },

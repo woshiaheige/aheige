@@ -17,6 +17,7 @@ import "@/assets/style/i-maintain/plan.less";
 import "@/assets/style/i-maintain/scheme.less";
 import "@/assets/style/maintain/maintain.less";
 import "@/assets/style/index/index.less";
+import "@/assets/style/report/daily.less";
 
 //mock
 require("@/mock/index");
@@ -25,7 +26,8 @@ require("@/mock/i-maintain");
 
 //图表
 import VCharts from "v-charts";
-
+//monent
+import moment from "moment";
 //自定义组件
 import api from "@/api/index";
 import base from "@/api/base";
@@ -37,6 +39,7 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$api = api;
 Vue.prototype.$base = base;
+Vue.prototype.$moment = moment;
 
 new Vue({
   router,
