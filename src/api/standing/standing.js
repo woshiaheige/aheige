@@ -6,6 +6,11 @@ const standing = {
     return axios.get(base.api + "standing/car", {
       params: data
     });
+  },
+  getSupplierList(data) {
+    return axios.get(base.api + "standing/supplier", {
+      params: data
+    });
   }
 };
 

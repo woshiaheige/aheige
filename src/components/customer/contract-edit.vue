@@ -88,9 +88,10 @@ export default {
       required: true,
       type: Boolean
     },
-    title: {
-      default: "新增合同",
-      type: String
+    contractId: {
+      required: false,
+      default: "",
+      type: String || Number
     }
   },
   data() {
@@ -110,6 +111,11 @@ export default {
       },
       rules: {}
     };
+  },
+  computed: {
+    title() {
+      return this.contractId ? "编辑合同" : "新增合同";
+    }
   },
   methods: {
     closeModal() {

@@ -53,7 +53,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       form: this.$form.createForm(this, { name: "InspectionEdit" }),
       rules: {}
     };
