@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import treeData from "@/mock/tree.json";
 export default {
   data() {
     return {
@@ -70,13 +69,9 @@ export default {
       ]
     };
   },
-  mounted() {
-    // this.initTree(treeData);
-  },
+  mounted() {},
   methods: {
-    initTree() {
-      console.log(treeData);
-    },
+    initTree() {},
     onExpand(expandedKeys) {
       this.expandedKeys = expandedKeys;
       this.autoExpandParent = false;
