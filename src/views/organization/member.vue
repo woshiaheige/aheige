@@ -3,6 +3,22 @@
     <span slot="title">成员管理</span>
     <a-form layout="inline">
       <a-form-item>
+        <a-input placeholder="姓名"></a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-select placeholder="所属部门" v-width="150">
+          <!-- <a-select-option value="1"></a-select-option> -->
+        </a-select>
+      </a-form-item>
+      <a-form-item>
+        <a-select placeholder="角色" v-width="150"> </a-select>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" html-type="submit">
+          查询
+        </a-button>
+      </a-form-item>
+      <a-form-item>
         <a-button type="primary" html-type="submit" @click="onEdit()">
           新增
         </a-button>

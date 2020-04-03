@@ -9,6 +9,9 @@ import approval from "./approval/approval";
 import maintain from "./maintain/maintain";
 import iMaintain from "./i-maintain/i-maintain";
 import standing from "./standing/standing";
+import customer from "./customer/customer";
+import report from "./report/report";
+import platform from "./platform/platform";
 
 // 导出接口
 export default {
@@ -17,5 +20,8 @@ export default {
   approval,
   maintain,
   iMaintain,
-  standing
+  standing,
+  customer,
+  report,
+  platform
 };

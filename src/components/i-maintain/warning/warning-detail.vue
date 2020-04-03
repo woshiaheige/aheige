@@ -53,7 +53,6 @@
       <a-col :span="24">
         <a-button type="primary" @click="handleWarn">处理</a-button>
         <a-button type="primary" @click="ignoreWarn">忽略</a-button>
-        <a-button type="danger" @click="deleteWarn">删除</a-button>
         <a-button @click="closeModal">关闭</a-button>
       </a-col>
     </a-row>
@@ -107,18 +106,6 @@ export default {
       this.$confirm({
         title: "忽略",
         content: `忽略这条警告吗？`,
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {
-          console.log("Cancel");
-        }
-      });
-    },
-    deleteWarn() {
-      this.$confirm({
-        title: "删除",
-        content: `删除这条警告吗？`,
         onOk() {
           console.log("OK");
         },
