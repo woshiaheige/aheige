@@ -8,6 +8,7 @@ import reportRoute from "../router/routesTable/reportRoute";
 import standingRoute from "../router/routesTable/standingRoute";
 import announcement from "../router/routesTable/announcement";
 import knowledge from "../router/routesTable/knowledge";
+import organization from "../router/routesTable/organization";
 
 const RouterTable = [
   {
@@ -28,7 +29,8 @@ const RouterTable = [
       ...reportRoute,
       ...standingRoute,
       ...announcement,
-      ...knowledge
+      ...knowledge,
+      ...organization
     ]
   }
 ];
