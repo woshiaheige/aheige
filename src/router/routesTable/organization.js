@@ -28,6 +28,16 @@ const organization = [
         /* webpackChunkName: "view-organization" */
         "@/views/organization/member.vue"
       )
+  },
+  {
+    path: "/organization/permission",
+    name: "organization-permission",
+    key: "permission",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-organization" */
+        "@/views/organization/permission.vue"
+      )
   }
 ];
 export default organization;
