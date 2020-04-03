@@ -31,9 +31,9 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="默认仪器名称">
+      <!-- <a-form-item label="默认仪器名称">
         <a-input v-decorator="['nickName']" placeholder="请输入默认仪器名称" />
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item label="规格参数">
         <a-input v-decorator="['parameter']" placeholder="请输入规格参数" />
       </a-form-item>

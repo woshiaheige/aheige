@@ -23,13 +23,13 @@
       </a-form-item>
       <a-form-item label="警报记录问题设置"> </a-form-item>
       <a-form-item label="最小间隔时间">
-        <counter v-model="distance">
+        <counter v-model="spaceMin">
           <span slot="uni">分</span>
         </counter>
       </a-form-item>
       <a-form-item label="合同到期提醒设置"> </a-form-item>
       <a-form-item label="到期提醒天数">
-        <counter v-model="distance">
+        <counter v-model="remind">
           <span slot="uni">天</span>
         </counter>
       </a-form-item>
@@ -65,7 +65,9 @@ export default {
           id: 2
         }
       ],
-      distance: 10
+      distance: 10, //验证距离
+      spaceMin: 500, //最小间隔时间
+      remind: 3 //到期提醒天数
     };
   },
   methods: {}
