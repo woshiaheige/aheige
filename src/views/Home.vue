@@ -244,7 +244,7 @@ export default {
             },
             {
               title: "仪器型号设置",
-              key: "device"
+              key: "instrument"
             },
             {
               title: "监测因子一览表",
