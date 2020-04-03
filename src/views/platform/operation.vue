@@ -7,7 +7,7 @@
       :wrapper-col="{ span: 16 }"
     >
       <a-form-item label="签到验证">
-        <a-radio-group v-decorator="['verify', { initialValue: 0 }]">
+        <a-radio-group v-model="formValue.verify">
           <a-radio
             :value="item.id"
             v-for="(item, index) of verifyList"
@@ -17,23 +17,28 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item label="验证距离">
-        <counter v-model="distance">
+        <counter v-model="formValue.distance">
           <span slot="uni">米</span>
         </counter>
       </a-form-item>
       <a-form-item label="警报记录问题设置"> </a-form-item>
       <a-form-item label="最小间隔时间">
-        <counter v-model="spaceMin">
+        <counter v-model="formValue.spaceMin">
           <span slot="uni">分</span>
         </counter>
       </a-form-item>
       <a-form-item label="合同到期提醒设置"> </a-form-item>
       <a-form-item label="到期提醒天数">
-        <counter v-model="remind">
+        <counter v-model="formValue.remind">
           <span slot="uni">天</span>
         </counter>
       </a-form-item>
-      <a-row type="flex" justify="center">
+      <a-row type="flex" justify="center" :gutter="20">
+        <a-col>
+          <a-button type="primary" html-type="submit" @click="initData">
+            重置设置
+          </a-button>
+        </a-col>
         <a-col>
           <a-button type="primary" html-type="submit">
             保存设置
@@ -51,6 +56,12 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, { name: "templateEdit" }),
+      formValue: {
+        verify: 0,
+        distance: 0, //验证距离
+        spaceMin: 0, //最小间隔时间
+        remind: 0 //到期提醒天数
+      },
       verifyList: [
         {
           label: "不验证",
@@ -64,12 +75,18 @@ export default {
           label: "签到必须满足设置距离",
           id: 2
         }
-      ],
-      distance: 10, //验证距离
-      spaceMin: 500, //最小间隔时间
-      remind: 3 //到期提醒天数
+      ]
     };
   },
-  methods: {}
+  methods: {
+    initData() {
+      this.formValue = {
+        verify: "",
+        distance: 0, //验证距离
+        spaceMin: 0, //最小间隔时间
+        remind: 0 //到期提醒天数
+      };
+    }
+  }
 };
 </script>
