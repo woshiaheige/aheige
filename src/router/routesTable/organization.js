@@ -10,6 +10,16 @@ const organization = [
       )
   },
   {
+    path: "/organization/role",
+    name: "organization-role",
+    key: "role",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-organization" */
+        "@/views/organization/role.vue"
+      )
+  },
+  {
     path: "/organization/member",
     name: "organization-member",
     key: "member",

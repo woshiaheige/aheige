@@ -11,6 +11,11 @@ const standing = {
     return axios.get(base.api + "standing/supplier", {
       params: data
     });
+  },
+  getProductList(data) {
+    return axios.get(base.api + "standing/product", {
+      params: data
+    });
   }
 };
 

@@ -75,3 +75,33 @@ Mock.mock("/api/standing/supplier", {
   ],
   total: 10
 });
+Mock.mock("/api/standing/product", {
+  "data|10": [
+    {
+      "key|+1": 1,
+      "name|1": ["试剂CODcr在线", "中光", "试剂SO2", "试剂CH2O2"],
+      "brand|1": [
+        "美国Cygnus",
+        "IBL",
+        "Thermo Scientific",
+        "百奥莱博",
+        "santa cruz",
+        "cchip",
+        "广锐生物"
+      ],
+      "type|1": ["i", "ii", "iii", "iv"],
+      "coding|1": [
+        "10001",
+        "10002",
+        "10003",
+        "10004",
+        "10005",
+        "10006",
+        "10007"
+      ],
+      "inventory|1": ["10000", "122000", "2540000", "4000", "3500000"],
+      "unit|1": ["支", "瓶", "袋"]
+    }
+  ],
+  total: 10
+});
