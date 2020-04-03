@@ -3,13 +3,15 @@
     <a-input-search
       style="margin-bottom: 8px"
       placeholder="搜索员工或部门"
-      @change="onChange"
+      @change="onSearch"
     />
     <a-tree
       @expand="onExpand"
+      @select="onDragend"
       :expandedKeys="expandedKeys"
       :autoExpandParent="autoExpandParent"
       :treeData="dataList"
+      :replaceFields="replaceFields"
     >
       <template slot="title" slot-scope="{ title }">
         <span v-if="title.indexOf(searchValue) > -1">
@@ -24,70 +26,71 @@
 </template>
 
 <script>
-import treeData from "@/mock/tree.json";
 export default {
   data() {
     return {
-      expandedKeys: [],
+      expandedKeys: [], //展开的父节点
       searchValue: "",
-      autoExpandParent: true,
+      autoExpandParent: true, //是否自动展开父节点
       dataList: [
         {
-          title: "0-0",
-          key: "0-0",
+          title: "化一环境有限公司",
+          id: "1",
           children: [
             {
-              title: "0-0-0",
-              key: "0-0-0",
+              title: "技术部",
+              id: "0-0-0",
               children: [
-                { title: "0-0-0-0", key: "0-0-0-0" },
-                { title: "0-0-0-1", key: "0-0-0-1" },
-                { title: "0-0-0-2", key: "0-0-0-2" }
+                { title: "分组1", id: "0-0-0-0" },
+                { title: "分组2", id: "0-0-0-1" },
+                { title: "分组3", id: "0-0-0-2" }
               ]
             },
             {
-              title: "0-0-1",
-              key: "0-0-1",
+              title: "开发部",
+              id: "0-0-1",
               children: [
-                { title: "0-0-1-0", key: "0-0-1-0" },
-                { title: "0-0-1-1", key: "0-0-1-1" },
-                { title: "0-0-1-2", key: "0-0-1-2" }
+                { title: "分组1", id: "0-0-1-0" },
+                { title: "分组2", id: "0-0-1-1" },
+                { title: "分组3", id: "0-0-1-2" }
               ]
             },
             {
-              title: "0-0-2",
-              key: "0-0-2"
+              title: "生产部",
+              id: "0-0-2"
             }
           ]
         },
         {
-          title: "0-1",
-          key: "0-1",
+          title: "广州分公司",
+          id: "0-1",
           children: [
-            { title: "0-1-0-0", key: "0-1-0-0" },
-            { title: "0-1-0-1", key: "0-1-0-1" },
-            { title: "0-1-0-2", key: "0-1-0-2" }
+            { title: "生产部", id: "0-1-0-0" },
+            { title: "开发部", id: "0-1-0-1" },
+            { title: "技术部", id: "0-1-0-2" }
           ]
-        },
-        {
-          title: "0-2",
-          key: "0-2"
         }
-      ]
+      ],
+      replaceFields: {
+        key: "id"
+      }
     };
   },
-  mounted() {
-    // this.initTree(treeData);
-  },
+  mounted() {},
   methods: {
-    initTree() {
-      console.log(treeData);
-    },
+    //展开/收起节点时触发
     onExpand(expandedKeys) {
+      // console.log(expandedKeys);
       this.expandedKeys = expandedKeys;
       this.autoExpandParent = false;
     },
-    onChange() {}
+    onDragend(selectedKeys, e) {
+      console.log(selectedKeys);
+      console.log(e);
+    },
+    onSearch(e) {
+      console.log(e.target.value);
+    }
   }
 };
 </script>
