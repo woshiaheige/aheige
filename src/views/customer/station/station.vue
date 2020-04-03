@@ -115,11 +115,6 @@ export default {
           dataIndex: "group"
         },
         {
-          title: "任务数量",
-          dataIndex: "mission",
-          key: "mission"
-        },
-        {
           title: "暂停运营周期",
           dataIndex: "period",
           key: "period",
@@ -139,8 +134,7 @@ export default {
           stationName: "可口可乐（污水）（CT4406050009301",
           enterprise: "腾讯",
           project: "方案1",
-          group: "运维组1",
-          mission: "20"
+          group: "运维组1"
         }
       ]
     };

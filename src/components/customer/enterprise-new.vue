@@ -48,6 +48,13 @@
           placeholder="请输入简介"
         />
       </a-form-item>
+      <a-form-item label="公司地址">
+        <a-input
+          v-decorator="['address']"
+          type="textarea"
+          placeholder="请输入公司地址"
+        />
+      </a-form-item>
       <a-form-item label="企业LOGO">
         <a-upload
           name="avatar"

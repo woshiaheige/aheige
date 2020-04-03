@@ -46,14 +46,17 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="数采仪编号" prop="machineNum">
-            <a-input v-decorator="['machineNum']" />
+          <a-form-item label="数采仪编号">
+            <a-input
+              v-decorator="['machineNum']"
+              placeholder="请输入数采仪编号"
+            />
           </a-form-item>
         </a-col>
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-form-item label="站点地址" prop="name">
+          <a-form-item label="站点地址">
             <a-input
               v-decorator="['address']"
               placeholder="请输入站点所在的地址"
