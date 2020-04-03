@@ -23,6 +23,13 @@ const maintain = {
     return axios.get(base.api + "announcement/list", {
       params: data
     });
+  },
+
+  //部门管理列表
+  getDepartmentList(data) {
+    return axios.get(base.api + "department/list", {
+      params: data
+    });
   }
 };
 
