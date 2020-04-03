@@ -58,9 +58,9 @@
               ]"
             ></a-input>
           </a-form-item>
-          <a-form-item label="方案项目类型">
+          <a-form-item label="方案项类型">
             <a-select
-              placeholder="请选择方案项目类型"
+              placeholder="请选择方案项类型"
               v-decorator="[
                 'type',
                 { rules: [{ required: true, message: '请选择方案项目类型' }] }

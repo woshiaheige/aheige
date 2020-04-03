@@ -17,8 +17,29 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item label="验证距离">
-        <counter />
+        <counter v-model="distance">
+          <span slot="uni">米</span>
+        </counter>
       </a-form-item>
+      <a-form-item label="警报记录问题设置"> </a-form-item>
+      <a-form-item label="最小间隔时间">
+        <counter v-model="distance">
+          <span slot="uni">分</span>
+        </counter>
+      </a-form-item>
+      <a-form-item label="合同到期提醒设置"> </a-form-item>
+      <a-form-item label="到期提醒天数">
+        <counter v-model="distance">
+          <span slot="uni">天</span>
+        </counter>
+      </a-form-item>
+      <a-row type="flex" justify="center">
+        <a-col>
+          <a-button type="primary" html-type="submit">
+            保存设置
+          </a-button>
+        </a-col>
+      </a-row>
     </a-form>
   </a-card>
 </template>
@@ -43,7 +64,8 @@ export default {
           label: "签到必须满足设置距离",
           id: 2
         }
-      ]
+      ],
+      distance: 10
     };
   },
   methods: {}

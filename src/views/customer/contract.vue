@@ -1,6 +1,6 @@
 <template>
   <a-card :bordered="false" class="contract" title="合同管理">
-    <a-button type="primary" @click="visible = true">新增合同</a-button>
+    <a-button type="primary" @click="editContract('')">新增合同</a-button>
 
     <a-table
       rowKey="id"
@@ -14,7 +14,7 @@
         >至<span>{{ row.endTime }}</span>
       </span>
       <span slot="action" slot-scope="row">
-        <a @click="visible = true">查看</a>
+        <a @click="editContract(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="deleteContract(row)">删除</a>
       </span>
@@ -28,7 +28,8 @@
       :total="total"
     />
 
-    <contract-edit :visible.sync="visible"> </contract-edit>
+    <contract-edit :visible.sync="visible" :contractId="contractId">
+    </contract-edit>
   </a-card>
 </template>
 
@@ -41,6 +42,7 @@ export default {
       current: 1,
       total: 1,
       visible: false,
+      contractId: "",
       columns: [
         {
           title: "序号",
@@ -94,6 +96,14 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    editContract(row) {
+      if (row) {
+        this.contractId = row.id;
+      } else {
+        this.contractId = "";
+      }
+      this.visible = true;
     }
   }
 };

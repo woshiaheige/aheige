@@ -75,3 +75,17 @@ Mock.mock("/api/announcement/list", {
   ],
   total: 10
 });
+
+//部门管理列表
+Mock.mock("/api/department/list", {
+  "data|6": [
+    {
+      "key|+1": 1,
+      "name|1": ["张三", "李四"],
+      "tel|1": ["13452525252", "13888888888"],
+      "email|1": ["1213@126.com", "8888@126.com"],
+      "position|1": ["维护", "开发"]
+    }
+  ],
+  total: 10
+});
