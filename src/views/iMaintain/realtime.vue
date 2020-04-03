@@ -106,7 +106,18 @@ export default {
     selectPeriod(period) {
       console.log(period);
       this.visible = true;
+    },
+    getTableData() {
+      this.$api.iMaintain.getRealtimeList().then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        }
+      });
     }
+  },
+  mounted() {
+    this.getTableData();
   }
 };
 </script>

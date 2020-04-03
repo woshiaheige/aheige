@@ -101,7 +101,18 @@ export default {
     },
     logView() {
       this.viewVisible = true;
+    },
+    getTableData() {
+      this.$api.iMaintain.getOperationLogList().then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        }
+      });
     }
+  },
+  mounted() {
+    this.getTableData();
   }
 };
 </script>

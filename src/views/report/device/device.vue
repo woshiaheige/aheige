@@ -86,7 +86,18 @@ export default {
   methods: {
     toDeviceDetail() {
       this.$router.push({ path: "/report/device/detail" });
+    },
+    getTableData() {
+      this.$api.report.getDeviceList().then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        }
+      });
     }
+  },
+  mounted() {
+    this.getTableData();
   }
 };
 </script>
