@@ -120,7 +120,7 @@ export default {
           key: "mission"
         },
         {
-          title: "站点周期",
+          title: "暂停运营周期",
           dataIndex: "period",
           key: "period",
           scopedSlots: { customRender: "period" }

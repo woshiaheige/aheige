@@ -87,11 +87,6 @@ export default {
           title: "联网状态",
           dataIndex: "networkingStatus",
           key: "networkingStatus"
-        },
-        {
-          title: "数据状态",
-          dataIndex: "dataStatus",
-          key: "dataStatus"
         }
       ],
       tableData: [
@@ -102,8 +97,7 @@ export default {
           enterprise: "腾讯",
           point: "",
           updatedAt: "2019-9-20 11:20:15",
-          networkingStatus: "在线",
-          dataStatus: ""
+          networkingStatus: "在线"
         }
       ]
     };

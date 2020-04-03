@@ -124,18 +124,18 @@ export default {
           key: "report",
           icon: "alipay-circle",
           children: [
-            {
-              title: "运维记录报告",
-              key: "maintain-log"
-            },
+            // {
+            //   title: "运维记录报告",
+            //   key: "maintain-log"
+            // },
             {
               title: "智能报表",
               key: "i-report"
             },
-            {
-              title: "巡检记录",
-              key: "inspection"
-            },
+            // {
+            //   title: "巡检记录",
+            //   key: "inspection"
+            // },
             {
               title: "仪器汇总",
               key: "device"

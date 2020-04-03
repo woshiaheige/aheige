@@ -45,7 +45,12 @@
         label="合并生成报告"
         extra="选中后，相关任务项中的数据将会合并"
       >
-        <a-switch v-decorator="['switch']" defaultChecked />
+        <a-switch
+          v-decorator="[
+            'switch',
+            { valuePropName: 'checked', initialValue: 'checked' }
+          ]"
+        />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -84,6 +89,7 @@ export default {
         this.$message.error(`${info.file.name} file upload failed.`);
       }
     }
-  }
+  },
+  mounted() {}
 };
 </script>

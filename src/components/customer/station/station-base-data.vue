@@ -53,8 +53,11 @@
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-form-item label="站点分组">
-            <a-input v-decorator="['group']" placeholder="请添加站点分组" />
+          <a-form-item label="站点地址" prop="name">
+            <a-input
+              v-decorator="['address']"
+              placeholder="请输入站点所在的地址"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -90,16 +93,6 @@
             <a-input v-decorator="['lat']" placeholder="请添加站点纬度">
               <a-icon slot="prefix" type="environment" @click="showModal()" />
             </a-input>
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="24">
-          <a-form-item label="站点地址" prop="name" :label-col="{ span: 3 }">
-            <a-input
-              v-decorator="['address']"
-              placeholder="请输入站点所在的地址"
-            />
           </a-form-item>
         </a-col>
       </a-row>
