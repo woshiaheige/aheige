@@ -24,7 +24,9 @@ import "@/assets/style/report/daily.less";
 require("@/mock/index");
 require("@/mock/maintain");
 require("@/mock/i-maintain");
-
+require("@/mock/customer");
+require("@/mock/report");
+require("@/mock/platform");
 //图表
 import VCharts from "v-charts";
 //monent

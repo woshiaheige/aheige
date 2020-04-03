@@ -91,6 +91,18 @@ export default {
       ]
     };
   },
-  methods: {}
+  methods: {
+    getTableData() {
+      this.$api.iMaintain.getRemoteList().then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        }
+      });
+    }
+  },
+  mounted() {
+    this.getTableData();
+  }
 };
 </script>
