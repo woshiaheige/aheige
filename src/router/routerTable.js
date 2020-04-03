@@ -9,6 +9,7 @@ import standingRoute from "../router/routesTable/standingRoute";
 import announcement from "../router/routesTable/announcement";
 import knowledge from "../router/routesTable/knowledge";
 import platform from "../router/routesTable/platform";
+import organization from "../router/routesTable/organization";
 
 const RouterTable = [
   {
@@ -30,7 +31,8 @@ const RouterTable = [
       ...standingRoute,
       ...announcement,
       ...knowledge,
-      ...platform
+      ...platform,
+      ...organization
     ]
   }
 ];
