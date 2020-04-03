@@ -14,6 +14,20 @@
         <a-button type="primary" v-margin:left="10" @click="edit('', 'add')">
           新增
         </a-button>
+        <a-button
+          type="primary"
+          v-margin:left="10"
+          @click="warehouseFun('out')"
+        >
+          出库
+        </a-button>
+        <a-button
+          type="primary"
+          v-margin:left="10"
+          @click="warehouseFun('enter')"
+        >
+          入库
+        </a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -24,6 +38,8 @@
     >
       <span slot="action" slot-scope="row">
         <a @click="edit(row, 'edit')">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="detail(row)">库存详情</a>
         <a-divider type="vertical" />
         <a @click="delect(row)">删除</a>
       </span>
@@ -37,17 +53,23 @@
       :current="current"
     />
     <modal v-model="modalInfo"> </modal>
+    <warehouse-modal v-model="warehouseInfo"> </warehouse-modal>
+    <warehouse-detail v-model="warehouseDetail"> </warehouse-detail>
   </a-card>
 </template>
 
 <script>
 import modal from "@/components/standing/product-modal";
+import warehouseModal from "@/components/standing/warehouse-modal";
+import warehouseDetail from "@/components/standing/warehouse-detail";
 export default {
-  components: { modal },
+  components: { modal, warehouseModal, warehouseDetail },
   data() {
     return {
       reagent: "",
       modalInfo: { show: false },
+      warehouseInfo: { show: false },
+      warehouseDetail: { show: false, info: { name: "" } },
       current: 1,
       total: 0,
       columns: [
@@ -126,6 +148,20 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    warehouseFun(type) {
+      console.log(type);
+      this.warehouseInfo = {
+        show: true,
+        type: type
+      };
+    },
+    detail(row) {
+      console.log(row);
+      this.warehouseDetail = {
+        show: true,
+        info: row
+      };
     }
   }
 };
