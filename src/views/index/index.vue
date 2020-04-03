@@ -146,24 +146,32 @@
                 textAlign: 'center'
               }"
             >
-              <p>暂无数据</p>
+              <!-- <p>暂无数据</p> -->
+              <a-empty />
             </a-card>
           </a-col>
           <a-col :span="24">
             <a-card size="small" title="待处理报警">
-              <p>暂无数据</p>
+              <a-empty />
             </a-card>
           </a-col>
           <a-col :span="24">
             <a-card size="small" title="合同续签提醒">
-              <p>暂无数据</p>
+              <a-empty />
             </a-card>
           </a-col>
         </a-row>
       </a-col>
       <!--地图-->
-      <a-col :span="16">
+      <a-col :span="16" class="index-map">
         <div id="container"></div>
+        <div class="info">
+          <p><a-icon type="environment" v-margin:right="10" />{{ cityName }}</p>
+        </div>
+        <div class="status">
+          <span><i class="green"></i>联网</span>
+          <span><i class="gray"></i>断线</span>
+        </div>
       </a-col>
     </a-row>
     <histogram-charts></histogram-charts>
@@ -215,7 +223,8 @@ export default {
           { name: "现场", value: 8 },
           { name: "突发", value: 8 }
         ]
-      }
+      },
+      cityName: "惠州市"
     };
   },
   mounted() {
@@ -231,7 +240,7 @@ export default {
         mapStyle: "amap://styles/darkblue"
       });
       this.map.setZoomAndCenter(8, [113.53, 23.36]);
-      this.createCityPolygon("广州市");
+      this.createCityPolygon(this.cityName);
     },
     //创建行政区划覆盖物
     createCityPolygon(city) {

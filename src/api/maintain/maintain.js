@@ -30,6 +30,13 @@ const maintain = {
     return axios.get(base.api + "department/list", {
       params: data
     });
+  },
+
+  //成员管理列表
+  getMemberList(data) {
+    return axios.get(base.api + "member/list", {
+      params: data
+    });
   }
 };
 
