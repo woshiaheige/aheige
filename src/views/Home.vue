@@ -50,12 +50,9 @@
             <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
           </li> -->
           <li>
-            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
+            <a-avatar icon="user" />
           </li>
           <li>凌可佳</li>
-          <!-- <li>
-            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
-          </li> -->
         </ul>
       </a-layout-header>
       <a-layout-content v-padding="30" class="main-content">
