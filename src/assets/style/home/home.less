@@ -1,16 +1,19 @@
 .layout {
   position: relative;
   overflow: hidden;
+
   .layout-header-bar {
     background: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   }
 
   .ant-layout-header {
-    padding: 0 25px;
+    padding: 0 35px;
   }
+
   .ant-layout-sider {
     box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -25,19 +28,24 @@
   }
 
   .logo {
-    height: 64px;
+    height: 31px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
     color: #fff;
+    margin: 30px 42px 10px 42px;
+    background: url(../../img/logo.png) no-repeat;
+
     i {
       margin-right: 5px;
     }
   }
+
   .header-menu {
     float: right;
     list-style: none;
+
     li {
       display: inline;
       margin-left: 24px;

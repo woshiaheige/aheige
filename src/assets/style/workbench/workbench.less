@@ -4,6 +4,7 @@
     .top-header {
       //头部样式集
       margin-right: 16px;
+
       .ant-layout-header {
         background-color: transparent;
         padding: 0;
@@ -14,6 +15,7 @@
           .ant-card-head {
             border-bottom: none;
           }
+
           .ant-card-head-title,
           .ant-card-body {
             text-align: center;
@@ -27,30 +29,54 @@
     .left-sider {
       //左侧 sider样式集
       margin-right: 16px;
+
+      //日历
+      .calendar-car {
+        .ant-fullcalendar-fullscreen .ant-fullcalendar-month,
+        .ant-fullcalendar-fullscreen .ant-fullcalendar-date {
+          height: 70px;
+        }
+        .ant-fullcalendar-fullscreen .ant-fullcalendar-content {
+          height: auto;
+          text-align: center;
+          margin-top: 5px;
+          color: green;
+        }
+        .ant-fullcalendar-fullscreen .ant-fullcalendar-value {
+          text-align: center;
+        }
+      }
+
       .ant-layout-has-sider {
         margin-right: 0;
+
         .ant-layout-sider {
           background-color: transparent;
           box-shadow: none;
           margin-right: 16px;
+
           .ant-layout-sider-children {
             .calendar-body {
               .ant-card-body {
                 text-align: left;
                 width: 100%;
               }
+
               //日历样式
               width: 100%;
               border: "1px solid #d9d9d9";
               border-radius: "4px";
               margin-bottom: 16px;
+
               .ant-fullcalendar-header {
                 text-align: center;
               }
+
               .station-list {
                 //左下 list样式
                 display: flex;
                 justify-content: space-between;
+
                 .item-box {
                   span {
                     display: inline-block;
@@ -60,10 +86,12 @@
                     height: 25px;
                     line-height: 25px;
                     font-weight: 600;
+
                     &:nth-child(1) {
                       background-color: #ffa616;
                       margin-right: 5px;
                     }
+
                     &:nth-child(2) {
                       background-color: #28b3cb;
                       margin-left: 5px;
@@ -80,12 +108,36 @@
     .center-content {
       //中间 content样式集
       width: 100%;
-      .ant-layout-content {
-        min-height: 100% !important;
-        .ant-card-head-title {
-          font-weight: 600;
-          font-size: 17px;
+      min-height: 100% !important;
+
+      .ant-card-head-title {
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .ant-descriptions {
+        border-bottom: 1px solid #e8e8e8;
+        padding-bottom: 15px;
+      }
+      .ant-descriptions:not(:first-child) {
+        margin-top: 10px;
+      }
+      .ant-descriptions-title {
+        margin-bottom: 6px;
+        & > div {
+          display: flex;
+          justify-content: space-between;
         }
+        .status {
+          background: #e8e8e8;
+          padding: 2px 3px;
+          font-size: 12px;
+          font-weight: normal;
+          border-radius: 2px;
+        }
+      }
+      .ant-descriptions-row > th,
+      .ant-descriptions-row > td {
+        padding-bottom: 5px;
       }
     }
   }
@@ -94,34 +146,42 @@
     //右侧sider样式集
     display: inline-block;
     width: 19%;
+
     .ant-layout-sider {
       box-shadow: none;
       width: 100% !important;
       max-width: 100% !important;
       min-width: 100% !important;
     }
+
     .calendar-body {
       .right-top {
         width: 260px;
+
         div {
           &:nth-child(1) {
             float: left;
           }
+
           &:nth-child(2) {
             float: right;
             width: 180px;
             margin-bottom: 16px;
+
             span {
               padding: 5px;
+
               &:nth-child(1) {
                 font-weight: 900;
                 font-size: 18px;
               }
+
               &:nth-child(2) {
                 font-weight: 900;
                 font-size: 16px;
                 color: #ccc;
               }
+
               &:nth-child(3) {
                 font-weight: 500;
                 font-size: 22px;
@@ -131,59 +191,77 @@
           }
         }
       }
+
       .ant-card-head-title {
         font-weight: 900;
-        font-size: 17px;
+        font-size: 16px;
       }
+
       .system-messages-back {
         position: absolute;
         top: 10px;
         right: 10px;
         font-size: 25px;
+
         .anticon-left-square {
           margin-right: 10px;
         }
+
         i {
           cursor: pointer;
         }
       }
+
       .system-messages-item-box {
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
+
         .system-messages-add {
           text-align: center;
           width: 65px;
           padding: 3px 15px 0 0;
+
           .anticon-plus-circle {
             cursor: pointer;
-            font-size: 28px;
+            font-size: 24px;
           }
         }
+
         .system-messages-item {
           div {
             &:nth-child(1) {
+              line-height: 28px;
+
               span {
                 &:nth-child(1) {
                   color: #1a85e6;
-                  font-size: 17px;
+                  font-size: 14px;
                   font-weight: 900;
                   margin-right: 16px;
                 }
+
                 &:nth-child(2) {
                   color: #ccc;
                 }
               }
             }
+
             &:nth-child(2) {
+              line-height: 20px;
+
               span {
-                font-size: 17px;
+                font-size: 12px;
                 word-break: break-all;
                 text-overflow: ellipsis;
-                display: -webkit-box; /** 将对象作为伸缩盒子模型显示 **/
-                -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-                -webkit-line-clamp: 2; /** 显示的行数 **/
-                overflow: hidden; /** 隐藏超出的内容 **/
+                display: -webkit-box;
+                /** 将对象作为伸缩盒子模型显示 **/
+                -webkit-box-orient: vertical;
+                /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+                -webkit-line-clamp: 2;
+                /** 显示的行数 **/
+                overflow: hidden;
+                /** 隐藏超出的内容 **/
               }
             }
           }

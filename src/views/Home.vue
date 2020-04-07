@@ -5,8 +5,8 @@
       :style="{ position: 'fixed', height: '100vh', left: 0, overflow: 'auto' }"
     >
       <div class="logo">
-        <a-icon type="alipay-circle" theme="filled" v-fontsize="28" />
-        <span>博控智维云</span>
+        <!-- <a-icon type="cloud" theme="filled" v-fontsize="28" />
+        <span>博控智维云</span> -->
       </div>
       <a-menu
         theme="dark"
@@ -43,19 +43,16 @@
         }"
       >
         <ul class="header-menu">
-          <li>
+          <!-- <li>
             <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
-          </li>
-          <li>
+          </li> -->
+          <!-- <li>
             <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
-          </li>
+          </li> -->
           <li>
-            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
+            <a-avatar icon="user" />
           </li>
           <li>凌可佳</li>
-          <li>
-            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
-          </li>
         </ul>
       </a-layout-header>
       <a-layout-content v-padding="30" class="main-content">
@@ -76,22 +73,22 @@ export default {
         {
           title: "首页",
           key: "index",
-          icon: "alipay-circle"
+          icon: "home"
         },
         {
           title: "工作台",
           key: "workbench",
-          icon: "alipay-circle"
+          icon: "desktop"
         },
         {
           title: "任务审批",
           key: "approval",
-          icon: "alipay-circle"
+          icon: "audit"
         },
         {
           title: "运维管理",
           key: "maintain",
-          icon: "alipay-circle",
+          icon: "control",
           children: [
             {
               title: "任务一览",
@@ -122,16 +119,16 @@ export default {
         {
           title: "运维报表",
           key: "report",
-          icon: "alipay-circle",
+          icon: "line-chart",
           children: [
             // {
             //   title: "运维记录报告",
             //   key: "maintain-log"
             // },
-            {
-              title: "智能报表",
-              key: "i-report"
-            },
+            // {
+            //   title: "智能报表",
+            //   key: "i-report"
+            // },
             // {
             //   title: "巡检记录",
             //   key: "inspection"
@@ -153,7 +150,7 @@ export default {
         {
           title: "智能维护",
           key: "i-maintain",
-          icon: "alipay-circle",
+          icon: "tool",
           children: [
             {
               title: "运行日志",
@@ -188,7 +185,7 @@ export default {
         {
           title: "客户管理",
           key: "customer",
-          icon: "alipay-circle",
+          icon: "team",
           children: [
             {
               title: "一企一档",
@@ -207,7 +204,7 @@ export default {
         {
           title: "台账管理",
           key: "standing",
-          icon: "alipay-circle",
+          icon: "codepen",
           children: [
             {
               title: "车辆管理",
@@ -226,17 +223,17 @@ export default {
         {
           title: "系统公告",
           key: "announcement",
-          icon: "alipay-circle"
+          icon: "sound"
         },
         {
           title: "运维知识库",
           key: "knowledge",
-          icon: "alipay-circle"
+          icon: "zhihu"
         },
         {
           title: "平台配置",
           key: "platform",
-          icon: "alipay-circle",
+          icon: "setting",
           children: [
             {
               title: "设置运维参数",
@@ -255,7 +252,7 @@ export default {
         {
           title: "组织架构",
           key: "organization",
-          icon: "alipay-circle",
+          icon: "apartment",
           children: [
             {
               title: "部门管理",

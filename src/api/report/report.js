@@ -13,6 +13,12 @@ const report = {
     return axios.get(base.api + "report/team-list", {
       params: data
     });
+  },
+  //小组详情任务列表
+  getTeamMissonList(data) {
+    return axios.get(base.api + "report/team-detail-mission", {
+      params: data
+    });
   }
 };
 

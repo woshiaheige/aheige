@@ -33,3 +33,21 @@ Mock.mock("/api/report/team-list", {
   ],
   total: 10
 });
+//小组详情任务列表
+Mock.mock("/api/report/team-detail-mission", {
+  "data|10": [
+    {
+      "key|+1": 1,
+      "id|+1": 0,
+      "order|+1": 1,
+      "stationName|1": [
+        "明珠玻璃厂(烟气) - 18/03/05",
+        "东方玻璃厂(烟气) - 18/03/05"
+      ],
+      "missionNum|1": [1, 2, 3, 4],
+      "status|1": ["准时完成", "未完成"],
+      "finishTime|1": ["2020-2-5 12:32:00", "2020-2-15 12:32:00"]
+    }
+  ],
+  total: 10
+});
