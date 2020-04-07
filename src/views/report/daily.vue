@@ -1,7 +1,7 @@
 <template>
   <div class="daily">
     <a-row>
-      <a-col :span="8">
+      <a-col :span="6">
         <!-- 日历 -->
         <a-row>
           <a-col :span="24"
@@ -40,9 +40,9 @@
         </a-row>
       </a-col>
       <!--饼图-->
-      <a-col :span="16">
+      <a-col :span="18">
         <a-row :gutter="16">
-          <a-col :span="12">
+          <a-col :span="8">
             <ve-pie
               :data="chartData"
               :extend="chartExtend"
@@ -50,12 +50,20 @@
               :title="title"
             ></ve-pie>
           </a-col>
-          <a-col :span="12">
+          <a-col :span="8">
             <ve-pie
               :data="chartData2"
               :extend="chartExtend"
               :colors="colors"
               :title="title2"
+            ></ve-pie>
+          </a-col>
+          <a-col :span="8">
+            <ve-pie
+              :data="chartData3"
+              :extend="chartExtend"
+              :colors="colors"
+              :title="title3"
             ></ve-pie>
           </a-col>
         </a-row>
@@ -95,6 +103,14 @@ export default {
           fontSize: 16 //字体大小
         }
       },
+      title3: {
+        text: "任务项类型",
+        x: "center",
+        top: 20,
+        textStyle: {
+          fontSize: 16 //字体大小
+        }
+      },
       chartExtend: {
         legend: {
           top: 50
@@ -115,6 +131,10 @@ export default {
           { name: "突发", value: 8 },
           { name: "联动", value: 8 }
         ]
+      },
+      chartData3: {
+        columns: ["name", "value"],
+        rows: [{ name: "普通", value: 50 }]
       },
       //折线图》普通任务
       histogramExtend: {

@@ -83,7 +83,7 @@
               <a-col class="brief" v-margin:bottom="16">
                 <div>
                   <span>南海A组</span>
-                  在该时段内共完成了
+                  在该时间段内共完成了
                   <span>18</span>
                   个任务，共运维了
                   <span>13</span>
