@@ -42,6 +42,7 @@ import { quillEditor } from "vue-quill-editor"; //调用编辑器
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
+import setTitle from "@/assets/lib/set-quill-title.js";
 export default {
   components: { quillEditor },
   props: {
@@ -92,6 +93,9 @@ export default {
   watch: {
     status() {
       if (this.status == true) {
+        setTimeout(() => {
+          setTitle.addQuillTitle();
+        }, 100);
         if (this.obj.row != "" && this.obj.row != undefined) {
           this.title = "编辑";
         } else {
