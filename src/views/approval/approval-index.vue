@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" class="index" title="任务审批">
+  <a-card :bordered="false" class="approval" title="任务审批">
     <a-tabs @change="callback" type="card" v-model="tabSelected">
       <a-tab-pane tab="等待我审批" key="wait">
         <wait-approval v-model="tabSelected"></wait-approval>
@@ -41,3 +41,4 @@ export default {
   }
 };
 </script>
+<style lang="less" scoped></style>
