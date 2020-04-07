@@ -1,0 +1,39 @@
+@import url("~@/assets/style/mixin.less");
+.team-detail{
+  //小组汇总>>查看详情
+  .header{
+    padding:10px 24px;
+  }
+  .group-detail{
+    //小组详情
+    .item{
+      .flex("flex-start","flex-start");
+      .item-label{
+        white-space: nowrap;
+      }
+      .item-content{
+        .flexWrap("flex-start","flex-start");
+        &>div{
+          .flex();
+          padding:5px 5px 5px 0;
+        }
+        .photo{
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+  //中间
+  .brief{
+    padding:10px;
+    background: #fff;
+    span{
+      color:rgb(31,90,219) ;
+      font-weight: 500;
+    }
+  }
+}

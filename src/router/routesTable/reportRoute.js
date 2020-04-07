@@ -66,7 +66,17 @@ const reportRoutes = [
     component: () =>
       import(
         /* webpackChunkName: "view-report" */
-        "@/views/report/team.vue"
+        "@/views/report/team/team.vue"
+      )
+  },
+  {
+    path: "/report/team/detail",
+    name: "report-team-detail",
+    key: "team-detail",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-report" */
+        "@/views/report/team/detail.vue"
       )
   }
 ];

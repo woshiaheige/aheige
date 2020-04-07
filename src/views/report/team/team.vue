@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     viewTeam() {
-      this.visible = true;
+      this.$router.push({ path: "/report/team/detail" });
     },
     getTableData() {
       this.$api.report.getTeamList().then(res => {
