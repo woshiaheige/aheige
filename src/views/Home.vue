@@ -5,8 +5,8 @@
       :style="{ position: 'fixed', height: '100vh', left: 0, overflow: 'auto' }"
     >
       <div class="logo">
-        <a-icon type="cloud" theme="filled" v-fontsize="28" />
-        <span>博控智维云</span>
+        <!-- <a-icon type="cloud" theme="filled" v-fontsize="28" />
+        <span>博控智维云</span> -->
       </div>
       <a-menu
         theme="dark"
