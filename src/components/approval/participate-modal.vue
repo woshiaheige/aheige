@@ -2,7 +2,7 @@
   <a-modal title="基本信息" v-model="visible.show" @ok="handleOk" width="60%">
     <a-steps :current="1" v-margin:bottom="20">
       <a-step>
-        <!-- <span slot="title">Finished</span> -->
+        <span slot="icon" class="headerImg">头像</span>
         <template slot="title">
           发起审批
         </template>
@@ -69,5 +69,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped></style>
