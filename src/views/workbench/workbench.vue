@@ -26,9 +26,22 @@
           <a-layout>
             <a-layout-sider width="35%">
               <div class="calendar-body">
-                <a-card>
-                  <a-calendar :fullscreen="false" @panelChange="onPanelChange"
-                /></a-card>
+                <a-card class="calendar-car">
+                  <!--日历-->
+                  <a-calendar>
+                    <template slot="dateCellRender" slot-scope="value">
+                      <span v-for="item in getListData(value)" :key="item.num">
+                        <a-tooltip>
+                          <template slot="title">
+                            任务完成：{{ item.num }}
+                          </template>
+                          {{ item.num }}
+                        </a-tooltip>
+                      </span>
+                    </template>
+                    <template slot="monthCellRender"> </template>
+                  </a-calendar>
+                </a-card>
               </div>
               <div class="calendar-body">
                 <a-card title="负责的站点(20个)">
@@ -46,43 +59,40 @@
                 </a-card>
               </div>
             </a-layout-sider>
-            <div class="center-content">
-              <!-- 中间content -->
-              <a-layout-content width="100%">
-                <a-card title="待完成的任务">
-                  <a-table :columns="columns" :dataSource="data3">
-                    <a slot="name" slot-scope="text">{{ text }}</a>
-                    <span slot="customTitle"
-                      ><a-icon type="smile-o" /> Name</span
-                    >
-                    <span slot="tags" slot-scope="tags">
-                      <a-tag
-                        v-for="tag in tags"
-                        :color="
-                          tag === 'loser'
-                            ? 'volcano'
-                            : tag.length > 5
-                            ? 'geekblue'
-                            : 'green'
-                        "
-                        :key="tag"
-                      >
-                        {{ tag.toUpperCase() }}
-                      </a-tag>
-                    </span>
-                    <span slot="action" slot-scope="text, record">
-                      <a>Invite 一 {{ record.name }}</a>
-                      <a-divider type="vertical" />
-                      <a>Delete</a>
-                      <a-divider type="vertical" />
-                      <a class="ant-dropdown-link">
-                        More actions <a-icon type="down" />
-                      </a>
-                    </span>
-                  </a-table>
-                </a-card>
-              </a-layout-content>
-            </div>
+            <!-- 中间content -->
+            <a-layout-content class="center-content">
+              <a-card title="待完成的任务">
+                <a-descriptions
+                  :column="2"
+                  v-for="(item, index) in dutyData"
+                  :key="index"
+                >
+                  <div slot="title">
+                    <span>{{ item.name }}</span>
+                    <span class="status">已创建</span>
+                  </div>
+                  <a-descriptions-item label="预定时间">
+                    {{ item.time }}
+                  </a-descriptions-item>
+                  <a-descriptions-item label="任务站点">
+                    {{ item.station }}
+                  </a-descriptions-item>
+                  <a-descriptions-item label="运维小组">
+                    {{ item.team }}
+                  </a-descriptions-item>
+                  <a-descriptions-item label="任务项">
+                    {{ item.num }}
+                  </a-descriptions-item>
+                </a-descriptions>
+                <a-pagination
+                  v-margin:top="16"
+                  :showTotal="total => `共 ${total} 条`"
+                  :defaultCurrent="1"
+                  :total="total"
+                  style="text-align: right;"
+                />
+              </a-card>
+            </a-layout-content>
           </a-layout>
         </div>
       </a-layout>
@@ -110,6 +120,7 @@
                 v-for="(item, index) in tagData"
                 :key="index"
                 color="blue"
+                v-margin:bottom="5"
                 >{{ item.title }}</a-tag
               >
             </a-card>
@@ -154,58 +165,6 @@ export default {
         { title: "今日计划任务", content: 3, color: "#cf1322" },
         { title: "所有完成任务", content: 120, color: "#1e1e1e" },
         { title: "待完成报告", content: 0, color: "#4f6fcf" }
-      ],
-      columns: [
-        {
-          dataIndex: "name",
-          key: "name",
-          slots: { title: "customTitle" },
-          scopedSlots: { customRender: "name" }
-        },
-        {
-          title: "Age",
-          dataIndex: "age",
-          key: "age"
-        },
-        {
-          title: "Address",
-          dataIndex: "address",
-          key: "address"
-        },
-        {
-          title: "Tags",
-          key: "tags",
-          dataIndex: "tags",
-          scopedSlots: { customRender: "tags" }
-        },
-        {
-          title: "Action",
-          key: "action",
-          scopedSlots: { customRender: "action" }
-        }
-      ],
-      data3: [
-        {
-          key: "1",
-          name: "John Brown",
-          age: 32,
-          address: "New York No. 1 Lake Park",
-          tags: ["nice", "developer"]
-        },
-        {
-          key: "2",
-          name: "Jim Green",
-          age: 42,
-          address: "London No. 1 Lake Park",
-          tags: ["loser"]
-        },
-        {
-          key: "3",
-          name: "Joe Black",
-          age: 32,
-          address: "Sidney No. 1 Lake Park",
-          tags: ["cool", "teacher"]
-        }
       ],
       data: [
         {
@@ -319,13 +278,53 @@ export default {
         {
           title: "准时高手"
         }
-      ]
+      ],
+      dutyData: [
+        {
+          name: "福能电厂(4#)",
+          num: 1,
+          station: "福能电厂(4#)",
+          time: "2020-02-02",
+          team: "南海A小组"
+        },
+        {
+          name: "福能电厂(6#)",
+          num: 1,
+          station: "福能电厂(6#)",
+          time: "2020-02-12",
+          team: "南海B小组"
+        },
+        {
+          name: "福能电厂(7#)",
+          num: 1,
+          station: "福能电厂(7#)",
+          time: "2020-02-22",
+          team: "南海c小组"
+        }
+      ],
+      total: 10
     };
   },
   mounted() {},
   methods: {
     onPanelChange(value, mode) {
       console.log(value, mode);
+    },
+    getListData(value) {
+      let listData;
+      switch (value.date()) {
+        case 8:
+          listData = [{ num: "1" }];
+          break;
+        case 10:
+          listData = [{ num: "2" }];
+          break;
+        case 15:
+          listData = [{ num: "1" }];
+          break;
+        default:
+      }
+      return listData || [];
     }
   }
 };
