@@ -1,7 +1,7 @@
 <template>
-  <div class="team-detail">
+  <a-layout class="team-detail">
     <!-- 头部 -->
-    <a-row style="background:#fff" v-margin:bottom="16" class="header">
+    <a-layout-header style="background:#fff" v-margin:bottom="16">
       <a-row type="flex" justify="space-between">
         <a-col>
           <span class="reback">
@@ -15,109 +15,142 @@
           <a-button icon="search" v-margin:left="5"></a-button>
         </a-col>
       </a-row>
-    </a-row>
+    </a-layout-header>
     <!-- 头部end -->
-    <a-row :gutter="16">
+    <a-row>
       <!-- 左侧 -->
-      <a-col :span="8">
-        <!-- 小组详情 -->
-        <a-card title="小组详情" style="background:#fff;height:auto">
-          <a-row class="group-detail">
-            <a-col>
-              <div class="item">
-                <div class="item-label">小组名称:</div>
-                <div v-margin:left="10" class="item-content">南海A组</div>
-              </div>
-            </a-col>
-            <a-col>
-              <div class="item">
-                <div class="item-label">小组成员:</div>
-                <div v-margin:left="10" class="item-content">
-                  <div v-for="(item, index) of member" :key="index">
-                    <img
-                      src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                      alt=""
-                      class="photo"
-                    />
-                    <div>郭大炮</div>
+      <a-layout>
+        <a-layout-sider class="team-detail-sider">
+          <!-- <a-col> -->
+          <!-- 小组详情 -->
+          <a-card title="小组详情" style="background:#fff;height:auto">
+            <a-row class="group-detail">
+              <a-col>
+                <div class="item">
+                  <div class="item-label">小组名称:</div>
+                  <div v-margin:left="10" class="item-content">南海A组</div>
+                </div>
+              </a-col>
+              <a-col>
+                <div class="item">
+                  <div class="item-label">小组成员:</div>
+                  <div v-margin:left="10" class="item-content">
+                    <div v-for="(item, index) of member" :key="index">
+                      <img
+                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        alt=""
+                        class="photo"
+                      />
+                      <div>郭大炮</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a-col>
-          </a-row>
-        </a-card>
-        <!-- 小组详情end -->
+              </a-col>
+            </a-row>
+          </a-card>
+          <!-- 小组详情end -->
+          <div class="devide">
+            <!-- 分割区域 -->
+          </div>
+          <!-- 运维站点 -->
+          <a-card title="运维站点" style="background:#fff" :bordered="false">
+            <a-tag slot="extra" color="#f50">{{ stationList.length }}</a-tag>
+            <a-list
+              class="demo-loadmore-list"
+              itemLayout="horizontal"
+              :dataSource="stationList"
+              :bordered="false"
+            >
+              <a-list-item slot="renderItem" slot-scope="item">
+                <a-icon
+                  type="check"
+                  slot="actions"
+                  v-show="item.status == 'success'"
+                />
+                <div>{{ item.station }}</div>
+              </a-list-item>
+            </a-list>
+          </a-card>
+          <!-- 运维站点end -->
+          <!-- </a-col> -->
+        </a-layout-sider>
+        <a-layout-content>
+          <!-- 左侧end -->
 
-        <!-- 运维站点 -->
-        <a-card title="运维站点" v-margin:top="16" style="background:#fff">
-          <a-tag slot="extra" color="#f50">{{ stationList.length }}</a-tag>
-          <a-list
-            class="demo-loadmore-list"
-            itemLayout="horizontal"
-            :dataSource="stationList"
-          >
-            <a-list-item slot="renderItem" slot-scope="item">
-              <a-icon
-                type="check"
-                slot="actions"
-                v-show="item.status == 'success'"
-              />
-              <div>{{ item.station }}</div>
-            </a-list-item>
-          </a-list>
-        </a-card>
-        <!-- 运维站点end -->
-      </a-col>
-      <!-- 左侧end -->
+          <!-- 中间 -->
+          <a-col v-margin:left="16" class="content">
+            <a-row>
+              <a-col class="brief" v-margin:bottom="16">
+                <div>
+                  <span>南海A组</span>
+                  在该时段内共完成了
+                  <span>18</span>
+                  个任务，共运维了
+                  <span>13</span>
+                  个站点，
+                  <span>7</span>
+                  个站点未运维
+                </div>
+              </a-col>
+            </a-row>
+            <!-- 饼图 -->
+            <a-row>
+              <a-col :span="12" style="background:#fff">
+                <ve-pie
+                  :data="chartData"
+                  :extend="chartExtend"
+                  :colors="colors"
+                  :judge-width="true"
+                ></ve-pie>
+              </a-col>
+              <a-col :span="12" style="background:#fff">
+                <ve-pie
+                  :data="chartData2"
+                  :extend="chartExtend"
+                  :colors="colors"
+                  :judge-width="true"
+                ></ve-pie>
+              </a-col>
+            </a-row>
+            <!-- 饼图end -->
+            <!-- 条形折线图 -->
+            <a-row style="background:#fff" v-margin:top="16">
+              <a-col :span="22">
+                <ve-histogram
+                  :data="moreData"
+                  :settings="moreSettings"
+                  :judge-width="true"
+                ></ve-histogram>
+              </a-col>
+            </a-row>
+            <!-- 条形折线图end -->
 
-      <!-- 中间 -->
-      <a-col :span="16" class="content">
-        <a-row>
-          <a-col class="brief" v-margin:bottom="16">
-            <div>
-              <span>南海A组</span>
-              在该时段内共完成了
-              <span>18</span>
-              个任务，共运维了
-              <span>13</span>
-              个站点，
-              <span>7</span>
-              个站点未运维
-            </div>
+            <!-- 任务表格 -->
+            <a-table
+              style="background:#fff"
+              rowKey="id"
+              :columns="columns"
+              :dataSource="tableData"
+              v-margin:top="16"
+              :pagination="false"
+              :expandedRowKeys="['0']"
+            >
+              <span slot="status" slot-scope="_, row">
+                <a-tag :color="row.status == '准时完成' ? '#87d068' : ''">{{
+                  row.status
+                }}</a-tag>
+              </span>
+              <span slot="action" slot-scope="row">
+                <a @click="viewMission(row)">查看</a>
+              </span>
+            </a-table>
+            <!-- 任务表格end -->
           </a-col>
-        </a-row>
-        <!-- 饼图 -->
-        <a-row>
-          <a-col :span="12" style="background:#fff">
-            <ve-pie
-              :data="chartData"
-              :extend="chartExtend"
-              :colors="colors"
-            ></ve-pie>
-          </a-col>
-          <a-col :span="12" style="background:#fff">
-            <ve-pie
-              :data="chartData2"
-              :extend="chartExtend"
-              :colors="colors"
-            ></ve-pie>
-          </a-col>
-        </a-row>
-        <!-- 饼图end -->
-        <!-- 条形折线图 -->
-        <a-row style="background:#fff" v-margin:top="16">
-          <a-col :span="22">
-            <ve-histogram
-              :data="moreData"
-              :settings="moreSettings"
-            ></ve-histogram>
-          </a-col>
-        </a-row>
-        <!-- 条形折线图end -->
-      </a-col>
-      <!-- 中间end -->
+          <!-- 中间end -->
+        </a-layout-content>
+      </a-layout>
     </a-row>
-  </div>
+  </a-layout>
 </template>
 
 <script>
@@ -176,13 +209,65 @@ export default {
       moreSettings: {
         stack: { 用户: ["普通任务", "突发任务"] },
         showLine: ["任务量"]
-      }
+      },
+      //任务表格
+      columns: [
+        {
+          title: "任务名称",
+          dataIndex: "stationName",
+          key: "stationName"
+        },
+        {
+          title: "任务项",
+          dataIndex: "missionNum",
+          key: "missionNum"
+        },
+        {
+          title: "完成状态",
+          dataIndex: "status",
+          key: "status",
+          scopedSlots: { customRender: "status" }
+        },
+        {
+          title: "完成时间",
+          dataIndex: "finishTime",
+          key: "finishTime"
+        },
+        {
+          title: "查看",
+          key: "action",
+          scopedSlots: { customRender: "action" }
+        }
+      ],
+      tableData: [
+        {
+          order: "1",
+          id: "0",
+          stationName: "明珠玻璃厂(烟气) - 18/03/05",
+          missionNum: "20",
+          status: "准时完成",
+          finishTime: "2018-03-05 16:45:11"
+        }
+      ],
+      total: 0
     };
   },
   methods: {
     reBack() {
-      this.$router.replace({ path: "/i-maintain/scheme" });
+      this.$router.replace({ path: "/report/team" });
+    },
+    viewMission() {},
+    getTableData() {
+      this.$api.report.getTeamMissonList().then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        }
+      });
     }
+  },
+  mounted() {
+    this.getTableData();
   }
 };
 </script>
