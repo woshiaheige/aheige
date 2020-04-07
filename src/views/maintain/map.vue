@@ -31,9 +31,6 @@
               <a-form-item>
                 <a-select placeholder="运维小组"> </a-select>
               </a-form-item>
-              <a-form-item>
-                <a-select placeholder="运维方案"> </a-select>
-              </a-form-item>
               <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
                 <a-button type="primary" icon="search" html-type="submit">
                   搜索

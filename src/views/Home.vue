@@ -128,10 +128,10 @@ export default {
             //   title: "运维记录报告",
             //   key: "maintain-log"
             // },
-            {
-              title: "智能报表",
-              key: "i-report"
-            },
+            // {
+            //   title: "智能报表",
+            //   key: "i-report"
+            // },
             // {
             //   title: "巡检记录",
             //   key: "inspection"

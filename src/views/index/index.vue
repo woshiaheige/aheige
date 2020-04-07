@@ -27,7 +27,7 @@
           <a-statistic
             title="维护仪器"
             :value="298"
-            :valueStyle="{ color: '#cf1322' }"
+            :valueStyle="{ color: 'orange' }"
           >
           </a-statistic>
         </a-card>
@@ -38,7 +38,7 @@
             title="运维小组"
             :value="298"
             suffix="组"
-            :valueStyle="{ color: '#cf1322' }"
+            :valueStyle="{ color: '#1890ff' }"
           >
           </a-statistic>
         </a-card>
@@ -212,15 +212,14 @@ export default {
       chartData: {
         columns: ["name", "value"],
         rows: [
-          { name: "准时完成", value: 50 },
-          { name: "逾期完成", value: 8 }
+          { name: "准时完成", value: 30 },
+          { name: "逾期完成", value: 2 }
         ]
       },
       chartData2: {
         columns: ["name", "value"],
         rows: [
           { name: "例行", value: 50 },
-          { name: "现场", value: 8 },
           { name: "突发", value: 8 }
         ]
       },
