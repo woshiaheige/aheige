@@ -48,7 +48,7 @@
   </a-card>
 </template>
 <script>
-import departmentTree from "@/components/common/department-tree";
+import departmentTree from "@/components/organization/department-tree";
 export default {
   components: { departmentTree },
   data() {
