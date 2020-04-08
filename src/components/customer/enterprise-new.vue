@@ -27,8 +27,8 @@
           v-decorator="['creditCode']"
         />
       </a-form-item>
-      <a-form-item label="企业联系人">
-        <a-input v-decorator="['contact']" placeholder="请输入企业联系人" />
+      <a-form-item label="企业负责人">
+        <a-input v-decorator="['contact']" placeholder="请输入企业负责人" />
       </a-form-item>
       <a-form-item label="企业电话号码">
         <a-input

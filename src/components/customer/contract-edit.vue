@@ -47,7 +47,7 @@
         />
       </a-form-item>
       <a-form-item label="合同负责人">
-        <a-select placeholder="请选择合同客户企业" v-decorator="['principal']">
+        <a-select placeholder="请选择合同负责人" v-decorator="['principal']">
           <a-select-option value="1">
             Option 1
           </a-select-option>
@@ -61,10 +61,14 @@
         </a-select>
       </a-form-item>
       <a-form-item label="合同金额">
-        <a-input v-decorator="['money']" />
+        <a-input v-decorator="['money']" placeholder="请输入合同金额" />
       </a-form-item>
       <a-form-item label="合同说明">
-        <a-input v-decorator="['detail']" type="textarea" />
+        <a-input
+          v-decorator="['detail']"
+          type="textarea"
+          placeholder="请输入合同说明"
+        />
       </a-form-item>
       <a-form-item label="合同附件">
         <a-upload

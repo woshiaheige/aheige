@@ -5,7 +5,7 @@ const announcement = [
     key: "announcement",
     component: () =>
       import(
-        /* webpackChunkName: "view-approval" */
+        /* webpackChunkName: "view-announcement" */
         "@/views/announcement"
       )
   }
