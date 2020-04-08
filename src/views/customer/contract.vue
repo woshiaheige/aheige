@@ -8,6 +8,7 @@
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
+      :loading="loading"
     >
       <span slot="period" slot-scope="period, row">
         <span>{{ row.startTime }}</span
@@ -26,6 +27,8 @@
       showSizeChanger
       :defaultCurrent="current"
       :total="total"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
 
     <contract-edit :visible.sync="visible" :contractId="contractId">
@@ -41,8 +44,10 @@ export default {
     return {
       current: 1,
       total: 1,
+      pagesize: 10,
       visible: false,
       contractId: "",
+      loading: true,
       columns: [
         {
           title: "序号",
@@ -106,16 +111,28 @@ export default {
       this.visible = true;
     },
     getTableData() {
-      this.$api.customer.getContractList().then(res => {
-        if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
-        }
-      });
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.$api.customer
+        .cusContract(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data;
+            this.total = res.data.total;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+          this.tableData = [];
+        });
     }
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
   }
 };
 </script>

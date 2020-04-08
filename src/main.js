@@ -27,16 +27,20 @@ import "@/assets/style/approval.less";
 require("@/mock/index");
 require("@/mock/maintain");
 require("@/mock/i-maintain");
-require("@/mock/customer");
+// require("@/mock/customer");
 require("@/mock/report");
 require("@/mock/platform");
 //图表
 import VCharts from "v-charts";
 //monent
 import moment from "moment";
+
 //自定义组件
 import api from "@/api/index";
 import base from "@/api/base";
+import common from "@/assets/lib/common"; //公共Page和onSubmit
+
+Vue.mixin(common);
 
 Vue.use(Antd);
 Vue.use(VCharts);

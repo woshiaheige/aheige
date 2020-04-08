@@ -15,8 +15,8 @@ const customer = {
     });
   },
   //获取合同列表
-  getContractList(data) {
-    return axios.get(base.api + "customer/contract-list", {
+  cusContract(data) {
+    return axios.get(base.api + "/cusContract/", {
       params: data
     });
   }

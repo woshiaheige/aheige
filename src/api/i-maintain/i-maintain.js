@@ -49,6 +49,55 @@ const iMaintain = {
     return axios.get(base.api + "i-maintain/realtime-list", {
       params: data
     });
+  },
+  //新增方案项
+  addMaintainProgrammet(data) {
+    return axios.post(
+      base.api + "/maintainProgramme/addMaintainProgramme",
+      data
+    );
+  },
+  //删除方案项
+  deleteMaintainProgramme(data) {
+    return axios.post(
+      base.api + "/maintainProgramme/deleteMaintainProgramme",
+      data
+    );
+  },
+  //获取方案列表
+  maintainProgramme(data) {
+    return axios.get(base.api + "/maintainProgramme/", {
+      params: data
+    });
+  },
+  //获取方案详情
+  getMaintainProgrammeById(data) {
+    return axios.get(base.api + "/maintainProgramme/getMaintainProgrammeById", {
+      params: data
+    });
+  },
+  //新增方案项详情
+  addMaintainProgrammeItem(data) {
+    return axios.post(
+      base.api + "/maintainProgrammeItem/addMaintainProgrammeItem",
+      data
+    );
+  },
+  //获取方案项详情
+  getMaintainProgrammeItemById(data) {
+    return axios.get(
+      base.api + "/maintainProgrammeItem/getMaintainProgrammeItemById",
+      {
+        params: data
+      }
+    );
+  },
+  //修改项目项详情
+  editMaintainProgrammeItem(data) {
+    return axios.post(
+      base.api + "/maintainProgrammeItem/editMaintainProgrammeItem",
+      data
+    );
   }
 };
 

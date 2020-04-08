@@ -7,19 +7,31 @@
           <span class="reback">
             <a-icon type="arrow-left" @click="reBack" />运维方案
           </span>
-          <a-button icon="plus" type="primary" v-margin:left="10"
+          <a-button
+            icon="plus"
+            type="primary"
+            v-margin:left="10"
+            @click="resetForm"
             >新方案项</a-button
           >
-          <a-button icon="save" type="primary" v-margin="'0 10'">保存</a-button>
-          <a-button icon="delete" type="danger">删除</a-button>
+          <a-button icon="save" type="primary" v-margin="'0 10'" @click="save"
+            >保存</a-button
+          >
+          <a-button
+            icon="delete"
+            type="danger"
+            v-if="projectId"
+            @click="deleteProject"
+            >删除</a-button
+          >
         </a-col>
         <a-col :span="24">
           <a-form :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }">
             <a-form-item label="方案名称">
-              <a-input></a-input>
+              <a-input v-model="project.name"></a-input>
             </a-form-item>
             <a-form-item label="方案编号">
-              <a-input></a-input>
+              <a-input v-model="project.number"></a-input>
             </a-form-item>
           </a-form>
         </a-col>
@@ -28,20 +40,43 @@
     <!-- 头部end -->
     <a-layout>
       <!-- 左侧方案栏 -->
-      <a-layout-sider style="background:#fff" v-margin:right="16">
-        <a-list bordered :dataSource="schemeList">
+      <a-layout-sider
+        style="background:#fff"
+        class="scheme-detail-sider"
+        v-margin:right="16"
+      >
+        <a-list bordered :dataSource="tableData" class="scheme-detail-sider">
           <a-list-item
             slot="renderItem"
             slot-scope="item, index"
             :key="index"
-            >{{ item }}</a-list-item
+            style="cursor:pointer"
+            @click="getMaintainProgrammeById(item.id)"
+            >{{ item.name }}</a-list-item
           >
-        </a-list></a-layout-sider
-      >
+        </a-list>
+        <a-pagination
+          class="pagination"
+          :defaultCurrent="current"
+          :total="total"
+          @change="pagechange"
+        />
+      </a-layout-sider>
       <!-- 左侧方案栏end -->
 
       <!-- 方案详情 -->
-      <a-layout-content style="background:#fff" class="content">
+      <a-layout-content
+        style="background:#fff"
+        class="content"
+        v-if="!projectId"
+      >
+        <h3>请点击"新方案项"，或者选择一个方案项进行编辑</h3>
+      </a-layout-content>
+      <a-layout-content
+        style="background:#fff"
+        class="content"
+        v-if="projectId"
+      >
         <h3>方案项详情</h3>
         <a-form
           :label-col="{ span: 6 }"
@@ -66,8 +101,12 @@
                 { rules: [{ required: true, message: '请选择方案项目类型' }] }
               ]"
             >
-              <a-select-option value="1">
-                Option 1
+              <a-select-option
+                v-for="(item, index) of selectList.projectTypeList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -75,12 +114,16 @@
             <a-select
               placeholder="请选择作业对象"
               v-decorator="[
-                'object',
+                'jobObject',
                 { rules: [{ required: true, message: '请选择作业对象' }] }
               ]"
             >
-              <a-select-option value="1">
-                Option 1
+              <a-select-option
+                v-for="(item, index) of selectList.jobObjectList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -89,8 +132,12 @@
               placeholder="请选择仪器类型"
               v-decorator="['instrumenType']"
             >
-              <a-select-option value="1">
-                Option 1
+              <a-select-option
+                v-for="(item, index) of selectList.imstrumentTypeList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -102,8 +149,12 @@
                 { rules: [{ required: true, message: '请选择使用的表单' }] }
               ]"
             >
-              <a-select-option value="1">
-                Option 1
+              <a-select-option
+                v-for="(item, index) of selectList.itemSheetList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -115,8 +166,12 @@
               </a-tooltip>
             </span>
             <a-select placeholder="请选择周期类型" v-decorator="['circleType']">
-              <a-select-option value="1">
-                Option 1
+              <a-select-option
+                v-for="(item, index) of selectList.cycleTypeList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -151,8 +206,24 @@
 export default {
   data() {
     return {
-      form: this.$form.createForm(this, { name: "contractEdit" }),
-      schemeList: ["方案A", "方案B"]
+      page: 1,
+      current: 1,
+      pagesize: 10,
+      tableData: [],
+      total: 0,
+      projectId: "",
+      project: {
+        name: "",
+        number: ""
+      },
+      selectList: {
+        projectTypeList: [], //方案项目类型
+        obObjectList: [], //作业对象
+        imstrumentTypeList: [], //仪器类型
+        cycleTypeList: [], //周期类型
+        itemSheetList: [] //方案表单
+      },
+      form: this.$form.createForm(this, { name: "contractEdit" })
     };
   },
   methods: {
@@ -161,7 +232,170 @@ export default {
     },
     reBack() {
       this.$router.replace({ path: "/i-maintain/scheme" });
+    },
+    save() {
+      if (this.projectId) {
+        //修改方案详情
+        this.addMaintainProgrammeItem();
+      } else {
+        //新增方案
+        this.addMaintainProgrammet();
+      }
+    },
+    deleteProject() {
+      let _this = this;
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          _this.deleteProjectFn();
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
+    deleteProjectFn() {
+      let params = { id: this.projectId };
+      this.$api.iMaintain.deleteMaintainProgramme(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success(res.data.msg);
+          this.getTableData();
+          this.resetForm();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    resetForm() {
+      //重置
+      this.projectId = "";
+      this.project = {
+        name: "",
+        number: ""
+      };
+    },
+    addMaintainProgrammet() {
+      //新增方案
+      let params = {
+        name: this.project.name,
+        number: this.project.number
+      };
+      if (this.project.name == "") {
+        this.$message.error("请输入方案名称");
+        return;
+      }
+      if (this.project.number == "") {
+        this.$message.error("请输入方案编号");
+        return;
+      }
+      this.$api.iMaintain.addMaintainProgrammet(params).then(res => {
+        this.$message.success(res.data.msg);
+      });
+    },
+    getTableData() {
+      //获取方案列表
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.$api.iMaintain
+        .maintainProgramme(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+            this.total = res.data.data.total;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tableData = [];
+        });
+    },
+    getMaintainProgrammeById(id) {
+      //获取方案详情
+      this.projectId = id;
+      this.$api.iMaintain
+        .getMaintainProgrammeById({ id: id })
+        .then(res => {
+          if (res.data.state == 0) {
+            let data = res.data.data;
+            this.project = {
+              name: data.name,
+              number: data.number
+            };
+            this.getMaintainProgrammeItemById(id);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getMaintainProgrammeItemById(id) {
+      //获取方案项详情
+      this.$api.iMaintain
+        .getMaintainProgrammeItemById({ id: id })
+        .then(res => {
+          if (res.data.state == 0) {
+            let data = res.data.data;
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //新增方案项详情
+    addMaintainProgrammeItem() {
+      // this.form.resetFields();
+      let params = this.form.getFieldsValue();
+      params.id = this.projectId;
+      this.$api.iMaintain.editMaintainProgrammeItem(params).then(res => {
+        if (res.data.state == 0) {
+          console.log(res);
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    geDictByParam() {
+      this.geDictByParamFn("PROGRAMME_ITEM_TYPE");
+      this.geDictByParamFn("PROGRAMME_ITEM_JOB_OBJECT");
+      this.geDictByParamFn("PROGRAMME_ITEM_INSTRUMENT_TYPE");
+      this.geDictByParamFn("PROGRAMME_ITEM_CYCLE_TYPE");
+      this.geDictByParamFn("PROGRAMME_ITEM_SHEET");
+    },
+    geDictByParamFn(code) {
+      //获取相应字典
+      let params = {
+        code: code
+      };
+      this.$api.common.geDictByParam(params).then(res => {
+        if (res.status == 200) {
+          switch (code) {
+            case "PROGRAMME_ITEM_TYPE": //方案项目类型
+              this.selectList.projectTypeList = res.data;
+              break;
+            case "PROGRAMME_ITEM_JOB_OBJECT": //作业对象
+              this.selectList.jobObjectList = res.data;
+              break;
+            case "PROGRAMME_ITEM_INSTRUMENT_TYPE": //仪器类型
+              this.selectList.imstrumentTypeList = res.data;
+              break;
+            case "PROGRAMME_ITEM_CYCLE_TYPE": //周期类型
+              this.selectList.cycleTypeList = res.data;
+              break;
+            case "PROGRAMME_ITEM_SHEET": //方案表单
+              this.selectList.itemSheetList = res.data;
+              break;
+          }
+        }
+      });
     }
+  },
+  mounted() {
+    this.getTableData();
+    this.geDictByParam();
   }
 };
 </script>

@@ -4,14 +4,14 @@
 
     <a-table
       rowKey="id"
+      :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
     >
       <span slot="period" slot-scope="period, row">
-        <span>{{ row.startTime }}</span
-        >至<span>{{ row.endTime }}</span>
+        {{ moment(row.gmtCreate).format("YYYY-MM-DD") }}
       </span>
       <span slot="action" slot-scope="row">
         <a-button @click="editScheme(row)">编辑</a-button>
@@ -25,6 +25,8 @@
       showSizeChanger
       :defaultCurrent="current"
       :total="total"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
   </a-card>
 </template>
@@ -35,6 +37,8 @@ export default {
     return {
       current: 1,
       total: 1,
+      loading: true,
+      pagesize: 10,
       visible: false,
       columns: [
         {
@@ -49,28 +53,29 @@ export default {
         },
         {
           title: "编号",
-          dataIndex: "serialNum",
-          key: "serialNum"
+          dataIndex: "number",
+          key: "number"
         },
         {
           title: "方案项数",
-          dataIndex: "schemeNum",
-          key: "schemeNum"
+          dataIndex: "planItemCount",
+          key: "planItemCount"
         },
         {
           title: "使用量",
-          dataIndex: "useNum",
-          key: "useNum"
+          dataIndex: "usageCount",
+          key: "usageCount"
         },
         {
           title: "创建人",
-          dataIndex: "createdBy",
-          key: "createdBy"
+          dataIndex: "userName",
+          key: "userName"
         },
         {
           title: "创建时间",
-          dataIndex: "createdAt",
-          key: "createdAt"
+          dataIndex: "gmtCreate",
+          key: "gmtCreate",
+          scopedSlots: { customRender: "gmtCreate" }
         },
         {
           title: "查看",
@@ -78,18 +83,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      tableData: [
-        {
-          order: "1",
-          id: "0",
-          name: "可口可乐（199污水)",
-          serialNum: "",
-          schemeNum: "2",
-          useNum: "10",
-          createdBy: "马小跳",
-          createdAt: "2019-11-15"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
@@ -100,12 +94,25 @@ export default {
       });
     },
     getTableData() {
-      this.$api.iMaintain.getSchemeList().then(res => {
-        if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
-        }
-      });
+      //获取方案列表
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.$api.iMaintain
+        .maintainProgramme(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+            this.total = res.data.data.total;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tableData = [];
+          this.loading = false;
+        });
     }
   },
   mounted() {
