@@ -87,6 +87,12 @@ const height = Vue.directive("height", {
   }
 });
 
+const scale = Vue.directive("scale", {
+  inserted: function(el, binding) {
+    el.style.transform = "scale(" + binding.value + ")";
+  }
+});
+
 export default {
   margin,
   color,
@@ -95,5 +101,6 @@ export default {
   backgroundColor,
   fontSize,
   width,
-  height
+  height,
+  scale
 };
