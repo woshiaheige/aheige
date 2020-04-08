@@ -94,8 +94,7 @@ export default {
     },
     contractId: {
       required: false,
-      default: "",
-      type: String || Number
+      default: ""
     }
   },
   data() {
@@ -118,7 +117,7 @@ export default {
   },
   computed: {
     title() {
-      return this.contractId ? "编辑合同" : "新增合同";
+      return this.contractId !== "" ? "编辑合同" : "新增合同";
     }
   },
   methods: {

@@ -87,8 +87,7 @@ export default {
     enterpriseId: {
       //详情id
       required: false,
-      default: "",
-      type: String || Number
+      default: ""
     }
   },
   data() {
@@ -119,7 +118,7 @@ export default {
   },
   computed: {
     title() {
-      return this.enterpriseId ? "编辑企业" : "添加新的企业";
+      return this.enterpriseId !== "" ? "编辑企业" : "添加新的企业";
     }
   },
   methods: {

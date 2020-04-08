@@ -8,7 +8,7 @@
       :pagination="false"
     >
       <span slot="action" slot-scope="row">
-        <a @click="logReport(row)">报告</a>
+        <a>报告</a>
         <a-divider type="vertical" />
         <a @click="logView(row)">查看</a>
       </span>
@@ -22,22 +22,23 @@
       :total="total"
     />
 
-    <view-log :visible.sync="viewVisible"> </view-log>
-    <report-log :visible.sync="roportVisible"> </report-log>
+    <detail-modal
+      :visible="detailShow"
+      :tableData="missonDetail"
+      @cancel="cancel"
+    ></detail-modal>
   </a-card>
 </template>
 
 <script>
-import viewLog from "@/components/i-maintain/operation-log/view-log";
-import reportLog from "@/components/i-maintain/operation-log/report-log";
+import detailModal from "@/components/maintain/mission/detail";
 export default {
-  components: { viewLog, reportLog },
+  components: { detailModal },
   data() {
     return {
       current: 1,
       total: 1,
-      roportVisible: false,
-      viewVisible: false,
+      detailShow: false,
       columns: [
         {
           title: "序号",
@@ -92,16 +93,11 @@ export default {
           signature: "未确认",
           missionTime: "2019-10-15"
         }
-      ]
+      ],
+      missonDetail: []
     };
   },
   methods: {
-    logReport() {
-      this.roportVisible = true;
-    },
-    logView() {
-      this.viewVisible = true;
-    },
     getTableData() {
       this.$api.iMaintain.getOperationLogList().then(res => {
         if (res.status == 200) {
@@ -109,6 +105,18 @@ export default {
           this.total = res.data.total;
         }
       });
+    },
+    logView() {
+      this.detailShow = true;
+      this.getMissonDetail();
+    },
+    getMissonDetail() {
+      this.$api.maintain.getMissionList().then(res => {
+        this.missonDetail = res.data.data;
+      });
+    },
+    cancel(value) {
+      this.detailShow = value;
     }
   },
   mounted() {
