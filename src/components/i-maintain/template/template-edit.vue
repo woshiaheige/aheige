@@ -1,5 +1,10 @@
 <template>
-  <a-modal title="新增报告模板" :visible="visible" @cancel="closeModal">
+  <a-modal
+    title="新增报告模板"
+    :visible="visible"
+    @cancel="closeModal"
+    class="template-edit"
+  >
     <a-form
       ref="formModal"
       :form="form"
@@ -53,6 +58,13 @@
         />
       </a-form-item>
     </a-form>
+    <div slot="footer" class="footer">
+      <a-button type="danger" @click="deleteModal">删除</a-button>
+      <div>
+        <a-button @click="closeModal">取消</a-button>
+        <a-button type="primary" @click="confirmModal">确认</a-button>
+      </div>
+    </div>
   </a-modal>
 </template>
 
@@ -79,6 +91,19 @@ export default {
     closeModal() {
       this.$emit("update:visible", false);
     },
+    deleteModal() {
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
+    confirmModal() {},
     handleChange(info) {
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);

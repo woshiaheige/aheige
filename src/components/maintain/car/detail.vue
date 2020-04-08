@@ -12,43 +12,19 @@
       </div>
       <!--search start-->
       <div class="map-tabs">
-        <a-tabs defaultActiveKey="1" tabPosition="left">
+        <a-tabs defaultActiveKey="2" tabPosition="left" @change="changeTabs">
           <a-tab-pane key="1">
             <span slot="tab">
               <a-icon type="apple" />
               站点
             </span>
-            <a-form v-show="collapsed" @submit="handleSubmit">
-              <a-form-item v-padding:top="15">
-                <a-input placeholder="站点名称、编号" />
-              </a-form-item>
-              <a-form-item>
-                <a-select placeholder="客户企业">
-                  <!-- <a-select-option :value=""></a-select-option> -->
-                </a-select>
-              </a-form-item>
-              <a-form-item>
-                <a-select placeholder="企业行政区域"> </a-select>
-              </a-form-item>
-              <a-form-item>
-                <a-select placeholder="运维小组"> </a-select>
-              </a-form-item>
-              <a-form-item>
-                <a-select placeholder="运维方案"> </a-select>
-              </a-form-item>
-              <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-                <a-button type="primary" icon="search" html-type="submit">
-                  搜索
-                </a-button>
-              </a-form-item>
-            </a-form>
           </a-tab-pane>
           <a-tab-pane key="2">
             <span slot="tab">
               <a-icon type="apple" />
               车辆
             </span>
-            <a-form v-show="collapsed" @submit="handleSubmit">
+            <a-form v-show="collapsed">
               <p class="car-tabs-form-p">
                 <a-icon type="car" v-margin:right="8" />展示车辆实时位置
               </p>
@@ -72,8 +48,8 @@
                 />
               </a-form-item>
               <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-                <a-button type="primary" icon="search" html-type="submit">
-                  搜索
+                <a-button type="primary" icon="monitor" @click="handleSubmit">
+                  显示轨迹
                 </a-button>
               </a-form-item>
             </a-form>
@@ -225,10 +201,48 @@ export default {
         });
       });
     },
-    handleSubmit() {},
+    //搜索轨迹
+    handleSubmit() {
+      this.map.remove(this.pointMarkers);
+      this.map.remove(this.markers);
+      this.showPath();
+    },
+    //显示轨迹
+    showPath() {
+      var pathParam = [
+        { x: 116.478928, y: 39.997761, sp: 19, ag: 0, tm: 1478031031 },
+        { x: 116.478907, y: 39.998422, sp: 10, ag: 0, tm: 2 },
+        { x: 116.479384, y: 39.998546, sp: 10, ag: 110, tm: 3 },
+        { x: 116.481053, y: 39.998204, sp: 10, ag: 120, tm: 4 },
+        { x: 116.481793, y: 39.997868, sp: 10, ag: 120, tm: 5 },
+        { x: 116.482898, y: 39.998217, sp: 10, ag: 30, tm: 6 },
+        { x: 116.483789, y: 39.999063, sp: 10, ag: 30, tm: 7 },
+        { x: 116.484674, y: 39.999844, sp: 10, ag: 30, tm: 8 }
+      ];
+
+      var path1 = [];
+      for (var i = 0; i < pathParam.length; i += 1) {
+        path1.push([pathParam[i].x, pathParam[i].y]);
+      }
+      var oldLine = new AMap.Polyline({
+        path: path1,
+        strokeWeight: 8,
+        strokeOpacity: 1,
+        strokeColor: "#0091ea"
+      });
+      this.map.add(oldLine);
+      this.map.setFitView();
+    },
     //收缩
     changeVisible() {
       this.collapsed = !this.collapsed;
+    },
+    changeTabs(key) {
+      if (key == 1) {
+        this.$router.push({
+          path: "/maintain/map"
+        });
+      }
     }
   },
   mounted() {

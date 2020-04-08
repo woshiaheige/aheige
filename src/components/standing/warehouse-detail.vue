@@ -28,26 +28,34 @@ export default {
       columns: [
         {
           title: "类型",
-          dataIndex: "name",
-          align: "center"
-        },
-        {
-          title: "数量",
-          dataIndex: "brand",
-          align: "center"
-        },
-        {
-          title: "时间",
           dataIndex: "type",
           align: "center"
         },
         {
+          title: "数量",
+          dataIndex: "num",
+          align: "center"
+        },
+        {
+          title: "时间",
+          dataIndex: "date",
+          align: "center"
+        },
+        {
           title: "操作人",
-          dataIndex: "coding",
+          dataIndex: "operator",
           align: "center"
         }
       ],
-      data: []
+      data: [
+        {
+          key: "1",
+          type: "入库",
+          num: "500",
+          date: "2020.5.21",
+          operator: "陈琛琛"
+        }
+      ]
     };
   },
   computed: {

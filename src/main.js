@@ -15,10 +15,13 @@ import "@/assets/style/common.less";
 import "@/assets/style/home/home.less";
 import "@/assets/style/i-maintain/plan.less";
 import "@/assets/style/i-maintain/scheme.less";
+import "@/assets/style/i-maintain/template.less";
 import "@/assets/style/maintain/maintain.less";
 import "@/assets/style/index/index.less";
 import "@/assets/style/organization/organization.less";
 import "@/assets/style/report/daily.less";
+import "@/assets/style/report/team.less";
+import "@/assets/style/approval.less";
 
 //mock
 require("@/mock/index");

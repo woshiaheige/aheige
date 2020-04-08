@@ -16,7 +16,7 @@
               <a-icon type="apple" />
               站点
             </span>
-            <a-form v-show="collapsed" @submit="handleSubmit">
+            <a-form v-show="collapsed">
               <a-form-item v-padding:top="15">
                 <a-input placeholder="站点名称、编号" />
               </a-form-item>
@@ -31,11 +31,8 @@
               <a-form-item>
                 <a-select placeholder="运维小组"> </a-select>
               </a-form-item>
-              <a-form-item>
-                <a-select placeholder="运维方案"> </a-select>
-              </a-form-item>
               <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-                <a-button type="primary" icon="search" html-type="submit">
+                <a-button type="primary" icon="search" @click="handleSubmit">
                   搜索
                 </a-button>
               </a-form-item>
@@ -202,7 +199,9 @@ export default {
     cancel(value) {
       this.modelShow = value;
     },
-    handleSubmit() {},
+    handleSubmit() {
+      console.log("搜索");
+    },
     //收缩
     changeVisible() {
       this.collapsed = !this.collapsed;
