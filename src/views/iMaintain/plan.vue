@@ -76,17 +76,37 @@
       <a-layout-content v-margin:left="20">
         <div class="tab-bar ">
           <span class="tip">任务日历看板</span>
-          <a-button type="primary" size="small" icon="table">周计划</a-button>
-          <a-button type="primary" v-margin:left="5" size="small" icon="table"
+          <a-button
+            :type="listType == 'week' ? 'primary' : ''"
+            size="small"
+            icon="table"
+            @click="listType = 'week'"
+            >周计划</a-button
+          >
+          <a-button
+            :type="listType == 'month' ? 'primary' : ''"
+            v-margin:left="5"
+            size="small"
+            icon="table"
+            @click="listType = 'month'"
             >月计划</a-button
           >
           <a-checkbox class="toggle-station" v-model="ellipsisFlag"
             >省略显示站点名</a-checkbox
           >
         </div>
-        <div :style="{ height: listHight, overflowY: 'scroll' }">
-          <week-drag-list :list="listData"></week-drag-list>
+        <div
+          :style="{ height: listHight, overflowY: 'scroll' }"
+          v-if="listType == 'week'"
+        >
+          <!-- 周计划 -->
+          <week-drag-list :list="weekListData"></week-drag-list>
         </div>
+        <!-- 月计划 -->
+        <month-drag-list
+          :list="monthListData"
+          v-if="listType == 'month'"
+        ></month-drag-list>
       </a-layout-content>
     </a-layout>
   </a-card>
@@ -94,17 +114,21 @@
 <script>
 import draggable from "vuedraggable";
 import weekDragList from "@/components/i-maintain/plan/week-drag-list";
+import monthDragList from "@/components/i-maintain/plan/month-drag-list";
 export default {
   name: "plan",
   components: {
     draggable,
-    weekDragList
+    weekDragList,
+    monthDragList
   },
   data() {
     return {
+      listType: "week", //week,month
       ellipsisFlag: true,
       readyPlan: ["A", "B"],
-      listData: [],
+      weekListData: [],
+      monthListData: [],
       listHight: "" //各列表的高度
     };
   },
@@ -114,16 +138,27 @@ export default {
     },
     getReadyPlan() {
       //获取未分配的任务
-      this.$api.iMaintain.getReadyPlan().then(res => {
+      let params = {
+        type: ""
+      };
+      this.$api.iMaintain.maintainPlan(params).then(res => {
         this.readyPlan = res.data.data;
       });
     },
     getWeekPlan() {
       //获取周任务
       this.$api.iMaintain.getWeekPlan().then(res => {
-        this.listData = res.data.data;
+        this.weekListData = res.data.data;
       });
     },
+    getMonthPlan() {
+      //获取月任务
+      this.$api.iMaintain.getMonthPlan().then(res => {
+        this.monthListData = res.data.data;
+        this.monthListData[0].list.splice(0, 2);
+      });
+    },
+
     getListHeight() {
       //获取list的最大高度
       const offsetTop = this.$refs.listGroup.getBoundingClientRect().top;
@@ -136,6 +171,7 @@ export default {
   mounted() {
     this.getReadyPlan();
     this.getWeekPlan();
+    this.getMonthPlan();
     this.$nextTick(() => {
       this.listHight = this.getListHeight();
     });

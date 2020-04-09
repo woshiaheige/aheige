@@ -115,6 +115,7 @@ export default {
         page: this.current,
         size: this.pagesize
       };
+      this.loading = true;
       this.$api.customer
         .cusContract(params)
         .then(res => {

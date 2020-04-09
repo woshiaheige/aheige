@@ -4,14 +4,14 @@
 
     <a-table
       rowKey="id"
+      :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
     >
-      <span slot="period" slot-scope="period, row">
-        <span>{{ row.startTime }}</span
-        >至<span>{{ row.endTime }}</span>
+      <span slot="type" slot-scope="type">
+        <span>{{ type == "1" ? "任务报告" : "工作流程" }}</span>
       </span>
       <span slot="action" slot-scope="row">
         <a @click="showTemplateEdit(row)">编辑</a>
@@ -37,12 +37,18 @@ export default {
     return {
       current: 1,
       total: 1,
+      loading: false,
       visible: false,
       columns: [
         {
           title: "序号",
           dataIndex: "order",
-          key: "order"
+          key: "order",
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "模板名称",
@@ -51,18 +57,19 @@ export default {
         },
         {
           title: "适用对象",
-          dataIndex: "object",
-          key: "object"
+          dataIndex: "type",
+          key: "type",
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "上传人",
-          dataIndex: "createdBy",
-          key: "createdBy"
+          dataIndex: "userName",
+          key: "userName"
         },
         {
           title: "上传时间",
-          dataIndex: "createdAt",
-          key: "createdAt"
+          dataIndex: "gmtModified",
+          key: "gmtModified"
         },
         {
           title: "操作",
@@ -71,14 +78,14 @@ export default {
         }
       ],
       tableData: [
-        {
-          order: "1",
-          id: "0",
-          name: "日常巡检",
-          object: "对象A",
-          createdBy: "鲁迅",
-          createdAt: "2019-10-15 15:12:11"
-        }
+        // {
+        //   order: "1",
+        //   id: "0",
+        //   name: "日常巡检",
+        //   object: "对象A",
+        //   createdBy: "鲁迅",
+        //   createdAt: "2019-10-15 15:12:11"
+        // }
       ]
     };
   },
@@ -100,12 +107,25 @@ export default {
       this.visible = true;
     },
     getTableData() {
-      this.$api.iMaintain.getTemplateList().then(res => {
-        if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
-        }
-      });
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.loading = true;
+      this.$api.iMaintain
+        .maintainTemplate(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tableData = [];
+          this.loading = false;
+        });
     }
   },
   mounted() {

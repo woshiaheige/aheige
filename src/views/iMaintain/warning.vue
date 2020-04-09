@@ -8,14 +8,21 @@
     </a-row>
     <a-table
       rowKey="id"
+      :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
       :rowSelection="rowSelection"
     >
-      <span slot="action" slot-scope="row">
-        <a @click="viewWarn(row)">查看</a>
+      <span slot="state" slot-scope="state">
+        <a-tag color="#f50" v-show="state == 1">未处理</a-tag>
+        <a-tag color="#2db7f5" v-show="state == 2">处理中</a-tag>
+        <a-tag color="#87d068" v-show="state == 3">已关闭</a-tag>
+        <a-tag color="#108ee9" v-show="state == 4">忽略</a-tag>
+      </span>
+      <span slot="action" slot-scope="action">
+        <a @click="viewWarn(action)">查看</a>
       </span>
     </a-table>
 
@@ -49,36 +56,43 @@ export default {
       visible: false,
       selectedRows: "", //选中的行
       rowSelection,
+      loading: true,
       columns: [
         {
           title: "序号",
           dataIndex: "order",
-          key: "order"
+          key: "order",
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "警报信息",
-          dataIndex: "msg",
-          key: "msg"
+          dataIndex: "message",
+          key: "message"
         },
         {
           title: "所属仪器",
-          dataIndex: "instrument",
-          key: "instrument"
+          dataIndex: "instrumentName",
+          key: "instrumentName"
         },
         {
           title: "所属站点",
-          dataIndex: "station",
-          key: "station"
+          dataIndex: "pointName",
+          key: "pointName"
         },
         {
           title: "状态",
-          dataIndex: "status",
-          key: "status"
+          dataIndex: "state",
+          key: "state",
+          scopedSlots: { customRender: "state" }
         },
         {
           title: "报警时间",
-          dataIndex: "warnTime",
-          key: "warnTime"
+          dataIndex: "gmtModified",
+          key: "gmtModified"
         },
         {
           title: "查看",
@@ -86,26 +100,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      tableData: [
-        {
-          order: "1",
-          id: "0",
-          msg: "值不变",
-          station: "可口可乐（污水）",
-          status: "处理中",
-          instrument: "仪器A",
-          warnTime: "2019-10-15 10:20"
-        },
-        {
-          order: "2",
-          id: "1",
-          msg: "值不准",
-          station: "丰华玻璃",
-          status: "处理中",
-          instrument: "仪器B",
-          warnTime: "2019-10-15 10:20"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
@@ -145,12 +140,25 @@ export default {
       this.visible = true;
     },
     getTableData() {
-      this.$api.iMaintain.getWarningList().then(res => {
-        if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
-        }
-      });
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.loading = true;
+      this.$api.iMaintain
+        .maintainAlert(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tableData = [];
+          this.loading = false;
+        });
     }
   },
   mounted() {

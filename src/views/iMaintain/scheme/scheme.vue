@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       current: 1,
-      total: 1,
+      total: 0,
       loading: true,
       pagesize: 10,
       visible: false,
@@ -104,12 +104,13 @@ export default {
         page: this.current,
         size: this.pagesize
       };
+      this.loading = true;
       this.$api.iMaintain
         .maintainProgramme(params)
         .then(res => {
           if (res.data.state == 0) {
             this.tableData = res.data.data.records;
-            this.total = res.data.data.total;
+            this.total = +res.data.data.total;
             this.loading = false;
           }
         })

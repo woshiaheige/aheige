@@ -111,6 +111,32 @@ Mock.mock("/api/i-maintain/week-plan", {
     }
   ]
 });
+//月站点列表
+Mock.mock("/api/i-maintain/month-plan", {
+  "data|12": [
+    {
+      "month|+1": [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月"
+      ],
+      list: [
+        { name: "东南污水厂（出水口）" },
+        { name: "佛山南海区桂城年顺酒楼" },
+        { name: "沙岗污水厂" }
+      ]
+    }
+  ]
+});
 //运维方案列表
 Mock.mock("/api/i-maintain/template-list", {
   "data|10": [
