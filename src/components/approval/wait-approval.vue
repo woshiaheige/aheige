@@ -45,7 +45,7 @@ export default {
         },
         {
           title: "标题",
-          dataIndex: "name",
+          dataIndex: "title",
           align: "center"
         },
         {
@@ -93,8 +93,9 @@ export default {
     },
     getTableData() {
       this.$api.approval.getWaitList().then(res => {
-        this.data = res.data.data;
-        this.total = res.data.total;
+        console.log(res);
+        this.data = res.data.data.records;
+        this.total = res.data.data.total;
       });
     },
     delect(row) {
