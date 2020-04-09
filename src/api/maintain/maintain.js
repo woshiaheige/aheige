@@ -2,6 +2,22 @@ import base from "../base";
 import axios from "../axios";
 
 const maintain = {
+  //任务一览
+  getManageTaskList(data) {
+    return axios.get(base.api + "manageTask", {
+      params: data
+    });
+  },
+  addManageTask(data) {
+    return axios.post(base.api + "manageTask/addManageTask", data);
+  },
+  //站点任务管理
+  getManagePointTaskList(data) {
+    return axios.get(base.api + "managePointTask", {
+      params: data
+    });
+  },
+  //mock
   getMissionList(data) {
     return axios.get(base.mock + "mission/list", {
       params: data

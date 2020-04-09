@@ -12,6 +12,7 @@
       :columns="columns"
       :dataSource="tableData"
       :pagination="false"
+      :loading="loading"
       v-margin:top="16"
     >
       <span slot="action">
@@ -30,11 +31,21 @@
       showQuickJumper
       showSizeChanger
       :defaultCurrent="current"
+      :defaultPageSize="pageSize"
       :total="total"
     />
-    <add-edit :visible="show" @cancel="cancel"></add-edit>
+    <!--新增-->
+    <add-edit
+      :visible="show"
+      :planList="planList"
+      :stationList="stationList"
+      @cancel="cancel"
+    ></add-edit>
+    <!--延期-->
     <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
+    <!--关闭-->
     <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
+    <!--详情-->
     <detail-modal
       :visible="detailShow"
       :tableData="tableData"
@@ -52,7 +63,9 @@ export default {
   data() {
     return {
       current: 1,
+      pageSize: 10,
       total: 0,
+      loading: false,
       columns: [
         {
           title: "序号",
@@ -60,7 +73,7 @@ export default {
         },
         {
           title: "任务名称（编号）",
-          dataIndex: "title"
+          dataIndex: "name"
         },
         {
           title: "站点",
@@ -68,15 +81,28 @@ export default {
         },
         {
           title: "企业名称",
-          dataIndex: "company"
+          dataIndex: "enterpriseName"
         },
         {
           title: "任务状态",
-          dataIndex: "status"
+          dataIndex: "status",
+          customRender: text => {
+            if (text == 1) {
+              return "已创建";
+            } else if (text == 2) {
+              return "处理中";
+            } else if (text == 3) {
+              return "已完成";
+            } else if (text == 4) {
+              return "已延期";
+            } else if (text == 5) {
+              return "已关闭";
+            }
+          }
         },
         {
           title: "运维小组",
-          dataIndex: "team"
+          dataIndex: "groupName"
         },
         {
           title: "任务时间",
@@ -94,6 +120,8 @@ export default {
         }
       ],
       tableData: [],
+      stationList: [],
+      planList: [],
       show: false,
       delayShow: false,
       closeShow: false,
@@ -102,19 +130,50 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMissionList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      let data = {
+        page: this.current,
+        size: this.pageSize
+      };
+      this.loading = true;
+      this.$api.maintain
+        .getManageTaskList(data)
+        .then(res => {
+          if (res.data.states == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.orders;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     cancel(value) {
       this.show = value;
       this.delayShow = value;
       this.closeShow = value;
       this.detailShow = value;
+      this.getTableData();
+    },
+    getStation() {
+      this.$api.common.selectStation().then(res => {
+        if (res.data.state == 0) {
+          this.stationList = res.data.data;
+        }
+      });
+    },
+    getPlan() {
+      this.$api.common.selectPlan().then(res => {
+        if (res.data.state == 0) {
+          this.planList = res.data.data;
+        }
+      });
     }
   },
   mounted() {
+    this.getStation();
+    this.getPlan();
     this.getTableData();
   }
 };
