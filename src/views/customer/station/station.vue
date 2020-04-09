@@ -52,9 +52,9 @@
       v-margin:top="16"
       :pagination="false"
     >
-      <span slot="period">
+      <!-- <span slot="period">
         <span>2020-1-10 11:22</span>&nbsp;至&nbsp;<span>2020-1-15 11:22</span>
-      </span>
+      </span> -->
       <span slot="action">
         <a-button size="small" @click="selectPeriod()">选择周期</a-button>
       </span>
@@ -115,10 +115,10 @@ export default {
           dataIndex: "group"
         },
         {
-          title: "暂停运营周期",
-          dataIndex: "period",
-          key: "period",
-          scopedSlots: { customRender: "period" }
+          title: "站点周期",
+          dataIndex: "period"
+          // key: "period",
+          // scopedSlots: { customRender: "period" }
         },
 
         {

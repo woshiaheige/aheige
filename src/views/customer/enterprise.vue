@@ -1,8 +1,21 @@
 <template>
   <a-card :bordered="false" class="enterprise" title="一企一档">
-    <a-button type="primary" @click="editEnterprise('')"
-      >添加运维企业客户</a-button
-    >
+    <a-form layout="inline">
+      <a-form-item>
+        <a-input placeholder="企业名称"></a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary">
+          查询
+        </a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="editEnterprise('')">
+          新增
+        </a-button>
+      </a-form-item>
+    </a-form>
+
     <a-table
       :columns="columns"
       :dataSource="tableData"
@@ -70,14 +83,14 @@ export default {
           align: "center"
         },
         {
-          title: "站点",
-          dataIndex: "stations",
-          scopedSlots: { customRender: "stations" },
+          title: "运维小组",
+          dataIndex: "group",
           align: "center"
         },
         {
-          title: "运维小组",
-          dataIndex: "group",
+          title: "站点",
+          dataIndex: "stations",
+          scopedSlots: { customRender: "stations" },
           align: "center"
         },
         {
