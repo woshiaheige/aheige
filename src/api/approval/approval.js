@@ -3,7 +3,7 @@ import axios from "./../axios";
 
 const approval = {
   getWaitList(data) {
-    return axios.get(base.api + "approval/wait", {
+    return axios.get(base.mock + "approval/wait", {
       params: data
     });
   }
