@@ -10,12 +10,12 @@
       v-margin:top="16"
       :pagination="false"
     >
-      <span slot="period" slot-scope="period, row">
-        {{ moment(row.gmtCreate).format("YYYY-MM-DD") }}
+      <span slot="gmtCreate" slot-scope="gmtCreate">
+        {{ $moment(gmtCreate).format("YYYY-MM-DD") }}
       </span>
-      <span slot="action" slot-scope="row">
-        <a-button @click="editScheme(row)">编辑</a-button>
-        <a-button v-margin:left="5">相关站点</a-button>
+      <span slot="action" slot-scope="_, row">
+        <a-button size="small" @click="editScheme(row)">编辑</a-button>
+        <a-button size="small" v-margin:left="5">相关站点</a-button>
       </span>
     </a-table>
 

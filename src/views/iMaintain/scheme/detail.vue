@@ -218,7 +218,7 @@ export default {
       },
       selectList: {
         projectTypeList: [], //方案项目类型
-        obObjectList: [], //作业对象
+        jobObjectList: [], //作业对象
         imstrumentTypeList: [], //仪器类型
         cycleTypeList: [], //周期类型
         itemSheetList: [] //方案表单
@@ -358,44 +358,44 @@ export default {
         }
       });
     },
-    geDictByParam() {
-      this.geDictByParamFn("PROGRAMME_ITEM_TYPE");
-      this.geDictByParamFn("PROGRAMME_ITEM_JOB_OBJECT");
-      this.geDictByParamFn("PROGRAMME_ITEM_INSTRUMENT_TYPE");
-      this.geDictByParamFn("PROGRAMME_ITEM_CYCLE_TYPE");
-      this.geDictByParamFn("PROGRAMME_ITEM_SHEET");
-    },
-    geDictByParamFn(code) {
+    geDictByParamFn() {
       //获取相应字典
-      let params = {
-        code: code
-      };
+      let params = [
+        "PROGRAMME_ITEM_TYPE",
+        "PROGRAMME_ITEM_JOB_OBJECT",
+        "PROGRAMME_ITEM_INSTRUMENT_TYPE",
+        "PROGRAMME_ITEM_CYCLE_TYPE",
+        "PROGRAMME_ITEM_SHEET"
+      ];
       this.$api.common.geDictByParam(params).then(res => {
         if (res.status == 200) {
-          switch (code) {
-            case "PROGRAMME_ITEM_TYPE": //方案项目类型
-              this.selectList.projectTypeList = res.data;
-              break;
-            case "PROGRAMME_ITEM_JOB_OBJECT": //作业对象
-              this.selectList.jobObjectList = res.data;
-              break;
-            case "PROGRAMME_ITEM_INSTRUMENT_TYPE": //仪器类型
-              this.selectList.imstrumentTypeList = res.data;
-              break;
-            case "PROGRAMME_ITEM_CYCLE_TYPE": //周期类型
-              this.selectList.cycleTypeList = res.data;
-              break;
-            case "PROGRAMME_ITEM_SHEET": //方案表单
-              this.selectList.itemSheetList = res.data;
-              break;
-          }
+          let data = res.data;
+          data.forEach(item => {
+            switch (item.code) {
+              case "PROGRAMME_ITEM_TYPE": //方案项目类型
+                this.selectList.projectTypeList.push(item);
+                break;
+              case "PROGRAMME_ITEM_JOB_OBJECT": //作业对象
+                this.selectList.jobObjectList.push(item);
+                break;
+              case "PROGRAMME_ITEM_INSTRUMENT_TYPE": //仪器类型
+                this.selectList.imstrumentTypeList.push(item);
+                break;
+              case "PROGRAMME_ITEM_CYCLE_TYPE": //周期类型
+                this.selectList.cycleTypeList.push(item);
+                break;
+              case "PROGRAMME_ITEM_SHEET": //方案表单
+                this.selectList.itemSheetList.push(item);
+                break;
+            }
+          });
         }
       });
     }
   },
   mounted() {
     this.getTableData();
-    this.geDictByParam();
+    this.geDictByParamFn();
   }
 };
 </script>

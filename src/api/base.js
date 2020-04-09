@@ -5,6 +5,6 @@ const base = {
   api: "/api/",
   file: ""
 };
-base.api = "http://192.168.1.41:8102/api";
+base.api = "http://192.168.1.41:8102/api/";
 
 export default base;
