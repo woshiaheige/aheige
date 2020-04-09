@@ -3,38 +3,38 @@ import axios from "../axios";
 
 const maintain = {
   getMissionList(data) {
-    return axios.get(base.api + "mission/list", {
+    return axios.get(base.mock + "mission/list", {
       params: data
     });
   },
   getCarList(data) {
-    return axios.get(base.api + "car/list", {
+    return axios.get(base.mock + "car/list", {
       params: data
     });
   },
   getViolationList(data) {
-    return axios.get(base.api + "violation/list", {
+    return axios.get(base.mock + "violation/list", {
       params: data
     });
   },
 
   //系统平台
   getAnnouncementList(data) {
-    return axios.get(base.api + "announcement/list", {
+    return axios.get(base.mock + "announcement/list", {
       params: data
     });
   },
 
   //部门管理列表
   getDepartmentList(data) {
-    return axios.get(base.api + "department/list", {
+    return axios.get(base.mock + "department/list", {
       params: data
     });
   },
 
   //成员管理列表
   getMemberList(data) {
-    return axios.get(base.api + "member/list", {
+    return axios.get(base.mock + "member/list", {
       params: data
     });
   }

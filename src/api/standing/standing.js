@@ -3,17 +3,17 @@ import axios from "../axios";
 
 const standing = {
   getCarList(data) {
-    return axios.get(base.api + "standing/car", {
+    return axios.get(base.mock + "standing/car", {
       params: data
     });
   },
   getSupplierList(data) {
-    return axios.get(base.api + "standing/supplier", {
+    return axios.get(base.mock + "standing/supplier", {
       params: data
     });
   },
   getProductList(data) {
-    return axios.get(base.api + "standing/product", {
+    return axios.get(base.mock + "standing/product", {
       params: data
     });
   }
