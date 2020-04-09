@@ -8,6 +8,7 @@
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
+      rowKey="id"
     >
       <span slot="stations" slot-scope="stations">
         <a-button type="primary" size="small" @click="chooseStation(stations)"
@@ -51,58 +52,47 @@ export default {
         {
           title: "序号",
           dataIndex: "order",
-          key: "order"
+          align: "center"
         },
         {
           title: "企业名称",
           dataIndex: "name",
-          key: "name"
+          align: "center"
         },
         {
           title: "行政区域",
           dataIndex: "address",
-          key: "address"
+          align: "center"
         },
         {
           title: "站点数量",
           dataIndex: "stationNum",
-          key: "stationNum"
+          align: "center"
         },
         {
           title: "站点",
-          key: "stations",
           dataIndex: "stations",
-          scopedSlots: { customRender: "stations" }
+          scopedSlots: { customRender: "stations" },
+          align: "center"
         },
         {
           title: "运维小组",
           dataIndex: "group",
-          key: "group"
+          align: "center"
         },
         {
           title: "负责人",
-          dataIndex: "principal",
-          key: "principal"
+          dataIndex: "contact",
+          align: "center"
         },
         {
           title: "操作",
           key: "action",
-          scopedSlots: { customRender: "action" }
+          scopedSlots: { customRender: "action" },
+          align: "center"
         }
       ],
-      tableData: [
-        {
-          key: "1",
-          id: "0",
-          order: "1",
-          name: "腾讯",
-          address: "深圳",
-          stationNum: "2",
-          stations: ["A", "B"],
-          group: "小组1",
-          principal: "麻花腾"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
@@ -134,8 +124,9 @@ export default {
     getTableData() {
       this.$api.customer.getEnterPriseList().then(res => {
         if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
+          console.log(res);
+          this.tableData = res.data.data.records;
+          this.total = res.data.data.total;
         }
       });
     }
