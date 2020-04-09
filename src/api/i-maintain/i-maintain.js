@@ -50,13 +50,21 @@ const iMaintain = {
       params: data
     });
   },
-  //新增方案项
-  addMaintainProgrammet(data) {
+  //新增方案
+  addMaintainProgramme(data) {
     return axios.post(
       base.api + "maintainProgramme/addMaintainProgramme",
       data
     );
   },
+  //修改方案
+  editMaintainProgramme(data) {
+    return axios.post(
+      base.api + "maintainProgramme/editMaintainProgramme",
+      data
+    );
+  },
+
   //删除方案项
   deleteMaintainProgramme(data) {
     return axios.post(
@@ -76,10 +84,24 @@ const iMaintain = {
       params: data
     });
   },
+
+  //获取方案项列表
+  maintainProgrammeItem(data) {
+    return axios.get(base.api + "maintainProgrammeItem/query", {
+      params: data
+    });
+  },
   //新增方案项详情
   addMaintainProgrammeItem(data) {
     return axios.post(
       base.api + "maintainProgrammeItem/addMaintainProgrammeItem",
+      data
+    );
+  },
+  //修改项目项详情
+  editMaintainProgrammeItem(data) {
+    return axios.post(
+      base.api + "maintainProgrammeItem/editMaintainProgrammeItem",
       data
     );
   },
@@ -90,13 +112,6 @@ const iMaintain = {
       {
         params: data
       }
-    );
-  },
-  //修改项目项详情
-  editMaintainProgrammeItem(data) {
-    return axios.post(
-      base.api + "maintainProgrammeItem/editMaintainProgrammeItem",
-      data
     );
   }
 };

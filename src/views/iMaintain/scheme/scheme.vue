@@ -44,7 +44,12 @@ export default {
         {
           title: "序号",
           dataIndex: "order",
-          key: "order"
+          key: "order",
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "方案名称",
