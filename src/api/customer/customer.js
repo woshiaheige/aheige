@@ -4,7 +4,7 @@ import axios from "../axios";
 const customer = {
   //获取一企一档列表
   getEnterPriseList(data) {
-    return axios.get(base.api + "customer/enterprise-list", {
+    return axios.get(base.api + "cusEnterprise/", {
       params: data
     });
   },

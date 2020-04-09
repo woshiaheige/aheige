@@ -8,6 +8,7 @@
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
+      rowKey="id"
     >
       <span slot="stations" slot-scope="stations">
         <a-button type="primary" size="small" @click="chooseStation(stations)"
@@ -134,8 +135,9 @@ export default {
     getTableData() {
       this.$api.customer.getEnterPriseList().then(res => {
         if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
+          console.log(res);
+          this.tableData = res.data.data.records;
+          this.total = res.data.data.total;
         }
       });
     }
