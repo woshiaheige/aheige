@@ -4,7 +4,7 @@ import axios from "../axios";
 const maintain = {
   //任务一览
   getManageTaskList(data) {
-    return axios.get(base.api + "manageTask", {
+    return axios.get(base.api + "manageTask/", {
       params: data
     });
   },

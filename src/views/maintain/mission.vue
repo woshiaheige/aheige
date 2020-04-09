@@ -132,15 +132,17 @@ export default {
     getTableData() {
       let data = {
         page: this.current,
-        size: this.pageSize
+        size: this.pageSize,
+        pointId: "",
+        state: ""
       };
       this.loading = true;
       this.$api.maintain
         .getManageTaskList(data)
         .then(res => {
-          if (res.data.states == 0) {
+          if (res.data.state == 0) {
             this.loading = false;
-            this.tableData = res.data.data.orders;
+            this.tableData = res.data.data.records;
             this.total = Number(res.data.data.total);
           }
         })
