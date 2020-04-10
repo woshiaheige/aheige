@@ -88,7 +88,7 @@
             v-margin:left="5"
             size="small"
             icon="table"
-            @click="listType = 'month'"
+            @click="listType = 'week'"
             >月计划</a-button
           >
           <a-checkbox class="toggle-station" v-model="ellipsisFlag"
@@ -138,10 +138,13 @@ export default {
     },
     getReadyPlan() {
       //获取未分配的任务
-      let params = {
-        type: ""
-      };
-      this.$api.iMaintain.maintainPlan(params).then(res => {
+      // let params = {
+      //   type: ""
+      // };
+      // this.$api.iMaintain.maintainPlan(params).then(res => {
+      //   this.readyPlan = res.data.data;
+      // })
+      this.$api.iMaintain.maintainPlan().then(res => {
         this.readyPlan = res.data.data;
       });
     },

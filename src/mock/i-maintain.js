@@ -26,38 +26,45 @@ Mock.mock("/api/i-maintain/operation-log", {
 
 //获取报警管理列表
 Mock.mock("/api/i-maintain/warning-list", {
-  "data|10": [
-    {
-      "key|+1": 1,
-      "id|+1": 0,
-      "order|+1": 1,
-      msg: "值不变",
-      "station|1": ["可口可乐（污水)", "百事可乐（废气)"],
-      "status|1": "处理中",
-      "instrument|1": ["仪器A", "仪器B"],
-      "signature|1": ["未确认"],
-      "warnTime|1": "2019-10-15"
-    }
-  ],
-  total: 10
+  data: {
+    "records|10": [
+      {
+        "key|+1": 1,
+        "id|+1": 0,
+        "order|+1": 1,
+        message: "值不变",
+        "pointName|1": ["可口可乐（污水)", "百事可乐（废气)"],
+        "status|1": "处理中",
+        "instrumentName|1": ["仪器A", "仪器B"],
+        "signature|1": ["未确认"],
+        "gmtModified|1": "2019-10-15"
+      }
+    ],
+    total: 10
+  },
+  state: 0
 });
 //运程控制
 Mock.mock("/api/i-maintain/remote-list", {
-  "data|10": [
-    {
-      "key|+1": 1,
-      "id|+1": 0,
-      "order|+1": 1,
-      msg: "值不变",
-      "station|1": ["可口可乐（站点)", "百事可乐（站点)"],
-      status: "",
-      softwareVersion: "",
-      hardwareVersion: "",
-      control: "",
-      createdAt: "2020-10-15 14:20:11"
-    }
-  ],
-  total: 10
+  data: {
+    "records|10": [
+      {
+        "key|+1": 1,
+        "id|+1": 0,
+        "order|+1": 1,
+        msg: "值不变",
+        "instrumentName|1": ["仪器A", "仪器B"],
+        "pointName|1": ["可口可乐（站点)", "百事可乐（站点)"],
+        state: "异常",
+        softwareVersion: "",
+        hardwareVersion: "",
+        control: "",
+        gmtModified: "2020-10-15 14:20:11"
+      }
+    ],
+    total: 10
+  },
+  state: 0
 });
 //运维方案列表
 Mock.mock("/api/i-maintain/scheme-list", {
@@ -139,34 +146,40 @@ Mock.mock("/api/i-maintain/month-plan", {
 });
 //运维方案列表
 Mock.mock("/api/i-maintain/template-list", {
-  "data|10": [
-    {
-      "key|+1": 1,
-      "id|+1": 0,
-      "order|+1": 1,
-      "name|1": ["日常巡检", "固定污染"],
-      "object|1": ["对象A", "对象B"],
-      schemeNum: "2",
-      useNum: "10",
-      createdBy: "马小跳",
-      createdAt: "2019-11-15 15:12:11"
-    }
-  ],
-  total: 10
+  data: {
+    "records|10": [
+      {
+        "key|+1": 1,
+        "id|+1": 0,
+        "order|+1": 1,
+        "name|1": ["日常巡检", "固定污染"],
+        "object|1": ["对象A", "对象B"],
+        schemeNum: "2",
+        useNum: "10",
+        "userName|1": ["马小跳", "玛丽"],
+        gmtModified: "2019-11-15 15:12:11"
+      }
+    ],
+    total: 10
+  },
+  state: 0
 });
 //实时动态列表
 Mock.mock("/api/i-maintain/realtime-list", {
-  "data|10": [
-    {
-      "key|+1": 1,
-      "id|+1": 0,
-      "order|+1": 1,
-      area: "",
-      point: "",
-      "enterprise|1": ["可口可乐佛山有限公司", "百事可乐佛山有限公司"],
-      updatedAt: "2019-9-20 11:20:15",
-      "networkingStatus|1": ["在线", "离线"]
-    }
-  ],
-  total: 10
+  data: {
+    "records|10": [
+      {
+        "key|+1": 1,
+        "id|+1": 0,
+        "order|+1": 1,
+        area: "",
+        point: "",
+        "enterprise|1": ["可口可乐佛山有限公司", "百事可乐佛山有限公司"],
+        updatedAt: "2019-9-20 11:20:15",
+        "networkingStatus|1": ["在线", "离线"]
+      }
+    ],
+    total: 10
+  },
+  state: 0
 });

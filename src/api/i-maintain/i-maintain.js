@@ -2,9 +2,15 @@ import base from "../base";
 import axios from "../axios";
 
 const iMaintain = {
+  // //获取运维计划列表
+  // maintainPlan(data) {
+  //   return axios.get(base.api + "maintainPlan", {
+  //     params: data
+  //   });
+  // },
   //获取运维计划列表
   maintainPlan(data) {
-    return axios.get(base.api + "maintainPlan", {
+    return axios.get(base.mock + "i-maintain/ready-plan", {
       params: data
     });
   },
@@ -27,16 +33,23 @@ const iMaintain = {
     });
   },
   //报警列表
-  maintainAlert(data) {
-    return axios.get(base.api + "maintainAlert/", {
-      params: data
-    });
+  // maintainAlert(data) {
+  //   return axios.get(base.api + "maintainAlert/", {
+  //     params: data
+  //   });
+  // },
+  maintainAlert() {
+    return axios.get(base.mock + "i-maintain/warning-list");
   },
+
   //远程控制列表
-  maintainControl(data) {
-    return axios.get(base.api + "maintainControl/", {
-      params: data
-    });
+  // maintainControl(data) {
+  //   return axios.get(base.api + "maintainControl/", {
+  //     params: data
+  //   });
+  // },
+  maintainControl() {
+    return axios.get(base.mock + "i-maintain/remote-list");
   },
   //运维方案列表
   getSchemeList(data) {
@@ -45,17 +58,24 @@ const iMaintain = {
     });
   },
   //报告列表
-  maintainTemplate(data) {
-    return axios.get(base.api + "maintainTemplate/", {
-      params: data
-    });
+  // maintainTemplate(data) {
+  //   return axios.get(base.api + "maintainTemplate/", {
+  //     params: data
+  //   });
+  // },
+  maintainTemplate() {
+    return axios.get(base.mock + "i-maintain/template-list");
   },
   //实时动态列表
-  maintainRtd(data) {
-    return axios.get(base.api + "maintainRtd/", {
-      params: data
-    });
+  // maintainRtd(data) {
+  //   return axios.get(base.api + "maintainRtd/", {
+  //     params: data
+  //   });
+  // },
+  maintainRtd() {
+    return axios.get(base.mock + "i-maintain/realtime-list");
   },
+
   //获取方案id
   generatedId(data) {
     return axios.get(base.mock + "common/generatedId", {

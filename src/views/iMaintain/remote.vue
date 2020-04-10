@@ -106,6 +106,7 @@ export default {
       this.$api.iMaintain
         .maintainControl(params)
         .then(res => {
+          console.log(res);
           if (res.data.state == 0) {
             this.tableData = res.data.data.records;
             this.total = +res.data.data.total;

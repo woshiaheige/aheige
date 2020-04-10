@@ -37,6 +37,7 @@ export default {
     return {
       current: 1,
       total: 1,
+      pagesize: 10,
       loading: false,
       visible: false,
       columns: [
@@ -78,14 +79,14 @@ export default {
         }
       ],
       tableData: [
-        // {
-        //   order: "1",
-        //   id: "0",
-        //   name: "日常巡检",
-        //   object: "对象A",
-        //   createdBy: "鲁迅",
-        //   createdAt: "2019-10-15 15:12:11"
-        // }
+        {
+          order: "1",
+          id: "0",
+          name: "日常巡检",
+          type: "对象A",
+          userName: "马小跳",
+          gmtModified: "2019-10-15 15:12:11"
+        }
       ]
     };
   },

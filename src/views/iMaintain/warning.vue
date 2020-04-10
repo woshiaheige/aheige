@@ -53,6 +53,7 @@ export default {
     return {
       current: 1,
       total: 1,
+      pagesize: 10,
       visible: false,
       selectedRows: "", //选中的行
       rowSelection,
@@ -148,6 +149,7 @@ export default {
       this.$api.iMaintain
         .maintainAlert(params)
         .then(res => {
+          console.log(res);
           if (res.data.state == 0) {
             this.tableData = res.data.data.records;
             this.total = +res.data.data.total;

@@ -47,7 +47,7 @@ export default {
       pagesize: 10,
       visible: false,
       contractId: "",
-      loading: true,
+      loading: false,
       columns: [
         {
           title: "序号",
