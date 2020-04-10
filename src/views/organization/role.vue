@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" class="role">
+  <a-card :bordered="false" class="organization role">
     <span slot="title">角色管理 </span>
     <a-row :gutter="16">
       <!--left tree-->
@@ -9,12 +9,13 @@
       <!--right content-->
       <a-col class="department-right" :span="16">
         <a-card>
-          <div class="department-right-title">
+          <!-- <div class="department-right-title">
             <b>默认角色组</b>
             <a-button v-margin:left="16">编辑角色组</a-button>
             <a-button v-margin:left="16">编辑权限</a-button>
             <p class="roleTips">默认角色组及角色为系统内部使用，无法编辑</p>
-          </div>
+          </div> -->
+          <a-button type="primary">添加角色</a-button>
           <div class="department-right-table">
             <a-table
               :columns="columns"
