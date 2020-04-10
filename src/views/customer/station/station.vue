@@ -120,7 +120,11 @@ export default {
           // key: "period",
           // scopedSlots: { customRender: "period" }
         },
-
+        {
+          title: "停止周期",
+          key: "date",
+          dataIndex: "date"
+        },
         {
           title: "操作",
           key: "action",
