@@ -265,11 +265,11 @@ export default {
             {
               title: "角色管理",
               key: "role"
-            },
-            {
-              title: "权限管理",
-              key: "permission"
             }
+            // {
+            //   title: "权限管理",
+            //   key: "permission"
+            // }
           ]
         }
       ]

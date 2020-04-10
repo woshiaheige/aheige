@@ -31,7 +31,11 @@
       v-margin:top="16"
     >
       <span slot="action" slot-scope="row">
-        <a @click="onCheck(row)">查看</a>
+        <a @click="onCheck(row)">详情</a>
+        <a-divider type="vertical" />
+        <a @click="onEdit(row)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="onDelete(row)">删除</a>
       </span>
     </a-table>
     <a-pagination
@@ -79,14 +83,15 @@ export default {
           title: "角色",
           dataIndex: "role"
         },
+        // {
+        //   title: "状态",
+        //   dataIndex: "status"
+        // },
         {
-          title: "状态",
-          dataIndex: "status"
-        },
-        {
-          title: "查看",
+          title: "操作",
           key: "action",
-          scopedSlots: { customRender: "action" }
+          scopedSlots: { customRender: "action" },
+          align: "center"
         }
       ],
       tableData: [],
@@ -113,6 +118,19 @@ export default {
     onCheck(row) {
       this.checkObj.show = true;
       this.checkObj.row = row;
+    },
+    onDelete(row) {
+      console.log(row);
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
     },
     cancel(value) {
       this.obj.show = value;
