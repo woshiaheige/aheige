@@ -94,8 +94,9 @@ export default {
     getTableData() {
       this.$api.approval.getWaitList().then(res => {
         console.log(res);
-        this.data = res.data.data.records;
-        this.total = res.data.data.total;
+        this.data = res.data.data;
+        // this.data = res.data.data.records;
+        // this.total = res.data.data.total;
       });
     },
     delect(row) {

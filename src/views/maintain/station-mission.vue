@@ -3,15 +3,20 @@
     <span slot="title">站点任务管理</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-select placeholder="企业客户" v-width="150">
+        <a-select
+          placeholder="企业客户"
+          v-width="150"
+          v-model="list.enterpriseId"
+        >
           <!-- <a-select-option value="1"></a-select-option> -->
         </a-select>
       </a-form-item>
       <a-form-item>
-        <a-select placeholder="运维小组" v-width="150"> </a-select>
+        <a-select placeholder="运维小组" v-width="150" v-model="list.deptId">
+        </a-select>
       </a-form-item>
       <a-form-item>
-        <a-input placeholder="站点名称、编号"></a-input>
+        <a-input placeholder="站点名称、编号" v-model="list.name"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">
@@ -23,6 +28,7 @@
       :columns="columns"
       :dataSource="tableData"
       :pagination="false"
+      :loading="loading"
       v-margin:top="16"
     >
       <span slot="action">
@@ -34,6 +40,7 @@
       showQuickJumper
       showSizeChanger
       :defaultCurrent="current"
+      :defaultPageSize="pageSize"
       :total="total"
     />
     <add-edit :visible="show" @cancel="cancel"></add-edit>
@@ -46,7 +53,12 @@ export default {
   data() {
     return {
       current: 1,
+      pageSize: 10,
       total: 0,
+      loading: false,
+      list: {
+        name: ""
+      },
       columns: [
         {
           title: "序号",
@@ -88,6 +100,24 @@ export default {
         this.tableData = res.data.data;
         this.total = res.data.total;
       });
+      // let data = {
+      //   page: this.current,
+      //   size: this.pageSize
+      // };
+      // this.loading = true;
+      // this.$api.maintain
+      //   .getManagePointTaskList(data)
+      //   .then(res => {
+      //     if (res.data.state == 0) {
+      //       this.loading = false;
+      //       this.tableData = res.data.data.records;
+      //       this.total = res.data.total;
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //     this.loading = false;
+      //   });
     },
     cancel(value) {
       this.show = value;
