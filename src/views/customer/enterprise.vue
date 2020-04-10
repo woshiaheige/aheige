@@ -64,8 +64,8 @@ export default {
       columns: [
         {
           title: "序号",
-          dataIndex: "order",
-          align: "center"
+          align: "center",
+          customRender: (text, row, index) => `${index + 1}`
         },
         {
           title: "企业名称",
@@ -82,19 +82,19 @@ export default {
           dataIndex: "stationNum",
           align: "center"
         },
+        // {
+        //   title: "运维小组",
+        //   dataIndex: "group",
+        //   align: "center"
+        // },
+        // {
+        //   title: "站点",
+        //   dataIndex: "stations",
+        //   scopedSlots: { customRender: "stations" },
+        //   align: "center"
+        // },
         {
-          title: "运维小组",
-          dataIndex: "group",
-          align: "center"
-        },
-        {
-          title: "站点",
-          dataIndex: "stations",
-          scopedSlots: { customRender: "stations" },
-          align: "center"
-        },
-        {
-          title: "负责人",
+          title: "企业负责人",
           dataIndex: "contact",
           align: "center"
         },
