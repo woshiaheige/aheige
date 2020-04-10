@@ -133,7 +133,7 @@ export default {
     }
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
   }
 };
 </script>
