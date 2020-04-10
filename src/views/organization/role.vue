@@ -15,7 +15,7 @@
             <a-button v-margin:left="16">编辑权限</a-button>
             <p class="roleTips">默认角色组及角色为系统内部使用，无法编辑</p>
           </div> -->
-          <a-button type="primary">添加角色</a-button>
+          <a-button type="primary" @click="onEdit()">添加角色</a-button>
           <div class="department-right-table">
             <a-table
               :columns="columns"
@@ -32,12 +32,14 @@
         </a-card>
       </a-col>
     </a-row>
+    <add-edit :obj="obj" @cancel="cancel"></add-edit>
   </a-card>
 </template>
 <script>
+import addEdit from "@/components/organization/role/add-edit";
 import roleTree from "@/components/organization/role-tree";
 export default {
-  components: { roleTree },
+  components: { roleTree, addEdit },
   data() {
     return {
       selectedRowKeys: [],
@@ -63,7 +65,10 @@ export default {
           align: "center"
         }
       ],
-      tableData: []
+      tableData: [],
+      obj: {
+        show: false
+      }
     };
   },
   computed: {
@@ -84,6 +89,14 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    },
+    onEdit(row) {
+      console.log(row);
+      this.obj.show = true;
+      this.obj.row = row;
+    },
+    cancel(value) {
+      this.obj.show = value;
     }
   }
 };
