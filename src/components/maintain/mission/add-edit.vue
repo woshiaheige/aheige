@@ -131,6 +131,7 @@ export default {
             data.programmeItemIds.push(item);
           }
         });
+        data.flag = true;
         data.gmtCreate = this.$moment(data.gmtCreate).format(
           "YYYY-MM-DD HH:mm:ss"
         );
