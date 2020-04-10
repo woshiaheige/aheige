@@ -78,7 +78,7 @@ const iMaintain = {
 
   //获取方案id
   generatedId(data) {
-    return axios.get(base.mock + "common/generatedId", {
+    return axios.get(base.api + "common/generatedId", {
       params: data
     });
   },
