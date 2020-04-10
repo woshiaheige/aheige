@@ -24,6 +24,7 @@
 
     <a-table
       rowKey="id"
+      :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       v-margin:top="16"
@@ -51,6 +52,8 @@ export default {
     return {
       current: 1,
       total: 1,
+      pagesize: 10,
+      loading: true,
       visible: false,
       enterprise: [],
       group: [],
@@ -108,12 +111,25 @@ export default {
       this.visible = true;
     },
     getTableData() {
-      this.$api.iMaintain.getRealtimeList().then(res => {
-        if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
-        }
-      });
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.loading = true;
+      this.$api.iMaintain
+        .maintainRtd(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tableData = [];
+          this.loading = false;
+        });
     }
   },
   mounted() {

@@ -12,26 +12,35 @@
             type="primary"
             v-margin:left="10"
             @click="resetForm"
+            v-if="programmeId"
             >新方案项</a-button
           >
-          <a-button icon="save" type="primary" v-margin="'0 10'" @click="save"
-            >保存</a-button
+          <a-button
+            icon="save"
+            type="primary"
+            v-margin="'0 10'"
+            @click="saveProject"
+            >保存方案</a-button
           >
           <a-button
             icon="delete"
             type="danger"
-            v-if="projectId"
+            v-if="programmeId"
             @click="deleteProject"
             >删除</a-button
           >
         </a-col>
         <a-col :span="24">
           <a-form :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }">
-            <a-form-item label="方案名称">
-              <a-input v-model="project.name"></a-input>
-            </a-form-item>
             <a-form-item label="方案编号">
-              <a-input v-model="project.number"></a-input>
+              <a-input
+                placeholder="方案编号"
+                v-model="project.number"
+                :disabled="programmeId !== ''"
+              ></a-input>
+            </a-form-item>
+            <a-form-item label="方案名称">
+              <a-input v-model="project.name" placeholder="方案名称"></a-input>
             </a-form-item>
           </a-form>
         </a-col>
@@ -51,16 +60,10 @@
             slot-scope="item, index"
             :key="index"
             style="cursor:pointer"
-            @click="getMaintainProgrammeById(item.id)"
+            @click="getMaintainProgrammeItemById(item.id)"
             >{{ item.name }}</a-list-item
           >
         </a-list>
-        <a-pagination
-          class="pagination"
-          :defaultCurrent="current"
-          :total="total"
-          @change="pagechange"
-        />
       </a-layout-sider>
       <!-- 左侧方案栏end -->
 
@@ -68,14 +71,14 @@
       <a-layout-content
         style="background:#fff"
         class="content"
-        v-if="!projectId"
+        v-if="!programmeId"
       >
         <h3>请点击"新方案项"，或者选择一个方案项进行编辑</h3>
       </a-layout-content>
       <a-layout-content
         style="background:#fff"
         class="content"
-        v-if="projectId"
+        v-if="programmeId"
       >
         <h3>方案项详情</h3>
         <a-form
@@ -86,7 +89,7 @@
         >
           <a-form-item label="方案项名">
             <a-input
-              placeholder="请输入方案项名"
+              placeholder="方案项名"
               v-decorator="[
                 'name',
                 { rules: [{ required: true, message: '请填写方案项名' }] }
@@ -95,7 +98,7 @@
           </a-form-item>
           <a-form-item label="方案项类型">
             <a-select
-              placeholder="请选择方案项类型"
+              placeholder="方案项类型"
               v-decorator="[
                 'type',
                 { rules: [{ required: true, message: '请选择方案项目类型' }] }
@@ -112,7 +115,7 @@
           </a-form-item>
           <a-form-item label="作业对象">
             <a-select
-              placeholder="请选择作业对象"
+              placeholder="作业对象"
               v-decorator="[
                 'jobObject',
                 { rules: [{ required: true, message: '请选择作业对象' }] }
@@ -128,10 +131,7 @@
             </a-select>
           </a-form-item>
           <a-form-item label="仪器类型">
-            <a-select
-              placeholder="请选择仪器类型"
-              v-decorator="['instrumenType']"
-            >
+            <a-select placeholder="仪器类型" v-decorator="['instrumentType']">
               <a-select-option
                 v-for="(item, index) of selectList.imstrumentTypeList"
                 :key="index"
@@ -143,9 +143,9 @@
           </a-form-item>
           <a-form-item label="使用的表单">
             <a-select
-              placeholder="请选择使用的表单"
+              placeholder="使用的表单"
               v-decorator="[
-                'menu',
+                'sheet',
                 { rules: [{ required: true, message: '请选择使用的表单' }] }
               ]"
             >
@@ -165,7 +165,7 @@
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
-            <a-select placeholder="请选择周期类型" v-decorator="['circleType']">
+            <a-select placeholder="周期类型" v-decorator="['cycleType']">
               <a-select-option
                 v-for="(item, index) of selectList.cycleTypeList"
                 :key="index"
@@ -176,10 +176,10 @@
             </a-select>
           </a-form-item>
           <a-form-item label="周期单位">
-            <a-select placeholder="请选择周期单位" v-decorator="['circleUnit']">
-              <a-select-option value="1">
+            <a-select placeholder="周期单位" v-decorator="['circleUnit']">
+              <!-- <a-select-option value="1">
                 Option 1
-              </a-select-option>
+              </a-select-option> -->
             </a-select>
           </a-form-item>
         </a-form>
@@ -190,10 +190,15 @@
           v-margin:bottom="20"
         >
           <a-col>
-            <a-button>
-              增加特例项目
+            <a-button type="primary" @click="saveProjectItem">
+              保存方案项
             </a-button>
-            <a-button type="danger" v-margin:left="20">删除</a-button>
+            <a-button
+              type="danger"
+              v-margin:left="20"
+              @click="deleteProjectItem"
+              >删除</a-button
+            >
           </a-col>
         </a-row>
       </a-layout-content>
@@ -206,12 +211,10 @@
 export default {
   data() {
     return {
-      page: 1,
-      current: 1,
-      pagesize: 10,
       tableData: [],
       total: 0,
-      projectId: "",
+      programmeId: "", //方案id
+      programmeItemId: "", //方案项id
       project: {
         name: "",
         number: ""
@@ -223,7 +226,8 @@ export default {
         cycleTypeList: [], //周期类型
         itemSheetList: [] //方案表单
       },
-      form: this.$form.createForm(this, { name: "contractEdit" })
+      form: this.$form.createForm(this, { name: "contractEdit" }),
+      newProgrammeItemFlag: true //新增，修改方案项状态
     };
   },
   methods: {
@@ -233,13 +237,12 @@ export default {
     reBack() {
       this.$router.replace({ path: "/i-maintain/scheme" });
     },
-    save() {
-      if (this.projectId) {
-        //修改方案详情
-        this.addMaintainProgrammeItem();
-      } else {
+    saveProject() {
+      if (!this.programmeId) {
         //新增方案
-        this.addMaintainProgrammet();
+        this.addMaintainProgramme();
+      } else {
+        this.editMaintainProgramme();
       }
     },
     deleteProject() {
@@ -255,11 +258,37 @@ export default {
         }
       });
     },
+    deleteProjectItem() {
+      let _this = this;
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          _this.deleteProjectItemFn();
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
     deleteProjectFn() {
-      let params = { id: this.projectId };
+      let params = { id: this.programmeId };
       this.$api.iMaintain.deleteMaintainProgramme(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success(res.data.msg);
+          this.$message.success("删除方案成功");
+          setTimeout(() => {
+            this.reBack();
+          }, 1500);
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    deleteProjectItemFn() {
+      let params = { id: this.programmeItemId };
+      this.$api.iMaintain.deleteMaintainProgrammeItemm(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("删除方案项成功");
           this.getTableData();
           this.resetForm();
         } else {
@@ -269,13 +298,10 @@ export default {
     },
     resetForm() {
       //重置
-      this.projectId = "";
-      this.project = {
-        name: "",
-        number: ""
-      };
+      this.programmeItemId = "";
+      this.form.resetFields();
     },
-    addMaintainProgrammet() {
+    addMaintainProgramme() {
       //新增方案
       let params = {
         name: this.project.name,
@@ -289,22 +315,54 @@ export default {
         this.$message.error("请输入方案编号");
         return;
       }
-      this.$api.iMaintain.addMaintainProgrammet(params).then(res => {
-        this.$message.success(res.data.msg);
-      });
+      this.$api.iMaintain
+        .addMaintainProgramme(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.programmeId = res.data.data;
+            this.$message.success(res.data.msg);
+          } else {
+            this.$message.error(res.data.msg);
+          }
+        })
+        .catch(error => {
+          this.$message.error(error.data.msg);
+        });
+    },
+    editMaintainProgramme() {
+      //修改方案
+      let params = {
+        name: this.project.name,
+        number: this.project.number,
+        id: this.programmeId
+      };
+      if (this.project.name == "") {
+        this.$message.error("请输入方案名称");
+        return;
+      }
+      if (this.project.number == "") {
+        this.$message.error("请输入方案编号");
+        return;
+      }
+      this.$api.iMaintain
+        .editMaintainProgramme(params)
+        .then(res => {
+          this.$message.success(res.data.msg);
+        })
+        .catch(error => {
+          this.$message.error(error.data.msg);
+        });
     },
     getTableData() {
       //获取方案列表
       let params = {
-        page: this.current,
-        size: this.pagesize
+        programmeId: this.programmeId
       };
       this.$api.iMaintain
-        .maintainProgramme(params)
+        .maintainProgrammeItem(params)
         .then(res => {
           if (res.data.state == 0) {
-            this.tableData = res.data.data.records;
-            this.total = res.data.data.total;
+            this.tableData = res.data.data;
           }
         })
         .catch(error => {
@@ -312,11 +370,13 @@ export default {
           this.tableData = [];
         });
     },
-    getMaintainProgrammeById(id) {
+    getMaintainProgrammeById() {
       //获取方案详情
-      this.projectId = id;
+      let params = {
+        id: this.programmeId
+      };
       this.$api.iMaintain
-        .getMaintainProgrammeById({ id: id })
+        .getMaintainProgrammeById(params)
         .then(res => {
           if (res.data.state == 0) {
             let data = res.data.data;
@@ -324,7 +384,6 @@ export default {
               name: data.name,
               number: data.number
             };
-            this.getMaintainProgrammeItemById(id);
           }
         })
         .catch(error => {
@@ -333,26 +392,64 @@ export default {
     },
     getMaintainProgrammeItemById(id) {
       //获取方案项详情
+      this.programmeItemId = id;
       this.$api.iMaintain
         .getMaintainProgrammeItemById({ id: id })
         .then(res => {
           if (res.data.state == 0) {
             let data = res.data.data;
-            console.log(data);
+            if (data == null) {
+              //新增方案项
+              this.newProgrammeItemFlag = true;
+            } else {
+              this.newProgrammeItemFlag = false;
+              this.form.setFieldsValue({
+                name: data.name,
+                type: data.type,
+                jobObject: data.jobObject,
+                instrumentType: data.instrumentType,
+                cycleType: data.cycleType,
+                sheet: data.sheet
+              });
+            }
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    //新增方案项详情
+    async saveProjectItem() {
+      if (!this.programmeItemId) {
+        //新增方案项
+        await this.addMaintainProgrammeItem();
+      } else {
+        await this.editMaintainProgrammeItem();
+      }
+      this.getTableData();
+    },
+    //新增方案项
     addMaintainProgrammeItem() {
-      // this.form.resetFields();
+      this.form.validateFields(error => {
+        if (error) return;
+        let params = this.form.getFieldsValue();
+        params.taskId = this.programmeId;
+        this.$api.iMaintain.addMaintainProgrammeItem(params).then(res => {
+          if (res.data.state == 0) {
+            this.$message.success(res.data.msg);
+          } else {
+            this.$message.error(res.data.msg);
+          }
+        });
+      });
+    },
+    //修改方案项
+    editMaintainProgrammeItem() {
       let params = this.form.getFieldsValue();
-      params.id = this.projectId;
+      params.taskId = this.programmeId;
+      params.id = this.programmeItemId;
       this.$api.iMaintain.editMaintainProgrammeItem(params).then(res => {
         if (res.data.state == 0) {
-          console.log(res);
+          this.$message.success(res.data.msg);
         } else {
           this.$message.error(res.data.msg);
         }
@@ -371,6 +468,7 @@ export default {
         if (res.status == 200) {
           let data = res.data;
           data.forEach(item => {
+            item.id = +item.id;
             switch (item.code) {
               case "PROGRAMME_ITEM_TYPE": //方案项目类型
                 this.selectList.projectTypeList.push(item);
@@ -391,10 +489,23 @@ export default {
           });
         }
       });
+    },
+    generatedId() {
+      this.$api.iMaintain.generatedId().then(res => {
+        if (res.data.state == 0) {
+          this.project.number = res.data.data;
+        }
+      });
     }
   },
   mounted() {
-    this.getTableData();
+    this.programmeId = this.$route.query.id || "";
+    if (this.programmeId) {
+      this.getMaintainProgrammeById();
+      this.getTableData();
+    } else {
+      this.generatedId();
+    }
     this.geDictByParamFn();
   }
 };

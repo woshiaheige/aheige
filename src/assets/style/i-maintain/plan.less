@@ -54,4 +54,25 @@
       background: #eee;
     }
   }
+  .month-drag-list{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    .month-list-group{
+      
+      width: 16.6%;
+      text-align: center;
+      .month-list-group-item{
+        border: 1px solid #eee;
+        padding: 5px;
+        .ellipsis(1);
+      }
+      &:nth-child(n+7){
+        margin-top:50px;
+      }
+    }
+    .empty-list{
+      background: #eee;
+    }
+  }
 }

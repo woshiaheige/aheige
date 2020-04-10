@@ -2,11 +2,18 @@
   <a-card :bordered="false" class="remote" title="远程控制">
     <a-table
       rowKey="id"
+      :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
     >
+      <span slot="gmtCreate" slot-scope="gmtCreate">
+        {{ $moment(gmtCreate).format("YYYY-MM-DD hh:mm:ss") }}
+      </span>
+      <span slot="state" slot-scope="state">
+        {{ state }}
+      </span>
       <span slot="action" slot-scope="row">
         <a-button @click="row">重启</a-button>
       </span>
@@ -18,6 +25,8 @@
       showSizeChanger
       :defaultCurrent="current"
       :total="total"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
   </a-card>
 </template>
@@ -29,26 +38,34 @@ export default {
       current: 1,
       total: 1,
       visible: false,
+      loading: true,
+      pagesize: 10,
       columns: [
         {
           title: "序号",
           dataIndex: "order",
-          key: "order"
+          key: "order",
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "所属仪器",
-          dataIndex: "instrument",
-          key: "instrument"
+          dataIndex: "instrumentName",
+          key: "instrumentName"
         },
         {
           title: "所属站点",
-          dataIndex: "station",
-          key: "station"
+          dataIndex: " pointName",
+          key: " pointName"
         },
         {
           title: "状态",
-          dataIndex: "status",
-          key: "status"
+          dataIndex: "state",
+          key: "state",
+          scopedSlots: { customRender: "state" }
         },
         {
           title: "软件版本",
@@ -72,33 +89,35 @@ export default {
         },
         {
           title: "获取时间",
-          dataIndex: "createdAt",
-          key: "createdAt"
+          dataIndex: "gmtModified",
+          key: "gmtModified"
         }
       ],
-      tableData: [
-        {
-          order: "1",
-          id: "0",
-          instrument: "在线烟气分析仪",
-          station: "可口可乐（站点）",
-          status: "",
-          softwareVersion: "",
-          hardwareVersion: "",
-          control: "",
-          createdAt: "2020-10-15 14:20:11"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
     getTableData() {
-      this.$api.iMaintain.getRemoteList().then(res => {
-        if (res.status == 200) {
-          this.tableData = res.data.data;
-          this.total = res.data.total;
-        }
-      });
+      let params = {
+        page: this.current,
+        size: this.pagesize
+      };
+      this.loading = true;
+      this.$api.iMaintain
+        .maintainControl(params)
+        .then(res => {
+          console.log(res);
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tableData = [];
+          this.loading = false;
+        });
     }
   },
   mounted() {

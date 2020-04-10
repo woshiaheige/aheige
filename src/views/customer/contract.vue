@@ -47,7 +47,7 @@ export default {
       pagesize: 10,
       visible: false,
       contractId: "",
-      loading: true,
+      loading: false,
       columns: [
         {
           title: "序号",
@@ -115,6 +115,7 @@ export default {
         page: this.current,
         size: this.pagesize
       };
+      this.loading = true;
       this.$api.customer
         .cusContract(params)
         .then(res => {
