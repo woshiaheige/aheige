@@ -46,6 +46,9 @@
           <a-select-option value="man">男</a-select-option>
         </a-select>
       </a-form-item>
+      <a-form-item label="部门">
+        <a-select placeholder="部门"> </a-select>
+      </a-form-item>
       <a-form-item label="员工职位">
         <a-input placeholder="员工职位" />
       </a-form-item>

@@ -1,30 +1,21 @@
 <template>
   <a-modal
-    :title="title + '角色'"
+    :title="title + '部门'"
     v-model="status"
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <!-- <a-form-item label="部门">
-        <a-select placeholder="部门"> </a-select>
+      <a-form-item label="名称">
+        <a-input
+          placeholder="名称"
+          v-decorator="[
+            'title',
+            { rules: [{ required: true, message: '输入名称' }] }
+          ]"
+        />
       </a-form-item>
-      <a-form-item label="角色编码">
-        <a-input placeholder="角色编码" />
-      </a-form-item> -->
-      <a-form-item label="角色名称">
-        <a-input placeholder="角色名称" />
-      </a-form-item>
-      <!-- <a-form-item label="状态">
-        <a-radio-group name="radioGroup" :defaultValue="1">
-          <a-radio :value="1">可用</a-radio>
-          <a-radio :value="2">不可用</a-radio>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item label="角色授权">
-        <a-select placeholder="角色授权"> </a-select>
-      </a-form-item> -->
     </a-form>
   </a-modal>
 </template>
@@ -59,7 +50,7 @@ export default {
   watch: {
     status() {
       if (this.status == true) {
-        if (this.obj.row != "" && this.obj.row != undefined) {
+        if (this.obj.key == "edit") {
           this.title = "编辑";
         } else {
           this.title = "新增";

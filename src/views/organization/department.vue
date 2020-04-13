@@ -3,11 +3,11 @@
     <span slot="title">部门管理 </span>
     <a-row :gutter="16">
       <!--left tree-->
-      <a-col class="department-left" :span="8">
-        <department-tree></department-tree>
-      </a-col>
+      <!-- <a-col class="department-left" :span="8"> -->
+      <department-tree></department-tree>
+      <!-- </a-col> -->
       <!--right content-->
-      <a-col class="department-right" :span="16">
+      <!-- <a-col class="department-right" :span="16">
         <a-card>
           <a-breadcrumb separator=">">
             <a-breadcrumb-item>化一环境有限公司</a-breadcrumb-item>
@@ -43,12 +43,12 @@
             </a-table>
           </div>
         </a-card>
-      </a-col>
+      </!-->
     </a-row>
   </a-card>
 </template>
 <script>
-import departmentTree from "@/components/organization/department-tree";
+import departmentTree from "@/components/organization/department/tree";
 export default {
   components: { departmentTree },
   data() {
