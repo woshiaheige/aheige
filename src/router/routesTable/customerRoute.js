@@ -38,6 +38,16 @@ const customer = [
         /* webpackChunkName: "view-customer" */
         "@/views/customer/contract.vue"
       )
+  },
+  {
+    path: "/customer/supplier",
+    name: "customer-supplier",
+    key: "supplier",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-standing" */
+        "@/views/customer/supplier.vue"
+      )
   }
 ];
 
