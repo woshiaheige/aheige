@@ -8,29 +8,41 @@
       @cancel="handleCancel"
     >
       <a-form-model
-        layout="inline"
+        width="900"
         :model="form"
-        :label-col="{ span: 4 }"
-        :wrapper-col="{ span: 7 }"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
       >
-        <a-form-model-item label="污染物名称">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
-        <a-form-model-item label="污染物名称">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
-        <a-form-model-item label="污染物名称">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
-        <a-form-model-item label="污染物名称">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
-        <a-form-model-item label="污染物名称">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
-        <a-form-model-item label="污染物名称">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
+        <a-row>
+          <a-col :span="12"
+            ><a-form-model-item label="污染物名称">
+              <a-input v-model="form.name" /> </a-form-model-item
+          ></a-col>
+          <a-col :span="12"
+            ><a-form-model-item label="污染物名称">
+              <a-input v-model="form.name" /> </a-form-model-item
+          ></a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="12"
+            ><a-form-model-item label="污染物名称">
+              <a-input v-model="form.name" /> </a-form-model-item
+          ></a-col>
+          <a-col :span="12"
+            ><a-form-model-item label="污染物名称">
+              <a-input v-model="form.name" /> </a-form-model-item
+          ></a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="12"
+            ><a-form-model-item label="污染物名称">
+              <a-input v-model="form.name" /> </a-form-model-item
+          ></a-col>
+          <a-col :span="12"
+            ><a-form-model-item label="污染物名称">
+              <a-input v-model="form.name" /> </a-form-model-item
+          ></a-col>
+        </a-row>
       </a-form-model>
     </a-modal>
   </div>

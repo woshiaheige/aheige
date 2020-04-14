@@ -96,18 +96,18 @@ export default {
               title: "传输速率",
               key: "speed"
             },
-            {
-              title: "设备反控",
-              key: "control"
-            },
+            // {
+            //   title: "设备反控",
+            //   key: "control"
+            // },
             {
               title: "报警管理",
               key: "warn"
-            },
-            {
-              title: "每日运维",
-              key: "maintenance"
             }
+            // {
+            //   title: "每日运维",
+            //   key: "maintenance"
+            // }
           ]
         },
         {
