@@ -61,12 +61,22 @@ const maintainRoutes = [
   },
   {
     path: "/maintain/complaint",
-    name: "maintain-complaint",
+    name: "-complaint",
     key: "complaint",
     component: () =>
       import(
         /* webpackChunkName: "view-maintain" */
         "@/views/maintain/complaint.vue"
+      )
+  },
+  {
+    path: "/maintain/knowledge",
+    name: "maintain-knowledge",
+    key: "knowledge",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-approval" */
+        "@/views/maintain/knowledge"
       )
   }
 ];

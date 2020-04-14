@@ -5,8 +5,8 @@
         <div v-margin:bottom="64" style="width:440px">
           <div class="welcome" v-margin:bottom="10">欢迎来到</div>
           <div class="title">
-            <p v-margin:bottom="10">福建省生态环境厅</p>
-            <p>非现场执法全过程管控平台</p>
+            <p v-margin:bottom="10">运维项目</p>
+            <p>运维项目平台</p>
           </div>
         </div>
 
