@@ -271,7 +271,7 @@ export default {
             //   key: "permission"
             // }
           ]
-        }
+        },
 
         // {
         //   title: "台账管理",
@@ -295,25 +295,25 @@ export default {
         //   icon: "sound"
         // },
 
-        // {
-        //   title: "平台配置",
-        //   key: "platform",
-        //   icon: "setting",
-        //   children: [
-        //     {
-        //       title: "设置运维参数",
-        //       key: "operation"
-        //     },
-        //     {
-        //       title: "仪器型号设置",
-        //       key: "instrument"
-        //     },
-        //     {
-        //       title: "监测因子一览表",
-        //       key: "factors"
-        //     }
-        //   ]
-        // }
+        {
+          title: "系统管理",
+          key: "platform",
+          icon: "setting",
+          children: [
+            {
+              title: "设置运维参数",
+              key: "operation"
+            },
+            {
+              title: "仪器型号设置",
+              key: "instrument"
+            },
+            {
+              title: "因子设置",
+              key: "factors"
+            }
+          ]
+        }
 
         // {
         //   title: "我的工作台",
