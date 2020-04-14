@@ -50,6 +50,11 @@ export default {
           dataIndex: "code"
         },
         {
+          title: "协议",
+          key: "agreement",
+          dataIndex: "agreement"
+        },
+        {
           title: "分类",
           key: "sort",
           dataIndex: "sort"
@@ -77,6 +82,17 @@ export default {
           name: "污水",
           code: "W0000",
           sort: "水",
+          agreement: "05协议",
+          speedUnit: "秒/升",
+          totalUnit: "立方米"
+        },
+        {
+          order: "1",
+          id: "0",
+          name: "污水",
+          code: "W0000",
+          sort: "水",
+          agreement: "17协议",
           speedUnit: "秒/升",
           totalUnit: "立方米"
         }
