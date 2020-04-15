@@ -1,12 +1,13 @@
 <template>
   <a-card :bordered="false" class="standing" title="车辆管理">
-    <a-button type="primary" slot="extra" @click="edit('', 'add')"
+    <a-button type="success" slot="extra" @click="edit('', 'add')"
       >新增</a-button
     >
     <a-table
       :columns="columns"
+      :loading="loading"
       rowKey="id"
-      :dataSource="data"
+      :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
     >
@@ -19,7 +20,6 @@
 
     <a-pagination
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
       :total="total"
       :current="current"
@@ -38,6 +38,8 @@ export default {
     return {
       modalInfo: { show: false },
       current: 1,
+      loading: false,
+      pagesize: 10,
       total: 0,
       columns: [
         {
@@ -72,7 +74,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      data: []
+      tableData: []
     };
   },
   mounted() {
@@ -80,10 +82,23 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.car.getCarList().then(res => {
-        this.data = res.data.data.records;
-        this.total = +res.data.data.total;
-      });
+      let params = {
+        pagesize: this.pagesize,
+        current: this.current
+      };
+      this.loading = true;
+      this.$api.car
+        .getCarList(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     edit(row, type) {
       this.modalInfo = {
@@ -94,19 +109,30 @@ export default {
       if (type == "edit") {
         this.$api.car.getAssetVehicleById({ id: row.id }).then(res => {
           if (res.data.state == 0) {
-            this.modalInfo.detail = res.data.data;
+            this.modalInfo = {
+              show: true,
+              type: type,
+              detail: res.data.data
+            };
           }
         });
       }
     },
     delect(row) {
-      console.log(row);
+      let _this = this;
       this.$confirm({
-        title: "确定删除" + row.name + "吗?",
+        title: "确定删除" + row.number + "吗?",
         okText: "确定",
         cancelText: "取消",
         onOk() {
-          console.log("OK");
+          _this.$api.car.deleteAssetVehicle({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");

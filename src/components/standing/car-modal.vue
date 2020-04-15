@@ -71,7 +71,16 @@ export default {
   watch: {
     value(nval) {
       if (nval.detail) {
-        this.format.setFieldsValue(nval.detail);
+        let detail = nval.detail;
+        this.carId = nval.detail.id;
+        this.form.setFieldsValue({
+          number: detail.number,
+          model: detail.model,
+          frameNumber: detail.frameNumber,
+          gmtPurchase: this.$moment(detail.gmtPurchase, "YYYY-MM-DD"),
+          gmtInspection: this.$moment(detail.gmtInspection, "YYYY-MM-DD"),
+          gps: detail.gps
+        });
       }
     }
   },
@@ -86,15 +95,36 @@ export default {
         );
 
         if (!err) {
-          this.$api.car.addAssetVehicle(values).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("添加成功");
-              this.carModal.show = false;
-              this.$emit("refresh");
-            } else {
-              this.$message.error(res.data.msg);
-            }
-          });
+          if (this.carId) {
+            this.editAssetVehicle(values);
+          } else {
+            this.addAssetVehicle(values);
+          }
+        }
+      });
+    },
+    editAssetVehicle(values) {
+      //修改
+      values.id = this.carId;
+      this.$api.car.editAssetVehicle(values).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改成功");
+          this.carModal.show = false;
+          this.$emit("refresh");
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    addAssetVehicle(values) {
+      //新增
+      this.$api.car.addAssetVehicle(values).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("添加成功");
+          this.carModal.show = false;
+          this.$emit("refresh");
+        } else {
+          this.$message.error(res.data.msg);
         }
       });
     },
