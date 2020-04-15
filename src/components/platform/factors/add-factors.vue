@@ -165,7 +165,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           let params = this.form;
-          this.$api.addSysDivisor(params).then(res => {
+          this.$api.platform.addSysDivisor(params).then(res => {
             if (res.data.state == 0) {
               this.$emit("confirm");
               this.$message.success("新建因子成功");

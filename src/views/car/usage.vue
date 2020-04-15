@@ -36,7 +36,11 @@ export default {
       columns: [
         {
           title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "驾驶时间",

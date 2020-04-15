@@ -60,6 +60,7 @@ export default {
       addFactorsVisible: false,
       current: 1,
       total: 0,
+      pagesize: 10,
       loading: false,
       visible: false,
       formInline: {
@@ -69,7 +70,11 @@ export default {
         {
           align: "center",
           title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           align: "center",
