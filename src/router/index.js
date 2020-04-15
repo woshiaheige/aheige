@@ -30,7 +30,8 @@ const router = new VueRouter({
 
 router.addRoutes(routeTable);
 router.beforeEach(async (to, from, next) => {
-  let token = sessionStorage.getItem("token");
+  // let token = sessionStorage.getItem("token");
+  let token = 888;
 
   //判断是否webkit内核或IE11以上的浏览器
   if (

@@ -12,43 +12,35 @@
       @submit="handleOk"
       v-if="carModal.show"
     >
-      <a-form-item label="车牌" prop="name">
+      <a-form-item label="车牌">
         <a-input
           placeholder="输入车牌"
           v-decorator="[
-            'name',
+            'number',
             { rules: [{ required: true, message: '请输入车牌' }] }
           ]"
         />
       </a-form-item>
-      <a-form-item label="品牌型号" prop="brand">
-        <a-input placeholder="输入品牌型号" v-decorator="['brand']" />
+      <a-form-item label="品牌型号">
+        <a-input placeholder="输入品牌型号" v-decorator="['model']" />
       </a-form-item>
-      <a-form-item label="默认使用小组" prop="group">
-        <a-select placeholder="选择默认使用小组" v-decorator="['group']">
-          <a-select-option value="1">A小组</a-select-option>
-          <a-select-option value="2">B小组</a-select-option>
-        </a-select>
+      <a-form-item label="车架号">
+        <a-input placeholder="输入车架号" v-decorator="['frameNumber']" />
       </a-form-item>
-      <a-form-item label="购置时间" prop="buy">
-        <a-date-picker placeholder="选择购置时间" v-decorator="['buy']" />
-      </a-form-item>
-      <a-form-item label="上次年检时间" prop="inspection">
+      <a-form-item label="购置时间">
         <a-date-picker
-          placeholder="选择上次年检时间"
-          v-decorator="['inspection']"
+          placeholder="选择购置时间"
+          v-decorator="['gmtPurchase']"
         />
       </a-form-item>
-      <a-form-item prop="type" label="可用状态">
-        <a-radio-group
-          v-decorator="[
-            'status',
-            { rules: [{ required: true, message: '请选择可用状态' }] }
-          ]"
-        >
-          <a-radio :value="1">可用</a-radio>
-          <a-radio :value="2">停用</a-radio>
-        </a-radio-group>
+      <a-form-item label="上次年检时间">
+        <a-date-picker
+          placeholder="选择上次年检时间"
+          v-decorator="['gmtInspection']"
+        />
+      </a-form-item>
+      <a-form-item label="GPS">
+        <a-input placeholder="输入GPS" v-decorator="['gps']" />
       </a-form-item>
     </a-form>
     <template slot="footer">
@@ -68,7 +60,7 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this, "carModal")
     };
   },
   computed: {
@@ -76,12 +68,33 @@ export default {
       return this.value;
     }
   },
+  watch: {
+    value(nval) {
+      if (nval.detail) {
+        this.format.setFieldsValue(nval.detail);
+      }
+    }
+  },
   methods: {
-    handleOk(e) {
-      e.preventDefault();
+    handleOk() {
       this.form.validateFields((err, values) => {
+        values.gmtPurchase = this.$moment(values.gmtPurchase).format(
+          "YYYY-MM-DD hh:mm:ss"
+        );
+        values.gmtInspection = this.$moment(values.gmtInspection).format(
+          "YYYY-MM-DD hh:mm:ss"
+        );
+
         if (!err) {
-          console.log("Received values of form: ", values);
+          this.$api.car.addAssetVehicle(values).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("添加成功");
+              this.carModal.show = false;
+              this.$emit("refresh");
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
         }
       });
     },

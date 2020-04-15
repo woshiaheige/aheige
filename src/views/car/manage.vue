@@ -5,6 +5,7 @@
     >
     <a-table
       :columns="columns"
+      rowKey="id"
       :dataSource="data"
       v-margin:top="16"
       :pagination="false"
@@ -22,8 +23,10 @@
       showSizeChanger
       :total="total"
       :current="current"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
-    <modal v-model="modalInfo"> </modal>
+    <modal v-model="modalInfo" @refresh="getTableData"> </modal>
   </a-card>
 </template>
 
@@ -44,22 +47,22 @@ export default {
         },
         {
           title: "车辆",
-          dataIndex: "name",
+          dataIndex: "number",
+          align: "center"
+        },
+        {
+          title: "车架号",
+          dataIndex: "frameNumber",
           align: "center"
         },
         {
           title: "品牌型号",
-          dataIndex: "brand",
+          dataIndex: "model",
           align: "center"
         },
         {
-          title: "可用状态",
-          dataIndex: "status",
-          align: "center"
-        },
-        {
-          title: "默认使用小组",
-          dataIndex: "group",
+          title: "GPS设备号",
+          dataIndex: "gps",
           align: "center"
         },
         {
@@ -77,17 +80,24 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.standing.getCarList().then(res => {
-        this.data = res.data.data;
-        this.total = res.data.total;
+      this.$api.car.getCarList().then(res => {
+        this.data = res.data.data.records;
+        this.total = +res.data.data.total;
       });
     },
     edit(row, type) {
       this.modalInfo = {
         show: true,
-        info: row,
-        type: type
+        type: type,
+        detail: ""
       };
+      if (type == "edit") {
+        this.$api.car.getAssetVehicleById({ id: row.id }).then(res => {
+          if (res.data.state == 0) {
+            this.modalInfo.detail = res.data.data;
+          }
+        });
+      }
     },
     delect(row) {
       console.log(row);

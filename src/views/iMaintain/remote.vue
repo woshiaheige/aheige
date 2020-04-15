@@ -23,7 +23,7 @@
       v-margin:top="16"
       showQuickJumper
       showSizeChanger
-      :defaultCurrent="current"
+      :current="current"
       :total="total"
       @change="pagechange"
       @showSizeChange="sizechange"
