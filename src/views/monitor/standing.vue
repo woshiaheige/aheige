@@ -1,15 +1,23 @@
 <template>
-  <a-card :bordered="false" class="standing" title="报警管理">
+  <a-card :bordered="false" class="standing" title="监测数据">
     <a-form-model layout="inline" :model="formInline">
       <a-form-model-item>
         <a-input v-model="formInline.name" placeholder="企业名称" />
       </a-form-model-item>
       <a-form-model-item>
-        <a-range-picker @change="onChange" placeholder="时间范围" />
+        <a-select placeholder="行业类别" v-width="150">
+          <a-select-option value="32">废水</a-select-option>
+          <a-select-option value="31">废气</a-select-option>
+        </a-select>
       </a-form-model-item>
       <a-form-model-item>
         <a-button type="primary">
           查询
+        </a-button>
+      </a-form-model-item>
+      <a-form-model-item>
+        <a-button type="success">
+          新增
         </a-button>
       </a-form-model-item>
     </a-form-model>
@@ -43,7 +51,24 @@ export default {
       pageSize: 10,
       current: 1,
       total: 0,
-      tableData: [],
+      tableData: [
+        {
+          name: "化一环境",
+          creditCode: "912357122321765hy",
+          industryName: "制造业",
+          pointTypeName: "废水,废气",
+          controlType: "一般监管企业",
+          pointCount: "25"
+        },
+        {
+          name: "广州博控",
+          creditCode: "912357122321765bc",
+          industryName: "制造业",
+          pointTypeName: "废水,废气",
+          controlType: "一般监管企业",
+          pointCount: "30"
+        }
+      ],
       columns: [
         {
           title: "企业名称",

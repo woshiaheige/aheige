@@ -82,7 +82,7 @@ export default {
           children: [
             {
               title: "监测数据",
-              key: "data"
+              key: "standing"
             },
             {
               title: "超标数据",
@@ -266,7 +266,7 @@ export default {
           icon: "gold"
         },
         {
-          title: "人员管理",
+          title: "系统设置",
           key: "organization",
           icon: "user",
           children: [
@@ -289,7 +289,7 @@ export default {
           ]
         },
         {
-          title: "系统管理",
+          title: "基础数据",
           key: "platform",
           icon: "setting",
           children: [

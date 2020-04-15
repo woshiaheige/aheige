@@ -1,5 +1,15 @@
 const monitorRoute = [
   {
+    path: "/monitor/standing",
+    name: "monitor-standing",
+    key: "standing",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-monitor" */
+        "@/views/monitor/standing.vue"
+      )
+  },
+  {
     path: "/monitor/data",
     name: "monitor-data",
     key: "data",

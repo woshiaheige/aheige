@@ -1,17 +1,22 @@
 <template>
-  <a-card :bordered="false" class="standing" title="供应商管理">
+  <a-card :bordered="false" class="organization">
+    <span slot="title">
+      <a-icon type="arrow-left" @click="$router.back(-1)" />企业用户
+    </span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="供应商名称"></a-input>
+        <a-input placeholder="姓名"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-input placeholder="联系人"></a-input>
+        <a-input placeholder="手机号"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">
-          查找
+          查询
         </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
+      </a-form-item>
+      <a-form-item>
+        <a-button type="success" html-type="submit" @click="onEdit()">
           新增
         </a-button>
       </a-form-item>
@@ -19,9 +24,8 @@
     <a-table
       :columns="columns"
       :dataSource="tableData"
-      v-margin:top="16"
       :pagination="false"
-      bordered
+      v-margin:top="16"
     >
       <span slot="action" slot-scope="row">
         <a @click="onEdit(row)">编辑</a>
@@ -29,95 +33,78 @@
         <a @click="onDelete(row)">删除</a>
       </span>
     </a-table>
-
     <a-pagination
       v-margin:top="16"
       showQuickJumper
       showSizeChanger
+      :defaultCurrent="current"
       :total="total"
-      :current="current"
     />
-    <add-edit :obj="modalInfo" @cancel="cancel"> </add-edit>
+    <add-edit :obj="obj" @cancel="cancel"></add-edit>
   </a-card>
 </template>
-
 <script>
-import addEdit from "@/components/customer/supplier/add-edit";
+import addEdit from "@/components/customer/enterprise/add-edit-user";
 export default {
   components: { addEdit },
   data() {
     return {
-      modalInfo: { show: false },
       current: 1,
       total: 0,
       columns: [
         {
           title: "序号",
-          align: "center",
           customRender: (text, row, index) => `${index + 1}`
         },
         {
-          title: "供应商名称",
-          dataIndex: "name",
-          align: "center"
+          title: "企业名称",
+          dataIndex: "department"
         },
         {
-          title: "所属区域",
-          dataIndex: "area",
-          align: "center"
+          title: "姓名",
+          dataIndex: "name"
         },
         {
-          title: "地址",
-          dataIndex: "address",
-          align: "center"
+          title: "账号",
+          dataIndex: "tel"
         },
         {
-          title: "联系人",
-          dataIndex: "user",
-          align: "center"
-        },
-        {
-          title: "联系电话",
-          dataIndex: "tel",
-          align: "center"
-        },
-        {
-          title: "评级",
-          dataIndex: "rate",
-          align: "center"
+          title: "手机",
+          dataIndex: "tel"
         },
         {
           title: "操作",
           key: "action",
-          align: "center",
-          scopedSlots: { customRender: "action" }
+          scopedSlots: { customRender: "action" },
+          align: "center"
         }
       ],
       tableData: [
         {
-          name: "123供应商",
-          area: "南沙区",
-          address: "广州市南沙区",
-          user: "张三",
-          tel: 138552222,
-          rate: 1
+          department: "化一环境有限公司",
+          name: "张三",
+          tel: "13888888888"
         }
-      ]
+      ],
+      obj: {
+        show: false
+      },
+      checkObj: {
+        show: false
+      }
     };
-  },
-  mounted() {
-    this.getTableData();
   },
   methods: {
     getTableData() {
-      // this.$api.standing.getSupplierList().then(res => {
-      //   this.data = res.data.data;
+      // this.$api.maintain.getMemberList().then(res => {
+      //   this.tableData = res.data.data;
       //   this.total = res.data.total;
       // });
     },
     onEdit(row) {
-      this.modalInfo.show = true;
-      this.modalInfo.row = row;
+      console.log(row);
+      this.obj.show = true;
+      this.obj.row = row;
     },
     onDelete(row) {
       console.log(row);
@@ -133,8 +120,13 @@ export default {
       });
     },
     cancel(value) {
-      this.modalInfo.show = value;
+      this.obj.show = value;
+      this.checkObj.show = value;
     }
+  },
+  mounted() {
+    this.getTableData();
   }
 };
 </script>
+<style lang="less" scoped></style>

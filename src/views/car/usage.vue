@@ -36,7 +36,11 @@ export default {
       columns: [
         {
           title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "驾驶时间",
@@ -70,8 +74,12 @@ export default {
   methods: {
     getTableData() {
       this.loading = true;
+      let params = {
+        pagesize: this.pagesize,
+        page: this.current
+      };
       this.$api.car
-        .manageVehicleUse()
+        .manageVehicleUse(params)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
@@ -84,9 +92,8 @@ export default {
         });
     },
     goDetail(row) {
-      console.log(row);
       this.$router.push({
-        path: "/maintain/car-usage/detail",
+        path: "/car/usage/detail",
         query: { vehicleId: row.id }
       });
     }

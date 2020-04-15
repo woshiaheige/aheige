@@ -45,7 +45,11 @@ export default {
         {
           title: "序号",
           align: "center",
-          customRender: (text, row, index) => `${index + 1}`
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "车辆",
@@ -84,7 +88,7 @@ export default {
     getTableData() {
       let params = {
         pagesize: this.pagesize,
-        current: this.current
+        page: this.current
       };
       this.loading = true;
       this.$api.car

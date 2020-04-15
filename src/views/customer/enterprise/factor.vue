@@ -1,21 +1,22 @@
 <template>
-  <a-card :bordered="false" class="standing" title="供应商管理">
+  <a-card :bordered="false" class="station">
+    <span slot="title">
+      <a-icon type="arrow-left" @click="$router.back(-1)" />监测因子
+    </span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="供应商名称"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="联系人"></a-input>
+        <a-input placeholder="因子名称"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">
           查找
         </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
+        <a-button type="success" v-margin:left="10" @click="onEdit">
           新增
         </a-button>
       </a-form-item>
     </a-form>
+
     <a-table
       :columns="columns"
       :dataSource="tableData"
@@ -32,24 +33,22 @@
 
     <a-pagination
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
+      :defaultCurrent="current"
       :total="total"
-      :current="current"
     />
-    <add-edit :obj="modalInfo" @cancel="cancel"> </add-edit>
+    <add-edit :obj="obj" @cancel="cancel"></add-edit>
   </a-card>
 </template>
 
 <script>
-import addEdit from "@/components/customer/supplier/add-edit";
+import addEdit from "@/components/customer/enterprise/add-edit-factor";
 export default {
   components: { addEdit },
   data() {
     return {
-      modalInfo: { show: false },
       current: 1,
-      total: 0,
+      total: 1,
       columns: [
         {
           title: "序号",
@@ -57,68 +56,73 @@ export default {
           customRender: (text, row, index) => `${index + 1}`
         },
         {
-          title: "供应商名称",
+          title: "因子名称",
           dataIndex: "name",
+          key: "name",
           align: "center"
         },
         {
-          title: "所属区域",
-          dataIndex: "area",
+          title: "因子编码",
+          dataIndex: "num",
+          key: "num",
           align: "center"
         },
         {
-          title: "地址",
-          dataIndex: "address",
+          title: "上限",
+          dataIndex: "max",
+          key: "max",
           align: "center"
         },
         {
-          title: "联系人",
-          dataIndex: "user",
+          title: "下限",
+          dataIndex: "min",
+          key: "min",
           align: "center"
         },
         {
-          title: "联系电话",
-          dataIndex: "tel",
+          title: "因子类型",
+          dataIndex: "type",
+          key: "type",
           align: "center"
         },
         {
-          title: "评级",
-          dataIndex: "rate",
+          title: "单位名称",
+          dataIndex: "company",
+          key: "company",
           align: "center"
         },
         {
           title: "操作",
           key: "action",
-          align: "center",
-          scopedSlots: { customRender: "action" }
+          scopedSlots: { customRender: "action" },
+          align: "center"
         }
       ],
       tableData: [
         {
-          name: "123供应商",
-          area: "南沙区",
-          address: "广州市南沙区",
-          user: "张三",
-          tel: 138552222,
-          rate: 1
+          name: "PH",
+          num: "DS001",
+          max: "10",
+          min: "1",
+          type: "废水",
+          company: "环保局"
+        },
+        {
+          name: "PH",
+          num: "DS001",
+          max: "10",
+          min: "1",
+          type: "废气",
+          company: "环保局"
         }
-      ]
+      ],
+      obj: {
+        show: false
+      }
     };
   },
-  mounted() {
-    this.getTableData();
-  },
   methods: {
-    getTableData() {
-      // this.$api.standing.getSupplierList().then(res => {
-      //   this.data = res.data.data;
-      //   this.total = res.data.total;
-      // });
-    },
-    onEdit(row) {
-      this.modalInfo.show = true;
-      this.modalInfo.row = row;
-    },
+    getTableData() {},
     onDelete(row) {
       console.log(row);
       this.$confirm({
@@ -132,9 +136,16 @@ export default {
         }
       });
     },
+    onEdit(row) {
+      this.obj.show = true;
+      this.obj.row = row;
+    },
     cancel(value) {
-      this.modalInfo.show = value;
+      this.obj.show = value;
     }
+  },
+  mounted() {
+    this.getTableData();
   }
 };
 </script>
