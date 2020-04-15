@@ -84,9 +84,8 @@ export default {
         });
     },
     goDetail(row) {
-      console.log(row);
       this.$router.push({
-        path: "/maintain/car-usage/detail",
+        path: "/car/usage/detail",
         query: { vehicleId: row.id }
       });
     }
