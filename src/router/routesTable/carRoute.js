@@ -5,7 +5,7 @@ const car = [
     key: "manage",
     component: () =>
       import(
-        /* webpackChunkName: "view-standing" */
+        /* webpackChunkName: "view-car" */
         "@/views/car/manage.vue"
       )
   },
@@ -15,8 +15,18 @@ const car = [
     key: "usage",
     component: () =>
       import(
-        /* webpackChunkName: "view-maintain" */
+        /* webpackChunkName: "view-car" */
         "@/views/car/usage.vue"
+      )
+  },
+  {
+    path: "/car/usage/detail",
+    name: "car-usage-detail",
+    key: "car-usage-detail",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/car-modal.vue"
       )
   }
 ];
