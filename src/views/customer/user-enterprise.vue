@@ -1,6 +1,6 @@
 <template>
   <a-card :bordered="false" class="organization">
-    <span slot="title">成员管理</span>
+    <span slot="title">企业用户</span>
     <a-form layout="inline">
       <a-form-item>
         <a-input placeholder="姓名"></a-input>

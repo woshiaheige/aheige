@@ -1,14 +1,14 @@
 const iMaintain = [
-  {
-    path: "/i-maintain/plan",
-    name: "i-maintain-plan",
-    key: "plan",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-i-maintain" */
-        "@/views/iMaintain/plan.vue"
-      )
-  },
+  // {
+  //   path: "/i-maintain/plan",
+  //   name: "i-maintain-plan",
+  //   key: "plan",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "view-i-maintain" */
+  //       "@/views/iMaintain/plan.vue"
+  //     )
+  // },
   {
     path: "/i-maintain/operation-log",
     name: "i-maintain-operation-log",

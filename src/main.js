@@ -22,6 +22,7 @@ import "@/assets/style/organization/organization.less";
 import "@/assets/style/report/daily.less";
 import "@/assets/style/report/team.less";
 import "@/assets/style/approval.less";
+import "@/assets/style/login/login.less";
 
 //mock
 require("@/mock/index");
@@ -34,6 +35,10 @@ require("@/mock/platform");
 import VCharts from "v-charts";
 //monent
 import moment from "moment";
+//懒加载
+import VueLazyLoad from "vue-lazyload";
+//加密
+import md5 from "js-md5";
 
 //自定义组件
 import api from "@/api/index";
@@ -44,12 +49,19 @@ Vue.mixin(common);
 
 Vue.use(Antd);
 Vue.use(VCharts);
+Vue.use(VueLazyLoad, {
+  preLoad: 1.3,
+  loading: require("@/assets/img/loading.png"),
+  error: require("@/assets/img/fail.png"),
+  attempt: 1
+});
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$api = api;
 Vue.prototype.$base = base;
 Vue.prototype.$moment = moment;
+Vue.prototype.$md5 = md5;
 
 new Vue({
   router,

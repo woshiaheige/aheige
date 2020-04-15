@@ -39,26 +39,26 @@ const reportRoutes = [
         "@/views/report/i-report.vue"
       )
   },
-  {
-    path: "/report/inspection",
-    name: "report-inspection",
-    key: "inspection",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-report" */
-        "@/views/report/inspection.vue"
-      )
-  },
-  {
-    path: "/report/maintain-log",
-    name: "report-maintain-log",
-    key: "maintain-log",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-report" */
-        "@/views/report/maintain-log.vue"
-      )
-  },
+  // {
+  //   path: "/report/inspection",
+  //   name: "report-inspection",
+  //   key: "inspection",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "view-report" */
+  //       "@/views/report/inspection.vue"
+  //     )
+  // },
+  // {
+  //   path: "/report/maintain-log",
+  //   name: "report-maintain-log",
+  //   key: "maintain-log",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "view-report" */
+  //       "@/views/report/maintain-log.vue"
+  //     )
+  // },
   {
     path: "/report/team",
     name: "report-team",

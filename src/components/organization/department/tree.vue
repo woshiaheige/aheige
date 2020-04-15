@@ -13,20 +13,54 @@
       :treeData="treeList"
       :replaceFields="replaceFields"
     >
-      <template slot="title" slot-scope="{ title }">
-        <span v-if="title.indexOf(searchValue) > -1">
+      <template slot="custom" slot-scope="item">
+        <span v-if="item.title.indexOf(searchValue) > -1">
+          {{ item.title.substr(0, item.title.indexOf(searchValue)) }}
+          <span style="color: #f50">{{ searchValue }}</span>
+          {{
+            item.title.substr(
+              item.title.indexOf(searchValue) + searchValue.length
+            )
+          }}
+        </span>
+        <span v-else>{{ item.title }}</span>
+        <a-icon
+          type="plus"
+          title="新增"
+          v-margin:left="15"
+          @click="onEdit(item, 'add')"
+        />
+        <a-icon
+          type="form"
+          title="编辑"
+          v-margin:left="10"
+          @click="onEdit(item, 'edit')"
+        />
+        <a-icon
+          type="delete"
+          title="删除"
+          v-margin:left="10"
+          @click="onDelete(item)"
+        />
+      </template>
+
+      <!--<template slot="title" slot-scope="{ title }">
+         <span v-if="title.indexOf(searchValue) > -1">
           {{ title.substr(0, title.indexOf(searchValue)) }}
           <span style="color: #f50">{{ searchValue }}</span>
           {{ title.substr(title.indexOf(searchValue) + searchValue.length) }}
         </span>
-        <span v-else>{{ title }}</span>
-      </template>
+        <span v-else>{{ title }} <a @click="onDelete(row)">删除</a></span>
+      </template>-->
     </a-tree>
+    <add-edit :obj="obj" @cancel="cancel"></add-edit>
   </div>
 </template>
 
 <script>
+import addEdit from "./add-edit";
 export default {
+  components: { addEdit },
   data() {
     return {
       expandedKeys: [], //展开的父节点
@@ -35,74 +69,67 @@ export default {
       dataList: [
         {
           title: "化一环境有限公司",
-          scopedSlots: { title: "title" },
+          scopedSlots: { title: "custom" },
           id: "0-0",
           children: [
             {
               title: "技术部",
-              scopedSlots: { title: "title" },
+              scopedSlots: { title: "custom" },
               id: "0-0-0",
               children: [
                 {
                   title: "分组1",
-                  scopedSlots: { title: "title" },
+                  scopedSlots: { title: "custom" },
                   id: "0-0-0-0"
                 },
                 {
                   title: "分组2",
-                  scopedSlots: { title: "title" },
+                  scopedSlots: { title: "custom" },
                   id: "0-0-0-1"
                 },
                 {
                   title: "分组3",
-                  scopedSlots: { title: "title" },
+                  scopedSlots: { title: "custom" },
                   id: "0-0-0-2"
                 }
               ]
             },
             {
               title: "开发部",
-              scopedSlots: { title: "title" },
+              scopedSlots: { title: "custom" },
               id: "0-0-1",
               children: [
                 {
                   title: "分组1",
-                  scopedSlots: { title: "title" },
+                  scopedSlots: { title: "custom" },
                   id: "0-0-1-0"
                 },
                 {
                   title: "分组2",
-                  scopedSlots: { title: "title" },
+                  scopedSlots: { title: "custom" },
                   id: "0-0-1-1"
                 },
                 {
                   title: "分组3",
-                  scopedSlots: { title: "title" },
+                  scopedSlots: { title: "custom" },
                   id: "0-0-1-2"
                 }
               ]
             },
             {
               title: "生产部",
-              scopedSlots: { title: "title" },
+              scopedSlots: { title: "custom" },
               id: "0-0-2"
             }
-          ]
-        },
-        {
-          title: "广州分公司",
-          scopedSlots: { title: "title" },
-          id: "0-1",
-          children: [
-            { title: "生产部", scopedSlots: { title: "title" }, id: "0-1-0-0" },
-            { title: "开发部", scopedSlots: { title: "title" }, id: "0-1-0-1" },
-            { title: "技术部", scopedSlots: { title: "title" }, id: "0-1-0-2" }
           ]
         }
       ],
       treeList: [],
       replaceFields: {
         key: "id"
+      },
+      obj: {
+        show: false
       }
     };
   },
@@ -159,6 +186,27 @@ export default {
         }
       });
       return parentKey;
+    },
+    onEdit(item, key) {
+      this.obj.show = true;
+      this.obj.row = item;
+      this.obj.key = key;
+    },
+    onDelete(item) {
+      console.log(item);
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
+    cancel(value) {
+      this.obj.show = value;
     }
   }
 };

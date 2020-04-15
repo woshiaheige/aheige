@@ -1,15 +1,14 @@
-import indexRoutes from "../router/routesTable/indexRoute";
-import maintainRoutes from "../router/routesTable/maintainRoute";
-import iMaintainRoutes from "../router/routesTable/iMaintainRoute";
-import customerRoutes from "../router/routesTable/customerRoute";
-import approvalRoute from "../router/routesTable/approvalRoute";
-import workbenchRoute from "../router/routesTable/workbenchRoute";
 import reportRoute from "../router/routesTable/reportRoute";
-import standingRoute from "../router/routesTable/standingRoute";
-import announcement from "../router/routesTable/announcement";
-import knowledge from "../router/routesTable/knowledge";
-import platform from "../router/routesTable/platform";
-import organization from "../router/routesTable/organization";
+// import announcement from "../router/routesTable/announcement";
+// import iMaintainRoutes from "../router/routesTable/iMaintainRoute";
+import indexRoutes from "../router/routesTable/indexRoute"; //运维一览
+import approvalRoute from "../router/routesTable/approvalRoute"; //审批管理
+import maintainRoutes from "../router/routesTable/maintainRoute"; //运维管理
+import customerRoutes from "../router/routesTable/customerRoute"; //客户管理
+import carRoute from "../router/routesTable/carRoute"; //车辆管理
+import productRoute from "../router/routesTable/productRoute"; //物品管理
+import organization from "../router/routesTable/organization"; //人员管理
+import platform from "../router/routesTable/platform"; //平台设置
 
 const RouterTable = [
   {
@@ -21,18 +20,17 @@ const RouterTable = [
     component: () =>
       import(/* webpackChunkName: "view-home" */ "@/views/Home.vue"),
     children: [
-      ...indexRoutes,
-      ...maintainRoutes,
-      ...approvalRoute,
-      ...iMaintainRoutes,
-      ...customerRoutes,
-      ...workbenchRoute,
       ...reportRoute,
-      ...standingRoute,
-      ...announcement,
-      ...knowledge,
-      ...platform,
-      ...organization
+      // ...announcement,
+      // ...iMaintainRoutes,
+      ...indexRoutes,
+      ...approvalRoute,
+      ...maintainRoutes,
+      ...customerRoutes,
+      ...carRoute,
+      ...productRoute,
+      ...organization,
+      ...platform
     ]
   }
 ];

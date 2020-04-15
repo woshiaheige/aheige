@@ -12,6 +12,7 @@ import standing from "./standing/standing";
 import customer from "./customer/customer";
 import report from "./report/report";
 import platform from "./platform/platform";
+import login from "./login/login";
 
 // 导出接口
 export default {
@@ -23,5 +24,6 @@ export default {
   standing,
   customer,
   report,
-  platform
+  platform,
+  login
 };

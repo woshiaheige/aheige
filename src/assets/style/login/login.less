@@ -1,0 +1,122 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .login-box {
+    width: 920px;
+    border-radius: 10px;
+    display: flex;
+    height: 550px;
+    .left,
+    .right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .left {
+      width: 520px;
+      background: rgba(13, 22, 41, 1);
+      opacity: 0.8;
+      .welcome {
+        font-size: 20px;
+        font-family: "Microsoft YaHei";
+        font-weight: 300;
+        color: rgba(248, 248, 248, 1);
+      }
+
+      .title {
+        font-size: 32px;
+        line-height: 32px;
+        font-family: "FZZhengHeiS-EB-GB";
+        font-weight: 400;
+        color: rgba(248, 248, 248, 1);
+      }
+
+      .login-img {
+        background: url(../../img/login_img.png) no-repeat;
+        width: 224px;
+        height: 227px;
+      }
+    }
+
+    .right {
+      background: rgba(255, 255, 255, 1);
+      width: 400px;
+      .ant-input {
+        width: 240px;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        border-bottom: 1px solid rgba(51, 51, 51, 1);
+        border-radius: 0;
+      }
+      input:focus {
+        outline: none;
+        box-shadow: none;
+
+        &::-webkit-input-placeholder {
+          color: #1476d0;
+        }
+
+        &::-moz-placeholder {
+          color: #1476d0;
+        }
+
+        &:-ms-input-placeholder {
+          color: #1476d0;
+        }
+      }
+      .ant-btn {
+        margin-top: 77px;
+      }
+      // .login-form {
+      //   .ivu-form-item-label {
+      //     font-size: 16px;
+      //     font-family: "Microsoft YaHei";
+      //     font-weight: 400;
+      //     color: rgba(51, 51, 51, 1);
+      //   }
+
+      //   .ivu-input {
+      //     width: 240px;
+      //     border: none;
+      //     outline: none;
+      //     box-shadow: none;
+      //     border-bottom: 1px solid rgba(51, 51, 51, 1);
+      //     border-radius: 0;
+      //   }
+
+      //   input:focus {
+      //     outline: none;
+      //     box-shadow: none;
+
+      //     &::-webkit-input-placeholder {
+      //       color: #1476d0;
+      //     }
+
+      //     &::-moz-placeholder {
+      //       color: #1476d0;
+      //     }
+
+      //     &:-ms-input-placeholder {
+      //       color: #1476d0;
+      //     }
+      //   }
+
+      //   .ivu-btn {
+      //     width: 240px;
+      //     height: 38px;
+      //     background: rgba(20, 118, 208, 1);
+      //     border-radius: 3px;
+      //     margin-top: 77px;
+      //   }
+      // }
+    }
+  }
+}
