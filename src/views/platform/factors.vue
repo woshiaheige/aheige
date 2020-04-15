@@ -19,6 +19,7 @@
       </a-form-model-item>
     </a-form-model>
     <a-table
+      bordered
       rowKey="id"
       :columns="columns"
       :dataSource="tableData"

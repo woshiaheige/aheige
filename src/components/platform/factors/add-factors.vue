@@ -55,12 +55,16 @@
           <a-col :span="12"
             ><a-form-model-item label="参考值上限" prop="c">
               <a-input-number
+                :max="100000"
+                :step="0.0001"
                 v-model="form.c"
               ></a-input-number> </a-form-model-item
           ></a-col>
           <a-col :span="12"
             ><a-form-model-item label="参考值下限" prop="f">
               <a-input-number
+                :min="-100000"
+                :step="0.0001"
                 v-model="form.f"
               ></a-input-number> </a-form-model-item
           ></a-col>
@@ -79,6 +83,24 @@ export default {
     }
   },
   data() {
+    let validateC = (rule, value, callback) => {
+      if (!this.form.f) {
+        callback();
+      } else if (value < this.form.f) {
+        callback(new Error("上限值不能小于下限值"));
+      } else {
+        callback();
+      }
+    };
+    let validateF = (rule, value, callback) => {
+      if (!this.form.c) {
+        callback();
+      } else if (value > this.form.c) {
+        callback(new Error("下限值不能大于上限值"));
+      } else {
+        callback();
+      }
+    };
     return {
       form: {
         name: "",
@@ -92,15 +114,24 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: "污染物名称不能为空", trigger: "blur" }
+          { required: true, message: "污染物名称不能为空" },
+          {
+            min: 1,
+            max: 15,
+            message: "污染物名称长度应在1-15个字符之间",
+            trigger: "blur"
+          }
         ],
         code: [
-          { required: true, message: "污染物编码不能为空", trigger: "blur" }
+          { required: true, message: "污染物编码不能为空" },
+          { min: 1, max: 6, message: "污染编码长度应在1-6个字符之间" }
         ],
-        type: [{ required: true, message: "类型不能为空", trigger: "blur" }],
-        protocolType: [
-          { required: true, message: "协议类型不能为空", trigger: "blur" }
-        ]
+        avgUnit: [{ max: 10, message: "均值单位长度应在1-10个字符之间" }],
+        sumUnit: [{ max: 10, message: "总量单位长度应在1-10个字符之间" }],
+        type: [{ required: true, message: "类型不能为空" }],
+        protocolType: [{ required: true, message: "协议类型不能为空" }],
+        c: [{ validator: validateC }],
+        f: [{ validator: validateF }]
       }
     };
   },
