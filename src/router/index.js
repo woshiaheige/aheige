@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import routeTable from "../router/routerTable";
-import client from "../assets/lib/checkBrowser";
+// import client from "../assets/lib/checkBrowser";
 
 Vue.use(VueRouter);
 
@@ -29,36 +29,36 @@ const router = new VueRouter({
 });
 
 router.addRoutes(routeTable);
-router.beforeEach(async (to, from, next) => {
-  let token = sessionStorage.getItem("token");
+// router.beforeEach(async (to, from, next) => {
+//   let token = sessionStorage.getItem("token");
 
-  //判断是否webkit内核或IE11以上的浏览器
-  if (
-    client.client.engine.webkit != 0 ||
-    client.client.browser.firefox != 0 ||
-    client.client.browser.ie >= 11
-  ) {
-    if (token) {
-      if (to.path == "") {
-        next("/");
-      } else {
-        next();
-      }
-    } else {
-      if (to.path == "/login") {
-        next();
-      } else {
-        next("/login");
-      }
-    }
-  } else {
-    if (to.path == "/not-support") {
-      next();
-    } else {
-      next("/not-support");
-    }
-  }
-});
+//   //判断是否webkit内核或IE11以上的浏览器
+//   if (
+//     client.client.engine.webkit != 0 ||
+//     client.client.browser.firefox != 0 ||
+//     client.client.browser.ie >= 11
+//   ) {
+//     if (token) {
+//       if (to.path == "") {
+//         next("/");
+//       } else {
+//         next();
+//       }
+//     } else {
+//       if (to.path == "/login") {
+//         next();
+//       } else {
+//         next("/login");
+//       }
+//     }
+//   } else {
+//     if (to.path == "/not-support") {
+//       next();
+//     } else {
+//       next("/not-support");
+//     }
+//   }
+// });
 
 //防止路由跳转报错
 const originalPush = VueRouter.prototype.push;

@@ -116,7 +116,31 @@ export default {
         {
           order: "1",
           id: "0",
-          name: "二氧化硫折算",
+          name: "PHP",
+          code: "a21026z",
+          avgUnit: "mg/m3",
+          sumUnit: "mg/m3",
+          type: "废气",
+          protocolType: "17协议",
+          c: "100",
+          f: "0"
+        },
+        {
+          order: "1",
+          id: "1",
+          name: "JAVA",
+          code: "a21026z",
+          avgUnit: "mg/m3",
+          sumUnit: "mg/m3",
+          type: "废气",
+          protocolType: "17协议",
+          c: "100",
+          f: "0"
+        },
+        {
+          order: "1",
+          id: "2",
+          name: "C++",
           code: "a21026z",
           avgUnit: "mg/m3",
           sumUnit: "mg/m3",
