@@ -39,6 +39,8 @@
         <a @click="goDevice(row)">监测设备</a>
         <a-divider type="vertical" />
         <a @click="onEdit(row)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="onDelete(row)">删除</a>
       </span>
     </a-table>
 
@@ -129,6 +131,19 @@ export default {
     goDevice() {
       this.$router.push({
         path: "/customer/enterprise/device"
+      });
+    },
+    onDelete(row) {
+      console.log(row);
+      this.$confirm({
+        title: "删除",
+        content: "是否删除",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
       });
     },
     onEdit(row) {
