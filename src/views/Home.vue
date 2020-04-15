@@ -172,7 +172,7 @@ export default {
               key: "enterprise"
             },
             {
-              title: "站点管理",
+              title: "监控点管理",
               key: "station"
             },
             {
@@ -182,11 +182,11 @@ export default {
             {
               title: "供应商管理",
               key: "supplier"
-            },
-            {
-              title: "企业用户",
-              key: "user-enterprise"
             }
+            // {
+            //   title: "企业用户",
+            //   key: "user-enterprise"
+            // }
           ]
         },
         // {
