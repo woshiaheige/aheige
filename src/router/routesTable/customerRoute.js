@@ -16,17 +16,7 @@ const customer = [
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
-        "@/views/customer/station/station.vue"
-      )
-  },
-  {
-    path: "/customer/station/detail",
-    name: "customer-station-detail",
-    key: "station-detail",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-customer" */
-        "@/views/customer/station/detail.vue"
+        "@/views/customer/station.vue"
       )
   },
   {
@@ -50,13 +40,63 @@ const customer = [
       )
   },
   {
-    path: "/customer/user-enterprise",
-    name: "customer-user-enterprise",
-    key: "user-enterprise",
+    path: "/customer/enterprise/user",
+    name: "customer-enterprise-user",
+    key: "customer-enterprise-user",
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
-        "@/views/customer/user-enterprise.vue"
+        "@/views/customer/enterprise/user-enterprise.vue"
+      )
+  },
+  {
+    path: "/customer/enterprise/station",
+    name: "customer-enterprise-station",
+    key: "customer-enterprise-station",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/station-enterprise.vue"
+      )
+  },
+  {
+    path: "/customer/enterprise/factor",
+    name: "customer-enterprise-factor",
+    key: "customer-enterprise-factor",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/factor.vue"
+      )
+  },
+  {
+    path: "/customer/enterprise/device",
+    name: "customer-enterprise-device",
+    key: "customer-enterprise-device",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/device.vue"
+      )
+  },
+  {
+    path: "/customer/station/factor",
+    name: "customer-station-factor",
+    key: "customer-station-factor",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/factor.vue"
+      )
+  },
+  {
+    path: "/customer/station/device",
+    name: "customer-station-device",
+    key: "customer-station-device",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/device.vue"
       )
   }
 ];

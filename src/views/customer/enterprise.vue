@@ -1,8 +1,22 @@
 <template>
-  <a-card :bordered="false" class="enterprise" title="一企一档">
+  <a-card :bordered="false" class="enterprise" title="企业信息">
     <a-form layout="inline">
       <a-form-item>
         <a-input placeholder="企业名称"></a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-select placeholder="控制级别" v-width="150">
+          <a-select-option
+            v-for="item in controlOptions"
+            :key="item.value"
+            :value="item.value"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item>
+        <a-select placeholder="企业类型" v-width="150"> </a-select>
       </a-form-item>
       <a-form-item>
         <a-button type="primary">
@@ -10,7 +24,7 @@
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="editEnterprise('')">
+        <a-button type="success" @click="onEdit()">
           新增
         </a-button>
       </a-form-item>
@@ -21,46 +35,55 @@
       :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
-      rowKey="id"
+      :loading="loading"
+      bordered
     >
-      <span slot="stations" slot-scope="stations">
-        <a-button type="primary" size="small" @click="chooseStation(stations)"
-          >选择站点</a-button
-        >
-      </span>
       <span slot="action" slot-scope="row">
-        <a @click="editEnterprise(row)">编辑</a>
+        <a @click="goPoint(row)">监控点管理</a>
         <a-divider type="vertical" />
-        <a @click="deleteEnterprise">删除</a>
+        <a @click="goUser(row)">企业用户</a>
+        <a-divider type="vertical" />
+        <a @click="onEdit(row)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="onDelete(row)">删除</a>
       </span>
     </a-table>
 
     <a-pagination
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
       :defaultCurrent="current"
+      :defaultPageSize="pageSize"
       :total="total"
     />
 
     <!-- 新增企业 -->
-    <enterprise-new :visible.sync="visible" :enterpriseId="enterpriseId" />
+    <add-enterprise :obj="obj" @cancel="cancel" />
     <!-- 新增企业end -->
   </a-card>
 </template>
 
 <script>
-import enterpriseNew from "@/components/customer/enterprise-new";
+import addEnterprise from "@/components/customer/enterprise/add-enterprise";
 export default {
   components: {
-    enterpriseNew
+    addEnterprise
   },
   data() {
     return {
       current: 1,
+      pageSize: 10,
       total: 1,
-      enterpriseId: "",
-      visible: false,
+      loading: false,
+      controlOptions: [
+        { name: "国控", value: "1" },
+        { name: "省控", value: "2" },
+        { name: "市控", value: "3" },
+        { name: "县控", value: "4" }
+      ],
+      obj: {
+        show: false
+      },
       columns: [
         {
           title: "序号",
@@ -70,32 +93,25 @@ export default {
         {
           title: "企业名称",
           dataIndex: "name",
+          key: "name",
           align: "center"
         },
         {
-          title: "行政区域",
-          dataIndex: "address",
-          align: "center"
-        },
-        {
-          title: "站点数量",
+          title: "控制级别",
           dataIndex: "stationNum",
+          key: "stationNum",
           align: "center"
         },
-        // {
-        //   title: "运维小组",
-        //   dataIndex: "group",
-        //   align: "center"
-        // },
-        // {
-        //   title: "站点",
-        //   dataIndex: "stations",
-        //   scopedSlots: { customRender: "stations" },
-        //   align: "center"
-        // },
         {
-          title: "企业负责人",
+          title: "企业地址",
+          dataIndex: "address",
+          key: "address",
+          align: "center"
+        },
+        {
+          title: "环保负责人",
           dataIndex: "contact",
+          key: "contact",
           align: "center"
         },
         {
@@ -105,23 +121,31 @@ export default {
           align: "center"
         }
       ],
-      tableData: []
+      tableData: [
+        {
+          name: "化一环境有限公司",
+          stationNum: "市控",
+          address: "南沙区",
+          contact: "张三"
+        }
+      ]
     };
   },
   methods: {
-    chooseStation(stations) {
-      console.log(stations);
+    onEdit(row) {
+      this.obj.show = true;
+      this.obj.row = row;
     },
-    editEnterprise(row) {
-      if (row) {
-        this.enterpriseId = row.id;
-      } else {
-        this.enterpriseId = "";
-      }
-      console.log(this.enterpriseId);
-      this.visible = true;
+    getTableData() {
+      // this.$api.customer.getEnterPriseList().then(res => {
+      //   if (res.status == 200) {
+      //     console.log(res);
+      //     this.tableData = res.data.data.records;
+      //     this.total = res.data.data.total;
+      //   }
+      // });
     },
-    deleteEnterprise(row) {
+    onDelete(row) {
       console.log(row);
       this.$confirm({
         title: "删除",
@@ -134,14 +158,23 @@ export default {
         }
       });
     },
-    getTableData() {
-      this.$api.customer.getEnterPriseList().then(res => {
-        if (res.status == 200) {
-          console.log(res);
-          this.tableData = res.data.data.records;
-          this.total = res.data.data.total;
-        }
+    goUser(row) {
+      console.log(row);
+      this.$router.push({
+        path: "/customer/enterprise/user",
+        query: { id: row.id }
       });
+    },
+    goPoint(row) {
+      console.log(row);
+      this.$router.push({
+        path: "/customer/enterprise/station",
+        query: { id: row.id }
+      });
+    },
+    cancel(value) {
+      this.obj.show = value;
+      this.getTableData();
     }
   },
   mounted() {

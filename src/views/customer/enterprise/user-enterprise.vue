@@ -1,17 +1,14 @@
 <template>
   <a-card :bordered="false" class="organization">
-    <span slot="title">企业用户</span>
+    <span slot="title">
+      <a-icon type="arrow-left" @click="$router.back(-1)" />企业用户
+    </span>
     <a-form layout="inline">
       <a-form-item>
         <a-input placeholder="姓名"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-select placeholder="所属部门" v-width="150">
-          <!-- <a-select-option value="1"></a-select-option> -->
-        </a-select>
-      </a-form-item>
-      <a-form-item>
-        <a-select placeholder="角色" v-width="150"> </a-select>
+        <a-input placeholder="手机号"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">
@@ -19,7 +16,7 @@
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" @click="onEdit()">
+        <a-button type="success" html-type="submit" @click="onEdit()">
           新增
         </a-button>
       </a-form-item>
@@ -31,8 +28,6 @@
       v-margin:top="16"
     >
       <span slot="action" slot-scope="row">
-        <a @click="onCheck(row)">详情</a>
-        <a-divider type="vertical" />
         <a @click="onEdit(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
@@ -46,14 +41,12 @@
       :total="total"
     />
     <add-edit :obj="obj" @cancel="cancel"></add-edit>
-    <detail :obj="checkObj" @cancel="cancel"></detail>
   </a-card>
 </template>
 <script>
-import addEdit from "@/components/organization/member/add-edit";
-import detail from "@/components/organization/member/detail";
+import addEdit from "@/components/customer/enterprise/add-edit-user";
 export default {
-  components: { addEdit, detail },
+  components: { addEdit },
   data() {
     return {
       current: 1,
@@ -64,29 +57,21 @@ export default {
           customRender: (text, row, index) => `${index + 1}`
         },
         {
+          title: "企业名称",
+          dataIndex: "department"
+        },
+        {
           title: "姓名",
           dataIndex: "name"
+        },
+        {
+          title: "账号",
+          dataIndex: "tel"
         },
         {
           title: "手机",
           dataIndex: "tel"
         },
-        {
-          title: "所属部门",
-          dataIndex: "department"
-        },
-        {
-          title: "职位",
-          dataIndex: "position"
-        },
-        {
-          title: "角色",
-          dataIndex: "role"
-        },
-        // {
-        //   title: "状态",
-        //   dataIndex: "status"
-        // },
         {
           title: "操作",
           key: "action",
@@ -94,7 +79,13 @@ export default {
           align: "center"
         }
       ],
-      tableData: [],
+      tableData: [
+        {
+          department: "化一环境有限公司",
+          name: "张三",
+          tel: "13888888888"
+        }
+      ],
       obj: {
         show: false
       },
@@ -105,19 +96,15 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMemberList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      // this.$api.maintain.getMemberList().then(res => {
+      //   this.tableData = res.data.data;
+      //   this.total = res.data.total;
+      // });
     },
     onEdit(row) {
       console.log(row);
       this.obj.show = true;
       this.obj.row = row;
-    },
-    onCheck(row) {
-      this.checkObj.show = true;
-      this.checkObj.row = row;
     },
     onDelete(row) {
       console.log(row);
