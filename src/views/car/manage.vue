@@ -84,7 +84,7 @@ export default {
     getTableData() {
       let params = {
         pagesize: this.pagesize,
-        current: this.current
+        page: this.current
       };
       this.loading = true;
       this.$api.car

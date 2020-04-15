@@ -8,11 +8,15 @@ const platform = {
       params: data
     });
   },
-  //监测因子一览表列表
-  getFactorsList(data) {
-    return axios.get(base.api + "i-maintain/factors-list", {
+  //因子设置列表
+  sysDivisor(data) {
+    return axios.get(base.api + "sysDivisor/", {
       params: data
     });
+  },
+  //新增因子
+  addSysDivisor(data) {
+    return axios.post(base.api + "sysDivisor/addSysDivisor", data);
   }
 };
 export default platform;

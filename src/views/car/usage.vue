@@ -70,8 +70,12 @@ export default {
   methods: {
     getTableData() {
       this.loading = true;
+      let params = {
+        pagesize: this.pagesize,
+        page: this.current
+      };
       this.$api.car
-        .manageVehicleUse()
+        .manageVehicleUse(params)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
