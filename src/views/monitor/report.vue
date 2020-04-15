@@ -1,11 +1,11 @@
 <template>
-  <a-card :bordered="false" class="standing" title="监测数据">
+  <a-card :bordered="false" class="standing" title="数据报表">
     <a-layout>
       <a-layout-sider><left-tree></left-tree></a-layout-sider>
       <a-layout-content>
         <a-form-model layout="inline" :model="formInline">
           <a-form-model-item>
-            <a-range-picker @change="onChange" placeholder="时间范围" />
+            <a-range-picker />
           </a-form-model-item>
           <a-form-model-item>
             <a-button type="primary">
@@ -49,14 +49,18 @@ export default {
       total: 0,
       tableData: [
         {
-          date: "2020-04-25 16:43:00",
-          temperature: "30",
-          gas: "二氧化碳"
+          id: "1",
+          date: "2020-04-14 00:00:00",
+          codstate: "17.2253",
+          anitrogen: "0.0191",
+          pHstate: "6"
         },
         {
-          date: "2020-04-25 16:43:00",
-          temperature: "30",
-          gas: "二氧化碳"
+          id: "2",
+          date: "2020-04-14 00:00:00",
+          codstate: "17.2253",
+          anitrogen: "0.0191",
+          pHstate: "6"
         }
       ],
       columns: [
@@ -67,15 +71,21 @@ export default {
           align: "center"
         },
         {
-          title: "温度",
-          dataIndex: "temperature",
-          key: "temperature",
+          title: "COD(mg/L)",
+          dataIndex: "codstate",
+          key: "codstate",
           align: "center"
         },
         {
-          title: "废气",
-          dataIndex: "gas",
-          key: "gas",
+          title: "氨氮(mg/L)",
+          dataIndex: "anitrogen",
+          key: "anitrogen",
+          align: "center"
+        },
+        {
+          title: "PH",
+          dataIndex: "pHstate",
+          key: "pHstate",
           align: "center"
         }
       ],
