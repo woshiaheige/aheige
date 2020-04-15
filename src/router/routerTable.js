@@ -1,4 +1,4 @@
-// import reportRoute from "../router/routesTable/reportRoute";
+import reportRoute from "../router/routesTable/reportRoute";
 // import announcement from "../router/routesTable/announcement";
 // import iMaintainRoutes from "../router/routesTable/iMaintainRoute";
 import indexRoutes from "../router/routesTable/indexRoute"; //运维一览
@@ -20,7 +20,7 @@ const RouterTable = [
     component: () =>
       import(/* webpackChunkName: "view-home" */ "@/views/Home.vue"),
     children: [
-      // ...reportRoute,
+      ...reportRoute,
       // ...announcement,
       // ...iMaintainRoutes,
       ...indexRoutes,

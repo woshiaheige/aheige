@@ -28,6 +28,16 @@ const platform = [
         /* webpackChunkName: "view-platform" */
         "@/views/platform/operation.vue"
       )
+  },
+  {
+    path: "/platform/scheme",
+    name: "platform-scheme",
+    key: "scheme",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-platform" */
+        "@/views/platform/scheme/scheme.vue"
+      )
   }
 ];
 

@@ -96,10 +96,6 @@ export default {
               title: "传输速率",
               key: "speed"
             },
-            // {
-            //   title: "设备反控",
-            //   key: "control"
-            // },
             {
               title: "报警管理",
               key: "warn"
@@ -108,6 +104,10 @@ export default {
             //   title: "每日运维",
             //   key: "maintenance"
             // }
+            // {
+            //   title: "设备反控",
+            //   key: "control"
+            // },
           ]
         },
         {
@@ -121,33 +121,45 @@ export default {
           icon: "control",
           children: [
             {
-              title: "任务一览",
+              title: "任务管理",
               key: "mission"
             },
             {
-              title: "站点任务管理",
-              key: "station-mission"
-            },
-            // {
-            //   title: "运维地图",
-            //   key: "map"
-            // },
-            {
-              title: "车辆使用记录",
-              key: "car-usage"
-            },
-            {
-              title: "违章管理",
-              key: "violation"
+              title: "运维计划",
+              key: "plan"
             },
             {
               title: "上报投诉",
               key: "complaint"
             },
             {
-              title: "运维知识库",
+              title: "日常巡检",
+              key: "inspection"
+            },
+            {
+              title: "运维记录",
+              key: "maintain-log"
+            },
+            {
+              title: "运维知识",
               key: "knowledge"
             }
+            // {
+            //   title: "站点任务管理",
+            //   key: "station-mission"
+            // }
+            // {
+            //   title: "运维地图",
+            //   key: "map"
+            // },
+            // {
+            //   title: "车辆使用记录",
+            //   key: "car-usage"
+            // },
+            // {
+            //   title: "违章管理",
+            //   key: "violation"
+            // }
           ]
         },
         {
@@ -156,7 +168,7 @@ export default {
           icon: "team",
           children: [
             {
-              title: "一企一档",
+              title: "企业信息",
               key: "enterprise"
             },
             {
@@ -170,6 +182,10 @@ export default {
             {
               title: "供应商管理",
               key: "supplier"
+            },
+            {
+              title: "企业用户",
+              key: "user-enterprise"
             }
           ]
         },
@@ -178,18 +194,11 @@ export default {
         //   key: "report",
         //   icon: "line-chart",
         //   children: [
-        //     // {
-        //     //   title: "运维记录报告",
-        //     //   key: "maintain-log"
-        //     // },
-        //     // {
-        //     //   title: "智能报表",
-        //     //   key: "i-report"
-        //     // },
-        //     // {
-        //     //   title: "巡检记录",
-        //     //   key: "inspection"
-        //     // },
+        //     {
+        //       title: "智能报表",
+        //       key: "i-report"
+        //     },
+
         //     {
         //       title: "仪器汇总",
         //       key: "device"
@@ -221,10 +230,7 @@ export default {
         //       title: "远程控制",
         //       key: "remote"
         //     },
-        //     {
-        //       title: "运维方案",
-        //       key: "scheme"
-        //     },
+
         //     {
         //       title: "运维计划",
         //       key: "plan"
@@ -242,7 +248,17 @@ export default {
         {
           title: "车辆管理",
           key: "car",
-          icon: "car"
+          icon: "car",
+          children: [
+            {
+              title: "车辆管理",
+              key: "manage"
+            },
+            {
+              title: "车辆使用记录",
+              key: "usage"
+            }
+          ]
         },
         {
           title: "物品管理",
@@ -272,7 +288,34 @@ export default {
             // }
           ]
         },
-
+        {
+          title: "系统管理",
+          key: "platform",
+          icon: "setting",
+          children: [
+            {
+              title: "仪器设置",
+              key: "instrument"
+            },
+            {
+              title: "因子设置",
+              key: "factors"
+            },
+            {
+              title: "设置运维参数",
+              key: "operation"
+            },
+            {
+              title: "方案设置",
+              key: "scheme"
+            }
+          ]
+        }
+        // {
+        //   title: "我的工作台",
+        //   key: "workbench",
+        //   icon: "desktop"
+        // }
         // {
         //   title: "台账管理",
         //   key: "standing",
@@ -294,32 +337,6 @@ export default {
         //   key: "announcement",
         //   icon: "sound"
         // },
-
-        {
-          title: "系统管理",
-          key: "platform",
-          icon: "setting",
-          children: [
-            {
-              title: "设置运维参数",
-              key: "operation"
-            },
-            {
-              title: "仪器型号设置",
-              key: "instrument"
-            },
-            {
-              title: "因子设置",
-              key: "factors"
-            }
-          ]
-        }
-
-        // {
-        //   title: "我的工作台",
-        //   key: "workbench",
-        //   icon: "desktop"
-        // }
       ]
     };
   },
