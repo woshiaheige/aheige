@@ -4,30 +4,28 @@
       ref="formModal"
       :form="form"
       :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 16 }"
+      :wrapper-col="{ span: 18 }"
     >
+      <a-form-item label="所属企业">
+        <a-select
+          placeholder="所属企业"
+          v-decorator="[
+            'num',
+            { rules: [{ required: true, message: '请选择所属企业' }] }
+          ]"
+        >
+        </a-select>
+      </a-form-item>
       <a-form-item label="合同编号">
         <a-input
+          placeholder="合同编号"
           v-decorator="[
             'num',
             { rules: [{ required: true, message: '请输入合同编号' }] }
           ]"
         />
       </a-form-item>
-      <a-form-item label="合同客户企业">
-        <a-select
-          placeholder="请选择合同客户企业"
-          v-decorator="[
-            'enterprise',
-            { rules: [{ required: true, message: '请选择合同客户企业' }] }
-          ]"
-        >
-          <a-select-option value="1">
-            Option 1
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="合同起止时间">
+      <a-form-item label="起止时间">
         <a-range-picker
           v-decorator="[
             'range-time-picker',
@@ -37,38 +35,17 @@
           format="YYYY-MM-DD HH:mm:ss"
         />
       </a-form-item>
-      <a-form-item label="合同签署时间">
-        <a-date-picker
-          placeholder="选择合同签署时间"
-          v-decorator="[
-            'signTime',
-            { rules: [{ required: true, message: '请选择合同签署时间' }] }
-          ]"
-        />
-      </a-form-item>
       <a-form-item label="合同负责人">
-        <a-select placeholder="请选择合同负责人" v-decorator="['principal']">
-          <a-select-option value="1">
-            Option 1
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="主要负责小组">
-        <a-select placeholder="请选择主要负责小组" v-decorator="['group']">
-          <a-select-option value="1">
-            Option 1
-          </a-select-option>
-        </a-select>
+        <a-select placeholder="合同负责人"> </a-select>
       </a-form-item>
       <a-form-item label="合同金额">
-        <a-input v-decorator="['money']" placeholder="请输入合同金额" />
+        <a-input placeholder="合同金额" />
       </a-form-item>
-      <a-form-item label="合同说明">
-        <a-input
-          v-decorator="['detail']"
-          type="textarea"
-          placeholder="请输入合同说明"
-        />
+      <a-form-item label="合同备注">
+        <a-input type="textarea" placeholder="合同备注" />
+      </a-form-item>
+      <a-form-item label="合同状态">
+        <a-select placeholder="合同状态"></a-select>
       </a-form-item>
       <a-form-item label="合同附件">
         <a-upload
@@ -141,19 +118,6 @@ export default {
         // getBase64(info.file.originFileObj, imageUrl => {
         // });
       }
-    },
-    beforeUpload(file) {
-      console.log(file);
-      // const isJpgOrPng =
-      //   file.type === "image/jpeg" || file.type === "image/png";
-      // if (!isJpgOrPng) {
-      //   this.$message.error("You can only upload JPG file!");
-      // }
-      // const isLt2M = file.size / 1024 / 1024 < 2;
-      // if (!isLt2M) {
-      //   this.$message.error("Image must smaller than 2MB!");
-      // }
-      // return isJpgOrPng && isLt2M;
     }
   }
 };
