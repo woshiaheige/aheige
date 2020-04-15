@@ -3,8 +3,11 @@
     <span slot="title">车辆使用记录</span>
     <a-table
       :columns="columns"
+      :loading="loading"
+      rowKey="id"
       :dataSource="tableData"
       :pagination="false"
+      align="center"
       v-margin:top="16"
     >
       <a slot="check" slot-scope="row">
@@ -13,10 +16,11 @@
     </a-table>
     <a-pagination
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
-      :defaultCurrent="current"
       :total="total"
+      :current="current"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
   </a-card>
 </template>
@@ -27,6 +31,8 @@ export default {
     return {
       current: 1,
       total: 0,
+      pagesize: 10,
+      loading: false,
       columns: [
         {
           title: "序号",
@@ -34,35 +40,23 @@ export default {
         },
         {
           title: "驾驶时间",
-          dataIndex: "time"
+          dataIndex: "gmtDrive"
         },
         {
           title: "车辆",
-          dataIndex: "carName"
+          dataIndex: "number"
         },
         {
           title: "行驶距离",
-          dataIndex: "distance"
+          dataIndex: "driveDistance"
         },
         {
           title: "平均车速",
-          dataIndex: "aveSpeed"
+          dataIndex: "avgSpeed"
         },
         {
           title: "最大车速",
           dataIndex: "maxSpeed"
-        },
-        {
-          title: "驾驶时长",
-          dataIndex: "longTime"
-        },
-        {
-          title: "可用状态",
-          dataIndex: "status"
-        },
-        {
-          title: "默认使用小组",
-          dataIndex: "team"
         },
         {
           title: "行驶路径",
@@ -75,15 +69,25 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getCarList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      this.loading = true;
+      this.$api.car
+        .manageVehicleUse()
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     goDetail(row) {
       console.log(row);
       this.$router.push({
-        path: "/maintain/car-usage/detail"
+        path: "/maintain/car-usage/detail",
+        query: { vehicleId: row.id }
       });
     }
   },
