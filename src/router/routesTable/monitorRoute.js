@@ -1,4 +1,5 @@
 const monitorRoute = [
+  //监测数据
   {
     path: "/monitor/standing",
     name: "monitor-standing",
@@ -9,6 +10,7 @@ const monitorRoute = [
         "@/views/monitor/standing.vue"
       )
   },
+  //监测数据
   {
     path: "/monitor/data",
     name: "monitor-data",
@@ -19,6 +21,7 @@ const monitorRoute = [
         "@/views/monitor/data.vue"
       )
   },
+  //超标数据
   {
     path: "/monitor/exceed",
     name: "monitor-exceed",
@@ -29,6 +32,7 @@ const monitorRoute = [
         "@/views/monitor/exceed.vue"
       )
   },
+  //数据报表
   {
     path: "/monitor/report",
     name: "monitor-report",
@@ -37,26 +41,6 @@ const monitorRoute = [
       import(
         /* webpackChunkName: "view-monitor" */
         "@/views/monitor/report.vue"
-      )
-  },
-  {
-    path: "/monitor/speed",
-    name: "monitor-speed",
-    key: "speed",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-monitor" */
-        "@/views/monitor/speed.vue"
-      )
-  },
-  {
-    path: "/monitor/warn",
-    name: "monitor-warn",
-    key: "warn",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-monitor" */
-        "@/views/monitor/warn.vue"
       )
   }
 ];

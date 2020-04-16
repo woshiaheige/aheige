@@ -1,47 +1,49 @@
 <template>
-  <a-card :bordered="false" class="standing" title="监测数据">
-    <a-layout>
-      <a-layout-sider><left-tree></left-tree></a-layout-sider>
-      <a-layout-content>
-        <a-form-model layout="inline" :model="formInline">
-          <a-form-model-item>
-            <a-range-picker @change="onChange" placeholder="时间范围" />
-          </a-form-model-item>
-          <a-form-model-item>
-            <a-button type="primary">
-              查询
-            </a-button>
-          </a-form-model-item>
-        </a-form-model>
-        <a-table
-          bordered
-          rowKey="id"
-          :columns="columns"
-          :dataSource="tableData"
-          v-margin:top="16"
-          :pagination="false"
-        >
-          <span slot="action" slot-scope="row">
-            <a @click="toMonitorData(row)">监测数据</a>
-          </span>
-        </a-table>
+  <div>
+    <a-card :bordered="false" v-margin:bottom="28">
+      <a-form-model layout="inline" :model="formInline">
+        <a-form-model-item>
+          <a-range-picker @change="onChange" placeholder="时间范围" />
+        </a-form-model-item>
+        <a-form-model-item>
+          <a-button type="primary">
+            查询
+          </a-button>
+        </a-form-model-item>
+      </a-form-model>
+    </a-card>
 
-        <a-pagination
-          v-margin:top="16"
-          showSizeChanger
-          :pageSize.sync="pageSize"
-          :defaultCurrent="current"
-          :total="total"
-        />
-      </a-layout-content>
-    </a-layout>
-  </a-card>
+    <a-card :bordered="false">
+      <span slot="title">
+        <a-icon type="arrow-left" @click="$router.back(-1)" />实时数据
+      </span>
+
+      <a-table
+        bordered
+        rowKey="id"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="toMonitorData(row)">监测数据</a>
+        </span>
+      </a-table>
+
+      <a-pagination
+        v-margin:top="16"
+        showSizeChanger
+        :pageSize.sync="pageSize"
+        :defaultCurrent="current"
+        :total="total"
+      />
+    </a-card>
+  </div>
 </template>
 
 <script>
-import leftTree from "@/components/common/left-tree.vue";
 export default {
-  components: { leftTree },
   data() {
     return {
       pageSize: 10,
