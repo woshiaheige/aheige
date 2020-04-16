@@ -2,7 +2,7 @@
   <div>
     <a-modal
       :width="700"
-      title="新增"
+      :title="title"
       :visible="visible"
       @ok="handleOk"
       okText="确定"
@@ -26,6 +26,7 @@
           <a-col :span="12"
             ><a-form-model-item label="因子编码" prop="code">
               <a-input
+                :disabled="factorsDetail != ''"
                 v-model="form.code"
                 placeholder="输入因子编号"
               /> </a-form-model-item
@@ -50,7 +51,11 @@
         <a-row>
           <a-col :span="12">
             <a-form-model-item label="因子类型" prop="type">
-              <a-select v-model="form.type" placeholder="选择因子类型">
+              <a-select
+                :disabled="factorsDetail != ''"
+                v-model="form.type"
+                placeholder="选择因子类型"
+              >
                 <a-select-option value="32">废水</a-select-option>
                 <a-select-option value="31">废气</a-select-option>
               </a-select>
@@ -58,7 +63,11 @@
           </a-col>
           <a-col :span="12"
             ><a-form-model-item label="协议类型" prop="protocolType">
-              <a-select v-model="form.protocolType" placeholder="选择协议类型">
+              <a-select
+                :disabled="factorsDetail != ''"
+                v-model="form.protocolType"
+                placeholder="选择协议类型"
+              >
                 <a-select-option value="5">05协议</a-select-option>
                 <a-select-option value="17">17协议</a-select-option>
                 <a-select-option value="0">扩张协议</a-select-option>
@@ -105,13 +114,17 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    factorsDetail: {
+      required: false
     }
   },
   data() {
     let validateC = (rule, value, callback) => {
+      console.log(value, this.form.floorval);
       if (!this.form.ceilval) {
         callback();
-      } else if (value < this.form.floorval) {
+      } else if (+value < +this.form.floorval) {
         callback(new Error("上限值不能小于下限值"));
       } else {
         callback();
@@ -120,7 +133,7 @@ export default {
     let validateF = (rule, value, callback) => {
       if (!this.form.floorval) {
         callback();
-      } else if (value > this.form.ceilval) {
+      } else if (+value > +this.form.ceilval) {
         callback(new Error("下限值不能大于上限值"));
       } else {
         callback();
@@ -160,27 +173,78 @@ export default {
       }
     };
   },
+  computed: {
+    title() {
+      let title = this.factorsDetail ? "编辑因子" : "新增因子";
+      return title;
+    }
+  },
+  watch: {
+    factorsDetail(nval) {
+      if (nval) {
+        console.log(nval);
+        this.factorId = nval.id;
+        this.form = {
+          name: nval.name,
+          code: nval.code,
+          avgUnit: nval.avgUnit,
+          sumUnit: nval.sumUnit,
+          type: nval.type,
+          protocolType: nval.protocolType,
+          ceilval: nval.ceilval,
+          floorval: nval.floorval
+        };
+      }
+    }
+  },
   methods: {
     handleOk() {
       this.$refs.form.validate(valid => {
         if (valid) {
           let params = this.form;
-          this.$api.platform.addSysDivisor(params).then(res => {
-            if (res.data.state == 0) {
-              this.$emit("confirm");
-              this.$message.success("新建因子成功");
-            } else {
-              this.$message.error(res.data.msg);
-            }
-          });
+          if (this.factorsDetail) {
+            this.editFactor(params);
+          } else {
+            this.newFactor(params);
+          }
         }
       });
 
       console.log("handleOk");
     },
+    newFactor(params) {
+      //新增
+      this.$api.platform.addSysDivisor(params).then(res => {
+        if (res.data.state == 0) {
+          this.$emit("confirm");
+          this.reset();
+          this.$message.success("新建因子成功");
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    editFactor(params) {
+      //编辑
+      params.id = this.factorId;
+      this.$api.platform.editSysDivisor(params).then(res => {
+        if (res.data.state == 0) {
+          this.$emit("confirm");
+          this.reset();
+          this.$message.success("修改因子成功");
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
     handleCancel() {
       console.log("handleCancel");
+      this.reset();
       this.$emit("cancel");
+    },
+    reset() {
+      this.form = this.$options.data().form;
+      this.factorId = "";
     }
   }
 };

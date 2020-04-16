@@ -4,11 +4,11 @@
       <a-form-model-item>
         <a-input v-model="formInline.name" placeholder="因子名称" />
       </a-form-model-item>
-      <!-- <a-form-model-item>
-        <a-input v-model="formInline.code" placeholder="因子编号" />
-      </a-form-model-item> -->
       <a-form-model-item>
-        <a-button type="primary" @click="search">
+        <a-input v-model="formInline.code" placeholder="因子编号" />
+      </a-form-model-item>
+      <a-form-model-item>
+        <a-button type="primary" @click="onSubmit">
           查询
         </a-button>
       </a-form-model-item>
@@ -38,6 +38,7 @@
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"
@@ -47,6 +48,7 @@
       :visible="addFactorsVisible"
       @cancel="onAddFactorsCancel"
       @confirm="onAddFactorsConfirm"
+      :factorsDetail="factorsDetail"
     ></add-factors>
   </a-card>
 </template>
@@ -58,13 +60,14 @@ export default {
   data() {
     return {
       addFactorsVisible: false,
+      factorsDetail: "", //因子详情
       current: 1,
       total: 0,
       pagesize: 10,
       loading: false,
-      visible: false,
       formInline: {
-        name: ""
+        name: "",
+        code: ""
       },
       columns: [
         {
@@ -140,36 +143,39 @@ export default {
     },
     onAddClick() {
       this.addFactorsVisible = true;
+      this.factorsDetail = "";
     },
     onAddFactorsEdit(row) {
-      this.$api.platform.getSysDivisorById({ id: row.id });
+      this.$api.platform.getSysDivisorById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.factorsDetail = res.data.data;
+          this.addFactorsVisible = true;
+        }
+      });
     },
     onAddFactorsConfirm() {
       this.addFactorsVisible = false;
       this.getTableData();
     },
-    // deleteInstrument(row) {
-    //   console.log(row);
-    //   this.$confirm({
-    //     title: "删除",
-    //     content: "是否删除",
-    //     onOk() {
-    //       console.log("OK");
-    //     },
-    //     onCancel() {
-    //       console.log("Cancel");
-    //     }
-    //   });
-    // }
-    search() {
-      this.current = 1;
-      this.getTableData();
+    deleteInstrument(row) {
+      console.log(row);
+      this.$confirm({
+        title: "删除",
+        content: `是否删除因子 ${row.name}`,
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
     },
     getTableData() {
       let params = {
         pagesize: this.pagesize,
         page: this.current,
-        name: this.formInline.name
+        name: this.formInline.name,
+        code: this.formInline.code
       };
       this.loading = true;
       this.$api.platform
