@@ -43,19 +43,19 @@
         }"
       >
         <ul class="header-menu">
-          <!-- <li>
-            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
-          </li> -->
-          <!-- <li>
-            <a-icon type="aliwangwang" :style="{ fontSize: '18px' }" />
-          </li> -->
           <li>
             <a-avatar icon="user" />
           </li>
           <li>凌可佳</li>
         </ul>
       </a-layout-header>
-      <a-layout-content v-padding="30" class="main-content">
+      <a-layout-content
+        class="main-content"
+        v-padding:top="82"
+        v-padding:left="30"
+        v-padding:right="30"
+        v-padding:bottom="30"
+      >
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
