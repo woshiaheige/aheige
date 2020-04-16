@@ -36,7 +36,7 @@
         />
       </a-form-item>
       <a-form-item label="合同负责人">
-        <a-select placeholder="合同负责人"> </a-select>
+        <a-input placeholder="合同负责人" />
       </a-form-item>
       <a-form-item label="合同金额">
         <a-input placeholder="合同金额" />

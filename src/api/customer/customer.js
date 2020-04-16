@@ -2,14 +2,14 @@ import base from "../base";
 import axios from "../axios";
 
 const customer = {
-  //获取一企一档列表
-  // getEnterPriseList(data) {
-  //   return axios.get(base.mock + "cusEnterprise/", {
-  //     params: data
-  //   });
-  // },
-  getEnterPriseList() {
-    return axios.get(base.mock + "customer/enterprise-list");
+  //获取企业信息列表
+  getEnterPriseList(data) {
+    return axios.get(base.api + "cusEnterprise/", {
+      params: data
+    });
+  },
+  addEnterPrise(data) {
+    return axios.post(base.api + "cusEnterprise/addCusEnterprise", data);
   },
 
   //获取站点列表
