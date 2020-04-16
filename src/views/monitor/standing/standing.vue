@@ -72,6 +72,7 @@ export default {
         {
           title: "序号",
           align: "center",
+          dataIndex: "index",
           customRender: (text, row, index) => `${index + 1}`
         },
         {

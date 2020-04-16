@@ -7,6 +7,12 @@ const monitor = {
     return axios.get(base.api + "monitor/data/enterpriseData", {
       params: data
     });
+  },
+  //获取超标数据
+  getWarnData(data) {
+    return axios.get(base.api + "monitor/warnData/", {
+      params: data
+    });
   }
 };
 
