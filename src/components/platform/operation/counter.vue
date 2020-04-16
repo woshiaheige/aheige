@@ -1,7 +1,7 @@
 <template>
   <div class="counter">
     <a-input
-      style="width:100px"
+      style="width:200px"
       type="number"
       :value="value"
       @change="change($event)"

@@ -23,17 +23,22 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item>
-          <a-button type="primary" html-type="submit">
-            查找
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card
-      :bordered="false"
-      class="station"
-      title="监控点管理"
+      <a-form-item>
+        <a-button type="primary" html-type="submit">
+          查找
+        </a-button>
+        <a-button type="success" v-margin:left="10" @click="onEdit()">
+          新增
+        </a-button>
+      </a-form-item>
+    </a-form>
+
+    <a-table
+      size="middle"
+      rowKey="id"
+      :columns="columns"
+      :dataSource="tableData"
+      :loading="loading"
       v-margin:top="16"
     >
       <a-button

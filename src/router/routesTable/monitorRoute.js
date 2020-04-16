@@ -3,29 +3,29 @@ const monitorRoute = [
   {
     path: "/monitor/standing",
     name: "monitor-standing",
-    key: "standing",
+    key: "monitor-standing",
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
-        "@/views/monitor/standing.vue"
+        "@/views/monitor/standing/standing.vue"
       )
   },
   //监测数据
   {
-    path: "/monitor/data",
-    name: "monitor-data",
-    key: "data",
+    path: "/monitor/standing/data",
+    name: "monitor-standing-data",
+    key: "monitor-standing-data",
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
-        "@/views/monitor/data.vue"
+        "@/views/monitor/standing/data.vue"
       )
   },
   //超标数据
   {
     path: "/monitor/exceed",
     name: "monitor-exceed",
-    key: "exceed",
+    key: "monitor-exceed",
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
@@ -36,11 +36,22 @@ const monitorRoute = [
   {
     path: "/monitor/report",
     name: "monitor-report",
-    key: "report",
+    key: "monitor-report",
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
         "@/views/monitor/report.vue"
+      )
+  },
+  //异常数据
+  {
+    path: "/monitor/unusual",
+    name: "monitor-unusual",
+    key: "monitor-unusual",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-monitor" */
+        "@/views/monitor/unusual.vue"
       )
   }
 ];

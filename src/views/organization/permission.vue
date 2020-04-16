@@ -17,6 +17,7 @@
           </div>
           <div class="department-right-table">
             <a-table
+              size="middle"
               :columns="columns"
               :dataSource="tableData"
               :pagination="false"

@@ -2,6 +2,7 @@
   <a-card :bordered="false" class="maintain">
     <span slot="title">车辆使用记录</span>
     <a-table
+      size="middle"
       :columns="columns"
       :loading="loading"
       rowKey="id"
@@ -15,6 +16,7 @@
       </a>
     </a-table>
     <a-pagination
+      size="small"
       v-margin:top="16"
       showSizeChanger
       :total="total"

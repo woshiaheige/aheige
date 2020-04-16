@@ -1,6 +1,7 @@
 <template>
   <a-card :bordered="false" class="approval">
     <a-table
+      size="middle"
       :rowSelection="{
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange
@@ -18,6 +19,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showQuickJumper
       showSizeChanger

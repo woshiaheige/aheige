@@ -30,7 +30,7 @@
             <a-button :disabled="!hasSelected">编辑角色</a-button>
             <a-button :disabled="!hasSelected">调整部门</a-button>
             <a-button :disabled="!hasSelected" type="danger">批量删除</a-button>
-            <a-table
+            <a-table size="middle"
               :columns="columns"
               :dataSource="tableData"
               :pagination="false"

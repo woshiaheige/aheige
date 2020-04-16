@@ -3,10 +3,13 @@
     <a-card :bordered="false" v-margin:bottom="28">
       <a-form-model layout="inline" :model="formInline">
         <a-form-model-item>
-          <a-input v-model="formInline.enterprise" placeholder="企业名称" />
+          <a-input
+            v-model.trim="formInline.enterpriseName"
+            placeholder="企业名称"
+          />
         </a-form-model-item>
         <a-form-model-item>
-          <a-input v-model="formInline.point" placeholder="监控点名称" />
+          <a-input v-model="formInline.pointName" placeholder="监控点名称" />
         </a-form-model-item>
         <a-form-model-item>
           <a-select
@@ -19,16 +22,18 @@
           </a-select>
         </a-form-model-item>
         <a-form-model-item>
-          <a-button type="primary">
+          <a-button type="primary" @click="getTableData">
             查询
           </a-button>
         </a-form-model-item>
       </a-form-model>
     </a-card>
-    <a-card :bordered="false" title="监测数据">
+    <a-card :bordered="false" title="异常数据">
       <a-table
+        size="middle"
         bordered
-        rowKey="ents"
+        :loading="loading"
+        rowKey="pointId"
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"
@@ -40,6 +45,8 @@
       </a-table>
 
       <a-pagination
+        size="small"
+        :showTotal="total => `共 ${total} 条`"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
@@ -54,22 +61,11 @@
 export default {
   data() {
     return {
+      loading: false,
       pageSize: 10,
       current: 1,
       total: 0,
-      tableData: [
-        {
-          ents: "化一环境",
-          industryName: "制造业",
-          name: "1#排水口",
-          pointTypeName: "废水,废气",
-          controlType: "一般监管企业",
-          factorCount: "25",
-          isOnline: "在线",
-          isNormal: "正常",
-          dateTime: "2020-04-16 00:00:00"
-        }
-      ],
+      tableData: [],
       columns: [
         {
           title: "序号",
@@ -78,12 +74,12 @@ export default {
         },
         {
           title: "企业名称",
-          dataIndex: "ents",
+          dataIndex: "enterpriseName",
           align: "center"
         },
         {
           title: "控制级别",
-          dataIndex: "controlType",
+          dataIndex: "level",
           align: "center"
         },
         {
@@ -98,12 +94,12 @@ export default {
         },
         {
           title: "监测因子数",
-          dataIndex: "factorCount",
+          dataIndex: "divisorNum",
           align: "center"
         },
         {
           title: "是否在线",
-          dataIndex: "isOnline",
+          dataIndex: "onlineState",
           align: "center"
         },
         {
@@ -113,7 +109,7 @@ export default {
         },
         {
           title: "最后通讯时间",
-          dataIndex: "dateTime",
+          dataIndex: "communicationTime",
           align: "center"
         },
         {
@@ -123,14 +119,40 @@ export default {
         }
       ],
       formInline: {
-        enterprise: "",
-        point: "",
+        enterpriseName: "",
+        pointName: "",
         level: ""
       }
     };
   },
-  mounted() {},
+  mounted() {
+    this.getTableData();
+  },
   methods: {
+    getTableData() {
+      let data = {
+        enterpriseName: this.formInline.enterpriseName,
+        pointName: this.formInline.pointName,
+        index: this.current,
+        pageSize: this.pageSize,
+        industryId: ""
+      };
+      this.loading = true;
+      this.$api.monitor
+        .getStandingData(data)
+        .then(res => {
+          console.log(res);
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     onLevelChange(value) {
       this.form.level = value;
     },

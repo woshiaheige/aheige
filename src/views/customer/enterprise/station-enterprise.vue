@@ -14,16 +14,32 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item>
-          <a-button type="primary" html-type="submit">
-            查找
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card :bordered="false" class="station" v-margin:top="16">
-      <span slot="title">
-        <a-icon type="arrow-left" @click="$router.back(-1)" />监控点管理
+      <a-form-item>
+        <a-button type="primary" html-type="submit">
+          查找
+        </a-button>
+        <a-button type="success" v-margin:left="10" @click="onEdit()">
+          新增
+        </a-button>
+      </a-form-item>
+    </a-form>
+
+    <a-table
+      size="middle"
+      :columns="columns"
+      :dataSource="tableData"
+      v-margin:top="16"
+      :pagination="false"
+      bordered
+    >
+      <span slot="action" slot-scope="row">
+        <a @click="goFactor(row)">监测因子</a>
+        <a-divider type="vertical" />
+        <a @click="goDevice(row)">监测设备</a>
+        <a-divider type="vertical" />
+        <a @click="onEdit(row)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="onDelete(row)">删除</a>
       </span>
       <a-button
         slot="extra"
@@ -51,16 +67,16 @@
         </span>
       </a-table>
 
-      <a-pagination
-        v-margin:top="16"
-        showSizeChanger
-        :defaultCurrent="current"
-        :defaultPageSize="pageSize"
-        :total="total"
-      />
-      <add-edit :obj="obj" @cancel="cancel"></add-edit>
-    </a-card>
-  </div>
+    <a-pagination
+      size="small"
+      v-margin:top="16"
+      showSizeChanger
+      :defaultCurrent="current"
+      :defaultPageSize="pageSize"
+      :total="total"
+    />
+    <add-edit :obj="obj" @cancel="cancel"></add-edit>
+  </a-card>
 </template>
 
 <script>
