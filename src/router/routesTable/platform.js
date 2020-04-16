@@ -3,6 +3,9 @@ const platform = [
     path: "/platform/factors",
     name: "platform-factors",
     key: "factors",
+    meta: {
+      title: "因子设置"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-platform" */
@@ -13,6 +16,9 @@ const platform = [
     path: "/platform/instrument",
     name: "platform-instrument",
     key: "instrument",
+    meta: {
+      title: "任务管理"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-platform" */
@@ -23,6 +29,9 @@ const platform = [
     path: "/platform/operation",
     name: "platform-operation",
     key: "operation",
+    meta: {
+      title: "运维设置"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-platform" */
@@ -30,19 +39,12 @@ const platform = [
       )
   },
   {
-    path: "/platform/scheme",
-    name: "platform-scheme",
-    key: "scheme",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-platform" */
-        "@/views/platform/scheme/scheme.vue"
-      )
-  },
-  {
     path: "/platform/dictionary",
     name: "/platform-dictionary",
     key: "dictionary",
+    meta: {
+      title: "数据字典"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-/platform" */
@@ -53,6 +55,9 @@ const platform = [
     path: "/platform/industry",
     name: "/platform-industry",
     key: "industry",
+    meta: {
+      title: "行业设置"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-/platform" */

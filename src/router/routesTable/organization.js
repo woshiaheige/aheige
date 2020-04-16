@@ -1,18 +1,11 @@
 const organization = [
   {
-    path: "/organization/department",
-    name: "organization-department",
-    key: "department",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-organization" */
-        "@/views/organization/department.vue"
-      )
-  },
-  {
     path: "/organization/role",
     name: "organization-role",
     key: "role",
+    meta: {
+      title: "权限管理"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-organization" */
@@ -23,6 +16,9 @@ const organization = [
     path: "/organization/member",
     name: "organization-member",
     key: "member",
+    meta: {
+      title: "用户管理"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-organization" */
@@ -30,19 +26,12 @@ const organization = [
       )
   },
   {
-    path: "/organization/permission",
-    name: "organization-permission",
-    key: "permission",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-organization" */
-        "@/views/organization/permission.vue"
-      )
-  },
-  {
     path: "/organization/group",
     name: "organization-group",
     key: "group",
+    meta: {
+      title: "小组管理"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-organization" */
