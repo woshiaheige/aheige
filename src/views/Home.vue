@@ -55,7 +55,10 @@
           <li>凌可佳</li>
         </ul>
       </a-layout-header>
-      <a-page-header title="监测数据" :breadcrumb="{ props: { routes } }" />
+      <a-page-header
+        :title="$route.meta.title"
+        :breadcrumb="{ props: { routes } }"
+      />
       <a-layout-content class="main-content" v-padding="30">
         <router-view></router-view>
       </a-layout-content>
@@ -103,22 +106,6 @@ export default {
               title: "异常数据",
               key: "monitor-unusual"
             }
-            // {
-            //   title: "传输速率",
-            //   key: "speed"
-            // },
-            // {
-            //   title: "报警管理",
-            //   key: "warn"
-            // }
-            // {
-            //   title: "每日运维",
-            //   key: "maintenance"
-            // }
-            // {
-            //   title: "设备反控",
-            //   key: "control"
-            // },
           ]
         },
         {
@@ -155,22 +142,6 @@ export default {
               title: "运维知识",
               key: "knowledge"
             }
-            // {
-            //   title: "站点任务管理",
-            //   key: "station-mission"
-            // }
-            // {
-            //   title: "运维地图",
-            //   key: "map"
-            // },
-            // {
-            //   title: "车辆使用记录",
-            //   key: "car-usage"
-            // },
-            // {
-            //   title: "违章管理",
-            //   key: "violation"
-            // }
           ]
         },
         {
@@ -194,68 +165,8 @@ export default {
               title: "供应商管理",
               key: "supplier"
             }
-            // {
-            //   title: "企业用户",
-            //   key: "user-enterprise"
-            // }
           ]
         },
-        // {
-        //   title: "运维报表",
-        //   key: "report",
-        //   icon: "line-chart",
-        //   children: [
-        //     {
-        //       title: "智能报表",
-        //       key: "i-report"
-        //     },
-
-        //     {
-        //       title: "仪器汇总",
-        //       key: "device"
-        //     },
-        //     {
-        //       title: "每日运维",
-        //       key: "daily"
-        //     },
-        //     {
-        //       title: "小组汇总",
-        //       key: "team"
-        //     }
-        //   ]
-        // },
-        // {
-        //   title: "智能维护",
-        //   key: "i-maintain",
-        //   icon: "tool",
-        //   children: [
-        //     {
-        //       title: "运行日志",
-        //       key: "operation-log"
-        //     },
-        //     {
-        //       title: "报警管理",
-        //       key: "warning"
-        //     },
-        //     {
-        //       title: "远程控制",
-        //       key: "remote"
-        //     },
-
-        //     {
-        //       title: "运维计划",
-        //       key: "plan"
-        //     },
-        //     {
-        //       title: "报告模板",
-        //       key: "template"
-        //     },
-        //     {
-        //       title: "实时动态",
-        //       key: "realtime"
-        //     }
-        //   ]
-        // },
         {
           title: "车辆管理",
           key: "car",
@@ -297,15 +208,6 @@ export default {
               title: "数据字典",
               key: "dictionary"
             }
-            // {
-            //   title: "仪器设置",
-            //   key: "instrument"
-            // },
-
-            // {
-            //   title: "方案设置",
-            //   key: "scheme"
-            // }
           ]
         },
         {
@@ -321,47 +223,12 @@ export default {
               title: "小组管理",
               key: "group"
             },
-            // {
-            //   title: "部门管理",
-            //   key: "department"
-            // },
             {
               title: "权限管理",
               key: "role"
             }
-            // {
-            //   title: "权限管理",
-            //   key: "permission"
-            // }
           ]
         }
-
-        // {
-        //   title: "我的工作台",
-        //   key: "workbench",
-        //   icon: "desktop"
-        // }
-        // {
-        //   title: "台账管理",
-        //   key: "standing",
-        //   icon: "codepen",
-        //   children: [
-        //     {
-        //       title: "车辆管理",
-        //       key: "car"
-        //     },
-        //
-        //     {
-        //       title: "物品管理",
-        //       key: "product"
-        //     }
-        //   ]
-        // },
-        // {
-        //   title: "系统公告",
-        //   key: "announcement",
-        //   icon: "sound"
-        // },
       ]
     };
   },
@@ -394,14 +261,13 @@ export default {
   watch: {
     $route() {
       this.setMenu();
-      this.routes.push({
-        path: this.$route.path,
-        breadcrumbName: this.$route.name
-      });
+      this.setBreadcrumbName();
     }
   },
   mounted() {
     this.setMenu();
+    this.setBreadcrumbName();
+    console.log(this.$route);
   },
   methods: {
     changeMenu(object) {
@@ -421,6 +287,28 @@ export default {
     setMenu() {
       this.openKeys = this.openMenu;
       this.selectedKeys = this.selectedMenu;
+    },
+    setBreadcrumbName() {
+      for (let i in this.routes) {
+        if (this.routes[i].path !== this.$route.path) {
+          this.routes.splice(i + 1, this.routes.length - 1 - i);
+          break;
+        }
+      }
+
+      if (this.$route.path === "/index") {
+        this.routes = [
+          {
+            path: "/index",
+            breadcrumbName: "首页"
+          }
+        ];
+      } else {
+        this.routes.push({
+          path: this.$route.path,
+          breadcrumbName: this.$route.meta.title
+        });
+      }
     }
   }
 };

@@ -4,6 +4,9 @@ const monitorRoute = [
     path: "/monitor/standing",
     name: "monitor-standing",
     key: "monitor-standing",
+    meta: {
+      title: "监测数据"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
@@ -15,6 +18,9 @@ const monitorRoute = [
     path: "/monitor/standing/data",
     name: "monitor-standing-data",
     key: "monitor-standing-data",
+    meta: {
+      title: "实时数据"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
@@ -26,6 +32,9 @@ const monitorRoute = [
     path: "/monitor/exceed",
     name: "monitor-exceed",
     key: "monitor-exceed",
+    meta: {
+      title: "超标数据"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
@@ -37,6 +46,9 @@ const monitorRoute = [
     path: "/monitor/report",
     name: "monitor-report",
     key: "monitor-report",
+    meta: {
+      title: "数据报表"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */
@@ -48,6 +60,9 @@ const monitorRoute = [
     path: "/monitor/unusual",
     name: "monitor-unusual",
     key: "monitor-unusual",
+    meta: {
+      title: "异常数据"
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-monitor" */

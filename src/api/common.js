@@ -53,7 +53,13 @@ const common = {
       params: data
     });
   },
-  //行业类别下拉
+  //所有企业下拉
+  selectEnterprise(data) {
+    return axios.get(base.api + "/cusEnterprise/query", {
+      params: data
+    });
+  },
+  //区域树
   getTreeByName(data) {
     return axios.get(base.api + "sysRegion/getTreeByName", {
       params: data
