@@ -67,44 +67,48 @@ export default {
         }
       ],
       columns: [
-        {
-          title: "时间",
-          dataIndex: "date",
-          key: "date",
-          align: "center"
-        },
-        {
-          title: "温度",
-          dataIndex: "temperature",
-          key: "temperature",
-          align: "center"
-        },
-        {
-          title: "废气",
-          dataIndex: "gas",
-          key: "gas",
-          align: "center"
-        }
+        // {
+        //   title: "时间",
+        //   dataIndex: "date",
+        //   key: "date",
+        //   align: "center"
+        // },
+        // {
+        //   title: "温度",
+        //   dataIndex: "temperature",
+        //   key: "temperature",
+        //   align: "center"
+        // },
+        // {
+        //   title: "废气",
+        //   dataIndex: "gas",
+        //   key: "gas",
+        //   align: "center"
+        // }
       ],
       formInline: {
         beginTime: "",
-        endTime: ""
+        endTime: "",
+        pointId: ""
       }
     };
   },
   mounted() {
     this.setPointId();
-    this.getRealData();
+    this.getRealDataTitle();
   },
   methods: {
+    //时间改变事件
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";
     },
+    //设置pointid
     setPointId() {
-      this.pointId = this.$route.params.row.pointId;
+      this.formInline.pointId = this.$route.params.row.pointId;
     },
-    getRealData() {
+    //获取实时数据
+    getTableData() {
       this.loading = true;
       let data = this.pointId;
       this.$api.monitor
@@ -117,6 +121,33 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+        });
+    },
+    //获取实时数据表头
+    getRealDataTitle() {
+      let data = {
+        cn: 1
+      };
+      let path = this.formInline.pointId;
+      this.$api.monitor
+        .getRealDataTitle(data, path)
+        .then(res => {
+          if (res.data.state == 0) {
+            let _data = res.data.data || [];
+            let temp = [];
+            _data.forEach(element => {
+              temp.push({
+                title: element.title,
+                dataIndex: element.field,
+                key: element.field,
+                align: "center"
+              });
+            });
+            this.columns = temp;
+          }
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
   }
