@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$form.createForm(this, "industryEdit"),
       industryId: ""
     };
   },
@@ -44,18 +44,24 @@ export default {
   },
   watch: {
     industryDetail(nval) {
-      if (nval.detail) {
-        let detail = nval.detail;
-        this.industryId = nval.detail.id;
-        this.form.setFieldsValue({
-          number: detail.number
-        });
+      if (nval) {
+        this.industryId = nval.id;
+        setTimeout(() => {
+          this.form.setFieldsValue({
+            name: nval.name
+          });
+        }, 50);
       }
     }
   },
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+      this.reset();
+    },
+    reset() {
+      this.industryId = "";
+      this.form.resetFields();
     },
     handleOk() {
       this.form.validateFields((err, values) => {
@@ -73,9 +79,10 @@ export default {
       params.id = this.industryId;
       this.$api.platform.updateSysIndustry(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("新建行业成功");
+          this.$message.success("修改行业成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
+          this.reset();
         } else {
           this.$message.error(res.data.msg);
         }
@@ -88,6 +95,7 @@ export default {
           this.$message.success("新建行业成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
+          this.reset();
         } else {
           this.$message.error(res.data.msg);
         }

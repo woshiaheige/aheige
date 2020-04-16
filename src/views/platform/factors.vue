@@ -159,11 +159,20 @@ export default {
     },
     deleteInstrument(row) {
       console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
         content: `是否删除因子 ${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.platform.deleteSysDivisor({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");

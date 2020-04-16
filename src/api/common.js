@@ -7,6 +7,27 @@ const common = {
   geDictByParam(data) {
     return axios.post(base.api + "sysDict/geDictByCode", data);
   },
+  //数据字典》》分页查询
+  sysDict(data) {
+    return axios.get(base.api + "sysDict/", {
+      params: data
+    });
+  },
+  //新增字典
+  addSysDict(data) {
+    return axios.post(base.api + "sysDict/addSysDict", data);
+  },
+  //通过id获取字典
+  getSysDictById(data) {
+    return axios.get(base.api + "sysDict/getSysDictById", {
+      params: data
+    });
+  },
+  //修改字典
+  editSysDict(data) {
+    return axios.post(base.api + "sysDict/editSysDict", data);
+  },
+
   //站点下拉
   selectStation(data) {
     return axios.get(base.api + "cusPoint/query", {
