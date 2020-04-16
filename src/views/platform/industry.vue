@@ -3,7 +3,7 @@
     <span slot="title">行业设置</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="行业名称"></a-input>
+        <a-input placeholder="行业名称" v-model="formInline.name"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -34,6 +34,7 @@
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"
@@ -41,6 +42,7 @@
     <industry-edit
       :visible.sync="visible"
       :industryDetail="industryDetail"
+      @updateTable="getTableData"
     ></industry-edit>
   </a-card>
 </template>
@@ -55,6 +57,9 @@ export default {
       pagesize: 10,
       loading: false,
       industryDetail: "",
+      formInline: {
+        name: ""
+      },
       columns: [
         {
           title: "序号",
@@ -77,19 +82,30 @@ export default {
           align: "center"
         }
       ],
-      tableData: [
-        { name: "互联网", id: 1 },
-        { name: "金融", id: 2 }
-      ],
+      tableData: [],
       visible: false
     };
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMemberList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      let params = {
+        pagesize: this.pagesize,
+        page: this.current,
+        name: this.formInline.name
+      };
+      this.loading = true;
+      this.$api.platform
+        .sysIndustry(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     onEdit(row) {
       console.log(row);
@@ -124,7 +140,7 @@ export default {
     }
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
   }
 };
 </script>
