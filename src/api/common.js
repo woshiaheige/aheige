@@ -24,6 +24,12 @@ const common = {
     return axios.get(base.api + "sysIndustry/query", {
       params: data
     });
+  },
+  //行业类别下拉
+  getTreeByName(data) {
+    return axios.get(base.api + "sysRegion/getTreeByName", {
+      params: data
+    });
   }
 };
 

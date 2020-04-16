@@ -51,10 +51,11 @@
       title="企业信息"
       v-margin:top="16"
     >
-      <a-button type="success" @click="onEdit()" slot="extra">
+      <a-button type="primary" @click="onEdit('add')" slot="extra">
         新增
       </a-button>
       <a-table
+        rowKey="id"
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"
@@ -67,7 +68,7 @@
           <a-divider type="vertical" />
           <a @click="goUser(row)">企业用户</a>
           <a-divider type="vertical" />
-          <a @click="onEdit(row)">编辑</a>
+          <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
           <a @click="onDelete(row)">删除</a>
         </span>
@@ -79,12 +80,18 @@
         :defaultCurrent="current"
         :pageSize.sync="pageSize"
         :total="total"
+        :showTotal="total => `共 ${total} 条`"
         @change="pagechange"
         @showSizeChange="sizechange"
       />
 
       <!-- 新增企业 -->
-      <add-enterprise :obj="obj" @cancel="cancel" />
+      <add-enterprise
+        :controlOptions="controlOptions"
+        :typeList="typeList"
+        v-model="obj"
+        @refresh="getTableData"
+      />
       <!-- 新增企业end -->
     </a-card>
   </div>
@@ -179,12 +186,20 @@ export default {
         controlLevel: this.list.level,
         industryId: this.list.type
       };
-      this.$api.customer.getEnterPriseList(data).then(res => {
-        if (res.data.state == 0) {
-          this.tableData = res.data.data.records;
-          this.total = Number(res.data.data.total);
-        }
-      });
+      this.loading = true;
+      this.$api.customer
+        .getEnterPriseList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     //行业类型下拉
     getIndustrySelect() {
@@ -193,12 +208,20 @@ export default {
       });
     },
     onDelete(row) {
-      console.log(row);
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          this.$api.customer
+            .delEnterPrise({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("删除成功");
+                this.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");
@@ -219,13 +242,10 @@ export default {
         query: { id: row.id }
       });
     },
-    onEdit(row) {
+    onEdit(type, row) {
       this.obj.show = true;
+      this.obj.type = type;
       this.obj.row = row;
-    },
-    cancel(value) {
-      this.obj.show = value;
-      this.getTableData();
     }
   }
 };

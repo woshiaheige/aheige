@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title + '监测点'"
-    v-model="status"
+    :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
@@ -52,7 +52,7 @@
 <script>
 export default {
   props: {
-    obj: Object
+    value: Object
   },
   data() {
     return {
@@ -61,9 +61,9 @@ export default {
     };
   },
   computed: {
-    status: {
+    modelData: {
       get() {
-        return this.obj.show;
+        return this.value;
       },
       set() {}
     }
@@ -73,15 +73,17 @@ export default {
       this.handleCancel();
     },
     handleCancel() {
-      this.$emit("cancel", false);
-    }
+      this.modelData.show = false;
+    },
+    getEditData() {}
   },
   mounted() {},
   watch: {
-    status() {
-      if (this.status == true) {
-        if (this.obj.row != "" && this.obj.row != undefined) {
+    "value.show"() {
+      if (this.value.show == true) {
+        if (this.value.type == "edit") {
           this.title = "编辑";
+          this.getEditData();
         } else {
           this.title = "新增";
         }
