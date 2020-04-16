@@ -30,6 +30,20 @@ const customer = {
     return axios.get(base.api + "cusPoint/", {
       params: data
     });
+  },
+  addStation(data) {
+    return axios.post(base.api + "cusPoint/addCusPoint", data);
+  },
+  editStation(data) {
+    return axios.post(base.api + "cusPoint/editCusPoint", data);
+  },
+  delStation(data) {
+    return axios.POST(base.api + "cusPoint/deleteCusPoint", data);
+  },
+  getStationById(data) {
+    return axios.get(base.api + "cusPoint/getCusPointById", {
+      params: data
+    });
   }
   //获取合同列表
   // cusContract(data) {
