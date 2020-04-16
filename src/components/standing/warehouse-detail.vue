@@ -5,6 +5,7 @@
     @cancel="handleCancel"
   >
     <a-table
+      size="middle"
       :columns="columns"
       :dataSource="data"
       v-margin:top="16"

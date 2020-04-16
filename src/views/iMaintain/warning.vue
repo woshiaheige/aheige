@@ -7,6 +7,7 @@
       </a-col>
     </a-row>
     <a-table
+      size="middle"
       rowKey="id"
       :loading="loading"
       :columns="columns"
@@ -27,6 +28,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showQuickJumper
       showSizeChanger

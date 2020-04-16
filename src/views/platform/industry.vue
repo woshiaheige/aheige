@@ -17,6 +17,7 @@
       </a-form-item>
     </a-form>
     <a-table
+      size="middle"
       rowKey="id"
       :columns="columns"
       :loading="loading"
@@ -31,6 +32,7 @@
       </span>
     </a-table>
     <a-pagination
+      size="small"
       v-margin:top="16"
       showSizeChanger
       :total="total"

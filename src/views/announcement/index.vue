@@ -9,6 +9,7 @@
       </a-form-item>
     </a-form>
     <a-table
+      size="middle"
       :columns="columns"
       :dataSource="tableData"
       :pagination="false"
@@ -21,6 +22,7 @@
       </span>
     </a-table>
     <a-pagination
+      size="small"
       v-margin:top="16"
       showQuickJumper
       showSizeChanger

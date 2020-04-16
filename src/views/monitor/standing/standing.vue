@@ -34,6 +34,7 @@
     </a-card>
     <a-card :bordered="false" title="监测数据">
       <a-table
+        size="middle"
         bordered
         :loading="loading"
         rowKey="pointId"
@@ -48,6 +49,7 @@
       </a-table>
 
       <a-pagination
+        size="small"
         :showTotal="total => `共 ${total} 条`"
         v-margin:top="16"
         showSizeChanger
