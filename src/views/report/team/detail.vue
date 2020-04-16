@@ -127,6 +127,7 @@
 
             <!-- 任务表格 -->
             <a-table
+              size="middle"
               style="background:#fff"
               rowKey="id"
               :columns="columns"

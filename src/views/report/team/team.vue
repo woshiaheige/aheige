@@ -1,6 +1,7 @@
 <template>
   <a-card :bordered="false" class="report" title="小组汇总">
     <a-table
+      size="middle"
       rowKey="id"
       :columns="columns"
       :dataSource="tableData"
@@ -22,6 +23,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showQuickJumper
       showSizeChanger

@@ -4,6 +4,7 @@
       >添加巡检报告</a-button
     >
     <a-table
+      size="middle"
       rowKey="id"
       :columns="columns"
       :dataSource="tableData"
@@ -18,6 +19,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showQuickJumper
       showSizeChanger

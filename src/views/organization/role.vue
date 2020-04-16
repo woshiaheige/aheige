@@ -34,6 +34,7 @@
         </a-col>
       </a-row>
       <a-pagination
+        size="small"
         v-margin:top="16"
         showQuickJumper
         showSizeChanger

@@ -23,6 +23,7 @@
     >
     <a-card :bordered="false" title="超标数据">
       <a-table
+        size="middle"
         :loading="loading"
         bordered
         :rowKey="(record, index) => index"
@@ -37,6 +38,7 @@
       </a-table>
 
       <a-pagination
+        size="small"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"

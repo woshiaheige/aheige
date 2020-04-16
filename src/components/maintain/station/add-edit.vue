@@ -17,6 +17,7 @@
         <a-tab-pane tab="任务项" key="2"><info-modal></info-modal></a-tab-pane>
         <a-tab-pane tab="任务报告" key="3">
           <a-table
+            size="middle"
             :columns="columns"
             :dataSource="tableData"
             :pagination="false"

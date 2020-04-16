@@ -85,6 +85,7 @@
                   </a-descriptions-item>
                 </a-descriptions>
                 <a-pagination
+                  size="small"
                   v-margin:top="16"
                   :showTotal="total => `共 ${total} 条`"
                   :defaultCurrent="1"

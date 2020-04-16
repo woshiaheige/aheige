@@ -14,6 +14,7 @@
           </a-form-model-item>
         </a-form-model>
         <a-table
+          size="middle"
           bordered
           rowKey="id"
           :columns="columns"
@@ -27,6 +28,7 @@
         </a-table>
 
         <a-pagination
+          size="small"
           v-margin:top="16"
           showSizeChanger
           :pageSize.sync="pageSize"
