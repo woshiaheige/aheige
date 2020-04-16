@@ -36,15 +36,11 @@ export default {
       columns: [
         {
           title: "序号",
-          customRender: (_, __, index) => {
+          customRender: (text, row, index) => {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
           }
-        },
-        {
-          title: "驾驶时间",
-          dataIndex: "gmtDrive"
         },
         {
           title: "车辆",
@@ -61,6 +57,10 @@ export default {
         {
           title: "最大车速",
           dataIndex: "maxSpeed"
+        },
+        {
+          title: "驾驶时间",
+          dataIndex: "gmtDrive"
         },
         {
           title: "行驶路径",

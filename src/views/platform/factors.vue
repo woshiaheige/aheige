@@ -28,7 +28,7 @@
       :pagination="false"
     >
       <span slot="action" slot-scope="row">
-        <a @click="visible = true">编辑</a>
+        <a @click="onAddFactorsEdit(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="deleteInstrument(row)">删除</a>
       </span>
@@ -140,6 +140,9 @@ export default {
     },
     onAddClick() {
       this.addFactorsVisible = true;
+    },
+    onAddFactorsEdit(row) {
+      this.$api.platform.getSysDivisorById({ id: row.id });
     },
     onAddFactorsConfirm() {
       this.addFactorsVisible = false;

@@ -270,20 +270,56 @@ export default {
           icon: "gold"
         },
         {
+          title: "基础数据",
+          key: "platform",
+          icon: "setting",
+          children: [
+            {
+              title: "因子设置",
+              key: "factors"
+            },
+            {
+              title: "运维设置",
+              key: "operation"
+            },
+            {
+              title: "行业设置",
+              key: "industry"
+            },
+            {
+              title: "数据字典",
+              key: "dictionary"
+            }
+            // {
+            //   title: "仪器设置",
+            //   key: "instrument"
+            // },
+
+            // {
+            //   title: "方案设置",
+            //   key: "scheme"
+            // }
+          ]
+        },
+        {
           title: "系统设置",
           key: "organization",
           icon: "user",
           children: [
             {
-              title: "部门管理",
-              key: "department"
-            },
-            {
-              title: "成员管理",
+              title: "用户管理",
               key: "member"
             },
             {
-              title: "角色管理",
+              title: "小组管理",
+              key: "group"
+            },
+            // {
+            //   title: "部门管理",
+            //   key: "department"
+            // },
+            {
+              title: "权限管理",
               key: "role"
             }
             // {
@@ -291,30 +327,8 @@ export default {
             //   key: "permission"
             // }
           ]
-        },
-        {
-          title: "基础数据",
-          key: "platform",
-          icon: "setting",
-          children: [
-            {
-              title: "仪器设置",
-              key: "instrument"
-            },
-            {
-              title: "因子设置",
-              key: "factors"
-            },
-            {
-              title: "设置运维参数",
-              key: "operation"
-            },
-            {
-              title: "方案设置",
-              key: "scheme"
-            }
-          ]
         }
+
         // {
         //   title: "我的工作台",
         //   key: "workbench",

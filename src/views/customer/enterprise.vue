@@ -6,7 +6,12 @@
           <a-input placeholder="企业名称" v-model="list.name"></a-input>
         </a-form-item>
         <a-form-item>
-          <a-select placeholder="控制级别" v-width="150" v-model="list.level">
+          <a-select
+            placeholder="控制级别"
+            allowClear
+            v-width="150"
+            v-model="list.level"
+          >
             <a-select-option
               v-for="item in controlOptions"
               :key="item.value"
@@ -17,7 +22,12 @@
           </a-select>
         </a-form-item>
         <a-form-item>
-          <a-select placeholder="行业类别" v-width="150" v-model="list.type">
+          <a-select
+            placeholder="行业类别"
+            allowClear
+            v-width="150"
+            v-model="list.type"
+          >
             <a-select-option
               v-for="item in typeList"
               :key="item.id"
@@ -115,9 +125,20 @@ export default {
         },
         {
           title: "控制级别",
-          dataIndex: "stationNum",
-          key: "stationNum",
-          align: "center"
+          dataIndex: "controlLevel",
+          key: "controlLevel",
+          align: "center",
+          customRender: text => {
+            if (text == "1") {
+              return "国控";
+            } else if (text == "2") {
+              return "省控";
+            } else if (text == "3") {
+              return "市控";
+            } else if (text == "4") {
+              return "县控";
+            }
+          }
         },
         {
           title: "企业地址",
@@ -127,8 +148,8 @@ export default {
         },
         {
           title: "环保负责人",
-          dataIndex: "contact",
-          key: "contact",
+          dataIndex: "environmentPrincipal",
+          key: "environmentPrincipal",
           align: "center"
         },
         {

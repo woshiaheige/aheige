@@ -1,12 +1,9 @@
 <template>
-  <a-card :bordered="false" class="organization">
-    <span slot="title">用户管理</span>
+  <a-card :bordered="false" class="platform">
+    <span slot="title">行业设置</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="姓名"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="手机号"></a-input>
+        <a-input placeholder="行业名称"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -14,12 +11,13 @@
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="success" @click="obj.show = true">
+        <a-button type="success" @click="visible = true">
           新增
         </a-button>
       </a-form-item>
     </a-form>
     <a-table
+      rowKey="id"
       :columns="columns"
       :loading="loading"
       :dataSource="tableData"
@@ -30,8 +28,6 @@
         <a @click="onEdit(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
-        <a-divider type="vertical" />
-        <a @click="onLock(row)">锁定</a>
       </span>
     </a-table>
     <a-pagination
@@ -42,21 +38,23 @@
       @change="pagechange"
       @showSizeChange="sizechange"
     />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
-    <!-- <detail :obj="checkObj" @cancel="cancel"></detail> -->
+    <industry-edit
+      :visible.sync="visible"
+      :industryDetail="industryDetail"
+    ></industry-edit>
   </a-card>
 </template>
 <script>
-import addEdit from "@/components/organization/member/add-edit";
-// import detail from "@/components/organization/member/detail";
+import industryEdit from "@/components/platform/industry/industry-edit";
 export default {
-  components: { addEdit },
+  components: { industryEdit },
   data() {
     return {
       current: 1,
       total: 0,
       pagesize: 10,
       loading: false,
+      industryDetail: "",
       columns: [
         {
           title: "序号",
@@ -64,31 +62,13 @@ export default {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
-          }
+          },
+          align: "center"
         },
         {
-          title: "姓名",
-          dataIndex: "name"
-        },
-        {
-          title: "账号",
-          dataIndex: "account"
-        },
-        {
-          title: "手机号码",
-          dataIndex: "tel"
-        },
-        {
-          title: "运维小组",
-          dataIndex: "group"
-        },
-        {
-          title: "用户权限",
-          dataIndex: "roles"
-        },
-        {
-          title: "用户状态",
-          dataIndex: "status"
+          title: "行业名称",
+          dataIndex: "name",
+          align: "center"
         },
         {
           title: "操作",
@@ -97,13 +77,11 @@ export default {
           align: "center"
         }
       ],
-      tableData: [],
-      obj: {
-        show: false
-      },
-      checkObj: {
-        show: false
-      }
+      tableData: [
+        { name: "互联网", id: 1 },
+        { name: "金融", id: 2 }
+      ],
+      visible: false
     };
   },
   methods: {
@@ -115,14 +93,14 @@ export default {
     },
     onEdit(row) {
       console.log(row);
-      this.obj.show = true;
-      this.obj.row = row;
+      this.industryDetail = row;
+      this.visible = true;
     },
     onDelete(row) {
       console.log(row);
       this.$confirm({
         title: "删除",
-        content: `是否删除用户${row.name}`,
+        content: `是否删除行业 ${row.name}`,
         onOk() {
           console.log("OK");
         },
@@ -143,14 +121,10 @@ export default {
           console.log("Cancel");
         }
       });
-    },
-    cancel(value) {
-      this.obj.show = value;
-      this.checkObj.show = value;
     }
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="title + '角色'"
+    :title="title + '权限'"
     v-model="status"
     @ok="handleOk"
     @cancel="handleCancel"
@@ -10,11 +10,11 @@
       <!-- <a-form-item label="部门">
         <a-select placeholder="部门"> </a-select>
       </a-form-item>
-      <a-form-item label="角色编码">
-        <a-input placeholder="角色编码" />
+      <a-form-item label="权限编码">
+        <a-input placeholder="权限编码" />
       </a-form-item> -->
-      <a-form-item label="角色名称">
-        <a-input placeholder="角色名称" />
+      <a-form-item label="权限名称">
+        <a-input placeholder="权限名称" />
       </a-form-item>
       <!-- <a-form-item label="状态">
         <a-radio-group name="radioGroup" :defaultValue="1">
@@ -22,8 +22,8 @@
           <a-radio :value="2">不可用</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="角色授权">
-        <a-select placeholder="角色授权"> </a-select>
+      <a-form-item label="权限授权">
+        <a-select placeholder="权限授权"> </a-select>
       </a-form-item> -->
     </a-form>
   </a-modal>

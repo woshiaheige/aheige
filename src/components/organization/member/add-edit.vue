@@ -7,12 +7,21 @@
     okText="保存"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="员工姓名">
+      <a-form-item label="姓名">
         <a-input
-          placeholder="员工姓名"
+          placeholder="姓名"
           v-decorator="[
-            'title',
-            { rules: [{ required: true, message: '输入员工姓名' }] }
+            'name',
+            { rules: [{ required: true, message: '输入姓名' }] }
+          ]"
+        />
+      </a-form-item>
+      <a-form-item label="账号">
+        <a-input
+          placeholder="账号"
+          v-decorator="[
+            'account',
+            { rules: [{ required: true, message: '输入账号' }] }
           ]"
         />
       </a-form-item>
@@ -20,54 +29,33 @@
         <a-input
           placeholder="员工手机"
           v-decorator="[
-            'title',
+            'phone',
             { rules: [{ required: true, message: '输入员工手机' }] }
           ]"
         />
       </a-form-item>
-      <a-form-item label="员工邮箱">
-        <a-input
-          v-decorator="[
-            'email',
-            {
-              rules: [
-                {
-                  type: 'email',
-                  message: '输入正确邮箱地址'
-                }
-              ]
-            }
-          ]"
+      <a-form-item label="微信ID">
+        <a-input placeholder="输入微信ID" v-decorator="['wechat']" />
+      </a-form-item>
+      <a-form-item label="是否运维人员">
+        <a-radio-group
+          @change="onOperationChange"
+          :defaultValue="2"
+          :options="operationOptions"
         />
       </a-form-item>
-      <a-form-item label="员工性别">
-        <a-select placeholder="员工性别">
-          <a-select-option value="girl">女</a-select-option>
-          <a-select-option value="man">男</a-select-option>
-        </a-select>
+      <a-form-item label="运维小组" v-if="operation == 1">
+        <a-select placeholder="选择运维小组"> </a-select>
       </a-form-item>
-      <a-form-item label="部门">
-        <a-select placeholder="部门"> </a-select>
+      <a-form-item label="是否审核人员">
+        <a-radio-group
+          @change="onAuditorChange"
+          :defaultValue="2"
+          :options="auditorOptions"
+        />
       </a-form-item>
-      <a-form-item label="员工职位">
-        <a-input placeholder="员工职位" />
-      </a-form-item>
-      <a-form-item label="员工分机号">
-        <a-input placeholder="员工分机号" />
-      </a-form-item>
-      <a-form-item label="员工工作地点">
-        <a-input placeholder="员工工作地点" />
-      </a-form-item>
-      <a-form-item label="员工工号">
-        <a-input placeholder="员工工号" />
-      </a-form-item>
-      <a-form-item label="员工头像">
-        <a-upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          listType="picture"
-        >
-          <a-button>选择图片 </a-button>
-        </a-upload>
+      <a-form-item label="审核权限" v-if="auditor == 1">
+        <a-select placeholder="选择审核权限"> </a-select>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -80,6 +68,16 @@ export default {
   data() {
     return {
       title: "新增",
+      operationOptions: [
+        { label: "是", value: 1 },
+        { label: "否", value: 2 }
+      ],
+      operation: "",
+      auditorOptions: [
+        { label: "是", value: 1 },
+        { label: "否", value: 2 }
+      ],
+      auditor: "",
       form: this.$form.createForm(this)
     };
   },
@@ -97,6 +95,12 @@ export default {
     },
     handleCancel() {
       this.$emit("cancel", false);
+    },
+    onOperationChange(val) {
+      this.operation = val.target.value;
+    },
+    onAuditorChange(val) {
+      this.auditor = val.target.value;
     }
   },
   mounted() {},

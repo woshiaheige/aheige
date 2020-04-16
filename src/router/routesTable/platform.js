@@ -38,6 +38,26 @@ const platform = [
         /* webpackChunkName: "view-platform" */
         "@/views/platform/scheme/scheme.vue"
       )
+  },
+  {
+    path: "/platform/dictionary",
+    name: "/platform-dictionary",
+    key: "dictionary",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-/platform" */
+        "@/views/platform/dictionary.vue"
+      )
+  },
+  {
+    path: "/platform/industry",
+    name: "/platform-industry",
+    key: "industry",
+    component: () =>
+      import(
+        /* webpackChunkName: "view-/platform" */
+        "@/views/platform/industry.vue"
+      )
   }
 ];
 

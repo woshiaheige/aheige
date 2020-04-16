@@ -1,12 +1,12 @@
 <template>
-  <a-card :bordered="false" class="organization">
-    <span slot="title">用户管理</span>
+  <a-card :bordered="false" class="platform">
+    <span slot="title">数据字典</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="姓名"></a-input>
+        <a-input placeholder="字典名称"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-input placeholder="手机号"></a-input>
+        <a-input placeholder="字典编号"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -14,12 +14,13 @@
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="success" @click="obj.show = true">
+        <a-button type="success" @click="visible = true">
           新增
         </a-button>
       </a-form-item>
     </a-form>
     <a-table
+      rowKey="id"
       :columns="columns"
       :loading="loading"
       :dataSource="tableData"
@@ -30,8 +31,6 @@
         <a @click="onEdit(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
-        <a-divider type="vertical" />
-        <a @click="onLock(row)">锁定</a>
       </span>
     </a-table>
     <a-pagination
@@ -42,15 +41,13 @@
       @change="pagechange"
       @showSizeChange="sizechange"
     />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
-    <!-- <detail :obj="checkObj" @cancel="cancel"></detail> -->
+    <dictionary-edit :visible.sync="visible"></dictionary-edit>
   </a-card>
 </template>
 <script>
-import addEdit from "@/components/organization/member/add-edit";
-// import detail from "@/components/organization/member/detail";
+import dictionaryEdit from "@/components/platform/dictionary/dictionary-edit";
 export default {
-  components: { addEdit },
+  components: { dictionaryEdit },
   data() {
     return {
       current: 1,
@@ -64,31 +61,28 @@ export default {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
-          }
+          },
+          align: "center"
         },
         {
-          title: "姓名",
-          dataIndex: "name"
+          title: "字典名称",
+          dataIndex: "name",
+          align: "center"
         },
         {
-          title: "账号",
-          dataIndex: "account"
+          title: "字典编码",
+          dataIndex: "code",
+          align: "center"
         },
         {
-          title: "手机号码",
-          dataIndex: "tel"
+          title: "字典值",
+          dataIndex: "val",
+          align: "center"
         },
         {
-          title: "运维小组",
-          dataIndex: "group"
-        },
-        {
-          title: "用户权限",
-          dataIndex: "roles"
-        },
-        {
-          title: "用户状态",
-          dataIndex: "status"
+          title: "字典说明",
+          dataIndex: "desc",
+          align: "center"
         },
         {
           title: "操作",
@@ -98,12 +92,7 @@ export default {
         }
       ],
       tableData: [],
-      obj: {
-        show: false
-      },
-      checkObj: {
-        show: false
-      }
+      visible: false
     };
   },
   methods: {
@@ -115,14 +104,13 @@ export default {
     },
     onEdit(row) {
       console.log(row);
-      this.obj.show = true;
-      this.obj.row = row;
+      this.visible = true;
     },
     onDelete(row) {
       console.log(row);
       this.$confirm({
         title: "删除",
-        content: `是否删除用户${row.name}`,
+        content: `是否删除行业 ${row.name}`,
         onOk() {
           console.log("OK");
         },
@@ -143,14 +131,10 @@ export default {
           console.log("Cancel");
         }
       });
-    },
-    cancel(value) {
-      this.obj.show = value;
-      this.checkObj.show = value;
     }
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
   }
 };
 </script>

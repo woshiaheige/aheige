@@ -1,38 +1,38 @@
 <template>
   <a-card :bordered="false" class="organization role">
-    <span slot="title">角色管理 </span>
+    <span slot="title">权限管理 </span>
+    <a-form layout="inline">
+      <a-form-item>
+        <a-input placeholder="小组名称"></a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="onSubmit">
+          查询
+        </a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="success" @click="onEdit()">添加权限</a-button>
+      </a-form-item>
+    </a-form>
     <a-row :gutter="16">
-      <!--left tree-->
-      <!-- <a-col class="department-left" :span="8">
-        <role-tree></role-tree>
-      </a-col> -->
-      <!--right content-->
-      <!-- <a-col class="department-right" :span="16">
-        <a-card> -->
-      <!-- <div class="department-right-title">
-            <b>默认角色组</b>
-            <a-button v-margin:left="16">编辑角色组</a-button>
-            <a-button v-margin:left="16">编辑权限</a-button>
-            <p class="roleTips">默认角色组及角色为系统内部使用，无法编辑</p>
-          </div> -->
-      <a-button type="primary" @click="onEdit()">添加角色</a-button>
-      <!-- <div class="department-right-table"> -->
-      <a-table
-        :columns="columns"
-        :dataSource="tableData"
-        :pagination="false"
-        v-margin:top="16"
+      <a-row
+        type="flex"
+        justify="space-between"
+        align="middle"
+        v-margin:top="20"
+        :gutter="[16, 16]"
       >
-        <span slot="action" slot-scope="row">
-          <a>授权</a>
-          <a-divider type="vertical" />
-          <!-- <a>数据权限</a>
-          <a-divider type="vertical" /> -->
-          <a @click="onEdit(row)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="onDelete(row)">删除</a>
-        </span>
-      </a-table>
+        <a-col v-for="(item, index) of tableData" :key="index">
+          <a-card hoverable style="width: 300px">
+            <span slot="title">{{ item.name }}</span>
+            <template class="ant-card-actions" slot="actions">
+              <a-icon type="setting" key="setting" @click="onEdit(item)" />
+              <a-icon type="edit" key="edit" @click="onRole(item)" />
+              <a-icon type="delete" key="delete" @click="onDelete(item)" />
+            </template>
+          </a-card>
+        </a-col>
+      </a-row>
       <a-pagination
         v-margin:top="16"
         showQuickJumper
@@ -41,41 +41,23 @@
         :defaultPageSize="pageSize"
         :total="total"
       />
-      <!-- </div> -->
-      <!-- </a-card>
-      </a-col> -->
     </a-row>
     <add-edit :obj="obj" @cancel="cancel"></add-edit>
+    <role-tree :visible.sync="visible" />
   </a-card>
 </template>
 <script>
 import addEdit from "@/components/organization/role/add-edit";
-// import roleTree from "@/components/organization/role-tree";
+import roleTree from "@/components/organization/role-tree";
 export default {
-  components: { addEdit },
+  components: { addEdit, roleTree },
   data() {
     return {
       // selectedRowKeys: [],
+      visible: false,
       current: 1,
       pageSize: 10,
       total: 3,
-      columns: [
-        {
-          title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
-          title: "角色名称",
-          dataIndex: "name",
-          align: "center"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center"
-        }
-      ],
       tableData: [
         {
           name: "超级管理员"
@@ -92,11 +74,7 @@ export default {
       }
     };
   },
-  computed: {
-    // hasSelected() {
-    //   return this.selectedRowKeys.length > 0;
-    // }
-  },
+
   mounted() {
     this.getTableData();
   },
@@ -107,10 +85,6 @@ export default {
       //   this.total = res.data.total;
       // });
     },
-    // onSelectChange(selectedRowKeys) {
-    //   console.log("selectedRowKeys changed: ", selectedRowKeys);
-    //   this.selectedRowKeys = selectedRowKeys;
-    // },
     onEdit(row) {
       console.log(row);
       this.obj.show = true;
@@ -128,6 +102,11 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    onRole(row) {
+      //授权
+      console.log(row);
+      this.visible = true;
     },
     cancel(value) {
       this.obj.show = value;

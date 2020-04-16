@@ -6,7 +6,7 @@
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 16 }"
     >
-      <a-form-item label="签到验证">
+      <!-- <a-form-item label="签到验证">
         <a-radio-group v-model="formValue.verify">
           <a-radio
             :value="item.id"
@@ -20,17 +20,23 @@
         <counter v-model="formValue.distance">
           <span slot="uni">米</span>
         </counter>
-      </a-form-item>
-      <a-form-item label="警报记录问题设置"> </a-form-item>
-      <a-form-item label="最小间隔时间">
+      </a-form-item> -->
+      <!-- <a-form-item label="警报设置"> </a-form-item> -->
+      <a-form-item label="报警间隔时间">
         <counter v-model="formValue.spaceMin">
           <span slot="uni">分</span>
         </counter>
       </a-form-item>
-      <a-form-item label="合同到期提醒设置"> </a-form-item>
-      <a-form-item label="到期提醒天数">
+      <!-- <a-form-item label="合同设置"> </a-form-item> -->
+      <a-form-item label="合同到期提醒天数">
         <counter v-model="formValue.remind">
           <span slot="uni">天</span>
+        </counter>
+      </a-form-item>
+      <!-- <a-form-item label="任务设置"> </a-form-item> -->
+      <a-form-item label="任务完成时限">
+        <counter v-model="formValue.mission">
+          <span slot="uni">小时</span>
         </counter>
       </a-form-item>
       <a-row type="flex" justify="center" :gutter="20">
@@ -57,10 +63,11 @@ export default {
     return {
       form: this.$form.createForm(this, { name: "templateEdit" }),
       formValue: {
-        verify: 0,
-        distance: 0, //验证距离
+        // verify: 0,
+        // distance: 0, //验证距离
         spaceMin: 0, //最小间隔时间
-        remind: 0 //到期提醒天数
+        remind: 0, //到期提醒天数
+        mission: 0
       },
       verifyList: [
         {
