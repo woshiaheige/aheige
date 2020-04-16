@@ -36,7 +36,7 @@
       <a-table
         bordered
         :loading="loading"
-        rowKey="pointId"
+        :rowKey="(record, index) => index"
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"
@@ -166,8 +166,12 @@ export default {
       this.formInline.level = value;
     },
     toMonitorData(row) {
-      console.log(row);
-      this.$router.push("/monitor/standing/data");
+      this.$router.push({
+        name: "monitor-standing-data",
+        params: {
+          row
+        }
+      });
     }
   }
 };

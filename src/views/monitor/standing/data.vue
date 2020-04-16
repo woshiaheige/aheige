@@ -3,7 +3,7 @@
     <a-card :bordered="false" v-margin:bottom="28">
       <a-form-model layout="inline" :model="formInline">
         <a-form-model-item>
-          <a-range-picker @change="onChange" placeholder="时间范围" />
+          <a-range-picker @change="onChange" />
         </a-form-model-item>
         <a-form-model-item>
           <a-button type="primary">
@@ -19,8 +19,9 @@
       </span>
 
       <a-table
+        :loading="loading"
+        :rowKey="(record, index) => index"
         bordered
-        rowKey="id"
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"
@@ -46,6 +47,8 @@
 export default {
   data() {
     return {
+      loading: false,
+      pointId: "",
       pageSize: 10,
       current: 1,
       total: 0,
@@ -82,12 +85,38 @@ export default {
         }
       ],
       formInline: {
-        name: "",
-        type: ""
+        beginTime: "",
+        endTime: ""
       }
     };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.setPointId();
+    this.getRealData();
+  },
+  methods: {
+    onChange(date, dateString) {
+      this.formInline.beginTime = dateString[0] + " 00:00:00";
+      this.formInline.endTime = dateString[1] + " 23:59:59";
+    },
+    setPointId() {
+      this.pointId = this.$route.params.row.pointId;
+    },
+    getRealData() {
+      this.loading = true;
+      let data = this.pointId;
+      this.$api.monitor
+        .getRealData(data)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
+  }
 };
 </script>
