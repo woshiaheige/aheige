@@ -57,11 +57,7 @@
       </a-layout-header>
       <a-page-header
         @back="() => $router.go(-1)"
-        :breadcrumb="{
-          props: {
-            routes
-          }
-        }"
+        :breadcrumb="{ props: { routes } }"
       >
         <template slot="backIcon">
           <a-icon type="arrow-left" v-show="$route.meta.back" />
