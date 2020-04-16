@@ -2,7 +2,13 @@
   <div class="layout">
     <a-layout-sider
       width="256"
-      :style="{ position: 'fixed', height: '100vh', left: 0, overflow: 'auto' }"
+      :style="{
+        position: 'fixed',
+        height: '100vh',
+        left: 0,
+        overflow: 'auto',
+        zIndex: 1
+      }"
     >
       <div class="logo">
         <!-- <a-icon type="cloud" theme="filled" v-fontsize="28" />
@@ -49,13 +55,8 @@
           <li>凌可佳</li>
         </ul>
       </a-layout-header>
-      <a-layout-content
-        class="main-content"
-        v-padding:top="82"
-        v-padding:left="30"
-        v-padding:right="30"
-        v-padding:bottom="30"
-      >
+      <a-page-header title="监测数据" :breadcrumb="{ props: { routes } }" />
+      <a-layout-content class="main-content" v-padding="30">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
@@ -66,6 +67,12 @@ import routeTable from "@/router/routerTable";
 export default {
   data() {
     return {
+      routes: [
+        {
+          path: "/index",
+          breadcrumbName: "首页"
+        }
+      ],
       collapsed: false,
       openKeys: [],
       selectedKeys: [],
@@ -387,6 +394,10 @@ export default {
   watch: {
     $route() {
       this.setMenu();
+      this.routes.push({
+        path: this.$route.path,
+        breadcrumbName: this.$route.name
+      });
     }
   },
   mounted() {
