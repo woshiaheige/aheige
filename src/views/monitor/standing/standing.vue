@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a-page-header title="监测数据" :breadcrumb="{ props: { routes } }" />
     <a-card :bordered="false" v-margin:bottom="28">
       <a-form-model layout="inline" :model="formInline">
         <a-form-model-item>
@@ -65,6 +66,12 @@
 export default {
   data() {
     return {
+      routes: [
+        {
+          path: "standing",
+          breadcrumbName: "监测数据"
+        }
+      ],
       loading: false,
       pageSize: 10,
       current: 1,
