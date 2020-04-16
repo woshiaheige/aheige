@@ -147,7 +147,7 @@ export default {
   },
   mounted() {
     this.getTableData();
-    this.getEnterPriseSelect();
+    this.getIndustrySelect();
   },
   methods: {
     getTableData() {
