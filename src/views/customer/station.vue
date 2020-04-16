@@ -23,50 +23,34 @@
           </a-select>
         </a-form-item>
 
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查找
-        </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">
+            查找
+          </a-button>
+          <a-button type="success" v-margin:left="10" @click="onEdit()">
+            新增
+          </a-button>
+        </a-form-item>
+      </a-form>
 
-    <a-table
-      size="middle"
-      rowKey="id"
-      :columns="columns"
-      :dataSource="tableData"
-      :loading="loading"
-      v-margin:top="16"
-    >
-      <a-button
-        slot="extra"
-        type="primary"
-        v-margin:left="10"
-        @click="onEdit('add')"
-      >
-        新增
-      </a-button>
       <a-table
+        size="middle"
         rowKey="id"
         :columns="columns"
         :dataSource="tableData"
+        :loading="loading"
         v-margin:top="16"
         :pagination="false"
-        :loading="loading"
         bordered
       >
-        <span slot="action" slot-scope="row">
-          <a @click="goFactor(row)">监测因子</a>
-          <a-divider type="vertical" />
-          <a @click="goDevice(row)">监测设备</a>
-          <a-divider type="vertical" />
-          <a @click="onEdit('edit', row)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="onDelete(row)">删除</a>
-        </span>
+        <a-button
+          slot="extra"
+          type="primary"
+          v-margin:left="10"
+          @click="onEdit('add')"
+        >
+          新增
+        </a-button>
       </a-table>
 
       <a-pagination
