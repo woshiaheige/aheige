@@ -27,12 +27,18 @@
           <a-button type="primary" html-type="submit">
             查找
           </a-button>
-          <a-button type="success" v-margin:left="10" @click="onEdit()">
-            新增
-          </a-button>
         </a-form-item>
       </a-form>
-
+    </a-card>
+    <a-card
+      :bordered="false"
+      class="enterprise"
+      title="监测点管理"
+      v-margin:top="16"
+    >
+      <a-button type="primary" @click="onEdit('add')" slot="extra">
+        新增
+      </a-button>
       <a-table
         size="middle"
         rowKey="id"
@@ -40,17 +46,16 @@
         :dataSource="tableData"
         :loading="loading"
         v-margin:top="16"
-        :pagination="false"
-        bordered
       >
-        <a-button
-          slot="extra"
-          type="primary"
-          v-margin:left="10"
-          @click="onEdit('add')"
-        >
-          新增
-        </a-button>
+        <span slot="action" slot-scope="row">
+          <a @click="goFactor(row)">监测因子</a>
+          <a-divider type="vertical" />
+          <a @click="goDevice(row)">监测设备</a>
+          <a-divider type="vertical" />
+          <a @click="onEdit('edit', row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
       </a-table>
 
       <a-pagination
