@@ -1,92 +1,95 @@
 <template>
   <a-card :bordered="false" class="organization">
-    <span slot="title">成员管理</span>
+    <span slot="title">用户管理</span>
     <a-form layout="inline">
       <a-form-item>
         <a-input placeholder="姓名"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-select placeholder="所属部门" v-width="150">
-          <!-- <a-select-option value="1"></a-select-option> -->
-        </a-select>
+        <a-input placeholder="手机号"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-select placeholder="角色" v-width="150"> </a-select>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
+        <a-button type="primary" @click="onSubmit">
           查询
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" @click="onEdit()">
+        <a-button type="success" @click="obj.show = true">
           新增
         </a-button>
       </a-form-item>
     </a-form>
     <a-table
       :columns="columns"
+      :loading="loading"
       :dataSource="tableData"
       :pagination="false"
       v-margin:top="16"
     >
       <span slot="action" slot-scope="row">
-        <a @click="onCheck(row)">详情</a>
-        <a-divider type="vertical" />
         <a @click="onEdit(row)">编辑</a>
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
+        <a-divider type="vertical" />
+        <a @click="onLock(row)">锁定</a>
       </span>
     </a-table>
     <a-pagination
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
-      :defaultCurrent="current"
       :total="total"
+      :current="current"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
     <add-edit :obj="obj" @cancel="cancel"></add-edit>
-    <detail :obj="checkObj" @cancel="cancel"></detail>
+    <!-- <detail :obj="checkObj" @cancel="cancel"></detail> -->
   </a-card>
 </template>
 <script>
 import addEdit from "@/components/organization/member/add-edit";
-import detail from "@/components/organization/member/detail";
+// import detail from "@/components/organization/member/detail";
 export default {
-  components: { addEdit, detail },
+  components: { addEdit },
   data() {
     return {
       current: 1,
       total: 0,
+      pagesize: 10,
+      loading: false,
       columns: [
         {
           title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
+          customRender: (text, row, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "姓名",
           dataIndex: "name"
         },
         {
-          title: "手机",
+          title: "账号",
+          dataIndex: "account"
+        },
+        {
+          title: "手机号码",
           dataIndex: "tel"
         },
         {
-          title: "所属部门",
-          dataIndex: "department"
+          title: "运维小组",
+          dataIndex: "group"
         },
         {
-          title: "职位",
-          dataIndex: "position"
+          title: "用户权限",
+          dataIndex: "roles"
         },
         {
-          title: "角色",
-          dataIndex: "role"
+          title: "用户状态",
+          dataIndex: "status"
         },
-        // {
-        //   title: "状态",
-        //   dataIndex: "status"
-        // },
         {
           title: "操作",
           key: "action",
@@ -115,15 +118,24 @@ export default {
       this.obj.show = true;
       this.obj.row = row;
     },
-    onCheck(row) {
-      this.checkObj.show = true;
-      this.checkObj.row = row;
-    },
     onDelete(row) {
       console.log(row);
       this.$confirm({
         title: "删除",
-        content: "是否删除",
+        content: `是否删除用户${row.name}`,
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
+    onLock(row) {
+      console.log(row);
+      this.$confirm({
+        title: "锁定",
+        content: `是否锁定用户${row.name}`,
         onOk() {
           console.log("OK");
         },

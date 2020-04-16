@@ -1,8 +1,19 @@
 <template>
   <a-card :bordered="false" class="standing" title="车辆管理">
-    <a-button type="success" slot="extra" @click="edit('', 'add')"
-      >新增</a-button
-    >
+    <a-form layout="inline">
+      <a-form-item>
+        <a-input placeholder="输入车牌号(未对接此字段)"></a-input>
+      </a-form-item>
+      <a-form-item @click="onSubmit">
+        <a-button type="primary">
+          查询
+        </a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="success" @click="onEdit('', 'add')">新增</a-button>
+      </a-form-item>
+    </a-form>
+
     <a-table
       :columns="columns"
       :loading="loading"
@@ -12,9 +23,9 @@
       :pagination="false"
     >
       <span slot="action" slot-scope="row">
-        <a @click="edit(row, 'edit')">编辑</a>
+        <a @click="onEdit(row, 'edit')">编辑</a>
         <a-divider type="vertical" />
-        <a @click="delect(row)">删除</a>
+        <a @click="onDelect(row)">删除</a>
       </span>
     </a-table>
 
@@ -45,7 +56,7 @@ export default {
         {
           title: "序号",
           align: "center",
-          customRender: (_, __, index) => {
+          customRender: (text, row, index) => {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
@@ -104,7 +115,7 @@ export default {
           this.loading = false;
         });
     },
-    edit(row, type) {
+    onEdit(row, type) {
       this.modalInfo = {
         show: true,
         type: type,
@@ -122,7 +133,7 @@ export default {
         });
       }
     },
-    delect(row) {
+    onDelect(row) {
       let _this = this;
       this.$confirm({
         title: "确定删除" + row.number + "吗?",

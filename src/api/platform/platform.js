@@ -17,6 +17,10 @@ const platform = {
   //新增因子
   addSysDivisor(data) {
     return axios.post(base.api + "sysDivisor/addSysDivisor", data);
+  },
+  //获取因子详情
+  getSysDivisorById(data) {
+    return axios.post(base.api + "sysDivisor/getSysDivisorById", data);
   }
 };
 export default platform;
