@@ -3,8 +3,8 @@
     <a-form
       ref="formModal"
       :form="form"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 16 }"
+      :label-col="{ span: 10 }"
+      :wrapper-col="{ span: 14 }"
     >
       <!-- <a-form-item label="签到验证">
         <a-radio-group v-model="formValue.verify">
@@ -46,7 +46,7 @@
           </a-button>
         </a-col>
         <a-col>
-          <a-button type="primary" html-type="submit">
+          <a-button type="primary" html-type="submit" @click="onSubmit">
             保存设置
           </a-button>
         </a-col>
@@ -88,12 +88,52 @@ export default {
   methods: {
     initData() {
       this.formValue = {
-        verify: "",
-        distance: 0, //验证距离
+        // verify: "",
+        // distance: 0, //验证距离
         spaceMin: 0, //最小间隔时间
-        remind: 0 //到期提醒天数
+        remind: 0, //到期提醒天数
+        mission: 0
       };
+    },
+    geDictByParam() {
+      let params = [
+        "SYS_PARAMETER_WARN_INTERVAL",
+        "SYS_PARAMETER_CONTRACT_REMINDER",
+        "SYS_PARAMETER_TASK_COMPLETION"
+      ];
+      this.$api.common.geDictByParam(params).then(res => {
+        let data = res.data;
+        data.forEach(item => {
+          switch (item.code) {
+            case "SYS_PARAMETER_WARN_INTERVAL":
+              this.formValue.spaceMin = item.value;
+              break;
+            case "SYS_PARAMETER_CONTRACT_REMINDER":
+              this.formValue.remind = item.value;
+              break;
+            case "SYS_PARAMETER_TASK_COMPLETION":
+              this.formValue.mission = item.value;
+              break;
+          }
+        });
+      });
+    },
+    onSubmit() {
+      let params = {
+        minInterval: this.formValue.spaceMin,
+        reminder: this.formValue.remind
+      };
+      this.$api.platform.editSysParameter(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改成功");
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
     }
+  },
+  mounted() {
+    this.geDictByParam();
   }
 };
 </script>

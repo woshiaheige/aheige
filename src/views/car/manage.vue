@@ -15,6 +15,7 @@
     </a-form>
 
     <a-table
+      size="middle"
       :columns="columns"
       :loading="loading"
       rowKey="id"
@@ -30,6 +31,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showSizeChanger
       :total="total"

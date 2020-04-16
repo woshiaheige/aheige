@@ -1,6 +1,7 @@
 <template>
   <a-card :bordered="false" class="operation-log" title="运行日志">
     <a-table
+      size="middle"
       rowKey="id"
       :columns="columns"
       :dataSource="tableData"
@@ -15,6 +16,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showQuickJumper
       showSizeChanger

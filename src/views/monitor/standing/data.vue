@@ -21,6 +21,7 @@
       <a-table
         :loading="loading"
         :rowKey="(record, index) => index"
+        size="middle"
         bordered
         :columns="columns"
         :dataSource="tableData"
@@ -33,6 +34,7 @@
       </a-table>
 
       <a-pagination
+        size="small"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"

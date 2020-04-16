@@ -27,6 +27,7 @@
     </a-form>
 
     <a-table
+      size="middle"
       :columns="columns"
       :dataSource="tableData"
       v-margin:top="16"
@@ -45,6 +46,7 @@
     </a-table>
 
     <a-pagination
+      size="small"
       v-margin:top="16"
       showSizeChanger
       :defaultCurrent="current"
