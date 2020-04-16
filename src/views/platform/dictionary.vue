@@ -139,11 +139,20 @@ export default {
     },
     onDelete(row) {
       console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
-        content: `是否删除行业 ${row.name}`,
+        content: `是否删除字典 ${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.common.deleteSysDict({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");

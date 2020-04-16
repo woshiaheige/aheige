@@ -31,9 +31,13 @@
             <a-icon type="edit" key="edit" @click="onGroupShow(item)" />
             <a-icon type="delete" key="delete" @click="onDelete(item)" />
           </template>
-          <div v-for="(member, key) of item.member" :key="key">
+          <a-tag
+            v-for="(member, key) of item.member"
+            :key="key"
+            color="#2db7f5"
+          >
             {{ member.name }}
-          </div>
+          </a-tag>
         </a-card>
       </a-col>
     </a-row>

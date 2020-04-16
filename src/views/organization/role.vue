@@ -3,7 +3,7 @@
     <span slot="title">权限管理 </span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="小组名称"></a-input>
+        <a-input placeholder="输入权限名称" v-model="formInline.name"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -11,39 +11,37 @@
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="success" @click="onEdit()">添加权限</a-button>
+        <a-button type="success" @click="onEdit(false)">添加权限</a-button>
       </a-form-item>
     </a-form>
     <a-row :gutter="16">
-      <a-row
-        type="flex"
-        justify="space-between"
-        align="middle"
-        v-margin:top="20"
-        :gutter="[16, 16]"
+      <a-list
+        itemLayout="horizontal"
+        :dataSource="tableData"
+        :loading="loading"
       >
-        <a-col v-for="(item, index) of tableData" :key="index">
-          <a-card hoverable style="width: 300px">
-            <span slot="title">{{ item.name }}</span>
-            <template class="ant-card-actions" slot="actions">
-              <a-icon type="setting" key="setting" @click="onEdit(item)" />
-              <a-icon type="edit" key="edit" @click="onRole(item)" />
-              <a-icon type="delete" key="delete" @click="onDelete(item)" />
-            </template>
-          </a-card>
-        </a-col>
-      </a-row>
-      <a-pagination
-        size="small"
-        v-margin:top="16"
-        showQuickJumper
-        showSizeChanger
-        :defaultCurrent="current"
-        :defaultPageSize="pageSize"
-        :total="total"
-      />
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions" @click="onEdit(item)">编辑</a>
+          <a slot="actions">授权</a>
+          <a slot="actions" @click="onDelete(item)">删除</a>
+          <a-list-item-meta
+            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+          >
+            <a slot="title">{{ item.name }}</a>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-row>
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
+    <a-pagination
+      size="small"
+      v-margin:top="16"
+      showQuickJumper
+      showSizeChanger
+      :defaultCurrent="current"
+      :defaultPageSize="pageSize"
+      :total="total"
+    />
+    <add-edit :obj="obj" @cancel="cancel" @confirm="confirm"></add-edit>
     <role-tree :visible.sync="visible" />
   </a-card>
 </template>
@@ -55,23 +53,16 @@ export default {
   data() {
     return {
       // selectedRowKeys: [],
+      loading: false,
       visible: false,
       current: 1,
       pageSize: 10,
       total: 3,
-      tableData: [
-        {
-          name: "超级管理员"
-        },
-        {
-          name: "管理员"
-        },
-        {
-          name: "运维人员"
-        }
-      ],
+      formInline: { name: "" },
+      tableData: [],
       obj: {
-        show: false
+        show: false,
+        detail: ""
       }
     };
   },
@@ -81,23 +72,57 @@ export default {
   },
   methods: {
     getTableData() {
-      // this.$api.maintain.getDepartmentList().then(res => {
-      //   this.tableData = res.data.data;
-      //   this.total = res.data.total;
-      // });
+      let params = {
+        pagesize: this.pagesize,
+        page: this.current,
+        name: this.formInline.name
+      };
+      this.loading = true;
+      this.$api.organization
+        .sysRole(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     onEdit(row) {
-      console.log(row);
-      this.obj.show = true;
-      this.obj.row = row;
+      if (row == false) {
+        this.obj = {
+          show: true,
+          detail: ""
+        };
+        return;
+      }
+      this.$api.organization.getSysRoleById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.obj = {
+            show: true,
+            detail: res.data.data
+          };
+        }
+      });
     },
     onDelete(row) {
-      console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
-        content: "是否删除",
+        content: `是否删除权限 ${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.organization.deleteSysRole({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");
@@ -111,6 +136,10 @@ export default {
     },
     cancel(value) {
       this.obj.show = value;
+    },
+    confirm() {
+      this.obj.show = false;
+      this.getTableData();
     }
   }
 };
