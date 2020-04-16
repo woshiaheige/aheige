@@ -97,7 +97,7 @@ export default {
           align: "center"
         },
         {
-          title: "合同排期",
+          title: "合同期限",
           dataIndex: "time",
           key: "time",
           align: "center"
