@@ -29,7 +29,7 @@
           <template class="ant-card-actions" slot="actions">
             <a-icon type="setting" key="setting" @click="onEdit(item)" />
             <a-icon type="edit" key="edit" @click="onGroupShow(item)" />
-            <a-icon type="delete" key="delete" />
+            <a-icon type="delete" key="delete" @click="onDelete(item)" />
           </template>
           <div v-for="(member, key) of item.member" :key="key">
             {{ member.name }}
@@ -92,7 +92,7 @@ export default {
       console.log(row);
       this.$confirm({
         title: "删除",
-        content: `是否删除小组${row.name}`,
+        content: `是否删除${row.name}`,
         onOk() {
           console.log("OK");
         },

@@ -82,24 +82,28 @@ export default {
           children: [
             {
               title: "监测数据",
-              key: "standing"
+              key: "monitor-standing"
             },
             {
               title: "超标数据",
-              key: "exceed"
+              key: "monitor-exceed"
             },
             {
               title: "数据报表",
-              key: "report"
+              key: "monitor-report"
             },
             {
-              title: "传输速率",
-              key: "speed"
-            },
-            {
-              title: "报警管理",
-              key: "warn"
+              title: "异常数据",
+              key: "monitor-unusual"
             }
+            // {
+            //   title: "传输速率",
+            //   key: "speed"
+            // },
+            // {
+            //   title: "报警管理",
+            //   key: "warn"
+            // }
             // {
             //   title: "每日运维",
             //   key: "maintenance"
@@ -283,7 +287,7 @@ export default {
               key: "industry"
             },
             {
-              title: "字典设置",
+              title: "数据字典",
               key: "dictionary"
             }
             // {
@@ -314,14 +318,14 @@ export default {
             //   title: "部门管理",
             //   key: "department"
             // },
-            // {
-            //   title: "角色管理",
-            //   key: "role"
-            // },
             {
               title: "权限管理",
-              key: "permission"
+              key: "role"
             }
+            // {
+            //   title: "权限管理",
+            //   key: "permission"
+            // }
           ]
         }
 

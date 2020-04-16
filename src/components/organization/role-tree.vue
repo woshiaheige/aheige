@@ -1,82 +1,107 @@
 <template>
-  <div>
-    <!-- <div>
-      <a-button type="primary">添加角色组</a-button>
-      <a-button v-margin:left="15">添加角色</a-button>
-    </div> -->
+  <a-modal :title="title" :visible="visible" @cancel="closeModal">
     <a-tree
+      checkable
       @expand="onExpand"
       :expandedKeys="expandedKeys"
       :autoExpandParent="autoExpandParent"
-      :treeData="dataList"
-    >
-      <template slot="title" slot-scope="{ title }">
-        <span v-if="title.indexOf(searchValue) > -1">
-          {{ title.substr(0, title.indexOf(searchValue)) }}
-          <span style="color: #f50">{{ searchValue }}</span>
-          {{ title.substr(title.indexOf(searchValue) + searchValue.length) }}
-        </span>
-        <span v-else>{{ title }}</span>
-      </template>
-    </a-tree>
-  </div>
+      v-model="checkedKeys"
+      @select="onSelect"
+      :selectedKeys="selectedKeys"
+      :treeData="treeData"
+    />
+  </a-modal>
 </template>
 
 <script>
+const treeData = [
+  {
+    title: "0-0",
+    key: "0-0",
+    children: [
+      {
+        title: "0-0-0",
+        key: "0-0-0",
+        children: [
+          { title: "0-0-0-0", key: "0-0-0-0" },
+          { title: "0-0-0-1", key: "0-0-0-1" },
+          { title: "0-0-0-2", key: "0-0-0-2" }
+        ]
+      },
+      {
+        title: "0-0-1",
+        key: "0-0-1",
+        children: [
+          { title: "0-0-1-0", key: "0-0-1-0" },
+          { title: "0-0-1-1", key: "0-0-1-1" },
+          { title: "0-0-1-2", key: "0-0-1-2" }
+        ]
+      },
+      {
+        title: "0-0-2",
+        key: "0-0-2"
+      }
+    ]
+  },
+  {
+    title: "0-1",
+    key: "0-1",
+    children: [
+      { title: "0-1-0-0", key: "0-1-0-0" },
+      { title: "0-1-0-1", key: "0-1-0-1" },
+      { title: "0-1-0-2", key: "0-1-0-2" }
+    ]
+  },
+  {
+    title: "0-2",
+    key: "0-2"
+  }
+];
 export default {
+  props: {
+    visible: {
+      required: true,
+      type: Boolean
+    }
+  },
   data() {
     return {
-      expandedKeys: [],
-      searchValue: "",
+      expandedKeys: ["0-0-0", "0-0-1"],
       autoExpandParent: true,
-      dataList: [
-        {
-          title: "默认角色组",
-          key: "0-0",
-          children: [
-            {
-              title: "主管理员",
-              key: "0-0-0"
-            },
-            {
-              title: "子管理员",
-              key: "0-0-1"
-            },
-            {
-              title: "负责人",
-              key: "0-0-2"
-            }
-          ]
-        },
-        {
-          title: "技术开发部",
-          key: "0-2",
-          children: [
-            { title: "前端开发", key: "0-2-0-0" },
-            { title: "Java开发", key: "0-2-0-1" },
-            { title: "安卓开发", key: "0-2-0-2" },
-            { title: "ios开发", key: "0-2-0-3" }
-          ]
-        },
-        {
-          title: "现场运维部",
-          key: "0-1"
-        },
-        {
-          title: "系统维护部",
-          key: "0-3"
-        }
-      ]
+      checkedKeys: ["0-0-0"],
+      selectedKeys: [],
+      treeData
     };
   },
-  mounted() {},
+  computed: {
+    title() {
+      return "编辑权限";
+    }
+  },
+  watch: {
+    checkedKeys(val) {
+      console.log("onCheck", val);
+    }
+  },
   methods: {
-    initTree() {},
+    closeModal() {
+      this.$emit("update:visible", false);
+    },
     onExpand(expandedKeys) {
+      console.log("onExpand", expandedKeys);
+      // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+      // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys;
       this.autoExpandParent = false;
     },
-    onChange() {}
+    onCheck(checkedKeys) {
+      console.log("onCheck", checkedKeys);
+      this.checkedKeys = checkedKeys;
+    },
+    onSelect(selectedKeys, info) {
+      console.log("onSelect", info);
+      this.selectedKeys = selectedKeys;
+    }
   }
 };
 </script>
