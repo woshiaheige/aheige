@@ -52,19 +52,6 @@ const maintainRoutes = [
       )
   },
   {
-    path: "/maintain/station-mission",
-    name: "maintain-station-mission",
-    key: "station-mission",
-    meta: {
-      title: "任务管理"
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-maintain" */
-        "@/views/maintain/station-mission.vue"
-      )
-  },
-  {
     path: "/maintain/complaint",
     name: "-complaint",
     key: "complaint",

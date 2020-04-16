@@ -13,19 +13,6 @@ const platform = [
       )
   },
   {
-    path: "/platform/instrument",
-    name: "platform-instrument",
-    key: "instrument",
-    meta: {
-      title: "任务管理"
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-platform" */
-        "@/views/platform/instrument.vue"
-      )
-  },
-  {
     path: "/platform/operation",
     name: "platform-operation",
     key: "operation",

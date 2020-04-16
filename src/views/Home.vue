@@ -295,6 +295,7 @@ export default {
           break;
         }
       }
+
       if (this.$route.path === "/index") {
         this.routes = [
           {
