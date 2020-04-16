@@ -283,7 +283,7 @@ export default {
               key: "industry"
             },
             {
-              title: "字典设置",
+              title: "数据字典",
               key: "dictionary"
             }
             // {
@@ -314,14 +314,14 @@ export default {
             //   title: "部门管理",
             //   key: "department"
             // },
-            // {
-            //   title: "角色管理",
-            //   key: "role"
-            // },
             {
               title: "权限管理",
-              key: "permission"
+              key: "role"
             }
+            // {
+            //   title: "权限管理",
+            //   key: "permission"
+            // }
           ]
         }
 
