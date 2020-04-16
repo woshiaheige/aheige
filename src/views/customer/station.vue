@@ -23,40 +23,29 @@
           </a-select>
         </a-form-item>
 
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查找
-        </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
-
-    <a-table
-      size="middle"
-      rowKey="id"
-      :columns="columns"
-      :dataSource="tableData"
-      :loading="loading"
+        <a-form-item>
+          <a-button type="primary" html-type="submit">
+            查找
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card
+      :bordered="false"
+      class="enterprise"
+      title="监测点管理"
       v-margin:top="16"
     >
-      <a-button
-        slot="extra"
-        type="primary"
-        v-margin:left="10"
-        @click="onEdit('add')"
-      >
+      <a-button type="primary" @click="onEdit('add')" slot="extra">
         新增
       </a-button>
       <a-table
+        size="middle"
         rowKey="id"
         :columns="columns"
         :dataSource="tableData"
-        v-margin:top="16"
-        :pagination="false"
         :loading="loading"
-        bordered
+        v-margin:top="16"
       >
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
