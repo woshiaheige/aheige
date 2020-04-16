@@ -16,11 +16,17 @@ const platform = {
   },
   //新增因子
   addSysDivisor(data) {
-    return axios.post(base.api + "sysDivisor/addSysDivisor", data);
+    return axios.post(base.api + "divisor/addSysDivisor", data);
   },
   //编辑因子
   editSysDivisor(data) {
     return axios.post(base.api + "divisor/editSysDivisor", data);
+  },
+  //删除因子
+  deleteSysDivisor(data) {
+    return axios.get(base.api + "divisor/deleteSysDivisor", {
+      params: data
+    });
   },
 
   //因子详情
@@ -47,6 +53,19 @@ const platform = {
   //修改行业
   updateSysIndustry(data) {
     return axios.post(base.api + "sysIndustry/update", data);
+  },
+  //删除行业
+  deleteCusEnterprise(data) {
+    return axios.get(base.api + "sysIndustry/delete", {
+      params: data
+    });
+  },
+
+  //获取行业详情
+  getCusEnterpriseById(data) {
+    return axios.get(base.api + "sysIndustry/getSysIndustryById", {
+      params: data
+    });
   }
 };
 export default platform;
