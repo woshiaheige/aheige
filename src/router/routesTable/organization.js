@@ -4,7 +4,8 @@ const organization = [
     name: "organization-role",
     key: "role",
     meta: {
-      title: "权限管理"
+      title: "权限管理",
+      back: false
     },
     component: () =>
       import(
@@ -17,7 +18,8 @@ const organization = [
     name: "organization-member",
     key: "member",
     meta: {
-      title: "用户管理"
+      title: "用户管理",
+      back: false
     },
     component: () =>
       import(
@@ -30,7 +32,8 @@ const organization = [
     name: "organization-group",
     key: "group",
     meta: {
-      title: "小组管理"
+      title: "小组管理",
+      back: false
     },
     component: () =>
       import(

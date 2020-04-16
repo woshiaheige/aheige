@@ -1,8 +1,6 @@
 <template>
   <a-card :bordered="false" class="maintain">
-    <span slot="title"
-      ><a-icon type="arrow-left" @click="$router.back(-1)" />行驶路径</span
-    >
+    <span slot="title">行驶路径</span>
     <div class="map">
       <div id="container"></div>
     </div>

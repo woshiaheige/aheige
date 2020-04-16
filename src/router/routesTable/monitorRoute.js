@@ -5,7 +5,8 @@ const monitorRoute = [
     name: "monitor-standing",
     key: "monitor-standing",
     meta: {
-      title: "监测数据"
+      title: "监测数据",
+      back: false
     },
     component: () =>
       import(
@@ -19,7 +20,8 @@ const monitorRoute = [
     name: "monitor-standing-data",
     key: "monitor-standing-data",
     meta: {
-      title: "实时数据"
+      title: "实时数据",
+      back: true
     },
     component: () =>
       import(
@@ -33,7 +35,8 @@ const monitorRoute = [
     name: "monitor-exceed",
     key: "monitor-exceed",
     meta: {
-      title: "超标数据"
+      title: "超标数据",
+      back: false
     },
     component: () =>
       import(
@@ -47,7 +50,8 @@ const monitorRoute = [
     name: "monitor-report",
     key: "monitor-report",
     meta: {
-      title: "数据报表"
+      title: "数据报表",
+      back: false
     },
     component: () =>
       import(
@@ -61,7 +65,8 @@ const monitorRoute = [
     name: "monitor-unusual",
     key: "monitor-unusual",
     meta: {
-      title: "异常数据"
+      title: "异常数据",
+      back: false
     },
     component: () =>
       import(

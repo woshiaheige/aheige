@@ -4,7 +4,8 @@ const car = [
     name: "car-manage",
     key: "manage",
     meta: {
-      title: "车辆"
+      title: "车辆",
+      back: false
     },
     component: () =>
       import(
@@ -17,7 +18,8 @@ const car = [
     name: "car-usage",
     key: "usage",
     meta: {
-      title: "车辆使用记录"
+      title: "车辆使用记录",
+      back: false
     },
     component: () =>
       import(
@@ -30,7 +32,8 @@ const car = [
     name: "car-usage-detail",
     key: "car-usage-detail",
     meta: {
-      title: "车辆使用轨迹"
+      title: "行驶路径",
+      back: true
     },
     component: () =>
       import(

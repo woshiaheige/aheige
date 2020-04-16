@@ -4,7 +4,8 @@ const customer = [
     name: "customer-enterprise",
     key: "enterprise",
     meta: {
-      title: "企业信息"
+      title: "企业信息",
+      back: false
     },
     component: () =>
       import(
@@ -17,7 +18,8 @@ const customer = [
     name: "customer-station",
     key: "station",
     meta: {
-      title: "监控点管理"
+      title: "监控点管理",
+      back: false
     },
     component: () =>
       import(
@@ -30,7 +32,8 @@ const customer = [
     name: "customer-contract",
     key: "contract",
     meta: {
-      title: "合同管理"
+      title: "合同管理",
+      back: false
     },
     component: () =>
       import(
@@ -43,7 +46,8 @@ const customer = [
     name: "customer-supplier",
     key: "supplier",
     meta: {
-      title: "供应商管理"
+      title: "供应商管理",
+      back: false
     },
     component: () =>
       import(
@@ -56,7 +60,8 @@ const customer = [
     name: "customer-enterprise-user",
     key: "customer-enterprise-user",
     meta: {
-      title: "企业用户"
+      title: "企业用户",
+      back: true
     },
     component: () =>
       import(
@@ -69,7 +74,8 @@ const customer = [
     name: "customer-enterprise-station",
     key: "customer-enterprise-station",
     meta: {
-      title: "企业监控点"
+      title: "企业监控点",
+      back: true
     },
     component: () =>
       import(
@@ -82,7 +88,8 @@ const customer = [
     name: "customer-enterprise-factor",
     key: "customer-enterprise-factor",
     meta: {
-      title: "监测因子"
+      title: "监测因子",
+      back: true
     },
     component: () =>
       import(
@@ -95,7 +102,8 @@ const customer = [
     name: "customer-enterprise-device",
     key: "customer-enterprise-device",
     meta: {
-      title: "监测设备"
+      title: "监测设备",
+      back: true
     },
     component: () =>
       import(

@@ -4,7 +4,8 @@ const maintainRoutes = [
     name: "maintain-mission",
     key: "mission",
     meta: {
-      title: "任务管理"
+      title: "任务管理",
+      back: false
     },
     component: () =>
       import(
@@ -17,7 +18,8 @@ const maintainRoutes = [
     name: "maintain-plan",
     key: "plan",
     meta: {
-      title: "运维计划"
+      title: "运维计划",
+      back: false
     },
     component: () =>
       import(
@@ -30,7 +32,8 @@ const maintainRoutes = [
     name: "maintain-inspection",
     key: "inspection",
     meta: {
-      title: "日常巡检"
+      title: "日常巡检",
+      back: false
     },
     component: () =>
       import(
@@ -43,7 +46,8 @@ const maintainRoutes = [
     name: "maintain-maintain-log",
     key: "maintain-log",
     meta: {
-      title: "运维记录"
+      title: "运维记录",
+      back: false
     },
     component: () =>
       import(
@@ -56,7 +60,8 @@ const maintainRoutes = [
     name: "-complaint",
     key: "complaint",
     meta: {
-      title: "上报投诉"
+      title: "上报投诉",
+      back: false
     },
     component: () =>
       import(
@@ -69,7 +74,8 @@ const maintainRoutes = [
     name: "maintain-knowledge",
     key: "knowledge",
     meta: {
-      title: "运维知识"
+      title: "运维知识",
+      back: false
     },
     component: () =>
       import(

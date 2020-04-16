@@ -15,7 +15,7 @@
 
     <a-card :bordered="false">
       <span slot="title">
-        <a-icon type="arrow-left" @click="$router.back(-1)" />实时数据
+        实时数据
       </span>
 
       <a-table

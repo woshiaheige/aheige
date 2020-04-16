@@ -4,7 +4,8 @@ const platform = [
     name: "platform-factors",
     key: "factors",
     meta: {
-      title: "因子设置"
+      title: "因子设置",
+      back: false
     },
     component: () =>
       import(
@@ -17,7 +18,8 @@ const platform = [
     name: "platform-operation",
     key: "operation",
     meta: {
-      title: "运维设置"
+      title: "运维设置",
+      back: false
     },
     component: () =>
       import(
@@ -30,7 +32,8 @@ const platform = [
     name: "/platform-dictionary",
     key: "dictionary",
     meta: {
-      title: "数据字典"
+      title: "数据字典",
+      back: false
     },
     component: () =>
       import(
@@ -43,7 +46,8 @@ const platform = [
     name: "/platform-industry",
     key: "industry",
     meta: {
-      title: "行业设置"
+      title: "行业设置",
+      back: false
     },
     component: () =>
       import(

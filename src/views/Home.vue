@@ -56,9 +56,18 @@
         </ul>
       </a-layout-header>
       <a-page-header
-        :title="$route.meta.title"
-        :breadcrumb="{ props: { routes } }"
-      />
+        @back="() => $router.go(-1)"
+        :breadcrumb="{
+          props: {
+            routes
+          }
+        }"
+      >
+        <template slot="backIcon">
+          <a-icon type="arrow-left" v-show="$route.meta.back" />
+        </template>
+        <template slot="title">{{ $route.meta.title }}</template>
+      </a-page-header>
       <a-layout-content class="main-content" v-padding="30">
         <router-view></router-view>
       </a-layout-content>
@@ -111,7 +120,25 @@ export default {
         {
           title: "审批管理",
           key: "approval",
-          icon: "audit"
+          icon: "audit",
+          children: [
+            {
+              title: "等待我审批",
+              key: "approval-wait"
+            },
+            {
+              title: "我参与的审批",
+              key: "approval-participate"
+            },
+            {
+              title: "我发起的审批",
+              key: "approval-start"
+            },
+            {
+              title: "发起审批",
+              key: "approval-to-start"
+            }
+          ]
         },
         {
           title: "运维管理",
@@ -268,6 +295,7 @@ export default {
     this.setMenu();
     this.setBreadcrumbName();
     console.log(this.$route);
+    console.log(this.$route.meta.back);
   },
   methods: {
     changeMenu(object) {
@@ -289,13 +317,6 @@ export default {
       this.selectedKeys = this.selectedMenu;
     },
     setBreadcrumbName() {
-      for (let i in this.routes) {
-        if (this.routes[i].path !== this.$route.path) {
-          this.routes.splice(i + 1, this.routes.length - 1 - i);
-          break;
-        }
-      }
-
       if (this.$route.path === "/index") {
         this.routes = [
           {
@@ -304,6 +325,15 @@ export default {
           }
         ];
       } else {
+        if (!this.$route.meta.back) {
+          for (let i in this.routes) {
+            if (this.routes[i].path !== this.$route.path) {
+              this.routes.splice(i + 1, this.routes.length - 1 - i);
+              break;
+            }
+          }
+        }
+
         this.routes.push({
           path: this.$route.path,
           breadcrumbName: this.$route.meta.title

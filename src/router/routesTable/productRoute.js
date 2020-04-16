@@ -4,7 +4,8 @@ const productRoute = [
     name: "product",
     key: "product",
     meta: {
-      title: "物品管理"
+      title: "物品管理",
+      back: false
     },
     component: () =>
       import(

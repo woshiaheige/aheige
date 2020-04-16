@@ -1,7 +1,7 @@
 <template>
   <a-card :bordered="false" class="station">
     <span slot="title">
-      <a-icon type="arrow-left" @click="$router.back(-1)" />监测设备
+      监测设备
     </span>
     <a-form layout="inline">
       <a-form-item>
