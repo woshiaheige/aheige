@@ -11,7 +11,7 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 
 //progress
-import VueAwesomeProgress from "vue-awesome-progress"
+import VueAwesomeProgress from "vue-awesome-progress";
 
 //自定义样式
 import "@/assets/style/common.less";
@@ -58,7 +58,7 @@ Vue.use(VueLazyLoad, {
   error: require("@/assets/img/fail.png"),
   attempt: 1
 });
-Vue.use(VueAwesomeProgress)
+Vue.use(VueAwesomeProgress);
 
 Vue.config.productionTip = false;
 

@@ -57,6 +57,13 @@
       <a-form-item label="审核权限" v-if="auditor == 1">
         <a-select placeholder="选择审核权限"> </a-select>
       </a-form-item>
+      <a-form-item label="选择权限">
+        <a-select placeholder="选择选择权限" v-model="role">
+          <a-select-option value="1">运维人员</a-select-option>
+          <a-select-option value="17">权限A</a-select-option>
+          <a-select-option value="0">权限B</a-select-option>
+        </a-select>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -68,6 +75,7 @@ export default {
   data() {
     return {
       title: "新增",
+      role: "",
       operationOptions: [
         { label: "是", value: 1 },
         { label: "否", value: 2 }

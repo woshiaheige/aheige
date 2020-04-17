@@ -37,7 +37,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
+        <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>

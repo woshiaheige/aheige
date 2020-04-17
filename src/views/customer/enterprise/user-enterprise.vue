@@ -1,7 +1,7 @@
 <template>
   <a-card :bordered="false" class="organization">
     <span slot="title">
-      <a-icon type="arrow-left" @click="$router.back(-1)" />企业用户
+      企业用户
     </span>
     <a-form layout="inline">
       <a-form-item>

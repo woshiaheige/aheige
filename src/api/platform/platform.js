@@ -36,8 +36,8 @@ const platform = {
     });
   },
   //设置运维参数
-  editSysParameter(data) {
-    return axios.post(base.api + "sysParameter/editSysParameter", data);
+  updateBatchById(data) {
+    return axios.post(base.api + "sysDict/updateBatchById", data);
   },
 
   //行业列表

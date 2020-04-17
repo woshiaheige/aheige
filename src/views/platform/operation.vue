@@ -23,19 +23,19 @@
       </a-form-item> -->
       <!-- <a-form-item label="警报设置"> </a-form-item> -->
       <a-form-item label="报警间隔时间">
-        <counter v-model="formValue.spaceMin">
+        <counter v-model="formValue.spaceMin.value">
           <span slot="uni">分</span>
         </counter>
       </a-form-item>
       <!-- <a-form-item label="合同设置"> </a-form-item> -->
       <a-form-item label="合同到期提醒天数">
-        <counter v-model="formValue.remind">
+        <counter v-model="formValue.remind.value">
           <span slot="uni">天</span>
         </counter>
       </a-form-item>
       <!-- <a-form-item label="任务设置"> </a-form-item> -->
       <a-form-item label="任务完成时限">
-        <counter v-model="formValue.mission">
+        <counter v-model="formValue.mission.value">
           <span slot="uni">小时</span>
         </counter>
       </a-form-item>
@@ -65,9 +65,9 @@ export default {
       formValue: {
         // verify: 0,
         // distance: 0, //验证距离
-        spaceMin: 0, //最小间隔时间
-        remind: 0, //到期提醒天数
-        mission: 0
+        spaceMin: { id: "", value: "" }, //最小间隔时间
+        remind: { id: "", value: "" }, //到期提醒天数
+        mission: { id: "", value: "" }
       },
       verifyList: [
         {
@@ -87,13 +87,7 @@ export default {
   },
   methods: {
     initData() {
-      this.formValue = {
-        // verify: "",
-        // distance: 0, //验证距离
-        spaceMin: 0, //最小间隔时间
-        remind: 0, //到期提醒天数
-        mission: 0
-      };
+      this.geDictByParam();
     },
     geDictByParam() {
       let params = [
@@ -106,24 +100,21 @@ export default {
         data.forEach(item => {
           switch (item.code) {
             case "SYS_PARAMETER_WARN_INTERVAL":
-              this.formValue.spaceMin = item.value;
+              this.formValue.spaceMin = { id: item.id, value: item.value };
               break;
             case "SYS_PARAMETER_CONTRACT_REMINDER":
-              this.formValue.remind = item.value;
+              this.formValue.remind = { id: item.id, value: item.value };
               break;
             case "SYS_PARAMETER_TASK_COMPLETION":
-              this.formValue.mission = item.value;
+              this.formValue.mission = { id: item.id, value: item.value };
               break;
           }
         });
       });
     },
     onSubmit() {
-      let params = {
-        minInterval: this.formValue.spaceMin,
-        reminder: this.formValue.remind
-      };
-      this.$api.platform.editSysParameter(params).then(res => {
+      let params = Object.values(this.formValue);
+      this.$api.platform.updateBatchById(params).then(res => {
         if (res.data.state == 0) {
           this.$message.success("修改成功");
         } else {

@@ -69,7 +69,11 @@
         @showSizeChange="sizechange"
       />
 
-      <add-edit v-model="obj" @refresh="getTableData"></add-edit>
+      <add-edit
+        :pointOptions="pointOptions"
+        v-model="obj"
+        @refresh="getTableData"
+      ></add-edit>
     </a-card>
   </div>
 </template>

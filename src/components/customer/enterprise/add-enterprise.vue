@@ -146,9 +146,9 @@ export default {
           {
             required: true,
             message: "请输入联系电话",
-            trigger: "change"
+            trigger: "blur"
           },
-          { validator: validatePhone, trigger: "change" }
+          { validator: validatePhone, trigger: "blur" }
         ],
         controlLevel: [
           {

@@ -3,6 +3,10 @@ const customer = [
     path: "/customer/enterprise",
     name: "customer-enterprise",
     key: "enterprise",
+    meta: {
+      title: "企业信息",
+      back: false
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
@@ -13,6 +17,10 @@ const customer = [
     path: "/customer/station",
     name: "customer-station",
     key: "station",
+    meta: {
+      title: "监控点管理",
+      back: false
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
@@ -23,6 +31,10 @@ const customer = [
     path: "/customer/contract",
     name: "customer-contract",
     key: "contract",
+    meta: {
+      title: "合同管理",
+      back: false
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
@@ -33,6 +45,10 @@ const customer = [
     path: "/customer/supplier",
     name: "customer-supplier",
     key: "supplier",
+    meta: {
+      title: "供应商管理",
+      back: false
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-standing" */
@@ -43,6 +59,10 @@ const customer = [
     path: "/customer/enterprise/user",
     name: "customer-enterprise-user",
     key: "customer-enterprise-user",
+    meta: {
+      title: "企业用户",
+      back: true
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
@@ -53,6 +73,10 @@ const customer = [
     path: "/customer/enterprise/station",
     name: "customer-enterprise-station",
     key: "customer-enterprise-station",
+    meta: {
+      title: "企业监控点",
+      back: true
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
@@ -63,6 +87,10 @@ const customer = [
     path: "/customer/enterprise/factor",
     name: "customer-enterprise-factor",
     key: "customer-enterprise-factor",
+    meta: {
+      title: "监测因子",
+      back: true
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
@@ -73,26 +101,10 @@ const customer = [
     path: "/customer/enterprise/device",
     name: "customer-enterprise-device",
     key: "customer-enterprise-device",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-customer" */
-        "@/views/customer/enterprise/device.vue"
-      )
-  },
-  {
-    path: "/customer/station/factor",
-    name: "customer-station-factor",
-    key: "customer-station-factor",
-    component: () =>
-      import(
-        /* webpackChunkName: "view-customer" */
-        "@/views/customer/enterprise/factor.vue"
-      )
-  },
-  {
-    path: "/customer/station/device",
-    name: "customer-station-device",
-    key: "customer-station-device",
+    meta: {
+      title: "监测设备",
+      back: true
+    },
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */

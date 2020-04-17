@@ -23,6 +23,13 @@ const common = {
       params: data
     });
   },
+  //删除字典
+  deleteSysDict(data) {
+    return axios.get(base.api + "sysDict/deleteSysDict", {
+      params: data
+    });
+  },
+
   //修改字典
   editSysDict(data) {
     return axios.post(base.api + "sysDict/editSysDict", data);

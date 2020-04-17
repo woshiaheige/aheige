@@ -3,10 +3,10 @@
     <span slot="title">用户管理</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="姓名"></a-input>
+        <a-input placeholder="姓名" v-model="formInline.name"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-input placeholder="手机号"></a-input>
+        <a-input placeholder="手机号" v-model="formInline.phone"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -21,6 +21,7 @@
     </a-form>
     <a-table
       size="middle"
+      rowKey="id"
       :columns="columns"
       :loading="loading"
       :dataSource="tableData"
@@ -59,6 +60,10 @@ export default {
       total: 0,
       pagesize: 10,
       loading: false,
+      formInline: {
+        name: "",
+        phone: ""
+      },
       columns: [
         {
           title: "序号",
@@ -70,27 +75,31 @@ export default {
         },
         {
           title: "姓名",
-          dataIndex: "name"
+          dataIndex: "name",
+          align: "center"
         },
         {
           title: "账号",
-          dataIndex: "account"
+          dataIndex: "username",
+          align: "center"
         },
         {
           title: "手机号码",
-          dataIndex: "tel"
-        },
-        {
-          title: "运维小组",
-          dataIndex: "group"
+          dataIndex: "phone",
+          align: "center"
         },
         {
           title: "用户权限",
-          dataIndex: "roles"
+          dataIndex: "roleName",
+          align: "center"
         },
         {
           title: "用户状态",
-          dataIndex: "status"
+          dataIndex: "status",
+          customRender: (text, row) => {
+            return row.isLocked == 0 ? "冻结" : "激活";
+          },
+          align: "center"
         },
         {
           title: "操作",
@@ -110,10 +119,25 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMemberList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      let params = {
+        pagesize: this.pagesize,
+        page: this.current,
+        name: this.formInline.name,
+        phone: this.formInline.phone
+      };
+      this.loading = true;
+      this.$api.organization
+        .sysUser(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     onEdit(row) {
       console.log(row);
