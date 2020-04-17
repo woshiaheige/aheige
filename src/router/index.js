@@ -13,6 +13,12 @@ const routes = [
       import(/* webpackChunkName: "view-login" */ "@/views/Login.vue")
   },
   {
+    path: "/404",
+    name: "404",
+    component: () =>
+      import(/* webpackChunkName: "view-404" */ "@/views/404.vue")
+  },
+  {
     path: "/not-support",
     name: "notSupport",
     component: () =>
