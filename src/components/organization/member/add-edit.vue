@@ -8,7 +8,7 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="姓名">
         <a-input
-          placeholder="姓名"
+          placeholder="输入姓名"
           v-decorator="[
             'name',
             { rules: [{ required: true, message: '输入姓名' }] }
@@ -17,7 +17,7 @@
       </a-form-item>
       <a-form-item label="账号">
         <a-input
-          placeholder="账号"
+          placeholder="输入账号"
           v-decorator="[
             'username',
             { rules: [{ required: true, message: '输入账号' }] }
@@ -26,7 +26,7 @@
       </a-form-item>
       <a-form-item label="密码">
         <a-input
-          placeholder="密码"
+          placeholder="输入密码"
           type="password"
           @blur="validatePassword"
           v-decorator="[
@@ -38,7 +38,7 @@
       <a-form-item label="手机号码">
         <a-input
           @blur="validatePhone"
-          placeholder="手机号码"
+          placeholder="输入手机号码"
           v-decorator="[
             'phone',
             { rules: [{ required: true, message: '输入手机号码' }] }
@@ -51,7 +51,10 @@
       <a-form-item label="选择权限">
         <a-select
           placeholder="选择权限"
-          v-decorator="['roleId']"
+          v-decorator="[
+            'roleId',
+            { rules: [{ required: true, message: '选择权限' }] }
+          ]"
           @select="roleSelect"
         >
           <a-select-option
@@ -202,12 +205,6 @@ export default {
       this.$emit("update:visible", false);
       this.reset();
     },
-    onOperationChange(val) {
-      this.operation = val.target.value;
-    },
-    onAuditorChange(val) {
-      this.auditor = val.target.value;
-    },
     getAllRole() {
       //获取角色
       this.$api.organization.getAllRole().then(res => {
@@ -253,7 +250,6 @@ export default {
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
-      console.log(params);
       this.$api.organization.addSysUser(params).then(res => {
         if (res.data.state == 0) {
           this.$message.success("新建用户成功");
