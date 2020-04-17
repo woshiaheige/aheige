@@ -1,58 +1,94 @@
 <template>
-  <a-card :bordered="false" class="factors" title="因子设置">
-    <a-form-model layout="inline" :model="formInline">
-      <a-form-model-item>
-        <a-input v-model="formInline.name" placeholder="因子名称" />
-      </a-form-model-item>
-      <a-form-model-item>
-        <a-input v-model="formInline.code" placeholder="因子编号" />
-      </a-form-model-item>
-      <a-form-model-item>
-        <a-button type="primary" @click="onSubmit">
-          查询
-        </a-button>
-      </a-form-model-item>
-      <a-form-model-item>
-        <a-button type="success" @click="onAddClick">
-          新增
-        </a-button>
-      </a-form-model-item>
-    </a-form-model>
-    <a-table
-      size="middle"
-      bordered
-      rowKey="id"
-      :loading="loading"
-      :columns="columns"
-      :dataSource="tableData"
-      v-margin:top="16"
-      :pagination="false"
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onAddFactorsEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="deleteInstrument(row)">删除</a>
-      </span>
-    </a-table>
+  <div>
+    <a-card :bordered="false">
+      <a-row>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>因子总数</span>
+            <p>176</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>废气因子</span>
+            <p>67</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info none-border">
+            <span>废水因子</span>
+            <p>83</p>
+          </div>
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">因子设置</div>
+        <div class="extra">
+          <a-form layout="inline" :model="formInline">
+            <a-form-item>
+              <a-button type="primary" @click="onAddClick">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-radio-group
+                :value="formInline.type"
+                @change="handleTypeChange"
+              >
+                <a-radio-button value="all">全部</a-radio-button>
+                <a-radio-button value="default">废水</a-radio-button>
+                <a-radio-button value="small">废气</a-radio-button>
+              </a-radio-group>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="请输入因子名称"
+                style="width: 200px"
+                v-model="formInline.name"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
+        </div>
+      </div>
 
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showSizeChanger
-      :total="total"
-      :showTotal="total => `共 ${total} 条`"
-      :current="current"
-      @change="pagechange"
-      @showSizeChange="sizechange"
-    />
-    <!-- 新增因子 -->
-    <add-factors
-      :visible="addFactorsVisible"
-      @cancel="onAddFactorsCancel"
-      @confirm="onAddFactorsConfirm"
-      :factorsDetail="factorsDetail"
-    ></add-factors>
-  </a-card>
+      <a-table
+        size="middle"
+        rowKey="id"
+        :loading="loading"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="onAddFactorsEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="deleteInstrument(row)">删除</a>
+        </span>
+      </a-table>
+
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+      <!-- 新增因子 -->
+      <add-factors
+        :visible="addFactorsVisible"
+        @cancel="onAddFactorsCancel"
+        @confirm="onAddFactorsConfirm"
+        :factorsDetail="factorsDetail"
+      ></add-factors>
+    </a-card>
+  </div>
 </template>
 
 <script>
@@ -69,7 +105,8 @@ export default {
       loading: false,
       formInline: {
         name: "",
-        code: ""
+        code: "",
+        type: "all"
       },
       columns: [
         {
