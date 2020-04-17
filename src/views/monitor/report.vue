@@ -171,7 +171,7 @@ export default {
         .getReportData(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.total = res.data.data.total;
+            this.total = Number(res.data.data.total);
             this.tableData = res.data.data.records || [];
           }
         })
