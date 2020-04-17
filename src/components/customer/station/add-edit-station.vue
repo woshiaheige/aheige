@@ -36,11 +36,7 @@
         <a-input v-model="formData.mn" placeholder="MN号码" />
       </a-form-model-item>
       <a-form-model-item label="所属小组" prop="groupId">
-        <a-select
-          placeholder="所属小组"
-          v-model="formData.groupId"
-          :disabled="isDisabled"
-        >
+        <a-select placeholder="所属小组" v-model="formData.groupId">
           <a-select-option
             v-for="item in groupOptions"
             :key="item.id"

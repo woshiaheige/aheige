@@ -183,6 +183,14 @@ const customer = {
     return axios.get(base.api + "contract/getCusContractById", {
       params: data
     });
+  },
+  //上传文件
+  uploadFile(data) {
+    return axios.post(base.api + "files/uploadFile", data);
+  },
+  //上传文件
+  downloadFile(data) {
+    return axios.get(base.api + "files/download/file" + data.id);
   }
 };
 

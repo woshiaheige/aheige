@@ -7,11 +7,7 @@ const standing = {
       params: data
     });
   },
-  getSupplierList(data) {
-    return axios.get(base.mock + "standing/supplier", {
-      params: data
-    });
-  },
+
   getProductList(data) {
     return axios.get(base.mock + "standing/product", {
       params: data

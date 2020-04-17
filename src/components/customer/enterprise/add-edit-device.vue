@@ -109,6 +109,7 @@ export default {
       set() {}
     }
   },
+  mounted() {},
   methods: {
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -193,12 +194,12 @@ export default {
     getFactor() {
       this.$api.common.selectFactor().then(res => {
         if (res.data.state == 0) {
+          console.log(this.factorOptions);
           this.factorOptions = res.data.data;
         }
       });
     }
   },
-  mounted() {},
   watch: {
     "value.show"() {
       if (this.value.show == true) {

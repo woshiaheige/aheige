@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false" v-margin:bottom="28">
+    <a-card :bordered="false">
       <a-form-model layout="inline">
         <a-form-model-item label="企业名称">
           <a-input
@@ -34,7 +34,10 @@
         </a-form-model-item>
       </a-form-model>
     </a-card>
-    <a-card :bordered="false" title="监测数据">
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">监测数据</div>
+      </div>
       <a-table
         size="middle"
         bordered

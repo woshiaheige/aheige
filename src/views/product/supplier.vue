@@ -1,46 +1,61 @@
 <template>
-  <a-card :bordered="false" class="standing" title="供应商管理">
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="供应商名称"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="联系人"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查找
-        </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="tableData"
-      v-margin:top="16"
-      :pagination="false"
-      bordered
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-      </span>
-    </a-table>
-
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showQuickJumper
-      showSizeChanger
-      :total="total"
-      :current="current"
-    />
-    <add-edit :obj="modalInfo" @cancel="cancel"> </add-edit>
-  </a-card>
+  <div>
+    <a-card v-margin:bottom="28">
+      <a-form-model layout="inline" @submit="onSubmit" @submit.native.prevent>
+        <a-form-model-item label="供应商名称">
+          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
+        </a-form-model-item>
+        <a-form-model-item label="联系人名称">
+          <a-input placeholder="请输入" v-model="formInline.contact"></a-input>
+        </a-form-model-item>
+        <a-form-model-item style="float:right">
+          <a-button type="primary" html-type="submit">
+            查询
+          </a-button>
+        </a-form-model-item>
+      </a-form-model>
+    </a-card>
+    <a-card :bordered="false" class="standing">
+      <div class="card-header">
+        <div class="title">企业列表</div>
+        <div class="extra">
+          <a-button type="primary" @click="onEdit()">
+            <a-icon type="plus" />新增
+          </a-button>
+        </div>
+      </div>
+      <a-table
+        :loading="loading"
+        size="middle"
+        :rowKey="(record, index) => index"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+        bordered
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
+      </a-table>
+      <a-pagination
+        size="small"
+        :showTotal="total => `共 ${total} 条`"
+        v-margin:top="16"
+        showSizeChanger
+        :pageSize.sync="pagesize"
+        :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+        :total="total"
+      />
+      <!-- 新增供应商 -->
+      <add-edit :obj="modalInfo" @cancel="cancel" @getTableData="getTableData">
+      </add-edit>
+    </a-card>
+  </div>
 </template>
 
 <script>
@@ -49,14 +64,25 @@ export default {
   components: { addEdit },
   data() {
     return {
-      modalInfo: { show: false },
+      pagesize: 10,
       current: 1,
       total: 0,
+      loading: false,
+      formInline: {
+        contact: "",
+        name: ""
+      },
+      modalInfo: { show: false },
       columns: [
         {
-          title: "序号",
           align: "center",
-          customRender: (text, row, index) => `${index + 1}`
+          title: "序号",
+          width: 100,
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "供应商名称",
@@ -64,28 +90,23 @@ export default {
           align: "center"
         },
         {
-          title: "所属区域",
-          dataIndex: "area",
-          align: "center"
-        },
-        {
           title: "地址",
-          dataIndex: "address",
+          dataIndex: "fullAddress",
           align: "center"
         },
         {
           title: "联系人",
-          dataIndex: "user",
+          dataIndex: "contact",
           align: "center"
         },
         {
           title: "联系电话",
-          dataIndex: "tel",
+          dataIndex: "telephone",
           align: "center"
         },
         {
           title: "评级",
-          dataIndex: "rate",
+          dataIndex: "level",
           align: "center"
         },
         {
@@ -95,16 +116,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      tableData: [
-        {
-          name: "123供应商",
-          area: "南沙区",
-          address: "广州市南沙区",
-          user: "张三",
-          tel: 138552222,
-          rate: 1
-        }
-      ]
+      tableData: []
     };
   },
   mounted() {
@@ -112,10 +124,25 @@ export default {
   },
   methods: {
     getTableData() {
-      // this.$api.standing.getSupplierList().then(res => {
-      //   this.data = res.data.data;
-      //   this.total = res.data.total;
-      // });
+      this.loading = false;
+      let data = {
+        page: this.current,
+        size: this.pagesize,
+        contact: this.formInline.contact,
+        name: this.formInline.name
+      };
+      this.$api.product
+        .getSupplierList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.tableData = res.data.data.records || [];
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {});
     },
     onEdit(row) {
       this.modalInfo.show = true;
