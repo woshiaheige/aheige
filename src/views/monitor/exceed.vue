@@ -15,7 +15,7 @@
           <a-range-picker @change="onChange" />
         </a-form-model-item>
         <a-form-model-item>
-          <a-button type="primary">
+          <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
         </a-form-model-item>
@@ -113,10 +113,10 @@ export default {
     };
   },
   mounted() {
-    this.getWarnData();
+    this.getTableData();
   },
   methods: {
-    getWarnData() {
+    getTableData() {
       this.loading = true;
       let data = {
         index: this.current,

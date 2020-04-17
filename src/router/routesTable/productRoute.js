@@ -1,16 +1,30 @@
 const productRoute = [
   {
-    path: "/product",
-    name: "product",
-    key: "product",
+    path: "/product/reagent",
+    name: "product-reagent",
+    key: "reagent",
     meta: {
-      title: "物品管理",
+      title: "试剂管理",
       back: false
     },
     component: () =>
       import(
-        /* webpackChunkName: "view-standing" */
-        "@/views/product/index.vue"
+        /* webpackChunkName: "view-product" */
+        "@/views/product/reagent.vue"
+      )
+  },
+  {
+    path: "/product/supplier",
+    name: "product-supplier",
+    key: "supplier",
+    meta: {
+      title: "供应商管理",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-product" */
+        "@/views/product/supplier.vue"
       )
   }
 ];
