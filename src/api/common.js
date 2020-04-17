@@ -5,7 +5,7 @@ import axios from "./axios";
 const common = {
   //获取字典》》根据参数查询
   geDictByParam(data) {
-    return axios.post(base.api + "sysDict/geDictByCode", data);
+    return axios.post(base.api + "sysDict/getDictByCode", data);
   },
   //数据字典》》分页查询
   sysDict(data) {
@@ -55,7 +55,19 @@ const common = {
   },
   //所有企业下拉
   selectEnterprise(data) {
-    return axios.get(base.api + "/cusEnterprise/query", {
+    return axios.get(base.api + "cusEnterprise/query", {
+      params: data
+    });
+  },
+  //所有因子下拉
+  selectFactor(data) {
+    return axios.get(base.api + "divisor/query", {
+      params: data
+    });
+  },
+  //所有小组下拉
+  selectGroup(data) {
+    return axios.get(base.api + "sysGroup/query", {
       params: data
     });
   },

@@ -20,6 +20,7 @@
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"

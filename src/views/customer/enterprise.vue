@@ -65,8 +65,8 @@
       >
         <span slot="action" slot-scope="row">
           <a @click="goPoint(row)">监控点管理</a>
-          <a-divider type="vertical" />
-          <a @click="goUser(row)">企业用户</a>
+          <!-- <a-divider type="vertical" />
+          <a @click="goUser(row)">企业用户</a> -->
           <a-divider type="vertical" />
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -233,14 +233,12 @@ export default {
       });
     },
     goUser(row) {
-      console.log(row);
       this.$router.push({
         path: "/customer/enterprise/user",
         query: { id: row.id }
       });
     },
     goPoint(row) {
-      console.log(row);
       this.$router.push({
         path: "/customer/enterprise/station",
         query: { id: row.id }
