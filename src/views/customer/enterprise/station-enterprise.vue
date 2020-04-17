@@ -1,60 +1,69 @@
 <template>
-  <a-card :bordered="false" class="station">
-    <span slot="title">
-      <a-icon type="arrow-left" @click="$router.back(-1)" />监控点管理
-    </span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="监控点名称"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="MN号码"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-select placeholder="监控点类型" v-width="150">
-          <a-select-option> </a-select-option>
-        </a-select>
-      </a-form-item>
+  <div>
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input placeholder="监控点名称"></a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-input placeholder="MN号码"></a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-select placeholder="监控点类型" v-width="150">
+            <a-select-option> </a-select-option>
+          </a-select>
+        </a-form-item>
 
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查找
-        </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
+        <a-form-item>
+          <a-button type="primary" html-type="submit">
+            查找
+          </a-button>
+          <a-button type="success" v-margin:left="10" @click="onEdit()">
+            新增
+          </a-button>
+        </a-form-item>
+      </a-form>
+
+      <a-table
+        size="middle"
+        rowKey="id"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :loading="loading"
+        :pagination="false"
+        bordered
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="goFactor(row)">监测因子</a>
+          <a-divider type="vertical" />
+          <a @click="goDevice(row)">监测设备</a>
+          <a-divider type="vertical" />
+          <a @click="onEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
+        <a-button
+          slot="extra"
+          type="success"
+          v-margin:left="10"
+          @click="onEdit()"
+        >
           新增
         </a-button>
-      </a-form-item>
-    </a-form>
+      </a-table>
 
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="tableData"
-      v-margin:top="16"
-      :pagination="false"
-      bordered
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="goFactor(row)">监测因子</a>
-        <a-divider type="vertical" />
-        <a @click="goDevice(row)">监测设备</a>
-        <a-divider type="vertical" />
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-      </span>
-    </a-table>
-
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showSizeChanger
-      :defaultCurrent="current"
-      :defaultPageSize="pageSize"
-      :total="total"
-    />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
-  </a-card>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :defaultCurrent="current"
+        :defaultPageSize="pageSize"
+        :total="total"
+      />
+      <add-edit :obj="obj" @cancel="cancel"></add-edit>
+    </a-card>
+  </div>
 </template>
 
 <script>

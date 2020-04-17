@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title + '权限'"
-    v-model="status"
+    :visible="visible"
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
@@ -14,7 +14,13 @@
         <a-input placeholder="权限编码" />
       </a-form-item> -->
       <a-form-item label="权限名称">
-        <a-input placeholder="权限名称" />
+        <a-input
+          placeholder="权限名称"
+          v-decorator="[
+            'name',
+            { rules: [{ required: true, message: '输入权限名称' }] }
+          ]"
+        />
       </a-form-item>
       <!-- <a-form-item label="状态">
         <a-radio-group name="radioGroup" :defaultValue="1">
@@ -36,37 +42,78 @@ export default {
   data() {
     return {
       title: "新增",
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      roleId: ""
     };
   },
   computed: {
-    status: {
-      get() {
-        return this.obj.show;
-      },
-      set() {}
+    visible() {
+      return this.obj.show;
+    }
+  },
+
+  watch: {
+    obj(nval) {
+      if (nval.detail) {
+        this.title = "编辑";
+        this.roleId = nval.detail.id;
+        setTimeout(() => {
+          this.form.setFieldsValue({
+            name: nval.detail.name
+          });
+        }, 50);
+      } else {
+        this.title = "新增";
+      }
     }
   },
   methods: {
-    handleOk() {
-      this.handleCancel();
-    },
     handleCancel() {
       this.$emit("cancel", false);
+      this.reset();
+    },
+    reset() {
+      this.roleId = "";
+      this.form.resetFields();
+    },
+    handleOk() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          if (this.roleId) {
+            this.editRole(values);
+          } else {
+            this.addRole(values);
+          }
+        }
+      });
+    },
+    editRole(values) {
+      let params = values;
+      params.id = this.roleId;
+      this.$api.organization.editSysRole(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改权限成功");
+          this.$emit("confirm");
+          this.reset();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    addRole(values) {
+      let params = values;
+      this.$api.organization.addSysRole(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("新建权限成功");
+          this.$emit("confirm");
+          this.reset();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
     }
   },
-  mounted() {},
-  watch: {
-    status() {
-      if (this.status == true) {
-        if (this.obj.row != "" && this.obj.row != undefined) {
-          this.title = "编辑";
-        } else {
-          this.title = "新增";
-        }
-      }
-    }
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped></style>

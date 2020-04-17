@@ -1,9 +1,5 @@
 <template>
   <div>
-    <a-page-header
-      style="border: 1px solid rgb(235, 237, 240)"
-      title="实时数据"
-    />
     <a-card :bordered="false" v-margin:bottom="28">
       <a-form-model layout="inline" :model="formInline">
         <a-form-model-item>
@@ -19,7 +15,7 @@
 
     <a-card :bordered="false">
       <span slot="title">
-        <a-icon type="arrow-left" @click="$router.back(-1)" />实时数据
+        实时数据
       </span>
 
       <a-table

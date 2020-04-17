@@ -1,6 +1,3 @@
-import reportRoute from "../router/routesTable/reportRoute";
-// import announcement from "../router/routesTable/announcement";
-// import iMaintainRoutes from "../router/routesTable/iMaintainRoute";
 import indexRoutes from "../router/routesTable/indexRoute"; //运维一览
 import approvalRoute from "../router/routesTable/approvalRoute"; //审批管理
 import maintainRoutes from "../router/routesTable/maintainRoute"; //运维管理
@@ -21,9 +18,6 @@ const RouterTable = [
     component: () =>
       import(/* webpackChunkName: "view-home" */ "@/views/Home.vue"),
     children: [
-      ...reportRoute,
-      // ...announcement,
-      // ...iMaintainRoutes,
       ...indexRoutes,
       ...approvalRoute,
       ...maintainRoutes,

@@ -3,10 +3,10 @@
     <span slot="title">数据字典</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="字典名称"></a-input>
+        <a-input placeholder="字典名称" v-model="formInline.name"></a-input>
       </a-form-item>
       <a-form-item>
-        <a-input placeholder="字典编号"></a-input>
+        <a-input placeholder="字典编号" v-model="formInline.code"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -39,11 +39,16 @@
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"
     />
-    <dictionary-edit :visible.sync="visible"></dictionary-edit>
+    <dictionary-edit
+      :visible.sync="visible"
+      @updateTable="getTableData"
+      :dictionaryDetail="dictionaryDetail"
+    ></dictionary-edit>
   </a-card>
 </template>
 <script>
@@ -56,6 +61,11 @@ export default {
       total: 0,
       pagesize: 10,
       loading: false,
+      dictionaryDetail: "",
+      formInline: {
+        name: "",
+        code: ""
+      },
       columns: [
         {
           title: "序号",
@@ -78,12 +88,12 @@ export default {
         },
         {
           title: "字典值",
-          dataIndex: "val",
+          dataIndex: "value",
           align: "center"
         },
         {
           title: "字典说明",
-          dataIndex: "desc",
+          dataIndex: "remark",
           align: "center"
         },
         {
@@ -99,22 +109,50 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMemberList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      let params = {
+        pagesize: this.pagesize,
+        page: this.current,
+        name: this.formInline.name,
+        code: this.formInline.code
+      };
+      this.loading = true;
+      this.$api.common
+        .sysDict(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     onEdit(row) {
-      console.log(row);
-      this.visible = true;
+      this.$api.common.getSysDictById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.dictionaryDetail = res.data.data;
+          this.visible = true;
+        }
+      });
     },
     onDelete(row) {
       console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
-        content: `是否删除行业 ${row.name}`,
+        content: `是否删除字典 ${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.common.deleteSysDict({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");
@@ -136,7 +174,7 @@ export default {
     }
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
   }
 };
 </script>

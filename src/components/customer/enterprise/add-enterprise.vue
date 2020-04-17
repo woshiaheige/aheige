@@ -1,7 +1,7 @@
 <template>
   <a-modal
-    :title="title"
-    v-model="status"
+    :title="title + '信息'"
+    :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
@@ -17,8 +17,9 @@
       <a-form-model-item label="企业名称" prop="name">
         <a-input v-model="formData.name" placeholder="企业名称" />
       </a-form-model-item>
-      <a-form-model-item label="所属区域" prop="area">
-        <a-select v-model="formData.area" placeholder="所属区域"></a-select>
+      <a-form-model-item label="所属区域" prop="regionId">
+        <area-select ref="areaModel"></area-select>
+        <!-- <a-select v-model="formData.regionId" placeholder="所属区域"></a-select> -->
       </a-form-model-item>
       <a-form-model-item label="企业地址" prop="address">
         <a-input v-model="formData.address" placeholder="企业地址" />
@@ -26,14 +27,17 @@
       <a-form-model-item label="企业信用代码" prop="code">
         <a-input v-model="formData.code" placeholder="企业信用代码" />
       </a-form-model-item>
-      <a-form-model-item label="环保负责人" prop="leading">
-        <a-input v-model="formData.leading" placeholder="环保负责人" />
+      <a-form-model-item label="环保负责人" prop="environmentPrincipal">
+        <a-input
+          v-model="formData.environmentPrincipal"
+          placeholder="环保负责人"
+        />
       </a-form-model-item>
-      <a-form-model-item label="联系电话" prop="tel">
-        <a-input v-model="formData.tel" placeholder="联系电话" />
+      <a-form-model-item label="联系电话" prop="phone">
+        <a-input v-model="formData.phone" placeholder="联系电话" />
       </a-form-model-item>
-      <a-form-model-item label="控制级别" prop="level">
-        <a-select placeholder="控制级别" v-model="formData.level">
+      <a-form-model-item label="控制级别" prop="controlLevel">
+        <a-select placeholder="控制级别" v-model="formData.controlLevel">
           <a-select-option
             v-for="item in controlOptions"
             :key="item.value"
@@ -43,41 +47,64 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="企业类型" prop="type">
-        <a-select v-model="formData.type" placeholder="企业类型"> </a-select>
+      <a-form-model-item label="企业类型" prop="industryId">
+        <a-select v-model="formData.industryId" placeholder="企业类型">
+          <a-select-option
+            v-for="item in typeList"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-form-model-item>
-      <a-form-model-item label="企业简介">
-        <a-input type="textarea" placeholder="企业简介" />
+      <a-form-model-item label="企业简介" prop="introduction">
+        <a-input
+          type="textarea"
+          v-model="formData.introduction"
+          placeholder="企业简介"
+        />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
 </template>
 
 <script>
+import areaSelect from "@/components/common/area-select";
 export default {
+  components: {
+    areaSelect
+  },
   props: {
-    obj: Object
+    controlOptions: Array,
+    typeList: Array,
+    value: Object
   },
   data() {
-    // const validatePhone = (rule, value, callback) => {
-    //   if (value == undefined || value == "") {
-    //     //非必须输入
-    //     callback();
-    //     return;
-    //   }
-    //   if (!/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/.test(value)) {
-    //     callback("电话号格式不正确");
-    //   } else {
-    //     callback();
-    //   }
-    // };
+    const validatePhone = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        //非必须输入
+        callback();
+        return;
+      }
+      if (!/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/.test(value)) {
+        callback("电话号格式不正确");
+      } else {
+        callback();
+      }
+    };
     return {
       title: "",
       formData: {
         name: "",
-        area: "",
+        regionId: "",
         address: "",
-        code: ""
+        code: "",
+        environmentPrincipal: "",
+        phone: "",
+        controlLevel: "",
+        industryId: "",
+        introduction: ""
       },
       rules: {
         name: [
@@ -87,13 +114,13 @@ export default {
             trigger: "blur"
           }
         ],
-        area: [
-          {
-            required: true,
-            message: "请选择所属区域",
-            trigger: "change"
-          }
-        ],
+        // regionId: [
+        //   {
+        //     required: true,
+        //     message: "请选择所属区域",
+        //     trigger: "change"
+        //   }
+        // ],
         address: [
           {
             required: true,
@@ -108,72 +135,98 @@ export default {
             trigger: "blur"
           }
         ],
-        leading: [
+        environmentPrincipal: [
           {
             required: true,
             message: "请输入环保负责人",
             trigger: "blur"
           }
         ],
-        tel: [
+        phone: [
           {
             required: true,
             message: "请输入联系电话",
             trigger: "blur"
-          }
+          },
+          { validator: validatePhone, trigger: "blur" }
         ],
-        level: [
+        controlLevel: [
           {
             required: true,
             message: "请输入联系电话",
             trigger: "change"
           }
         ],
-        type: [
+        industryId: [
           {
             required: true,
             message: "请输入企业类型",
             trigger: "blur"
           }
         ]
-      },
-      controlOptions: [
-        { name: "国控", value: "1" },
-        { name: "省控", value: "2" },
-        { name: "市控", value: "3" },
-        { name: "县控", value: "4" }
-      ]
+      }
     };
   },
   computed: {
-    status: {
+    modelData: {
       get() {
-        return this.obj.show;
+        return this.value;
       },
       set() {}
     }
   },
   methods: {
     handleCancel() {
-      this.$emit("cancel", false);
+      this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
+      this.$refs.ruleForm.resetFields();
     },
     handleOk() {
+      // this.formData.regionId = this.$refs.areaModel.regionId;
+      // console.log(this.$refs.areaModel.regionId);
+      // console.log(this.formData.regionId);
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
         }
         //验证通过
+        if (this.modelData.type == "edit") {
+          this.$api.customer.editEnterPrise(this.formData).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("编辑成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          });
+        } else {
+          this.$api.customer.addEnterPrise(this.formData).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("新增成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          });
+        }
       });
+    },
+    getEditData() {
+      this.$api.customer
+        .getEnterPriseById({ id: this.modelData.row.id })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.formData = res.data.data;
+          }
+        });
     }
   },
   mounted() {},
   watch: {
-    status() {
-      if (this.status == true) {
-        if (this.obj.row != "" && this.obj.row != undefined) {
+    "value.show"() {
+      if (this.value.show == true) {
+        if (this.value.type == "edit") {
           this.title = "编辑";
+          this.getEditData();
         } else {
           this.title = "新增";
         }
