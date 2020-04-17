@@ -65,7 +65,11 @@
           </li>
         </ul>
       </a-layout-header>
-      <a-page-header @back="() => $router.go(-1)" v-margin:top="2">
+      <a-page-header
+        @back="() => $router.go(-1)"
+        v-margin:top="2"
+        :class="$route.meta.back ? 'back-show' : 'back-hide'"
+      >
         <a-breadcrumb :routes="routes">
           <template slot="itemRender" slot-scope="{ route, params, routes }">
             <span v-if="routes.indexOf(route) === routes.length - 1">
