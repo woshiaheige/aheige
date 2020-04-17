@@ -1,20 +1,20 @@
 <template>
   <div>
     <a-card :bordered="false" v-margin:bottom="28"
-      ><a-form-model layout="inline" :model="formInline">
-        <a-form-model-item>
-          <a-input v-model="formInline.enterpriseName" placeholder="企业名称" />
+      ><a-form-model layout="inline">
+        <a-form-model-item label="企业名称">
+          <a-input v-model="formInline.enterpriseName" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-input v-model="formInline.pointName" placeholder="监控点名称" />
+        <a-form-model-item label="监控点名称">
+          <a-input v-model="formInline.pointName" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-input v-model="formInline.mn" placeholder="MN号码" />
+        <a-form-model-item label="MN号码">
+          <a-input v-model="formInline.mn" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
+        <a-form-model-item label="时间范围">
           <a-range-picker @change="onChange" />
         </a-form-model-item>
-        <a-form-model-item>
+        <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
@@ -37,7 +37,7 @@
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pageSize"
+        :pageSize.sync="pagesize"
         :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
         @change="pagechange"
@@ -53,16 +53,20 @@ export default {
   data() {
     return {
       loading: false,
-      pageSize: 10,
+      pagesize: 10,
       current: 1,
       total: 0,
       tableData: [],
       columns: [
         {
-          title: "序号",
           align: "center",
-          dataIndex: "index",
-          customRender: (text, row, index) => `${index + 1}`
+          title: "序号",
+          width: 100,
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+            );
+          }
         },
         {
           title: "企业名称",
@@ -101,6 +105,13 @@ export default {
           key: "ceilval",
           align: "center",
           customRender: (text, row) => Number(row.ceilval).toFixed(4)
+        },
+        {
+          title: "超标时间",
+          dataIndex: "dateTime",
+          key: "dateTime",
+          align: "center",
+          width: 200
         }
       ],
       formInline: {
@@ -120,7 +131,7 @@ export default {
       this.loading = true;
       let data = {
         index: this.current,
-        size: this.pageSize,
+        size: this.pagesize,
         beginTime: this.formInline.beginTime,
         endTime: this.formInline.endTime,
         enterpriseName: this.formInline.enterpriseName,

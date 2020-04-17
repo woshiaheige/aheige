@@ -1,11 +1,11 @@
 <template>
   <div>
     <a-card :bordered="false" v-margin:bottom="28">
-      <a-form-model layout="inline" :model="formInline">
-        <a-form-model-item>
+      <a-form-model layout="inline">
+        <a-form-model-item label="时间范围">
           <a-range-picker @change="onChange" />
         </a-form-model-item>
-        <a-form-model-item>
+        <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
@@ -36,7 +36,7 @@
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pageSize"
+        :pageSize.sync="pagesize"
         :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
         @change="pagechange"
@@ -53,7 +53,7 @@ export default {
     return {
       loading: false,
       pointId: "",
-      pageSize: 10,
+      pagesize: 10,
       current: 1,
       total: 0,
       tableData: [],
@@ -85,7 +85,7 @@ export default {
       this.loading = true;
       let data = {
         index: this.current,
-        size: this.pageSize,
+        size: this.pagesize,
         pointId: this.formInline.pointId,
         startTime: this.formInline.beginTime,
         endTime: this.formInline.endTime
@@ -114,13 +114,27 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             let _data = res.data.data || [];
-            let temp = [];
+            let temp = [
+              {
+                align: "center",
+                title: "序号",
+                width: 100,
+                customRender: (_, __, index) => {
+                  return (
+                    <span>
+                      {index + (this.current - 1) * this.pagesize + 1}
+                    </span>
+                  );
+                }
+              }
+            ];
             _data.forEach(element => {
               if (element.title == "时间") {
                 temp.push({
                   title: element.title,
                   dataIndex: element.field,
                   key: element.field,
+                  width: 200,
                   align: "center"
                 });
               } else {
