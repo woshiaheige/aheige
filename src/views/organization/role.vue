@@ -3,10 +3,7 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item>
-          <a-input
-            placeholder="输入权限名称"
-            v-model="formInline.name"
-          ></a-input>
+          <a-input placeholder="权限名称" v-model="formInline.name"></a-input>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit">
@@ -20,7 +17,7 @@
         <div class="title">权限管理</div>
         <div class="extra">
           <a-button type="success" @click="onEdit(false)">
-            <a-icon type="plus" />添加
+            <a-icon type="plus" />新增
           </a-button>
         </div>
       </div>

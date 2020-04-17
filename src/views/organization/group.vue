@@ -48,6 +48,8 @@
         size="small"
         v-margin:top="16"
         showSizeChanger
+        :pageSizeOptions="pageSizeOptions"
+        :defaultPageSize="8"
         :total="total"
         :showTotal="total => `共 ${total} 条`"
         :current="current"
@@ -78,10 +80,11 @@ export default {
       formInline: {
         name: ""
       },
+      pageSizeOptions: ["8", "16", "24", "32"],
       current: 1,
       total: 0,
       loading: false,
-      pagesize: 10,
+      pagesize: 8,
       tableData: []
     };
   },
@@ -134,6 +137,11 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    onSubmit() {
+      this.pagesize = 8; //每页数量
+      this.current = 1; //页码
+      this.getTableData();
     }
   },
   mounted() {

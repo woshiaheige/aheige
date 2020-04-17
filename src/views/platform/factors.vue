@@ -177,6 +177,7 @@ export default {
     };
   },
   methods: {
+    handleTypeChange() {},
     onAddFactorsCancel() {
       this.addFactorsVisible = false;
     },
