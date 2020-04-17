@@ -3,7 +3,7 @@
     <a-row :gutter="16">
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic title="服务客户" :value="112" suffix="家"></a-statistic>
+          <a-statistic title="运维企业" :value="112" suffix="家"></a-statistic>
         </a-card>
       </a-col>
       <a-col :span="4">
@@ -34,35 +34,7 @@
     </a-row>
     <a-row :gutter="16">
       <a-col :span="18">
-        <a-card :bordered="false" title="今日任务情况">
-          <a-row>
-            <a-col :span="6">
-              <a-statistic title="今日任务" :value="14"></a-statistic>
-            </a-col>
-            <a-col :span="6">
-              <a-statistic
-                title="今日已完成"
-                :value="4"
-                :valueStyle="{ color: '#3f8600' }"
-              ></a-statistic>
-            </a-col>
-            <a-col :span="6">
-              <a-statistic
-                title="今日未完成"
-                :value="10"
-                :valueStyle="{ color: '#ff9900' }"
-              ></a-statistic>
-            </a-col>
-            <a-col :span="6">
-              <a-statistic
-                title="过期任务"
-                :value="3"
-                :valueStyle="{ color: '#cf1322' }"
-              ></a-statistic>
-            </a-col>
-          </a-row>
-        </a-card>
-        <a-card :bordered="false" title="小组完成情况">
+        <a-card :bordered="false" title="今日小组完成情况">
           <div class="progress">
             <div class="item" v-for="n in 5" :key="n">
               <vue-awesome-progress
@@ -81,30 +53,92 @@
         </a-card>
         <a-card :bordered="false">
           <a-tabs defaultActiveKey="1" @change="callback">
-            <a-tab-pane tab="超标提醒" key="1">
-              Content of Tab Pane 2
+            <a-tab-pane tab="站点报警提醒" key="1">
+              <a-list itemLayout="horizontal" :dataSource="list">
+                <a-list-item slot="renderItem">
+                  <a slot="actions">查看详情</a>
+                  <a-list-item-meta
+                    description="XXX监测点发生数据告警，请及时处理！"
+                  >
+                    <a slot="title">企业名称</a>
+                    <a-avatar
+                      slot="avatar"
+                      :src="require('@/assets/img/alarm.png')"
+                    />
+                  </a-list-item-meta>
+                  <div v-margin:right="48">
+                    <p>报警类型</p>
+                    <p>数据超标</p>
+                  </div>
+                  <div>
+                    <p>报警时间</p>
+                    <p>2020-04-21 11:45:21</p>
+                  </div>
+                </a-list-item>
+              </a-list>
+              <a-pagination size="small" :total="50" />
             </a-tab-pane>
-            <a-tab-pane tab="合同提醒" key="2" forceRender
-              >Content of Tab Pane 2</a-tab-pane
-            >
-            <a-tab-pane tab="投诉提醒" key="3"
-              >Content of Tab Pane 3</a-tab-pane
-            >
+            <a-tab-pane tab="合同到期提醒" key="2">
+              <a-list itemLayout="horizontal" :dataSource="list">
+                <a-list-item slot="renderItem">
+                  <a slot="actions">查看详情</a>
+                  <a-list-item-meta
+                    description="合同将于2020-04-31日到期，请及时续签！"
+                  >
+                    <a slot="title">企业名称</a>
+                    <a-avatar
+                      slot="avatar"
+                      :src="require('@/assets/img/contract.png')"
+                    />
+                  </a-list-item-meta>
+                  <div>
+                    <p>剩余天数</p>
+                    <p>4天</p>
+                  </div>
+                </a-list-item>
+              </a-list>
+              <a-pagination size="small" :total="50" />
+            </a-tab-pane>
+            <a-tab-pane tab="客户投诉提醒" key="3">
+              <a-list itemLayout="horizontal" :dataSource="list">
+                <a-list-item slot="renderItem">
+                  <a slot="actions">查看详情</a>
+                  <a-list-item-meta
+                    description="客户于2020-04-31 12:34:56发起投诉，请及时处理！"
+                  >
+                    <a slot="title">企业名称</a>
+                    <a-avatar
+                      slot="avatar"
+                      :src="require('@/assets/img/complain.png')"
+                    />
+                  </a-list-item-meta>
+                  <div>
+                    <p>已持续</p>
+                    <p>3天</p>
+                  </div>
+                </a-list-item>
+              </a-list>
+              <a-pagination size="small" :total="50" />
+            </a-tab-pane>
           </a-tabs>
         </a-card>
       </a-col>
       <a-col :span="6">
+        <a-card :bordered="false" title="今日任务完成情况">
+          <ve-ring :data="chartData"></ve-ring>
+        </a-card>
         <a-card :bordered="false" title="本周运维人员TOP10">
           <!-- <ve-pie :data="chartData" :colors="colors"></ve-pie> -->
           <a-list itemLayout="horizontal" :dataSource="list">
             <a-list-item slot="renderItem" slot-scope="item">
-              <a-list-item-meta description="完成79个站点维护工作">
+              <a-list-item-meta description="运维1组">
                 <a slot="title">{{ item.title }}</a>
                 <a-avatar
                   slot="avatar"
                   :src="require('@/assets/img/avatar.png')"
                 />
               </a-list-item-meta>
+              <a-statistic :value="76" />
             </a-list-item>
           </a-list>
         </a-card>
@@ -123,8 +157,8 @@ export default {
       chartData: {
         columns: ["name", "value"],
         rows: [
-          { name: "准时完成", value: 30 },
-          { name: "逾期完成", value: 2 }
+          { name: "已完成", value: 30 },
+          { name: "未完成", value: 2 }
         ]
       },
       chartData2: {
