@@ -2,12 +2,12 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="企业名称" v-model="list.name"></a-input>
+        <a-form-item label="企业名称">
+          <a-input placeholder="请输入" v-model="list.name"></a-input>
         </a-form-item>
-        <a-form-item>
+        <a-form-item label="控制级别">
           <a-select
-            placeholder="控制级别"
+            placeholder="请选择"
             allowClear
             v-width="150"
             v-model="list.level"
@@ -21,9 +21,9 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
+        <a-form-item label="行业类别">
           <a-select
-            placeholder="行业类别"
+            placeholder="请选择"
             allowClear
             v-width="150"
             v-model="list.type"
@@ -45,15 +45,15 @@
         <a-form-item> </a-form-item>
       </a-form>
     </a-card>
-    <a-card
-      :bordered="false"
-      class="enterprise"
-      title="企业信息"
-      v-margin:top="16"
-    >
-      <a-button type="primary" @click="onEdit('add')" slot="extra">
-        新增
-      </a-button>
+    <a-card :bordered="false" class="enterprise" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">企业列表</div>
+        <div class="extra">
+          <a-button type="primary" @click="onEdit('add')">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
       <a-table
         rowKey="id"
         size="middle"
@@ -62,7 +62,6 @@
         v-margin:top="16"
         :pagination="false"
         :loading="loading"
-        bordered
       >
         <span slot="action" slot-scope="row">
           <a @click="goPoint(row)">监控点管理</a>
@@ -124,6 +123,7 @@ export default {
         {
           title: "序号",
           align: "center",
+           width: 100,
           customRender: (text, row, index) => `${index + 1}`
         },
         {
@@ -164,6 +164,7 @@ export default {
         {
           title: "操作",
           key: "action",
+          width: 300,
           scopedSlots: { customRender: "action" },
           align: "center"
         }
@@ -210,11 +211,12 @@ export default {
       });
     },
     onDelete(row) {
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          this.$api.customer
+          that.$api.customer
             .delEnterPrise({
               id: row.id
             })

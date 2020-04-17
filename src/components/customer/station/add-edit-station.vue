@@ -31,15 +31,14 @@
       <a-form-model-item label="MN号码" prop="mn">
         <a-input v-model="formData.mn" placeholder="MN号码" />
       </a-form-model-item>
-      <a-form-model-item label="经维度" prop="lngandlat">
+      <a-form-model-item label="经维度">
         <div @click="onLnglat()">
-          <a-input placeholder="请选择经维度" v-model="formData.lngandlat">
+          <a-input placeholder="请选择经维度" v-model="lngandlat">
             <a-tooltip slot="suffix">
               <a-icon type="environment" style="color: rgba(0,0,0,.45)" />
             </a-tooltip>
           </a-input>
         </div>
-        <!-- <a-input placeholder="监测点地图" v-model="formData.lngandlat" /> -->
       </a-form-model-item>
       <a-form-model-item label="监测点类型" prop="type">
         <a-select placeholder="监测点类型" v-model="formData.type">
@@ -54,22 +53,34 @@
       </a-form-model-item>
       <a-form-model-item label="传输类型" prop="transferType">
         <a-select v-model="formData.transferType" placeholder="传输类型">
-          <a-select-option value="1">有线传输</a-select-option>
-          <a-select-option value="2">无线传输</a-select-option>
+          <a-select-option
+            v-for="item in transferList"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="传输协议" prop="protocolType">
         <a-select v-model="formData.protocolType" placeholder="传输协议">
-          <a-select-option value="0">扩展协议</a-select-option>
-          <a-select-option value="05">05协议</a-select-option>
-          <a-select-option value="17">7协议</a-select-option>
+          <a-select-option
+            v-for="item in protocolList"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
         </a-select>
       </a-form-model-item>
     </a-form-model>
+    <search-map :obj="mapModel" @getModal="getModal"></search-map>
   </a-modal>
 </template>
 <script>
+import searchMap from "@/components/common/search-map";
 export default {
+  components: { searchMap },
   props: {
     pointOptions: Array,
     value: Object
@@ -78,17 +89,36 @@ export default {
     return {
       title: "新增",
       enterpriseList: [],
-      formData: {
-        // name: "",
-        // regionId: "",
-        // address: "",
-        // code: "",
-        // environmentPrincipal: "",
-        // phone: "",
-        // controlLevel: "",
-        // industryId: "",
-        // introduction: ""
+      mapModel: {
+        show: false,
+        lnglat: []
       },
+      transferList: [
+        {
+          name: "有线传输",
+          id: 1
+        },
+        {
+          name: "无线传输",
+          id: 2
+        }
+      ],
+      protocolList: [
+        {
+          name: "扩展协议",
+          id: "0"
+        },
+        {
+          name: "05协议",
+          id: "05"
+        },
+        {
+          name: "17协议",
+          id: "17"
+        }
+      ],
+      lngandlat: "",
+      formData: {},
       rules: {
         enterpriseId: [
           {
@@ -172,14 +202,24 @@ export default {
         this.enterpriseList = res.data.data;
       });
     },
+    //经纬度
     onLnglat() {
-      console.log("map");
+      this.mapModel.show = true;
+      this.mapModel.address = this.formData.address;
+      if (this.lngandlat) {
+        this.mapModel.lnglat = this.lngandlat.split(",");
+      }
+    },
+    getModal(data) {
+      this.formData.address = data.address;
+      this.lngandlat = data.lnglat.join();
     }
   },
   mounted() {},
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.lngandlat = "";
         this.enterpriseOptions();
         if (this.value.type == "edit") {
           this.title = "编辑";

@@ -64,6 +64,12 @@ const common = {
     return axios.get(base.api + "sysRegion/getTreeByName", {
       params: data
     });
+  },
+  //行政区域三级
+  getArea(data) {
+    return axios.get(base.api + "sysRegion/getArea", {
+      params: data
+    });
   }
 };
 
