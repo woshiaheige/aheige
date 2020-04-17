@@ -2,17 +2,17 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="企业名称" v-model="list.name"></a-input>
+        <a-form-item label="企业名称">
+          <a-input placeholder="请输入" v-model="list.name"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="监控点名称" v-model="list.pointName"></a-input>
+        <a-form-item label="监控点名称">
+          <a-input placeholder="请输入" v-model="list.pointName"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="MN号码" v-model="list.mn"></a-input>
+        <a-form-item label="MN号码">
+          <a-input placeholder="请输入" v-model="list.mn"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-select placeholder="监控点类型" v-width="150" v-model="list.type">
+        <a-form-item label="监控点类型">
+          <a-select placeholder="请选择" v-width="150" v-model="list.type">
             <a-select-option
               v-for="item in pointOptions"
               :key="item.value"
@@ -23,9 +23,9 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item>
+        <a-form-item style="float: right">
           <a-button type="primary" html-type="submit">
-            查找
+            查询
           </a-button>
         </a-form-item>
       </a-form>
@@ -37,7 +37,7 @@
       v-margin:top="16"
     >
       <a-button type="primary" @click="onEdit('add')" slot="extra">
-        新增
+        <a-icon type="plus" />新建
       </a-button>
       <a-table
         size="middle"
@@ -202,8 +202,8 @@ export default {
             })
             .then(res => {
               if (res.data.state == 0) {
-                this.$message.success("删除成功");
-                this.getTableData();
+                that.$message.success("删除成功");
+                that.getTableData();
               }
             });
         },
