@@ -37,32 +37,18 @@
       <a-form-item label="微信ID">
         <a-input placeholder="输入微信ID" v-decorator="['wechat']" />
       </a-form-item>
-      <a-form-item label="是否运维人员">
-        <a-radio-group
-          @change="onOperationChange"
-          :defaultValue="2"
-          :options="operationOptions"
-        />
+      <a-form-item label="选择权限">
+        <a-select placeholder="选择权限" v-model="role">
+          <a-select-option value="1">运维人员</a-select-option>
+          <a-select-option value="2">运维主管</a-select-option>
+          <a-select-option value="3">仓库管理员</a-select-option>
+        </a-select>
       </a-form-item>
-      <a-form-item label="运维小组" v-if="operation == 1">
+      <a-form-item label="运维小组" v-if="role == 1">
         <a-select placeholder="选择运维小组"> </a-select>
       </a-form-item>
-      <a-form-item label="是否审核人员">
-        <a-radio-group
-          @change="onAuditorChange"
-          :defaultValue="2"
-          :options="auditorOptions"
-        />
-      </a-form-item>
-      <a-form-item label="审核权限" v-if="auditor == 1">
+      <a-form-item label="审核权限" v-if="role == 2">
         <a-select placeholder="选择审核权限"> </a-select>
-      </a-form-item>
-      <a-form-item label="选择权限">
-        <a-select placeholder="选择选择权限" v-model="role">
-          <a-select-option value="1">运维人员</a-select-option>
-          <a-select-option value="17">权限A</a-select-option>
-          <a-select-option value="0">权限B</a-select-option>
-        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>

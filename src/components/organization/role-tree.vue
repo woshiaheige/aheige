@@ -1,91 +1,217 @@
 <template>
-  <a-modal :title="title" :visible="visible" @cancel="closeModal">
+  <a-modal
+    :title="title"
+    :visible="visible"
+    @cancel="closeModal"
+    @ok="handleOk"
+  >
+    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="权限名称">
+        <a-input
+          placeholder="权限名称"
+          v-decorator="[
+            'name',
+            { rules: [{ required: true, message: '输入权限名称' }] }
+          ]"
+        />
+      </a-form-item>
+    </a-form>
     <a-tree
       checkable
+      :autoExpandParent="true"
+      v-model="resourceIdList"
+      @check="treeClick"
       @expand="onExpand"
       :expandedKeys="expandedKeys"
-      :autoExpandParent="autoExpandParent"
-      v-model="checkedKeys"
-      @select="onSelect"
-      :selectedKeys="selectedKeys"
-      :treeData="treeData"
+      :replaceFields="replaceFields"
+      key="id"
+      :treeData="dataList"
     />
   </a-modal>
 </template>
 
 <script>
-const treeData = [
-  {
-    title: "0-0",
-    key: "0-0",
-    children: [
-      {
-        title: "0-0-0",
-        key: "0-0-0",
-        children: [
-          { title: "0-0-0-0", key: "0-0-0-0" },
-          { title: "0-0-0-1", key: "0-0-0-1" },
-          { title: "0-0-0-2", key: "0-0-0-2" }
-        ]
-      },
-      {
-        title: "0-0-1",
-        key: "0-0-1",
-        children: [
-          { title: "0-0-1-0", key: "0-0-1-0" },
-          { title: "0-0-1-1", key: "0-0-1-1" },
-          { title: "0-0-1-2", key: "0-0-1-2" }
-        ]
-      },
-      {
-        title: "0-0-2",
-        key: "0-0-2"
-      }
-    ]
-  },
-  {
-    title: "0-1",
-    key: "0-1",
-    children: [
-      { title: "0-1-0-0", key: "0-1-0-0" },
-      { title: "0-1-0-1", key: "0-1-0-1" },
-      { title: "0-1-0-2", key: "0-1-0-2" }
-    ]
-  },
-  {
-    title: "0-2",
-    key: "0-2"
-  }
-];
 export default {
   props: {
     visible: {
       required: true,
       type: Boolean
+    },
+    roleDetail: {
+      required: false
     }
   },
   data() {
     return {
-      expandedKeys: ["0-0-0", "0-0-1"],
+      replaceFields: {
+        key: "id"
+      },
+      form: this.$form.createForm(this),
+      expandedKeys: [],
       autoExpandParent: true,
-      checkedKeys: ["0-0-0"],
-      selectedKeys: [],
-      treeData
+      dataList: [],
+      roleId: "",
+      userRoleId: "", //用户的角色id(用来判断如果用户修改自己的角色则刷新组件)
+      resourceIdList: [],
+      menuIds: [] //获取已授权的id
     };
   },
+
   computed: {
     title() {
-      return "编辑权限";
+      let title = "";
+      title = this.roleDetail ? "编辑授权" : "新建授权";
+      return title;
     }
   },
   watch: {
-    checkedKeys(val) {
-      console.log("onCheck", val);
+    visible(nval) {
+      if (nval == true) {
+        // this.userRoleId = JSON.parse(sessionStorage.getItem("userinfo")).roleId;
+        this.queryResourceTree();
+      }
+    },
+    roleDetail(nval) {
+      if (nval) {
+        setTimeout(() => {
+          this.form.setFieldsValue({
+            name: nval.name
+          });
+        }, 50);
+        this.roleId = nval.id;
+        this.getSysRoleById(this.roleId);
+      }
     }
   },
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+      this.reset();
+    },
+    reset() {
+      this.roleId = "";
+      this.expandedKeys = [];
+      this.roleId = "";
+      this.userRoleId = "";
+      this.resourceIdList = [];
+      this.menuIds = [];
+      this.form.resetFields();
+    },
+    queryResourceTree() {
+      //获取树
+      this.$api.organization.queryResourceTree().then(res => {
+        if (res.data.state == "0") {
+          this.dataList = res.data.data;
+        }
+      });
+    },
+
+    getSysRoleById(id) {
+      //根据id获取已授权
+      let params = {
+        id: id
+      };
+      this.resourceIdList = [];
+      this.$api.organization.getSysRoleById(params).then(res => {
+        if (res.data.state == "0" && res.data.data.resourceIds) {
+          this.menuIds = res.data.data.resourceIds;
+          console.log(this.menuIds);
+          this.menuIds.forEach(item => {
+            this.resourceIdList.push(item.menuId);
+          });
+          this.treeDispose(this.dataList);
+        }
+      });
+      // setTimeout(()=>{
+      //   this.expandedKeys = [
+      //   "10",
+      //   "11",
+      //   "1101",
+      //   "1102",
+      //   "1103",
+      //   "1104",
+      //   "1105",
+      //   "12"
+      // ];
+      // this.resourceIdList = this.expandedKeys;
+      // })
+      console.log(this.expandedKeys);
+    },
+    treeClick(keys) {
+      this.resourceIdList = keys;
+    },
+    treeDispose(array) {
+      //树处理
+      array.forEach(item => {
+        if (item.children.length > 0) {
+          this.treeDispose(item.children);
+          //console.log(item);
+        }
+        if (
+          item.id !== "110000" &&
+          item.id !== "120000" &&
+          item.id !== "130000" &&
+          item.id !== "140000"
+        ) {
+          this.menuIds.forEach(i => {
+            // if (item.id == i.menuId) {
+            //   this.$set(item, "checked", true);
+            // }
+            console.log(i);
+          });
+        }
+      });
+    },
+    handleOk() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          if (this.roleId) {
+            this.editRole(values);
+          } else {
+            this.addRole(values);
+          }
+        }
+      });
+    },
+    editRole(name) {
+      //编辑
+      let data = {
+        resourceIds: this.resourceIdList,
+        id: this.roleId,
+        ...name
+      };
+      this.$api.organization.editSysRole(data).then(res => {
+        if (res.data.state == "0") {
+          this.$message.success("授权成功!");
+          if (this.roleId == this.userRoleId) {
+            //如果用户修改的是自己的角色,刷新页面组件
+            this.$store.dispatch("createRouterTable", this.resourceIdList);
+            // location.reload([true]);
+          }
+          this.$emit("update:visible", false);
+          this.reset();
+        }
+      });
+    },
+    addRole(name) {
+      //新增
+      let data = {
+        resourceIds: this.resourceIdList,
+        id: this.roleId,
+        ...name
+      };
+      this.$api.organization.addSysRole(data).then(res => {
+        if (res.data.state == "0") {
+          this.$message.success("授权成功!");
+          if (this.roleId == this.userRoleId) {
+            //如果用户修改的是自己的角色,刷新页面组件
+            this.$store.dispatch("createRouterTable", this.resourceIdList);
+            // location.reload([true]);
+          }
+          this.$emit("update:visible", false);
+          this.reset();
+        }
+      });
     },
     onExpand(expandedKeys) {
       console.log("onExpand", expandedKeys);
@@ -93,14 +219,6 @@ export default {
       // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys;
       this.autoExpandParent = false;
-    },
-    onCheck(checkedKeys) {
-      console.log("onCheck", checkedKeys);
-      this.checkedKeys = checkedKeys;
-    },
-    onSelect(selectedKeys, info) {
-      console.log("onSelect", info);
-      this.selectedKeys = selectedKeys;
     }
   }
 };

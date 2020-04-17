@@ -3,7 +3,7 @@
     <span slot="title">小组管理</span>
     <a-form layout="inline">
       <a-form-item>
-        <a-input placeholder="小组名称"></a-input>
+        <a-input placeholder="小组名称" v-model="formInline.name"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSubmit">
@@ -16,104 +16,123 @@
         </a-button>
       </a-form-item>
     </a-form>
-    <a-row
-      type="flex"
-      justify="space-between"
-      align="middle"
-      v-margin:top="20"
-      :gutter="[16, 16]"
-    >
-      <a-col v-for="(item, index) of tableData" :key="index">
-        <a-card hoverable style="width: 300px">
-          <span slot="title">{{ item.name }}</span>
-          <template class="ant-card-actions" slot="actions">
-            <a-icon type="setting" key="setting" @click="onEdit(item)" />
-            <a-icon type="edit" key="edit" @click="onGroupShow(item)" />
-            <a-icon type="delete" key="delete" @click="onDelete(item)" />
-          </template>
-          <a-tag
-            v-for="(member, key) of item.member"
-            :key="key"
-            color="#2db7f5"
-          >
-            {{ member.name }}
-          </a-tag>
-        </a-card>
-      </a-col>
+    <a-row v-margin:top="20">
+      <a-list
+        :grid="{ gutter: 16, column: 4 }"
+        :dataSource="tableData"
+        :loading="loading"
+      >
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a-card hoverable>
+            <span slot="title">{{ item.name }}</span>
+            <template class="ant-card-actions" slot="actions">
+              <a @click="onEdit(item)">编辑</a>
+              <!-- <a @click="onGroupShow(item)">小组成员</a> -->
+              <a @click="onDelete(item)">删除小组</a>
+            </template>
+            <a-tag
+              v-for="(member, key) of item.users"
+              :key="key"
+              color="#2db7f5"
+            >
+              {{ member.name }}
+            </a-tag>
+          </a-card>
+        </a-list-item>
+      </a-list>
     </a-row>
     <a-pagination
       size="small"
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"
     />
     <!-- 新增编辑小组 -->
-    <group-edit :visible.sync="visible" :groupDetail="groupDetail" />
-    <!-- 新增编辑组员 -->
-    <group-member :visible.sync="groupVisible" />
+    <group-edit
+      :visible.sync="visible"
+      :groupDetail="groupDetail"
+      @updateTable="getTableData"
+    />
+    <!-- 新增编辑组员
+    <group-member :visible.sync="groupVisible" /> -->
   </a-card>
 </template>
 <script>
 import groupEdit from "@/components/organization/group/group-edit";
-import groupMember from "@/components/organization/group/group-member";
+// import groupMember from "@/components/organization/group/group-member";
 export default {
-  components: { groupEdit, groupMember },
+  components: { groupEdit },
   data() {
     return {
       visible: false,
-      groupVisible: false,
       groupDetail: "",
+      formInline: {
+        name: ""
+      },
       current: 1,
       total: 0,
       loading: false,
       pagesize: 10,
-      tableData: [
-        { name: "小组A", member: [{ name: "张山" }, { name: "李四" }] }
-      ],
-      obj: {
-        show: false
-      },
-      checkObj: {
-        show: false
-      }
+      tableData: []
     };
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMemberList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      let params = {
+        size: this.pagesize,
+        page: this.current,
+        name: this.formInline.name
+      };
+      this.loading = true;
+      this.$api.organization
+        .sysGroup(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     onEdit(row) {
-      console.log(row);
-      this.groupDetail = row;
-      this.visible = true;
+      this.$api.organization.getSysGroupById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.groupDetail = res.data.data;
+          this.visible = true;
+        }
+      });
     },
     onDelete(row) {
-      console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
-        content: `是否删除${row.name}`,
+        content: `是否删除小组 ${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.organization.deleteSysGroup({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");
         }
       });
-    },
-    onGroupShow(row) {
-      //显示小组
-      this.groupVisible = true;
-      console.log(row);
     }
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
   }
 };
 </script>

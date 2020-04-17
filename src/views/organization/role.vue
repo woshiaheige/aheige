@@ -21,8 +21,7 @@
         :loading="loading"
       >
         <a-list-item slot="renderItem" slot-scope="item">
-          <a slot="actions" @click="onEdit(item)">编辑</a>
-          <a slot="actions">授权</a>
+          <a slot="actions" @click="onRole(item)">编辑</a>
           <a slot="actions" @click="onDelete(item)">删除</a>
           <a-list-item-meta
             description="Ant Design, a design language for background applications, is refined by Ant UED Team"
@@ -41,15 +40,15 @@
       :defaultPageSize="pageSize"
       :total="total"
     />
-    <add-edit :obj="obj" @cancel="cancel" @confirm="confirm"></add-edit>
-    <role-tree :visible.sync="visible" />
+    <!-- <add-edit :obj="obj" @cancel="cancel" @confirm="confirm"></add-edit> -->
+    <role-tree :visible.sync="visible" :roleDetail="roleDetail" />
   </a-card>
 </template>
 <script>
-import addEdit from "@/components/organization/role/add-edit";
+// import addEdit from "@/components/organization/role/add-edit";
 import roleTree from "@/components/organization/role-tree";
 export default {
-  components: { addEdit, roleTree },
+  components: { roleTree },
   data() {
     return {
       // selectedRowKeys: [],
@@ -63,7 +62,8 @@ export default {
       obj: {
         show: false,
         detail: ""
-      }
+      },
+      roleDetail: ""
     };
   },
 
@@ -93,10 +93,8 @@ export default {
     },
     onEdit(row) {
       if (row == false) {
-        this.obj = {
-          show: true,
-          detail: ""
-        };
+        this.visible = true;
+        this.roleDetail = "";
         return;
       }
       this.$api.organization.getSysRoleById({ id: row.id }).then(res => {
@@ -131,7 +129,7 @@ export default {
     },
     onRole(row) {
       //授权
-      console.log(row);
+      this.roleDetail = row;
       this.visible = true;
     },
     cancel(value) {

@@ -33,7 +33,8 @@
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
         <a-divider type="vertical" />
-        <a @click="onLock(row)">锁定</a>
+        <a @click="onLock(row)" v-show="row.isLocked == 1">锁定</a>
+        <a @click="unLock(row)" v-show="row.isLocked == 0">激活</a>
       </span>
     </a-table>
     <a-pagination
@@ -41,6 +42,7 @@
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"
@@ -159,11 +161,42 @@ export default {
     },
     onLock(row) {
       console.log(row);
+      let _this = this;
       this.$confirm({
         title: "锁定",
         content: `是否锁定用户${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.organization.lockedUser({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("锁定成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
+    unLock(row) {
+      console.log(row);
+      let _this = this;
+      this.$confirm({
+        title: "激活",
+        content: `是否激活用户${row.name}`,
+        onOk() {
+          console.log("OK");
+          _this.$api.organization.unlockedUser({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("激活成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");

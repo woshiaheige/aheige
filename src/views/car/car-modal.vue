@@ -22,23 +22,22 @@ export default {
       let params = {
         vehicleId: this.vehicleId
       };
+      this.initMap();
       this.$api.car.trajectory(params).then(res => {
         this.lineArr = res.data.data.arr;
-        this.initMap();
+        this.setCar();
+        this.setPolyLine();
+        this.map.setFitView();
       });
     },
     initMap() {
       this.map = new AMap.Map("container", {
-        center: [113.53, 23.36],
+        // center: [113.53, 23.36],
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 8,
         // zoomEnable: false, //地图是否可缩放
         doubleClickZoom: false // 地图是否可通过双击鼠标放大地图
       });
-
-      this.setCar();
-      this.setPolyLine();
-      this.map.setFitView();
     },
 
     setCar() {

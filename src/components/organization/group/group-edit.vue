@@ -1,5 +1,10 @@
 <template>
-  <a-modal :title="title" :visible="visible" @cancel="closeModal">
+  <a-modal
+    :title="title"
+    :visible="visible"
+    @cancel="closeModal"
+    @ok="handleOk"
+  >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="小组名称">
         <a-input
@@ -21,13 +26,14 @@ export default {
       required: true,
       type: Boolean
     },
-    groupName: {
+    groupDetail: {
       required: false
     }
   },
   data() {
     return {
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      groupId: ""
     };
   },
   computed: {
@@ -39,9 +45,63 @@ export default {
       }
     }
   },
+  watch: {
+    groupDetail(nval) {
+      if (nval) {
+        this.groupId = nval.id;
+        setTimeout(() => {
+          this.form.setFieldsValue({
+            name: nval.name
+          });
+        }, 50);
+      }
+    }
+  },
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+    },
+    reset() {
+      this.groupId = "";
+      this.form.resetFields();
+    },
+    handleOk() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          if (this.groupId) {
+            this.editGroup(values);
+          } else {
+            this.addGroup(values);
+          }
+        }
+      });
+    },
+    editGroup(values) {
+      let params = values;
+      params.id = this.groupId;
+      this.$api.organization.editSysGroup(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改小组成功");
+          this.$emit("update:visible", false);
+          this.$emit("updateTable");
+          this.reset();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    addGroup(values) {
+      let params = values;
+      this.$api.organization.addSysGroup(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("新建小组成功");
+          this.$emit("update:visible", false);
+          this.$emit("updateTable");
+          this.reset();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
     }
   }
 };
