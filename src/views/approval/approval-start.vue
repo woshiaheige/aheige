@@ -1,7 +1,7 @@
 <template>
   <a-card :bordered="false" class="index">
     <span slot="title">
-      我发起的审批
+      我的审批
     </span>
     <a-table
       size="middle"

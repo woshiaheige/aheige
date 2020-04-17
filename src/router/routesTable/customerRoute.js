@@ -42,20 +42,6 @@ const customer = [
       )
   },
   {
-    path: "/customer/supplier",
-    name: "customer-supplier",
-    key: "supplier",
-    meta: {
-      title: "供应商管理",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-standing" */
-        "@/views/customer/supplier.vue"
-      )
-  },
-  {
     path: "/customer/enterprise/user",
     name: "customer-enterprise-user",
     key: "customer-enterprise-user",
@@ -101,6 +87,34 @@ const customer = [
     path: "/customer/enterprise/device",
     name: "customer-enterprise-device",
     key: "customer-enterprise-device",
+    meta: {
+      title: "监测设备",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/device.vue"
+      )
+  },
+  {
+    path: "/customer/station/factor",
+    name: "customer-station-factor",
+    key: "customer-station-factor",
+    meta: {
+      title: "监测因子",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/factor.vue"
+      )
+  },
+  {
+    path: "/customer/station/device",
+    name: "customer-station-device",
+    key: "customer-station-device",
     meta: {
       title: "监测设备",
       back: true

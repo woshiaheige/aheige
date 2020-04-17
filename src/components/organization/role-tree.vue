@@ -18,7 +18,7 @@
     </a-form>
     <a-tree
       checkable
-      :autoExpandParent="true"
+      :autoExpandParent="autoExpandParent"
       v-model="resourceIdList"
       @check="treeClick"
       @expand="onExpand"
@@ -69,17 +69,15 @@ export default {
       if (nval == true) {
         // this.userRoleId = JSON.parse(sessionStorage.getItem("userinfo")).roleId;
         this.queryResourceTree();
-      }
-    },
-    roleDetail(nval) {
-      if (nval) {
-        setTimeout(() => {
-          this.form.setFieldsValue({
-            name: nval.name
-          });
-        }, 50);
-        this.roleId = nval.id;
-        this.getSysRoleById(this.roleId);
+        if (this.roleDetail) {
+          setTimeout(() => {
+            this.form.setFieldsValue({
+              name: this.roleDetail.name
+            });
+          }, 50);
+          this.roleId = this.roleDetail.id;
+          this.getSysRoleById(this.roleId);
+        }
       }
     }
   },
@@ -114,28 +112,12 @@ export default {
       this.resourceIdList = [];
       this.$api.organization.getSysRoleById(params).then(res => {
         if (res.data.state == "0" && res.data.data.resourceIds) {
-          this.menuIds = res.data.data.resourceIds;
-          console.log(this.menuIds);
-          this.menuIds.forEach(item => {
-            this.resourceIdList.push(item.menuId);
-          });
-          this.treeDispose(this.dataList);
+          setTimeout(() => {
+            this.resourceIdList = res.data.data.resourceIds;
+            this.expandedKeys = res.data.data.resourceIds;
+          }, 200);
         }
       });
-      // setTimeout(()=>{
-      //   this.expandedKeys = [
-      //   "10",
-      //   "11",
-      //   "1101",
-      //   "1102",
-      //   "1103",
-      //   "1104",
-      //   "1105",
-      //   "12"
-      // ];
-      // this.resourceIdList = this.expandedKeys;
-      // })
-      console.log(this.expandedKeys);
     },
     treeClick(keys) {
       this.resourceIdList = keys;
@@ -143,7 +125,7 @@ export default {
     treeDispose(array) {
       //树处理
       array.forEach(item => {
-        if (item.children.length > 0) {
+        if (item.children && item.children.length > 0) {
           this.treeDispose(item.children);
           //console.log(item);
         }
@@ -153,12 +135,12 @@ export default {
           item.id !== "130000" &&
           item.id !== "140000"
         ) {
-          this.menuIds.forEach(i => {
-            // if (item.id == i.menuId) {
-            //   this.$set(item, "checked", true);
-            // }
-            console.log(i);
-          });
+          // this.menuIds.forEach(i => {
+          //   if (item.id == i.menuId) {
+          //     this.$set(item, "checked", true);
+          //   }
+          //   console.log(i);
+          // });
         }
       });
     },
@@ -190,6 +172,7 @@ export default {
           }
           this.$emit("update:visible", false);
           this.reset();
+          this.$emit("updateTable");
         }
       });
     },
@@ -210,13 +193,12 @@ export default {
           }
           this.$emit("update:visible", false);
           this.reset();
+          this.$emit("updateTable");
         }
       });
     },
     onExpand(expandedKeys) {
       console.log("onExpand", expandedKeys);
-      // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-      // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys;
       this.autoExpandParent = false;
     }

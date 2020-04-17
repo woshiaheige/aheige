@@ -15,7 +15,7 @@
           <a-range-picker @change="onChange" />
         </a-form-model-item>
         <a-form-model-item>
-          <a-button type="primary">
+          <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
         </a-form-model-item>
@@ -32,17 +32,16 @@
         v-margin:top="16"
         :pagination="false"
       >
-        <span slot="action">
-          <a>现场图片</a>
-        </span>
       </a-table>
-
       <a-pagination
         size="small"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
+        :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
         :total="total"
       />
     </a-card>
@@ -93,19 +92,15 @@ export default {
           title: "上限值",
           dataIndex: "floorval",
           key: "floorval",
-          align: "center"
+          align: "center",
+          customRender: (text, row) => Number(row.floorval).toFixed(4)
         },
         {
           title: "下限值",
           dataIndex: "ceilval",
           key: "ceilval",
-          align: "center"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          customRender: (text, row) => Number(row.ceilval).toFixed(4)
         }
       ],
       formInline: {
@@ -118,10 +113,10 @@ export default {
     };
   },
   mounted() {
-    this.getWarnData();
+    this.getTableData();
   },
   methods: {
-    getWarnData() {
+    getTableData() {
       this.loading = true;
       let data = {
         index: this.current,
@@ -135,7 +130,7 @@ export default {
       this.$api.monitor
         .getWarnData(data)
         .then(res => {
-          console.log(res);
+          this.total = res.data.data.total;
           this.tableData = res.data.data.list;
         })
         .catch(err => {

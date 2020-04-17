@@ -2,30 +2,30 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="企业名称" v-model="list.name"></a-input>
+        <a-form-item label="企业名称">
+          <a-input placeholder="请输入" v-model="list.name"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="监控点名称" v-model="list.pointName"></a-input>
+        <a-form-item label="监控点名称">
+          <a-input placeholder="请输入" v-model="list.pointName"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="MN号码" v-model="list.mn"></a-input>
+        <a-form-item label="MN号码">
+          <a-input placeholder="请输入" v-model="list.mn"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-select placeholder="监控点类型" v-width="150" v-model="list.type">
+        <a-form-item label="监控点类型">
+          <a-select placeholder="请选择" v-width="150" v-model="list.type">
             <a-select-option
               v-for="item in pointOptions"
-              :key="item.id"
-              :value="item.id"
+              :key="item.value"
+              :value="item.value"
             >
               {{ item.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
 
-        <a-form-item>
+        <a-form-item style="float: right">
           <a-button type="primary" html-type="submit">
-            查找
+            查询
           </a-button>
         </a-form-item>
       </a-form>
@@ -37,7 +37,7 @@
       v-margin:top="16"
     >
       <a-button type="primary" @click="onEdit('add')" slot="extra">
-        新增
+        <a-icon type="plus" />新建
       </a-button>
       <a-table
         size="middle"
@@ -141,16 +141,7 @@ export default {
         mn: ""
       },
       loading: false,
-      pointOptions: [
-        {
-          name: "水类",
-          value: 1
-        },
-        {
-          name: "气类",
-          value: 2
-        }
-      ]
+      pointOptions: []
     };
   },
   mounted() {
@@ -200,12 +191,21 @@ export default {
       });
     },
     onDelete(row) {
-      console.log(row);
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          that.$api.customer
+            .delStation({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("删除成功");
+                that.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");

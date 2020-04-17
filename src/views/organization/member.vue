@@ -1,55 +1,62 @@
 <template>
-  <a-card :bordered="false" class="organization">
-    <span slot="title">用户管理</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="姓名" v-model="formInline.name"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="手机号" v-model="formInline.phone"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" @click="onSubmit">
-          查询
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="success" @click="obj.show = true">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-table
-      size="middle"
-      rowKey="id"
-      :columns="columns"
-      :loading="loading"
-      :dataSource="tableData"
-      :pagination="false"
-      v-margin:top="16"
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-        <a-divider type="vertical" />
-        <a @click="onLock(row)" v-show="row.isLocked == 1">锁定</a>
-        <a @click="unLock(row)" v-show="row.isLocked == 0">激活</a>
-      </span>
-    </a-table>
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showSizeChanger
-      :total="total"
-      :showTotal="total => `共 ${total} 条`"
-      :current="current"
-      @change="pagechange"
-      @showSizeChange="sizechange"
-    />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
-    <!-- <detail :obj="checkObj" @cancel="cancel"></detail> -->
-  </a-card>
+  <div class="organization">
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input placeholder="姓名" v-model="formInline.name"></a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-input placeholder="手机号" v-model="formInline.phone"></a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" @click="onSubmit">
+            查询
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card v-margin:top="16">
+      <div class="card-header">
+        <div class="title">用户管理</div>
+        <div class="extra">
+          <a-button type="success" @click="obj.show = true">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
+
+      <a-table
+        size="middle"
+        rowKey="id"
+        :columns="columns"
+        :loading="loading"
+        :dataSource="tableData"
+        :pagination="false"
+        v-margin:top="16"
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+          <a-divider type="vertical" />
+          <a @click="onLock(row)" v-show="row.isLocked == 1">锁定</a>
+          <a @click="unLock(row)" v-show="row.isLocked == 0">激活</a>
+        </span>
+      </a-table>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+      <add-edit :obj="obj" @cancel="cancel"></add-edit>
+      <!-- <detail :obj="checkObj" @cancel="cancel"></detail> -->
+    </a-card>
+  </div>
 </template>
 <script>
 import addEdit from "@/components/organization/member/add-edit";
@@ -73,7 +80,8 @@ export default {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
-          }
+          },
+          width: 100
         },
         {
           title: "姓名",
@@ -107,7 +115,8 @@ export default {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          width: 300
         }
       ],
       tableData: [],

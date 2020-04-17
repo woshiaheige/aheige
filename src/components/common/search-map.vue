@@ -1,10 +1,5 @@
 <template>
-  <a-modal
-    v-model="modalInfo.show"
-    title="地图"
-    @on-cancel="cancel"
-    width="80%;"
-  >
+  <a-modal v-model="modalInfo.show" title="地图" @cancel="cancel" width="60%">
     <div id="myChart" :style="{ width: '100%', height: '450px' }"></div>
     <div class="info">
       <div class="input-item">
@@ -35,15 +30,18 @@ export default {
       address: ""
     };
   },
-  mounted() {
-    // this.$nextTick(function() {
-    //   // this.initMap({lng:113.538754,lat:22.792099},"广东省广州市南沙区南沙街道金洲(地铁站)");
-    //   this.initMap();
-    // })
-  },
+  mounted() {},
   computed: {
     modalInfo: {
       get: function() {
+        return this.obj;
+      },
+      set: function() {}
+    }
+  },
+  watch: {
+    "obj.show"() {
+      if (this.obj.show == true) {
         if (this.obj.lnglat && this.obj.lnglat.length > 0) {
           this.handleInitMap();
         } else {
@@ -51,12 +49,9 @@ export default {
             this.initMap();
           });
         }
-        return this.obj;
-      },
-      set: function() {}
+      }
     }
   },
-  watch: {},
   methods: {
     handleInitMap() {
       this.lnglat = this.obj.lnglat;
@@ -156,17 +151,15 @@ export default {
       });
     },
     Submit() {
-      //提交
-      this.$store.commit("gitPoint", {
+      let data = {
         lnglat: this.lnglat,
         address: this.address
-      });
-      this.$emit("getModal", { lnglat: this.lnglat, address: this.address });
+      };
+      this.$emit("getModal", data);
       this.modalInfo.show = false;
     },
     cancel() {
-      this.$store.commit("gitPoint", { lnglat: [], address: "" });
-      this.$emit("getModal", { lnglat: [], address: "" });
+      // this.$emit("getModal", { lnglat: [], address: "" });
       this.modalInfo.show = false;
     }
   }

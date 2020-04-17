@@ -8,7 +8,6 @@
   >
     <a-form-model
       ref="ruleForm"
-      :validateOnRuleChange="true"
       :model="formData"
       :rules="rules"
       :label-col="{ span: 6 }"
@@ -18,8 +17,16 @@
         <a-input v-model="formData.name" placeholder="企业名称" />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
-        <area-select ref="areaModel"></area-select>
-        <!-- <a-select v-model="formData.regionId" placeholder="所属区域"></a-select> -->
+        <!-- <area-select ref="areaModel"></area-select> -->
+        <a-select v-model="formData.regionId" placeholder="所属区域">
+          <a-select-option
+            v-for="item in areaOptions"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-form-model-item>
       <a-form-model-item label="企业地址" prop="address">
         <a-input v-model="formData.address" placeholder="企业地址" />
@@ -47,8 +54,8 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="企业类型" prop="industryId">
-        <a-select v-model="formData.industryId" placeholder="企业类型">
+      <a-form-model-item label="行业类型" prop="industryId">
+        <a-select v-model="formData.industryId" placeholder="行业类型">
           <a-select-option
             v-for="item in typeList"
             :key="item.id"
@@ -70,11 +77,11 @@
 </template>
 
 <script>
-import areaSelect from "@/components/common/area-select";
+// import areaSelect from "@/components/common/area-select";
 export default {
-  components: {
-    areaSelect
-  },
+  // components: {
+  //   areaSelect
+  // },
   props: {
     controlOptions: Array,
     typeList: Array,
@@ -96,15 +103,15 @@ export default {
     return {
       title: "",
       formData: {
-        name: "",
-        regionId: "",
-        address: "",
-        code: "",
-        environmentPrincipal: "",
-        phone: "",
-        controlLevel: "",
-        industryId: "",
-        introduction: ""
+        // name: "",
+        // regionId: "",
+        // address: "",
+        // code: "",
+        // environmentPrincipal: "",
+        // phone: "",
+        // controlLevel: "",
+        // industryId: "",
+        // introduction: ""
       },
       rules: {
         name: [
@@ -114,13 +121,13 @@ export default {
             trigger: "blur"
           }
         ],
-        // regionId: [
-        //   {
-        //     required: true,
-        //     message: "请选择所属区域",
-        //     trigger: "change"
-        //   }
-        // ],
+        regionId: [
+          {
+            required: true,
+            message: "请选择所属区域",
+            trigger: "change"
+          }
+        ],
         address: [
           {
             required: true,
@@ -153,18 +160,19 @@ export default {
         controlLevel: [
           {
             required: true,
-            message: "请输入联系电话",
+            message: "请选择控制级别",
             trigger: "change"
           }
         ],
         industryId: [
           {
             required: true,
-            message: "请输入企业类型",
-            trigger: "blur"
+            message: "请选择企业类型",
+            trigger: "change"
           }
         ]
-      }
+      },
+      areaOptions: []
     };
   },
   computed: {
@@ -218,12 +226,20 @@ export default {
             this.formData = res.data.data;
           }
         });
+    },
+    getArea() {
+      this.$api.common.getArea().then(res => {
+        if (res.data.state == 0) {
+          this.areaOptions = res.data.data;
+        }
+      });
     }
   },
   mounted() {},
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.getArea();
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

@@ -1,22 +1,26 @@
 <template>
-  <a-card :bordered="false" class="organization">
-    <span slot="title">小组管理</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="小组名称" v-model="formInline.name"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" @click="onSubmit">
-          查询
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="success" @click="visible = true">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-row v-margin:top="20">
+  <div class="organization">
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input placeholder="小组名称" v-model="formInline.name"></a-input>
+        </a-form-item>
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="onSubmit">
+            查询
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">小组管理</div>
+        <div class="extra">
+          <a-button type="success" @click="visible = true">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
       <a-list
         :grid="{ gutter: 16, column: 4 }"
         :dataSource="tableData"
@@ -40,17 +44,18 @@
           </a-card>
         </a-list-item>
       </a-list>
-    </a-row>
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showSizeChanger
-      :total="total"
-      :showTotal="total => `共 ${total} 条`"
-      :current="current"
-      @change="pagechange"
-      @showSizeChange="sizechange"
-    />
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+    </a-card>
+
     <!-- 新增编辑小组 -->
     <group-edit
       :visible.sync="visible"
@@ -59,7 +64,7 @@
     />
     <!-- 新增编辑组员
     <group-member :visible.sync="groupVisible" /> -->
-  </a-card>
+  </div>
 </template>
 <script>
 import groupEdit from "@/components/organization/group/group-edit";

@@ -4,7 +4,7 @@ const maintainRoutes = [
     name: "approval-wait",
     key: "approval-wait",
     meta: {
-      title: "等待我审批",
+      title: "审批审核",
       back: false
     },
     component: () =>
@@ -14,25 +14,11 @@ const maintainRoutes = [
       )
   },
   {
-    path: "/approval/approval-participate",
-    name: "approval-participate",
-    key: "approval-participate",
-    meta: {
-      title: "我参与的审批",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-approval" */
-        "@/views/approval/approval-participate.vue"
-      )
-  },
-  {
     path: "/approval/approval-start",
     name: "approval-start",
     key: "approval-start",
     meta: {
-      title: "我发起的审批",
+      title: "我的审批",
       back: false
     },
     component: () =>
