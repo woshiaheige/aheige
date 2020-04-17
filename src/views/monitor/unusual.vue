@@ -2,20 +2,20 @@
   <div>
     <a-card :bordered="false" v-margin:bottom="28"
       ><a-form-model layout="inline" :model="formInline">
-        <a-form-model-item>
-          <a-input v-model="formInline.enterpriseName" placeholder="企业名称" />
+        <a-form-model-item label="企业名称">
+          <a-input v-model="formInline.enterpriseName" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-input v-model="formInline.pointName" placeholder="监控点名称" />
+        <a-form-model-item label="监控点名称">
+          <a-input v-model="formInline.pointName" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-input v-model="formInline.mn" placeholder="MN号码" />
+        <a-form-model-item label="MN号码">
+          <a-input v-model="formInline.mn" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
+        <a-form-model-item label="时间范围">
           <a-range-picker @change="onChange" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-button type="primary">
+        <a-form-model-item style="float:right">
+          <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
         </a-form-model-item>
@@ -32,9 +32,6 @@
         v-margin:top="16"
         :pagination="false"
       >
-        <span slot="action" slot-scope="row">
-          <a @click="toMonitorData(row)">实时数据</a>
-        </span>
       </a-table>
 
       <a-pagination
@@ -72,7 +69,27 @@ export default {
         },
         {
           title: "监控点名称",
-          dataIndex: "name",
+          dataIndex: "pointName",
+          align: "center"
+        },
+        {
+          title: "因子名称",
+          dataIndex: "divisorName",
+          align: "center"
+        },
+        {
+          title: "异常类型",
+          dataIndex: "flag",
+          align: "center",
+          customRender: text => {
+            if (text == "N") {
+              return "仪表仪器故障";
+            }
+          }
+        },
+        {
+          title: "异常值",
+          dataIndex: "rtd",
           align: "center"
         }
       ],
@@ -89,7 +106,33 @@ export default {
     this.getTableData();
   },
   methods: {
-    getTableData() {},
+    getTableData() {
+      this.loading = true;
+      let data = {
+        index: this.current,
+        size: this.pageSize,
+        beginTime: this.formInline.beginTime,
+        endTime: this.formInline.endTime,
+        enterpriseName: this.formInline.enterpriseName,
+        mn: this.formInline.mn,
+        pointName: this.formInline.pointName
+      };
+      this.$api.monitor
+        .getExData(data)
+        .then(res => {
+          console.log(res);
+          if (res.data.state == 0) {
+            this.total = res.data.data.total;
+            this.tableData = res.data.data.list;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";

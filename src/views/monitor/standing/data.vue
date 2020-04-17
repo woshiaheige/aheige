@@ -1,11 +1,11 @@
 <template>
   <div>
     <a-card :bordered="false" v-margin:bottom="28">
-      <a-form-model layout="inline" :model="formInline">
-        <a-form-model-item>
+      <a-form-model layout="inline">
+        <a-form-model-item label="时间范围">
           <a-range-picker @change="onChange" />
         </a-form-model-item>
-        <a-form-model-item>
+        <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
           </a-button>

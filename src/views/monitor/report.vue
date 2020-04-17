@@ -2,16 +2,16 @@
   <div>
     <a-card :bordered="false" v-margin:bottom="28"
       ><a-form-model layout="inline" :model="formInline">
-        <a-form-model-item>
-          <a-input v-model="formInline.enterpriseName" placeholder="企业名称" />
+        <a-form-model-item label="企业名称">
+          <a-input v-model="formInline.enterpriseName" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-input v-model="formInline.pointName" placeholder="监控点名称" />
+        <a-form-model-item label="监控点名称">
+          <a-input v-model="formInline.pointName" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
-          <a-input v-model="formInline.mn" placeholder="MN号码" />
+        <a-form-model-item label="MN号码">
+          <a-input v-model="formInline.mn" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item>
+        <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
