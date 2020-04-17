@@ -163,6 +163,12 @@ export default {
     memberDetail(nval) {
       if (nval) {
         this.memberId = nval.id;
+        this.roleId = nval.roleId;
+        if (nval.roleId == 2) {
+          this.getDictBySysUserApproval(); //获取审批权限
+        } else if (nval.roleId == 3) {
+          this.gellAllSysGroup(); //获取小组
+        }
         setTimeout(() => {
           this.form.setFieldsValue({
             name: nval.name,
@@ -215,6 +221,7 @@ export default {
     },
     reset() {
       this.memberId = "";
+      this.roleId = "";
       this.form.resetFields();
     },
     handleOk() {
