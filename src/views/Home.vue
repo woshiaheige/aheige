@@ -334,26 +334,14 @@ export default {
             }
           ];
         } else {
-          for (let i in this.routes) {
-            if (this.routes[i].path === this.$route.path) {
-              this.routes = [
-                {
-                  path: "/index",
-                  breadcrumbName: "首页"
-                },
-                {
-                  path: this.$route.path,
-                  breadcrumbName: this.$route.meta.title
-                }
-              ];
-              break;
-            }
+          if (this.routes.find(item => item.path === this.$route.path)) {
+            this.routes.splice(this.routes.length - 1, 1);
+          } else {
+            this.routes.push({
+              path: this.$route.path,
+              breadcrumbName: this.$route.meta.title
+            });
           }
-
-          this.routes.push({
-            path: this.$route.path,
-            breadcrumbName: this.$route.meta.title
-          });
         }
       }
     }
