@@ -23,7 +23,7 @@ const maintainRoutes = [
     },
     component: () =>
       import(
-        /* webpackChunkName: "view-i-maintain" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/plan.vue"
       )
   },
@@ -37,7 +37,7 @@ const maintainRoutes = [
     },
     component: () =>
       import(
-        /* webpackChunkName: "view-report" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/inspection.vue"
       )
   },
@@ -51,7 +51,7 @@ const maintainRoutes = [
     },
     component: () =>
       import(
-        /* webpackChunkName: "view-report" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/maintain-log.vue"
       )
   },
@@ -79,7 +79,7 @@ const maintainRoutes = [
     },
     component: () =>
       import(
-        /* webpackChunkName: "view-approval" */
+        /* webpackChunkName: "view-maintain" */
         "@/views/maintain/knowledge"
       )
   }
