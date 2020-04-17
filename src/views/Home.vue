@@ -56,7 +56,7 @@
         </ul>
       </a-layout-header>
       <a-page-header @back="() => $router.go(-1)">
-        <a-breadcrumb :routes="routes" @itemRender="itemRender">
+        <a-breadcrumb :routes="routes">
           <template slot="itemRender" slot-scope="{ route, params, routes }">
             <span v-if="routes.indexOf(route) === routes.length - 1">
               {{ route.breadcrumbName }}
@@ -293,8 +293,6 @@ export default {
   mounted() {
     this.setMenu();
     this.setBreadcrumbName();
-    console.log(this.$route);
-    console.log(this.$route.meta.back);
   },
   methods: {
     changeMenu(object) {
@@ -325,22 +323,39 @@ export default {
         ];
       } else {
         if (!this.$route.meta.back) {
+          this.routes = [
+            {
+              path: "/index",
+              breadcrumbName: "首页"
+            },
+            {
+              path: this.$route.path,
+              breadcrumbName: this.$route.meta.title
+            }
+          ];
+        } else {
           for (let i in this.routes) {
-            if (this.routes[i].path !== this.$route.path) {
-              this.routes.splice(i + 1, this.routes.length - 1 - i);
+            if (this.routes[i].path === this.$route.path) {
+              this.routes = [
+                {
+                  path: "/index",
+                  breadcrumbName: "首页"
+                },
+                {
+                  path: this.$route.path,
+                  breadcrumbName: this.$route.meta.title
+                }
+              ];
               break;
             }
           }
-        }
 
-        this.routes.push({
-          path: this.$route.path,
-          breadcrumbName: this.$route.meta.title
-        });
+          this.routes.push({
+            path: this.$route.path,
+            breadcrumbName: this.$route.meta.title
+          });
+        }
       }
-    },
-    itemRender(object) {
-      console.log(object);
     }
   }
 };
