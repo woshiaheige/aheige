@@ -32,13 +32,15 @@
           <a @click="toMonitorData(row)">监测数据</a>
         </span>
       </a-table>
-
       <a-pagination
         size="small"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
+        :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
         :total="total"
       />
     </a-card>
@@ -81,7 +83,6 @@ export default {
     //获取实时数据
     getTableData() {
       this.loading = true;
-      // let data = this.pointId;
       let data = {
         index: this.current,
         size: this.pageSize,
@@ -92,6 +93,7 @@ export default {
       this.$api.monitor
         .getRealData(data)
         .then(res => {
+          this.total = res.data.data.total;
           this.tableData = res.data.data.list;
         })
         .catch(err => {

@@ -12,7 +12,6 @@ const event = {
     },
     sizechange(_, size) {
       //页数
-      console.log(_, size);
       this.current = 1;
       this.pagesize = size;
       this.getTableData();
