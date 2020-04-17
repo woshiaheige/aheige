@@ -23,7 +23,7 @@
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card
           :title="item.number"
-          :headStyle="{ background: '#2d8cf0', color: '#fff' }"
+          :headStyle="{ background: '#2d8cf0', color: '#ffffff' }"
         >
           <template class="ant-card-actions" slot="actions">
             <span key="edit" @click="onEdit(row, 'edit')">编辑</span>
