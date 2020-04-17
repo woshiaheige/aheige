@@ -110,6 +110,34 @@ const customer = [
         /* webpackChunkName: "view-customer" */
         "@/views/customer/enterprise/device.vue"
       )
+  },
+  {
+    path: "/customer/station/factor",
+    name: "customer-station-factor",
+    key: "customer-station-factor",
+    meta: {
+      title: "监测因子",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/factor.vue"
+      )
+  },
+  {
+    path: "/customer/station/device",
+    name: "customer-station-device",
+    key: "customer-station-device",
+    meta: {
+      title: "监测设备",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/enterprise/device.vue"
+      )
   }
 ];
 
