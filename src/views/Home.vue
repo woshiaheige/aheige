@@ -45,17 +45,27 @@
       <a-layout-header
         :style="{
           background: '#fff',
-          boxShadow: '0 1px 4px rgba(0,21,41,.08)'
+          boxShadow: '0 5px 10px rgba(0,21,41,.08)',
+          zIndex: 999
         }"
       >
         <ul class="header-menu">
           <li>
-            <a-avatar icon="user" />
+            <a-avatar
+              style="backgroundColor:#87d068"
+              icon="user"
+              v-margin:right="5"
+            /><span>凌可佳</span>
           </li>
-          <li>凌可佳</li>
+          <li>
+            <a-icon
+              type="logout"
+              :style="{ fontSize: '20px', color: '#08c' }"
+            />
+          </li>
         </ul>
       </a-layout-header>
-      <a-page-header @back="() => $router.go(-1)">
+      <a-page-header @back="() => $router.go(-1)" v-margin:top="2">
         <a-breadcrumb :routes="routes">
           <template slot="itemRender" slot-scope="{ route, params, routes }">
             <span v-if="routes.indexOf(route) === routes.length - 1">
