@@ -123,7 +123,7 @@ export default {
         {
           title: "序号",
           align: "center",
-           width: 100,
+          width: 100,
           customRender: (text, row, index) => `${index + 1}`
         },
         {
@@ -222,8 +222,8 @@ export default {
             })
             .then(res => {
               if (res.data.state == 0) {
-                this.$message.success("删除成功");
-                this.getTableData();
+                that.$message.success("删除成功");
+                that.getTableData();
               }
             });
         },

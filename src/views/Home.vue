@@ -45,17 +45,27 @@
       <a-layout-header
         :style="{
           background: '#fff',
-          boxShadow: '0 1px 4px rgba(0,21,41,.08)'
+          boxShadow: '0 5px 10px rgba(0,21,41,.08)',
+          zIndex: 999
         }"
       >
         <ul class="header-menu">
           <li>
-            <a-avatar icon="user" />
+            <a-avatar
+              style="backgroundColor:#87d068"
+              icon="user"
+              v-margin:right="5"
+            /><span>凌可佳</span>
           </li>
-          <li>凌可佳</li>
+          <li>
+            <a-icon
+              type="logout"
+              :style="{ fontSize: '20px', color: '#08c' }"
+            />
+          </li>
         </ul>
       </a-layout-header>
-      <a-page-header @back="() => $router.go(-1)">
+      <a-page-header @back="() => $router.go(-1)" v-margin:top="2">
         <a-breadcrumb :routes="routes">
           <template slot="itemRender" slot-scope="{ route, params, routes }">
             <span v-if="routes.indexOf(route) === routes.length - 1">
@@ -186,10 +196,6 @@ export default {
             {
               title: "合同管理",
               key: "contract"
-            },
-            {
-              title: "供应商管理",
-              key: "supplier"
             }
           ]
         },
@@ -209,9 +215,19 @@ export default {
           ]
         },
         {
-          title: "物品管理",
+          title: "物资管理",
           key: "product",
-          icon: "gold"
+          icon: "gold",
+          children: [
+            {
+              title: "试剂管理",
+              key: "reagent"
+            },
+            {
+              title: "供应商管理",
+              key: "supplier"
+            }
+          ]
         },
         {
           title: "基础数据",
@@ -334,26 +350,14 @@ export default {
             }
           ];
         } else {
-          for (let i in this.routes) {
-            if (this.routes[i].path === this.$route.path) {
-              this.routes = [
-                {
-                  path: "/index",
-                  breadcrumbName: "首页"
-                },
-                {
-                  path: this.$route.path,
-                  breadcrumbName: this.$route.meta.title
-                }
-              ];
-              break;
-            }
+          if (this.routes.find(item => item.path === this.$route.path)) {
+            this.routes.splice(this.routes.length - 1, 1);
+          } else {
+            this.routes.push({
+              path: this.$route.path,
+              breadcrumbName: this.$route.meta.title
+            });
           }
-
-          this.routes.push({
-            path: this.$route.path,
-            breadcrumbName: this.$route.meta.title
-          });
         }
       }
     }
