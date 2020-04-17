@@ -24,7 +24,7 @@
         </a-form-item>
 
         <a-form-item style="float: right">
-          <a-button type="primary" html-type="submit">
+          <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
         </a-form-item>
@@ -40,12 +40,13 @@
         <a-icon type="plus" />新建
       </a-button>
       <a-table
-        size="middle"
         rowKey="id"
+        size="middle"
         :columns="columns"
         :dataSource="tableData"
-        :loading="loading"
         v-margin:top="16"
+        :pagination="false"
+        :loading="loading"
       >
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
@@ -59,6 +60,7 @@
       </a-table>
 
       <a-pagination
+        size="small"
         v-margin:top="16"
         showSizeChanger
         :defaultCurrent="current"
@@ -180,14 +182,16 @@ export default {
         this.pointOptions = res.data;
       });
     },
-    goFactor() {
+    goFactor(row) {
       this.$router.push({
-        path: "/customer/station/factor"
+        path: "/customer/station/factor",
+        query: { id: row.id }
       });
     },
-    goDevice() {
+    goDevice(row) {
       this.$router.push({
-        path: "/customer/station/device"
+        path: "/customer/station/device",
+        query: { id: row.id }
       });
     },
     onDelete(row) {

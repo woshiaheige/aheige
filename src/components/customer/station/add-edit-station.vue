@@ -15,7 +15,11 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="所属企业" prop="enterpriseId">
-        <a-select placeholder="所属企业" v-model="formData.enterpriseId">
+        <a-select
+          placeholder="所属企业"
+          v-model="formData.enterpriseId"
+          :disabled="isDisabled"
+        >
           <a-select-option
             v-for="item in enterpriseList"
             :key="item.id"
@@ -30,6 +34,17 @@
       </a-form-model-item>
       <a-form-model-item label="MN号码" prop="mn">
         <a-input v-model="formData.mn" placeholder="MN号码" />
+      </a-form-model-item>
+      <a-form-model-item label="所属小组" prop="groupId">
+        <a-select placeholder="所属小组" v-model="formData.groupId">
+          <a-select-option
+            v-for="item in groupOptions"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-form-model-item>
       <a-form-model-item label="经维度">
         <div @click="onLnglat()">
@@ -141,7 +156,9 @@ export default {
             trigger: "blur"
           }
         ]
-      }
+      },
+      isDisabled: false,
+      groupOptions: []
     };
   },
   computed: {
@@ -213,14 +230,28 @@ export default {
     getModal(data) {
       this.formData.address = data.address;
       this.lngandlat = data.lnglat.join();
+    },
+    getGroup() {
+      this.$api.common.selectGroup().then(res => {
+        if (res.data.state == 0) {
+          this.groupOptions = res.data.data;
+        }
+      });
     }
   },
-  mounted() {},
+  mounted() {
+    this.isDisabled = false;
+    if (this.$route.query.id) {
+      this.formData.enterpriseId = this.$route.query.id;
+      this.isDisabled = true;
+    }
+  },
   watch: {
     "value.show"() {
       if (this.value.show == true) {
         this.lngandlat = "";
         this.enterpriseOptions();
+        this.getGroup();
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

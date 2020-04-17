@@ -1,46 +1,55 @@
 <template>
-  <a-card :bordered="false" class="standing" title="车辆管理">
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="输入车牌号(未对接此字段)"></a-input>
-      </a-form-item>
-      <a-form-item @click="onSubmit">
-        <a-button type="primary">
-          查询
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="success" @click="onEdit('', 'add')">新增</a-button>
-      </a-form-item>
-    </a-form>
+  <div class="standing">
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input placeholder="输入车牌号(未对接此字段)"></a-input>
+        </a-form-item>
+        <a-form-item @click="onSubmit" style="float: right">
+          <a-button type="primary">
+            查询
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">车辆管理</div>
+        <div class="extra">
+          <a-button type="success" @click="onEdit('', 'add')">
+            <a-icon type="plus" />新增
+          </a-button>
+        </div>
+      </div>
+      <a-table
+        size="middle"
+        :columns="columns"
+        :loading="loading"
+        rowKey="id"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit(row, 'edit')">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelect(row)">删除</a>
+        </span>
+      </a-table>
 
-    <a-table
-      size="middle"
-      :columns="columns"
-      :loading="loading"
-      rowKey="id"
-      :dataSource="tableData"
-      v-margin:top="16"
-      :pagination="false"
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row, 'edit')">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelect(row)">删除</a>
-      </span>
-    </a-table>
-
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showSizeChanger
-      :total="total"
-      :current="current"
-      @change="pagechange"
-      @showSizeChange="sizechange"
-    />
-    <modal v-model="modalInfo" @refresh="getTableData"> </modal>
-  </a-card>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+      <modal v-model="modalInfo" @refresh="getTableData"> </modal>
+    </a-card>
+  </div>
 </template>
 
 <script>
@@ -62,7 +71,8 @@ export default {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
-          }
+          },
+          width: 100
         },
         {
           title: "车辆",
@@ -88,6 +98,7 @@ export default {
           title: "操作",
           key: "action",
           align: "center",
+          width: 200,
           scopedSlots: { customRender: "action" }
         }
       ],

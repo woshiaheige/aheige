@@ -1,52 +1,58 @@
 <template>
-  <a-card :bordered="false" class="platform">
-    <span slot="title">行业设置</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="行业名称" v-model="formInline.name"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" @click="onSubmit">
-          查询
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="success" @click="visible = true">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-table
-      size="middle"
-      rowKey="id"
-      :columns="columns"
-      :loading="loading"
-      :dataSource="tableData"
-      :pagination="false"
-      v-margin:top="16"
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-      </span>
-    </a-table>
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showSizeChanger
-      :total="total"
-      :showTotal="total => `共 ${total} 条`"
-      :current="current"
-      @change="pagechange"
-      @showSizeChange="sizechange"
-    />
-    <industry-edit
-      :visible.sync="visible"
-      :industryDetail="industryDetail"
-      @updateTable="getTableData"
-    ></industry-edit>
-  </a-card>
+  <div class="platform">
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input placeholder="行业名称" v-model="formInline.name"></a-input>
+        </a-form-item>
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="onSubmit">
+            查询
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">行业设置</div>
+        <div class="extra">
+          <a-button type="success" @click="visible = true">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
+      <a-table
+        size="middle"
+        rowKey="id"
+        :columns="columns"
+        :loading="loading"
+        :dataSource="tableData"
+        :pagination="false"
+        v-margin:top="16"
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
+      </a-table>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+      <industry-edit
+        :visible.sync="visible"
+        :industryDetail="industryDetail"
+        @updateTable="getTableData"
+      ></industry-edit>
+    </a-card>
+  </div>
 </template>
 <script>
 import industryEdit from "@/components/platform/industry/industry-edit";
@@ -70,6 +76,7 @@ export default {
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
           },
+          width: 100,
           align: "center"
         },
         {
@@ -78,6 +85,7 @@ export default {
           align: "center"
         },
         {
+          width: 200,
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },

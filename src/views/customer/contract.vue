@@ -1,65 +1,79 @@
 <template>
-  <a-card :bordered="false" class="contract" title="合同管理">
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="企业名称"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="合同编号"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-select placeholder="合同状态" v-width="150">
-          <a-select-option
-            v-for="item in statusOption"
-            :key="item.value"
-            :value="item.value"
-            >{{ item.name }}</a-select-option
-          >
-        </a-select>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查找
-        </a-button>
-        <a-button type="success" v-margin:left="10" @click="onEdit()">
-          新增
-        </a-button>
-      </a-form-item>
-    </a-form>
-
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="tableData"
+  <div>
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item label="企业名称">
+          <a-input placeholder="请输入" v-model="list.name"></a-input>
+        </a-form-item>
+        <a-form-item label="合同编号">
+          <a-input placeholder="请输入" v-model="list.number"></a-input>
+        </a-form-item>
+        <a-form-item label="合同状态">
+          <a-select placeholder="请选择" v-width="150" v-model="list.state">
+            <a-select-option
+              v-for="item in statusOption"
+              :key="item.value"
+              :value="item.value"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="onSubmit()">
+            查询
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card
+      :bordered="false"
+      class="contract"
+      title="合同管理"
       v-margin:top="16"
-      :pagination="false"
-      :loading="loading"
-      bordered
     >
-      <span slot="period" slot-scope="period, row">
-        <span>{{ row.startTime }}</span
-        >至<span>{{ row.endTime }}</span>
-      </span>
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-      </span>
-    </a-table>
+      <a-button type="primary" @click="onEdit('add')" slot="extra">
+        <a-icon type="plus" />新建
+      </a-button>
+      <a-table
+        rowKey="id"
+        size="middle"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+        :loading="loading"
+      >
+        <span slot="period" slot-scope="period, row">
+          <span>{{ row.startTime }}</span
+          >至<span>{{ row.endTime }}</span>
+        </span>
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit('edit', row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
+      </a-table>
 
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showQuickJumper
-      showSizeChanger
-      :defaultCurrent="current"
-      :total="total"
-      @change="pagechange"
-      @showSizeChange="sizechange"
-    />
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :defaultCurrent="current"
+        :pageSize.sync="pageSize"
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
 
-    <add-edit :visible.sync="visible" :contractId="contractId"> </add-edit>
-  </a-card>
+      <add-edit
+        :statusOption="statusOption"
+        v-model="obj"
+        @refresh="getTableData"
+      >
+      </add-edit>
+    </a-card>
+  </div>
 </template>
 
 <script>
@@ -69,11 +83,13 @@ export default {
   data() {
     return {
       current: 1,
+      pageSize: 10,
       total: 1,
-      pagesize: 10,
-      visible: false,
-      contractId: "",
       loading: false,
+      list: {},
+      obj: {
+        show: false
+      },
       statusOption: [
         { name: "履行中", value: 1 },
         { name: "已过期", value: 2 },
@@ -88,27 +104,38 @@ export default {
         },
         {
           title: "企业名称",
-          dataIndex: "name",
-          key: "name",
+          dataIndex: "enterpriseName",
+          key: "enterpriseName",
           align: "center"
         },
         {
           title: "合同编号",
-          dataIndex: "num",
-          key: "num",
+          dataIndex: "number",
+          key: "number",
           align: "center"
         },
         {
           title: "合同期限",
-          dataIndex: "time",
-          key: "time",
+          dataIndex: "gmtEnd",
+          key: "gmtEnd",
           align: "center"
         },
         {
           title: "合同状态",
-          dataIndex: "status",
-          key: "status",
-          align: "center"
+          dataIndex: "state",
+          key: "state",
+          align: "center",
+          customRender: text => {
+            if (text == "1") {
+              return "履行中";
+            } else if (text == "2") {
+              return "已过期";
+            } else if (text == "3") {
+              return "即将到期";
+            } else if (text == "4") {
+              return "合同终结";
+            }
+          }
         },
         {
           title: "操作",
@@ -117,58 +144,59 @@ export default {
           align: "center"
         }
       ],
-      tableData: [
-        {
-          num: "12345678",
-          name: "广东华兴玻璃有限公司",
-          status: "履行中",
-          time: "2020-02-15"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
     getTableData() {
-      // let params = {
-      //   page: this.current,
-      //   size: this.pagesize
-      // };
-      // this.loading = true;
-      // this.$api.customer
-      //   .cusContract(params)
-      //   .then(res => {
-      //     if (res.data.state == 0) {
-      //       this.tableData = res.data.data;
-      //       this.total = res.data.total;
-      //       this.loading = false;
-      //     }
-      //   })
-      //   .catch(error => {
-      //     this.loading = false;
-      //     console.log(error);
-      //     this.tableData = [];
-      //   });
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        enterpriseName: this.list.name,
+        number: this.list.number,
+        state: this.list.state
+      };
+      this.loading = true;
+      this.$api.customer
+        .getContractList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     onDelete(row) {
-      console.log(row);
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          that.$api.customer
+            .delContract({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("删除成功");
+                that.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");
         }
       });
     },
-    onEdit(row) {
-      if (row) {
-        this.contractId = row.id;
-      } else {
-        this.contractId = "";
-      }
-      this.visible = true;
+    onEdit(type, row) {
+      this.obj.show = true;
+      this.obj.type = type;
+      this.obj.row = row;
     }
   },
   mounted() {
