@@ -1,63 +1,133 @@
 <template>
   <a-modal
     :title="title + '因子'"
-    v-model="status"
+    :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="因子">
-        <a-select
-          placeholder="因子"
-          v-decorator="[
-            'title',
-            { rules: [{ required: true, message: '请选择因子' }] }
-          ]"
-        ></a-select>
-      </a-form-item>
-      <a-form-item label="上限">
-        <a-input placeholder="上限" />
-      </a-form-item>
-      <a-form-item label="下限">
-        <a-input placeholder="下限" />
-      </a-form-item>
-    </a-form>
+    <a-form-model
+      ref="ruleForm"
+      :model="formData"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
+      <a-form-model-item label="因子" prop="divisorId">
+        <a-select v-model="formData.divisorId" placeholder="因子">
+          <a-select-option
+            v-for="item in factorOptions"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item label="下限" prop="floorval">
+        <a-input type="number" v-model="formData.floorval" placeholder="下限" />
+      </a-form-model-item>
+      <a-form-model-item label="上限" prop="ceilval">
+        <a-input type="number" v-model="formData.ceilval" placeholder="上限" />
+      </a-form-model-item>
+    </a-form-model>
   </a-modal>
 </template>
 <script>
 export default {
   props: {
-    obj: Object
+    factorOptions: Array,
+    value: Object
   },
   data() {
+    let that = this;
+    const validateNum = (rule, value, callback) => {
+      console.log(value, that.formData.floorval);
+      if (
+        value &&
+        that.formData.floorval &&
+        Number(value) < Number(that.formData.floorval)
+      ) {
+        callback("上限值必须大于下限值");
+      } else {
+        callback();
+      }
+    };
     return {
       title: "新增",
-      form: this.$form.createForm(this)
+      formData: {
+        pointId: this.$route.query.id
+      },
+      rules: {
+        divisorId: [
+          {
+            required: true,
+            message: "请选择因子",
+            trigger: "change"
+          }
+        ],
+        ceilval: [{ validator: validateNum, trigger: "blur" }]
+      }
     };
   },
   computed: {
-    status: {
+    modelData: {
       get() {
-        return this.obj.show;
+        return this.value;
       },
       set() {}
     }
   },
   methods: {
     handleOk() {
-      this.handleCancel();
+      let that = this;
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        //验证通过
+        if (this.modelData.type == "edit") {
+          this.$api.customer.editFactor(this.formData).then(res => {
+            if (res.data.state == 0) {
+              that.$message.success("编辑成功");
+              that.$emit("refresh");
+              that.handleCancel();
+            }
+          });
+        } else {
+          this.$api.customer.addFactor(this.formData).then(res => {
+            if (res.data.state == 0) {
+              that.$message.success("新增成功");
+              that.$emit("refresh");
+              that.handleCancel();
+            }
+          });
+        }
+      });
     },
     handleCancel() {
-      this.$emit("cancel", false);
+      this.modelData.show = false;
+      this.$refs.ruleForm.clearValidate();
+      this.$refs.ruleForm.resetFields();
+    },
+    getEditData() {
+      this.$api.customer
+        .getFactorById({ id: this.modelData.row.id })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.formData = res.data.data;
+          }
+        });
     }
   },
   mounted() {},
   watch: {
-    status() {
-      if (this.status == true) {
-        if (this.obj.row != "" && this.obj.row != undefined) {
+    "value.show"() {
+      if (this.value.show == true) {
+        if (this.value.type == "edit") {
           this.title = "编辑";
+          this.getEditData();
         } else {
           this.title = "新增";
         }

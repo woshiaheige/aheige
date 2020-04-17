@@ -2,55 +2,58 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="监控点名称"></a-input>
+        <a-form-item label="监控点名称">
+          <a-input placeholder="请输入" v-model="list.pointName"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="MN号码"></a-input>
+        <a-form-item label="MN号码">
+          <a-input placeholder="请输入" v-model="list.mn"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-select placeholder="监控点类型" v-width="150">
-            <a-select-option> </a-select-option>
+        <a-form-item label="监控点类型">
+          <a-select placeholder="请选择" v-width="150" v-model="list.type">
+            <a-select-option
+              v-for="item in pointOptions"
+              :key="item.value"
+              :value="item.value"
+            >
+              {{ item.name }}
+            </a-select-option>
           </a-select>
         </a-form-item>
 
-        <a-form-item>
-          <a-button type="primary" html-type="submit">
-            查找
-          </a-button>
-          <a-button type="success" v-margin:left="10" @click="onEdit()">
-            新增
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="onSubmit()">
+            查询
           </a-button>
         </a-form-item>
       </a-form>
-
+    </a-card>
+    <a-card
+      :bordered="false"
+      class="enterprise"
+      title="监测点管理"
+      v-margin:top="16"
+    >
+      <a-button type="primary" @click="onEdit('add')" slot="extra">
+        <a-icon type="plus" />新建
+      </a-button>
       <a-table
-        size="middle"
         rowKey="id"
+        size="middle"
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"
-        :loading="loading"
         :pagination="false"
-        bordered
+        :loading="loading"
       >
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
           <a-divider type="vertical" />
           <a @click="goDevice(row)">监测设备</a>
           <a-divider type="vertical" />
-          <a @click="onEdit(row)">编辑</a>
+          <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
           <a @click="onDelete(row)">删除</a>
         </span>
-        <a-button
-          slot="extra"
-          type="success"
-          v-margin:left="10"
-          @click="onEdit()"
-        >
-          新增
-        </a-button>
       </a-table>
 
       <a-pagination
@@ -58,10 +61,18 @@
         v-margin:top="16"
         showSizeChanger
         :defaultCurrent="current"
-        :defaultPageSize="pageSize"
+        :pageSize.sync="pageSize"
         :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        @change="pagechange"
+        @showSizeChange="sizechange"
       />
-      <add-edit :obj="obj" @cancel="cancel"></add-edit>
+
+      <add-edit
+        :pointOptions="pointOptions"
+        v-model="obj"
+        @refresh="getTableData"
+      ></add-edit>
     </a-card>
   </div>
 </template>
@@ -83,14 +94,14 @@ export default {
         },
         {
           title: "监控点名称",
-          dataIndex: "stationName",
-          key: "stationName",
+          dataIndex: "name",
+          key: "name",
           align: "center"
         },
         {
           title: "所属企业",
-          dataIndex: "enterprise",
-          key: "enterprise",
+          dataIndex: "enterpriseName",
+          key: "enterpriseName",
           align: "center"
         },
         {
@@ -101,9 +112,16 @@ export default {
         },
         {
           title: "传输类型",
-          key: "type",
-          dataIndex: "type",
-          align: "center"
+          key: "transferType",
+          dataIndex: "transferType",
+          align: "center",
+          customRender: text => {
+            if (text == "1") {
+              return "无线传输";
+            } else if (text == "2") {
+              return "有线传输";
+            }
+          }
         },
         {
           title: "操作",
@@ -112,63 +130,94 @@ export default {
           align: "center"
         }
       ],
-      tableData: [
-        {
-          stationName: "可口可乐（污水）（CT4406050009301",
-          enterprise: "腾讯",
-          mn: "52452122",
-          type: "类型"
-        }
-      ],
+      tableData: [],
       obj: {
         show: false
-      }
+      },
+      list: {
+        name: "",
+        pointName: "",
+        mn: ""
+      },
+      loading: false,
+      pointOptions: []
     };
+  },
+  mounted() {
+    this.getTableData();
+    this.getPointSelect();
   },
   methods: {
     getTableData() {
-      // this.$api.customer.getStationList().then(res => {
-      //   if (res.status == 200) {
-      //     this.tableData = res.data.data;
-      //     this.total = res.data.total;
-      //   }
-      // });
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        type: this.list.type,
+        pointName: this.list.pointName,
+        mn: this.list.mn,
+        enterpriseId: this.$route.query.id
+      };
+      this.loading = true;
+      this.$api.customer
+        .getStationList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
-    goFactor() {
-      this.$router.push({
-        path: "/customer/enterprise/factor"
+    //监测点类型下拉
+    getPointSelect() {
+      let params = ["SYS_POINT_TYPE"];
+      this.$api.common.geDictByParam(params).then(res => {
+        this.pointOptions = res.data;
       });
     },
-    goDevice() {
+    goFactor(row) {
       this.$router.push({
-        path: "/customer/enterprise/device"
+        path: "/customer/enterprise/factor",
+        query: { id: row.id }
+      });
+    },
+    goDevice(row) {
+      this.$router.push({
+        path: "/customer/enterprise/device",
+        query: { id: row.id }
       });
     },
     onDelete(row) {
-      console.log(row);
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          that.$api.customer
+            .delStation({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("删除成功");
+                that.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");
         }
       });
     },
-    onEdit(row) {
-      console.log(row);
+    onEdit(type, row) {
       this.obj.show = true;
+      this.obj.type = type;
       this.obj.row = row;
-    },
-    cancel(value) {
-      this.obj.show = value;
-      this.getTableData();
     }
-  },
-  mounted() {
-    this.getTableData();
   }
 };
 </script>
