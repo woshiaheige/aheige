@@ -20,9 +20,10 @@
     >
     <a-card :bordered="false" title="数据报表">
       <a-table
+        :loading="loading"
         size="middle"
         bordered
-        rowKey="id"
+        :rowKey="(record, index) => index"
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"
@@ -32,13 +33,15 @@
           <a @click="toMonitorData(row)">监测数据</a>
         </span>
       </a-table>
-
       <a-pagination
         size="small"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
+        :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
         :total="total"
       />
     </a-card>
@@ -49,6 +52,7 @@
 export default {
   data() {
     return {
+      loading: false,
       pageSize: 10,
       current: 1,
       total: 0,
@@ -68,45 +72,78 @@ export default {
         },
         {
           title: "监控点名称",
-          dataIndex: "pointName",
-          key: "pointName",
+          dataIndex: "poiName",
+          key: "poiName",
           align: "center"
         },
         {
           title: "分钟数据数",
-          dataIndex: "minDataCount",
-          key: "minDataCount",
-          align: "center"
+          children: [
+            {
+              title: "应收条数",
+              dataIndex: "minOughtCount",
+              key: "minOughtCount",
+              align: "center"
+            },
+            {
+              title: "实收条数",
+              dataIndex: "minRealCount",
+              key: "minRealCount",
+              align: "center"
+            },
+            {
+              title: "数据完整率",
+              dataIndex: "minPro",
+              key: "minPro",
+              align: "center"
+            }
+          ]
         },
         {
           title: "小时数据数",
-          dataIndex: "hourDataCount",
-          key: "hourDataCount",
-          align: "center"
+          children: [
+            {
+              title: "应收条数",
+              dataIndex: "hourOughtCount",
+              key: "hourOughtCount",
+              align: "center"
+            },
+            {
+              title: "实收条数",
+              dataIndex: "hourRealCount",
+              key: "hourRealCount",
+              align: "center"
+            },
+            {
+              title: "数据完整率",
+              dataIndex: "hourPro",
+              key: "hourPro",
+              align: "center"
+            }
+          ]
         },
         {
           title: "日数据数",
-          dataIndex: "dayDataCount",
-          key: "dayDataCount",
-          align: "center"
-        },
-        {
-          title: "应收条数",
-          dataIndex: "oughtCount",
-          key: "oughtCount",
-          align: "center"
-        },
-        {
-          title: "实收条数",
-          dataIndex: "realCount",
-          key: "realCount",
-          align: "center"
-        },
-        {
-          title: "实收条数",
-          dataIndex: "proCount",
-          key: "proCount",
-          align: "center"
+          children: [
+            {
+              title: "应收条数",
+              dataIndex: "dayOughtCount",
+              key: "dayOughtCount",
+              align: "center"
+            },
+            {
+              title: "实收条数",
+              dataIndex: "dayRealCount",
+              key: "dayRealCount",
+              align: "center"
+            },
+            {
+              title: "数据完整率",
+              dataIndex: "dayPro",
+              key: "dayPro",
+              align: "center"
+            }
+          ]
         }
       ],
       formInline: {
@@ -116,7 +153,35 @@ export default {
       }
     };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.getTableData();
+  },
+  methods: {
+    //获取报表数据
+    getTableData() {
+      this.loading = true;
+      let data = {
+        index: this.current,
+        size: this.pageSize,
+        enterpriseName: this.formInline.enterpriseName,
+        mn: this.formInline.mn,
+        pointName: this.formInline.pointName
+      };
+      this.$api.monitor
+        .getReportData(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.total = res.data.data.total;
+            this.tableData = res.data.data.records || [];
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
+  }
 };
 </script>

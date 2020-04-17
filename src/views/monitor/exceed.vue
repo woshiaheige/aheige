@@ -33,13 +33,15 @@
         :pagination="false"
       >
       </a-table>
-
       <a-pagination
         size="small"
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
+        :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
         :total="total"
       />
     </a-card>
@@ -128,7 +130,7 @@ export default {
       this.$api.monitor
         .getWarnData(data)
         .then(res => {
-          console.log(res);
+          this.total = res.data.data.total;
           this.tableData = res.data.data.list;
         })
         .catch(err => {

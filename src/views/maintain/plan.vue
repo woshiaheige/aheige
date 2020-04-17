@@ -113,8 +113,8 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import weekDragList from "@/components/i-maintain/plan/week-drag-list";
-import monthDragList from "@/components/i-maintain/plan/month-drag-list";
+import weekDragList from "@/components/maintain/plan/week-drag-list";
+import monthDragList from "@/components/maintain/plan/month-drag-list";
 export default {
   name: "plan",
   components: {
