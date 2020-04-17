@@ -15,8 +15,8 @@
           <a-select placeholder="监控点类型" v-width="150" v-model="list.type">
             <a-select-option
               v-for="item in pointOptions"
-              :key="item.id"
-              :value="item.id"
+              :key="item.value"
+              :value="item.value"
             >
               {{ item.name }}
             </a-select-option>
@@ -141,16 +141,7 @@ export default {
         mn: ""
       },
       loading: false,
-      pointOptions: [
-        {
-          name: "水类",
-          value: 1
-        },
-        {
-          name: "气类",
-          value: 2
-        }
-      ]
+      pointOptions: []
     };
   },
   mounted() {
@@ -200,12 +191,21 @@ export default {
       });
     },
     onDelete(row) {
-      console.log(row);
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          that.$api.customer
+            .delStation({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("删除成功");
+                this.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");

@@ -38,7 +38,7 @@ const customer = {
     return axios.post(base.api + "cusPoint/editCusPoint", data);
   },
   delStation(data) {
-    return axios.POST(base.api + "cusPoint/deleteCusPoint", data);
+    return axios.post(base.api + "cusPoint/deleteCusPoint", data);
   },
   getStationById(data) {
     return axios.get(base.api + "cusPoint/getCusPointById", {

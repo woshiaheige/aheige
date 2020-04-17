@@ -211,11 +211,12 @@ export default {
       });
     },
     onDelete(row) {
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          this.$api.customer
+          that.$api.customer
             .delEnterPrise({
               id: row.id
             })
