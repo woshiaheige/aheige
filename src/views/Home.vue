@@ -196,10 +196,6 @@ export default {
             {
               title: "合同管理",
               key: "contract"
-            },
-            {
-              title: "供应商管理",
-              key: "supplier"
             }
           ]
         },
@@ -219,9 +215,19 @@ export default {
           ]
         },
         {
-          title: "物品管理",
+          title: "物资管理",
           key: "product",
-          icon: "gold"
+          icon: "gold",
+          children: [
+            {
+              title: "试剂管理",
+              key: "reagent"
+            },
+            {
+              title: "供应商管理",
+              key: "supplier"
+            }
+          ]
         },
         {
           title: "基础数据",

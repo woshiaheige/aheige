@@ -42,20 +42,6 @@ const customer = [
       )
   },
   {
-    path: "/customer/supplier",
-    name: "customer-supplier",
-    key: "supplier",
-    meta: {
-      title: "供应商管理",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-standing" */
-        "@/views/customer/supplier.vue"
-      )
-  },
-  {
     path: "/customer/enterprise/user",
     name: "customer-enterprise-user",
     key: "customer-enterprise-user",
