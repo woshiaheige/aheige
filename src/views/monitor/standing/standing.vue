@@ -55,6 +55,8 @@
         showSizeChanger
         :pageSize.sync="pageSize"
         :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
         :total="total"
       />
     </a-card>
@@ -154,6 +156,7 @@ export default {
         .getStandingData(data)
         .then(res => {
           if (res.data.state == 0) {
+            this.total = Number(res.data.data.total);
             this.tableData = res.data.data.records;
           }
         })

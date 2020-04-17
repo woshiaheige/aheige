@@ -25,6 +25,12 @@ const monitor = {
     return axios.get(base.api + "monitor/data/head/" + path, {
       params: data
     });
+  },
+  //获取数据报表数据
+  getReportData(data) {
+    return axios.get(base.api + "monitor/transmissionrate/", {
+      params: data
+    });
   }
 };
 
