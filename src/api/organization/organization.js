@@ -14,16 +14,49 @@ const organization = {
       params: data
     });
   },
-  //激活角色
+  //激活用户
   unlockedUser(data) {
     return axios.get(base.api + "sysUser/unlockedUser", {
       params: data
     });
   },
 
-  //获取角色
+  //获取用户
   sysRole(data) {
     return axios.get(base.api + "sysRole/", {
+      params: data
+    });
+  },
+  //新增用户
+  addSysUser(data) {
+    return axios.post(base.api + "sysUser/addSysUser", data);
+  },
+  //修改用户
+  editSysUser(data) {
+    return axios.post(base.api + "sysUser/editSysUser", data);
+  },
+  //删除用户
+  deleteUser(data) {
+    return axios.get(base.api + "sysUser/deleteUser", {
+      params: data
+    });
+  },
+  //获取用户详情
+  getSysUserById(data) {
+    return axios.get(base.api + "sysUser/getSysUserById", {
+      params: data
+    });
+  },
+
+  //获取所用角色
+  getAllRole(data) {
+    return axios.get(base.api + "sysRole/query", {
+      params: data
+    });
+  },
+  //获取审批权限
+  getDictBySysUserApproval(data) {
+    return axios.get(base.api + "sysDict/getDictBySysUserApproval", {
       params: data
     });
   },
@@ -65,6 +98,12 @@ const organization = {
   //小组列表
   sysGroup(data) {
     return axios.get(base.api + "sysGroup/", {
+      params: data
+    });
+  },
+  //获取全部小组
+  gellAllSysGroup(data) {
+    return axios.get(base.api + "sysGroup/query", {
       params: data
     });
   },

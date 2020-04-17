@@ -8,7 +8,7 @@
         <a-form-item>
           <a-input placeholder="手机号" v-model="formInline.phone"></a-input>
         </a-form-item>
-        <a-form-item>
+        <a-form-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
@@ -19,7 +19,7 @@
       <div class="card-header">
         <div class="title">用户管理</div>
         <div class="extra">
-          <a-button type="success" @click="obj.show = true">
+          <a-button type="success" @click="visible = true">
             <a-icon type="plus" />新建
           </a-button>
         </div>
@@ -53,7 +53,11 @@
         @change="pagechange"
         @showSizeChange="sizechange"
       />
-      <add-edit :obj="obj" @cancel="cancel"></add-edit>
+      <add-edit
+        :visible.sync="visible"
+        :memberDetail="memberDetail"
+        @updateTable="getTableData"
+      ></add-edit>
       <!-- <detail :obj="checkObj" @cancel="cancel"></detail> -->
     </a-card>
   </div>
@@ -120,12 +124,8 @@ export default {
         }
       ],
       tableData: [],
-      obj: {
-        show: false
-      },
-      checkObj: {
-        show: false
-      }
+      visible: false,
+      memberDetail: ""
     };
   },
   methods: {
@@ -151,17 +151,30 @@ export default {
         });
     },
     onEdit(row) {
-      console.log(row);
-      this.obj.show = true;
-      this.obj.row = row;
+      this.$api.organization.getSysUserById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.memberDetail = res.data.data;
+          this.visible = true;
+        }
+      });
     },
+
     onDelete(row) {
       console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
         content: `是否删除用户${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.organization.deleteUser({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.getTableData();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
         },
         onCancel() {
           console.log("Cancel");
