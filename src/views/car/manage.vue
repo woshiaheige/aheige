@@ -1,55 +1,54 @@
 <template>
-  <div class="standing">
-    <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="输入车牌号(未对接此字段)"></a-input>
-        </a-form-item>
-        <a-form-item @click="onSubmit" style="float: right">
-          <a-button type="primary">
-            查询
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card :bordered="false" v-margin:top="16">
-      <div class="card-header">
-        <div class="title">车辆管理</div>
-        <div class="extra">
-          <a-button type="success" @click="onEdit('', 'add')">
-            <a-icon type="plus" />新增
-          </a-button>
-        </div>
+  <a-card :bordered="false" class="standing">
+    <div class="card-header">
+      <div class="title">车辆列表</div>
+      <div class="extra">
+        <a-form layout="inline" :model="formInline">
+          <a-form-item>
+            <a-button type="primary" @click="onEdit('', 'add')">
+              <a-icon type="plus" />新建
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-input-search
+              placeholder="请输入车牌号码"
+              style="width: 200px"
+              @search="onSubmit"
+            />
+          </a-form-item>
+        </a-form>
       </div>
-      <a-table
-        size="middle"
-        :columns="columns"
-        :loading="loading"
-        rowKey="id"
-        :dataSource="tableData"
-        v-margin:top="16"
-        :pagination="false"
-      >
-        <span slot="action" slot-scope="row">
-          <a @click="onEdit(row, 'edit')">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="onDelect(row)">删除</a>
-        </span>
-      </a-table>
+    </div>
+    <a-list :grid="{ gutter: 16, column: 4 }" :dataSource="tableData">
+      <a-list-item slot="renderItem" slot-scope="item">
+        <a-card
+          :title="item.number"
+          :headStyle="{ background: '#2d8cf0', color: '#fff' }"
+        >
+          <template class="ant-card-actions" slot="actions">
+            <span key="edit" @click="onEdit(row, 'edit')">编辑</span>
+            <span key="delete" @click="onDelect(row)" v-color="'#ed4014'"
+              >删除</span
+            >
+          </template>
+          <p>车辆品牌：{{ item.model }}</p>
+          <p>GPS设备号：{{ item.gps }}</p>
+          <p>车架号：{{ item.frameNumber }}</p>
+        </a-card>
+      </a-list-item>
+    </a-list>
 
-      <a-pagination
-        size="small"
-        v-margin:top="16"
-        showSizeChanger
-        :total="total"
-        :showTotal="total => `共 ${total} 条`"
-        :current="current"
-        @change="pagechange"
-        @showSizeChange="sizechange"
-      />
-      <modal v-model="modalInfo" @refresh="getTableData"> </modal>
-    </a-card>
-  </div>
+    <a-pagination
+      size="small"
+      v-margin:top="16"
+      showSizeChanger
+      :total="total"
+      :current="current"
+      @change="pagechange"
+      @showSizeChange="sizechange"
+    />
+    <modal v-model="modalInfo" @refresh="getTableData"> </modal>
+  </a-card>
 </template>
 
 <script>
@@ -71,8 +70,7 @@ export default {
             return (
               <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
-          },
-          width: 100
+          }
         },
         {
           title: "车辆",
@@ -98,7 +96,6 @@ export default {
           title: "操作",
           key: "action",
           align: "center",
-          width: 200,
           scopedSlots: { customRender: "action" }
         }
       ],

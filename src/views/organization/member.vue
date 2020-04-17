@@ -111,7 +111,7 @@ export default {
           title: "用户状态",
           dataIndex: "status",
           customRender: (text, row) => {
-            return row.isLocked == 0 ? "冻结" : "激活";
+            return row.isLocked == 1 ? "冻结" : "激活";
           },
           align: "center"
         },
