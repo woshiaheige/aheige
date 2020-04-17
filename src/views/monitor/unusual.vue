@@ -82,8 +82,20 @@ export default {
           dataIndex: "flag",
           align: "center",
           customRender: text => {
-            if (text == "N") {
-              return "仪表仪器故障";
+            if (text == "F") {
+              return "仪器仪表故障";
+            } else if (text == "M") {
+              return "仪器仪表处于维护期间产生的数据";
+            } else if (text == "S") {
+              return "手工输入的设定值";
+            } else if (text == "D") {
+              return "仪器仪表故障";
+            } else if (text == "C") {
+              return "仪器仪表处于校准状态";
+            } else if (text == "T") {
+              return "仪器仪表采样数值超过测量上限";
+            } else if (text == "B") {
+              return "仪器仪表与数采仪通讯异常";
             }
           }
         },
