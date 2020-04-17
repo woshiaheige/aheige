@@ -1,7 +1,7 @@
 <template>
   <a-card :bordered="false" class="approval">
     <span slot="title">
-      等待我审批
+      审批审核
     </span>
     <a-table
       size="middle"

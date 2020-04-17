@@ -126,20 +126,16 @@ export default {
           icon: "audit",
           children: [
             {
-              title: "等待我审批",
-              key: "approval-wait"
+              title: "发起审批",
+              key: "approval-to-start"
             },
             {
-              title: "我参与的审批",
-              key: "approval-participate"
-            },
-            {
-              title: "我发起的审批",
+              title: "我的审批",
               key: "approval-start"
             },
             {
-              title: "发起审批",
-              key: "approval-to-start"
+              title: "审批审核",
+              key: "approval-wait"
             }
           ]
         },
