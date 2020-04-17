@@ -28,7 +28,12 @@
       >
         <a-list-item slot="renderItem" slot-scope="item">
           <a slot="actions" @click="onRole(item)">编辑</a>
-          <a slot="actions" @click="onDelete(item)">删除</a>
+          <a
+            slot="actions"
+            @click="onDelete(item)"
+            v-if="item.id != 1 && item.id != 2 && item.id != 3 && item.id != 4"
+            >删除</a
+          >
           <a-list-item-meta>
             <a-tag
               slot="description"
@@ -68,7 +73,6 @@ export default {
   components: { roleTree },
   data() {
     return {
-      // selectedRowKeys: [],
       loading: false,
       visible: false,
       current: 1,

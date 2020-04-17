@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false" v-margin:bottom="28"
+    <a-card :bordered="false"
       ><a-form-model layout="inline">
         <a-form-model-item label="企业名称">
           <a-input v-model="formInline.enterpriseName" placeholder="请输入" />
@@ -21,7 +21,10 @@
         </a-form-model-item>
       </a-form-model></a-card
     >
-    <a-card :bordered="false" title="超标数据">
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">超标数据</div>
+      </div>
       <a-table
         size="middle"
         :loading="loading"
