@@ -4,7 +4,7 @@ const car = [
     name: "car-manage",
     key: "manage",
     meta: {
-      title: "车辆",
+      title: "车辆管理",
       back: false
     },
     component: () =>
