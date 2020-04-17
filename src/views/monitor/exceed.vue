@@ -32,9 +32,6 @@
         v-margin:top="16"
         :pagination="false"
       >
-        <span slot="action">
-          <a>现场图片</a>
-        </span>
       </a-table>
 
       <a-pagination
@@ -93,19 +90,15 @@ export default {
           title: "上限值",
           dataIndex: "floorval",
           key: "floorval",
-          align: "center"
+          align: "center",
+          customRender: (text, row) => Number(row.floorval).toFixed(4)
         },
         {
           title: "下限值",
           dataIndex: "ceilval",
           key: "ceilval",
-          align: "center"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          customRender: (text, row) => Number(row.ceilval).toFixed(4)
         }
       ],
       formInline: {
