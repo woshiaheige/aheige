@@ -55,7 +55,7 @@
         :showTotal="total => `共 ${total} 条`"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pageSize"
+        :pageSize.sync="pagesize"
         :defaultCurrent="current"
         @change="pagechange"
         @showSizeChange="sizechange"
@@ -76,7 +76,7 @@ export default {
         { name: "县控", value: 4 }
       ],
       loading: false,
-      pageSize: 10,
+      pagesize: 10,
       current: 1,
       total: 0,
       tableData: [],
@@ -87,7 +87,7 @@ export default {
           width: 100,
           customRender: (_, __, index) => {
             return (
-              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
+              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
             );
           }
         },
@@ -100,6 +100,7 @@ export default {
           title: "控制级别",
           dataIndex: "level",
           align: "center",
+          width: 100,
           customRender: text => {
             if (text == "1") {
               return "国控";
@@ -130,12 +131,28 @@ export default {
         {
           title: "是否在线",
           dataIndex: "onlineState",
-          align: "center"
+          align: "center",
+          width: 100,
+          customRender: text => {
+            if (text == 0) {
+              return "在线";
+            } else if (text == 1) {
+              return "离线";
+            }
+          }
         },
         {
           title: "是否异常",
           dataIndex: "isNormal",
-          align: "center"
+          align: "center",
+          width: 100,
+          customRender: text => {
+            if (text == 0) {
+              return "正常";
+            } else if (text == 1) {
+              return "异常";
+            }
+          }
         },
         {
           title: "最后通讯时间",
@@ -144,6 +161,7 @@ export default {
         },
         {
           title: "操作",
+          width: 120,
           align: "center",
           scopedSlots: { customRender: "action" }
         }
@@ -171,7 +189,7 @@ export default {
         enterpriseName: this.formInline.enterpriseName,
         pointName: this.formInline.pointName,
         index: this.current,
-        pageSize: this.pageSize,
+        pageSize: this.pagesize,
         level: this.formInline.level || ""
       };
       this.loading = true;
