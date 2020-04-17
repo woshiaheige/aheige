@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false" v-margin:bottom="28">
+    <a-card :bordered="false">
       <a-form-model layout="inline">
         <a-form-model-item label="时间范围">
           <a-range-picker @change="onChange" />
@@ -13,11 +13,10 @@
       </a-form-model>
     </a-card>
 
-    <a-card :bordered="false">
-      <span slot="title">
-        实时数据
-      </span>
-
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">实时数据</div>
+      </div>
       <a-table
         :loading="loading"
         :rowKey="(record, index) => index"

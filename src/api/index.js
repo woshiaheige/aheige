@@ -16,6 +16,7 @@ import login from "./login/login";
 import car from "./car/car";
 import monitor from "./monitor/monitor";
 import organization from "./organization/organization";
+import product from "./product/product";
 
 // 导出接口
 export default {
@@ -31,5 +32,6 @@ export default {
   login,
   car,
   monitor,
-  organization
+  organization,
+  product
 };
