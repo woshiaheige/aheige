@@ -67,7 +67,7 @@
         <a-upload
           name="file"
           :multiple="true"
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          :action="$base.api + 'files/uploadFile'"
           @change="handleChange"
         >
           <a-button> <a-icon type="upload" /> 上传材料</a-button>
@@ -77,6 +77,7 @@
   </a-modal>
 </template>
 <script>
+import base from "@/api/base";
 export default {
   props: {
     value: Object
@@ -109,7 +110,9 @@ export default {
       set() {}
     }
   },
-  mounted() {},
+  mounted() {
+    console.log(base.api);
+  },
   methods: {
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
