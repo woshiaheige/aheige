@@ -9,6 +9,11 @@
 
   .ant-layout-header {
     padding: 0 35px;
+    position: fixed;
+    width: calc(100vw - 256px);
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 21, 41, 0.08);
+    z-index: 999;
   }
 
   .ant-layout-sider {
@@ -38,12 +43,9 @@
   }
 
   .header-menu {
-    float: right;
-    list-style: none;
-    li {
-      display: inline-block;
-      margin-left: 16px;
-    }
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 }
 

@@ -43,32 +43,25 @@
       </a-menu>
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '256px' }">
-      <a-layout-header
-        :style="{
-          background: '#fff',
-          boxShadow: '0 5px 10px rgba(0,21,41,.08)',
-          zIndex: 999
-        }"
-      >
-        <ul class="header-menu">
-          <li>
+      <a-layout-header class="layout-header">
+        <div class="header-menu">
+          <a-icon type="bell" :style="{ fontSize: '24px' }" />
+          <div v-margin:left="16">
             <a-avatar
-              style="backgroundColor:#87d068"
+              style="backgroundColor:#2db7f5"
               icon="user"
               v-margin:right="5"
             /><span>凌可佳</span>
-          </li>
-          <li>
-            <a-icon
-              type="logout"
-              :style="{ fontSize: '20px', color: '#08c' }"
-            />
-          </li>
-        </ul>
+          </div>
+          <a-icon
+            type="logout"
+            :style="{ fontSize: '24px', marginLeft: '16px' }"
+          />
+        </div>
       </a-layout-header>
       <a-page-header
         @back="() => $router.go(-1)"
-        v-margin:top="2"
+        v-margin:top="66"
         :class="$route.meta.back ? 'back-show' : 'back-hide'"
       >
         <a-breadcrumb :routes="routes">
@@ -86,7 +79,7 @@
         </template>
         <template slot="title">{{ $route.meta.title }}</template>
       </a-page-header>
-      <a-layout-content class="main-content" v-padding="30">
+      <a-layout-content class="main-content" v-padding="16">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>

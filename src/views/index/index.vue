@@ -37,17 +37,12 @@
         <a-card :bordered="false" title="今日小组完成情况">
           <div class="progress">
             <div class="item" v-for="n in 5" :key="n">
-              <vue-awesome-progress
-                circle-color="#e5e9f2"
-                :circle-width="4"
-                :line-width="4"
-                :duration="2"
-                :start-deg="0"
-                :percentage="87"
-                easing="0,0,1,1"
-                :font-size="24"
-              />
-              <p>运维{{ n + 1 }}组</p>
+              <a-progress type="circle" :percent="30" :width="120">
+                <template v-slot:format="percent">
+                  <p v-fontsize="16">{{ percent }}%</p>
+                  <p>运维1组</p>
+                </template>
+              </a-progress>
             </div>
           </div>
         </a-card>
