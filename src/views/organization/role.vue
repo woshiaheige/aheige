@@ -1,24 +1,24 @@
 <template>
   <div class="organization role">
     <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="权限名称" v-model="formInline.name"></a-input>
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">权限管理</div>
+        <div class="title">权限列表</div>
         <div class="extra">
-          <a-button type="success" @click="onEdit(false)">
-            <a-icon type="plus" />新增
-          </a-button>
+          <a-form layout="inline">
+            <a-form-item>
+              <a-button type="primary" @click="onEdit(false)">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="权限名称"
+                style="width: 200px"
+                v-model="formInline.name"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
         </div>
       </div>
       <a-list

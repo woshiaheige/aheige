@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      title: "新增",
+      title: "新建",
       form: this.$form.createForm(this),
       roleId: ""
     };
@@ -63,7 +63,7 @@ export default {
           });
         }, 50);
       } else {
-        this.title = "新增";
+        this.title = "新建";
       }
     }
   },

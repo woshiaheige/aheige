@@ -63,6 +63,12 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="controlLevel" slot-scope="controlLevel">
+          <a-tag color="red" v-if="controlLevel == 1">国控</a-tag>
+          <a-tag color="pink" v-if="controlLevel == 2">省控</a-tag>
+          <a-tag color="purple" v-if="controlLevel == 3">市控</a-tag>
+          <a-tag color="orange" v-if="controlLevel == 4">县控</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="goPoint(row)">监控点管理</a>
           <!-- <a-divider type="vertical" />
@@ -86,14 +92,14 @@
         @showSizeChange="sizechange"
       />
 
-      <!-- 新增企业 -->
+      <!-- 新建企业 -->
       <add-enterprise
         :controlOptions="controlOptions"
         :typeList="typeList"
         v-model="obj"
         @refresh="getTableData"
       />
-      <!-- 新增企业end -->
+      <!-- 新建企业end -->
     </a-card>
   </div>
 </template>
@@ -121,45 +127,26 @@ export default {
       },
       columns: [
         {
-          title: "序号",
-          align: "center",
-          width: 100,
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
           title: "企业名称",
           dataIndex: "name",
-          key: "name",
-          align: "center"
+          key: "name"
         },
         {
           title: "控制级别",
           dataIndex: "controlLevel",
           key: "controlLevel",
-          align: "center",
-          customRender: text => {
-            if (text == "1") {
-              return "国控";
-            } else if (text == "2") {
-              return "省控";
-            } else if (text == "3") {
-              return "市控";
-            } else if (text == "4") {
-              return "县控";
-            }
-          }
+          scopedSlots: { customRender: "controlLevel" },
+          align: "center"
         },
         {
-          title: "企业地址",
+          title: "行业类型",
           dataIndex: "address",
-          key: "address",
-          align: "center"
+          key: "address"
         },
         {
           title: "环保负责人",
           dataIndex: "environmentPrincipal",
-          key: "environmentPrincipal",
-          align: "center"
+          key: "environmentPrincipal"
         },
         {
           title: "操作",

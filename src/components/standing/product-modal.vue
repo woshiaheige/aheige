@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="carModal.type == 'add' ? '新增物品' : '编辑物品信息'"
+    :title="carModal.type == 'add' ? '新建物品' : '编辑物品信息'"
     v-model="carModal.show"
     @cancel="handleCancel"
   >

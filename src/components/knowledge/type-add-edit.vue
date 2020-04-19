@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      title: "新增",
+      title: "新建",
       form: this.$form.createForm(this)
     };
   },
@@ -58,7 +58,7 @@ export default {
         if (this.obj.row != "" && this.obj.row != undefined) {
           this.title = "编辑";
         } else {
-          this.title = "新增";
+          this.title = "新建";
         }
       }
     }

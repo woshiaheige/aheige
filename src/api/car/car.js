@@ -8,7 +8,7 @@ const car = {
       params: data
     });
   },
-  //新增车辆
+  //新建车辆
   addAssetVehicle(data) {
     return axios.post(base.api + "assetVehicle/addAssetVehicle", data);
   },

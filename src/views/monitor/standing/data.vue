@@ -15,13 +15,21 @@
 
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">实时数据</div>
+        <div class="title">数据列表</div>
+        <div class="extra">
+          <a-radio-group :value="formInline.type" @change="handleTypeChange">
+            <a-radio-button value="all">实时数据</a-radio-button>
+            <a-radio-button value="default">分钟数据</a-radio-button>
+            <a-radio-button value="small">小时数据</a-radio-button>
+            <a-radio-button value="small">日数据</a-radio-button>
+            <a-radio-button value="small">月数据</a-radio-button>
+          </a-radio-group>
+        </div>
       </div>
       <a-table
         :loading="loading"
         :rowKey="(record, index) => index"
         size="middle"
-        bordered
         :columns="columns"
         :dataSource="tableData"
         v-margin:top="16"

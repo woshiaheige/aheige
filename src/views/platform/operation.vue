@@ -1,11 +1,9 @@
 <template>
-  <a-card :bordered="false" class="contract" title="设置运维参数">
-    <a-form
-      ref="formModal"
-      :form="form"
-      :label-col="{ span: 10 }"
-      :wrapper-col="{ span: 14 }"
-    >
+  <a-card :bordered="false" class="contract">
+    <div class="card-header">
+      <div class="title">参数设置</div>
+    </div>
+    <a-form ref="formModal" :form="form">
       <!-- <a-form-item label="签到验证">
         <a-radio-group v-model="formValue.verify">
           <a-radio
@@ -36,21 +34,19 @@
       <!-- <a-form-item label="任务设置"> </a-form-item> -->
       <a-form-item label="任务完成时限">
         <counter v-model="formValue.mission.value">
-          <span slot="uni">小时</span>
+          <span slot="uni">分钟</span>
         </counter>
       </a-form-item>
-      <a-row type="flex" justify="center" :gutter="20">
-        <a-col>
-          <a-button type="primary" html-type="submit" @click="initData">
-            重置设置
-          </a-button>
-        </a-col>
-        <a-col>
+      <a-form-item>
+        <a-button-group>
           <a-button type="primary" html-type="submit" @click="onSubmit">
             保存设置
           </a-button>
-        </a-col>
-      </a-row>
+          <a-button html-type="submit" @click="initData">
+            重置设置
+          </a-button>
+        </a-button-group>
+      </a-form-item>
     </a-form>
   </a-card>
 </template>

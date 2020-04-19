@@ -175,7 +175,7 @@ export default {
   },
   computed: {
     title() {
-      let title = this.factorsDetail ? "编辑因子" : "新增因子";
+      let title = this.factorsDetail ? "编辑因子" : "新建因子";
       return title;
     }
   },
@@ -213,7 +213,7 @@ export default {
       console.log("handleOk");
     },
     newFactor(params) {
-      //新增
+      //新建
       this.$api.platform.addSysDivisor(params).then(res => {
         if (res.data.state == 0) {
           this.$emit("confirm");

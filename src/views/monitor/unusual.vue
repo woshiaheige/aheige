@@ -23,11 +23,10 @@
     >
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">异常数据</div>
+        <div class="title">异常列表</div>
       </div>
       <a-table
         size="middle"
-        bordered
         :loading="loading"
         :rowKey="(record, index) => index"
         :columns="columns"
@@ -61,34 +60,20 @@ export default {
       tableData: [],
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          }
-        },
-        {
           title: "企业名称",
-          dataIndex: "enterpriseName",
-          align: "center"
+          dataIndex: "enterpriseName"
         },
         {
           title: "监控点名称",
-          dataIndex: "pointName",
-          align: "center"
+          dataIndex: "pointName"
         },
         {
           title: "因子名称",
-          dataIndex: "divisorName",
-          align: "center"
+          dataIndex: "divisorName"
         },
         {
           title: "异常类型",
           dataIndex: "flag",
-          align: "center",
           customRender: text => {
             if (text == "F") {
               return "仪器仪表故障";
@@ -109,8 +94,7 @@ export default {
         },
         {
           title: "异常值",
-          dataIndex: "rtd",
-          align: "center"
+          dataIndex: "rtd"
         }
       ],
       formInline: {

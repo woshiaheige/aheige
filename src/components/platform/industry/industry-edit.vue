@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     title() {
-      let title = this.industryDetail ? "编辑行业" : "新增行业";
+      let title = this.industryDetail ? "编辑行业" : "新建行业";
       return title;
     }
   },

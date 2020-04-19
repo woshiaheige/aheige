@@ -26,7 +26,7 @@
         <span v-else>{{ item.title }}</span>
         <a-icon
           type="plus"
-          title="新增"
+          title="新建"
           v-margin:left="15"
           @click="onEdit(item, 'add')"
         />

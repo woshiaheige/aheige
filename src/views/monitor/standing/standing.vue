@@ -36,11 +36,10 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">监测数据</div>
+        <div class="title">企业监测点</div>
       </div>
       <a-table
         size="middle"
-        bordered
         :loading="loading"
         :rowKey="(record, index) => index"
         :columns="columns"
@@ -48,8 +47,22 @@
         v-margin:top="16"
         :pagination="false"
       >
+        <template slot="level" slot-scope="level">
+          <a-tag color="red" v-if="level == 1">国控</a-tag>
+          <a-tag color="pink" v-if="level == 2">省控</a-tag>
+          <a-tag color="purple" v-if="level == 3">市控</a-tag>
+          <a-tag color="orange" v-if="level == 4">县控</a-tag>
+        </template>
+        <template slot="onlineState" slot-scope="onlineState">
+          <a-tag color="blue" v-if="onlineState == 0">在线</a-tag>
+          <a-tag color="red" v-if="onlineState == 1">离线</a-tag>
+        </template>
+        <template slot="isNormal" slot-scope="isNormal">
+          <a-tag color="blue" v-if="isNormal == 0">正常</a-tag>
+          <a-tag color="red" v-if="isNormal == 1">异常</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
-          <a @click="toMonitorData(row)">实时数据</a>
+          <a @click="toMonitorData(row)">查看数据</a>
         </span>
       </a-table>
 
@@ -85,36 +98,15 @@ export default {
       tableData: [],
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          }
-        },
-        {
           title: "企业名称",
-          dataIndex: "enterpriseName",
-          align: "center"
+          dataIndex: "enterpriseName"
         },
         {
           title: "控制级别",
           dataIndex: "level",
           align: "center",
           width: 100,
-          customRender: text => {
-            if (text == "1") {
-              return "国控";
-            } else if (text == "2") {
-              return "省控";
-            } else if (text == "3") {
-              return "市控";
-            } else if (text == "4") {
-              return "县控";
-            }
-          }
+          scopedSlots: { customRender: "level" }
         },
         {
           title: "行业类型",
@@ -136,26 +128,14 @@ export default {
           dataIndex: "onlineState",
           align: "center",
           width: 100,
-          customRender: text => {
-            if (text == 0) {
-              return "在线";
-            } else if (text == 1) {
-              return "离线";
-            }
-          }
+          scopedSlots: { customRender: "onlineState" }
         },
         {
           title: "是否异常",
           dataIndex: "isNormal",
           align: "center",
           width: 100,
-          customRender: text => {
-            if (text == 0) {
-              return "正常";
-            } else if (text == 1) {
-              return "异常";
-            }
-          }
+          scopedSlots: { customRender: "isNormal" }
         },
         {
           title: "最后通讯时间",

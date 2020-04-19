@@ -1,45 +1,69 @@
 <template>
-  <a-card :bordered="false" class="knowledge">
-    <span slot="title">运维知识库</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-button type="primary" html-type="submit" @click="onEdit()">
-          新增文章
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button
-          type="primary"
-          html-type="submit"
-          @click="$router.push({ path: '/knowledge/type' })"
-        >
-          知识库分类
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="tableData"
-      :pagination="false"
-      v-margin:top="16"
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-      </span>
-    </a-table>
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showQuickJumper
-      showSizeChanger
-      :defaultCurrent="current"
-      :total="total"
-    />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
-  </a-card>
+  <div>
+    <a-card :bordered="false">
+      <div class="card-header">
+        <div class="title">知识库设置</div>
+        <div class="extra">
+          <a-form layout="inline" :model="formInline">
+            <a-form-item>
+              <a-button type="primary" @click="onEdit()">
+                <a-icon type="plus" />新建文章
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="请输入文章名称"
+                style="width: 200px"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
+        </div>
+      </div>
+      <a-row :gutter="16">
+        <a-col :span="4">
+          <a-button type="dashed" block>新建分类</a-button>
+          <a-menu
+            v-model="current"
+            mode="vertical"
+            :defaultSelectedKeys="['type1']"
+          >
+            <a-menu-item key="type1">
+              操作手册
+            </a-menu-item>
+            <a-menu-item key="type2">
+              运维政策
+            </a-menu-item>
+          </a-menu>
+        </a-col>
+        <a-col :span="20">
+          <a-table
+            size="middle"
+            :columns="columns"
+            :dataSource="tableData"
+            :pagination="false"
+          >
+            <span slot="action" slot-scope="row">
+              <a @click="onEdit(row)">查看</a>
+              <a-divider type="vertical" />
+              <a @click="onEdit(row)">编辑</a>
+              <a-divider type="vertical" />
+              <a @click="onDelete(row)">删除</a>
+            </span>
+          </a-table>
+          <a-pagination
+            size="small"
+            v-margin:top="16"
+            showQuickJumper
+            showSizeChanger
+            :defaultCurrent="current"
+            :total="total"
+          />
+          <add-edit :obj="obj" @cancel="cancel"></add-edit>
+        </a-col>
+      </a-row>
+    </a-card>
+  </div>
 </template>
 <script>
 import addEdit from "@/components/knowledge/add-edit";
@@ -47,13 +71,9 @@ export default {
   components: { addEdit },
   data() {
     return {
-      current: 1,
+      current: ["type1"],
       total: 0,
       columns: [
-        {
-          title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
-        },
         {
           title: "标题",
           dataIndex: "title"

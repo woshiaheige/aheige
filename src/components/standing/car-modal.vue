@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="carModal.type == 'add' ? '新增车辆信息' : '编辑车辆信息'"
+    :title="carModal.type == 'add' ? '新建车辆信息' : '编辑车辆信息'"
     v-model="carModal.show"
     @cancel="handleCancel"
   >
@@ -117,7 +117,7 @@ export default {
       });
     },
     addAssetVehicle(values) {
-      //新增
+      //新建
       this.$api.car.addAssetVehicle(values).then(res => {
         if (res.data.state == 0) {
           this.$message.success("添加成功");

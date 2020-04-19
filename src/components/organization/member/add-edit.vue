@@ -141,7 +141,7 @@ export default {
     return {
       validatePassword,
       validatePhone,
-      title: "新增",
+      title: "新建",
       memberId: "",
       roleId: "",
       roleList: [],

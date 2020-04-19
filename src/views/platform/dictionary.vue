@@ -1,27 +1,24 @@
 <template>
   <div class="platform">
     <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="字典名称" v-model="formInline.name"></a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-input placeholder="字典编号" v-model="formInline.code"></a-input>
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">数据字典</div>
+        <div class="title">字典列表</div>
         <div class="extra">
-          <a-button type="success" @click="visible = true">
-            <a-icon type="plus" />新建
-          </a-button>
+          <a-form layout="inline">
+            <a-form-item>
+              <a-button type="primary" @click="visible = true">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="输入字典名称"
+                style="width: 200px"
+                v-model="formInline.name"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
         </div>
       </div>
       <a-table
@@ -74,34 +71,20 @@ export default {
       },
       columns: [
         {
-          title: "序号",
-          customRender: (text, row, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          },
-          width: 100,
-          align: "center"
-        },
-        {
           title: "字典名称",
-          dataIndex: "name",
-          align: "center"
+          dataIndex: "name"
         },
         {
           title: "字典编码",
-          dataIndex: "code",
-          align: "center"
+          dataIndex: "code"
         },
         {
           title: "字典值",
-          dataIndex: "value",
-          align: "center"
+          dataIndex: "value"
         },
         {
           title: "字典说明",
-          dataIndex: "remark",
-          align: "center"
+          dataIndex: "remark"
         },
         {
           title: "操作",

@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      title: "新增",
+      title: "新建",
       form: this.$form.createForm(this),
       isEdit: false
     };
@@ -71,7 +71,7 @@ export default {
           this.title = "编辑";
           this.isEdit = true;
         } else {
-          this.title = "新增";
+          this.title = "新建";
         }
       }
     }

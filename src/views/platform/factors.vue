@@ -24,7 +24,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">因子设置</div>
+        <div class="title">因子列表</div>
         <div class="extra">
           <a-form layout="inline" :model="formInline">
             <a-form-item>
@@ -63,6 +63,11 @@
         v-margin:top="16"
         :pagination="false"
       >
+        <template slot="type" slot-scope="type">
+          <a-tag color="blue" v-if="type == 32">水类</a-tag>
+          <a-tag color="red" v-if="type == 31">气类</a-tag>
+          <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="onAddFactorsEdit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -80,7 +85,7 @@
         @change="pagechange"
         @showSizeChange="sizechange"
       />
-      <!-- 新增因子 -->
+      <!-- 新建因子 -->
       <add-factors
         :visible="addFactorsVisible"
         @cancel="onAddFactorsCancel"
@@ -110,34 +115,20 @@ export default {
       },
       columns: [
         {
-          align: "center",
-          title: "序号",
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          }
-        },
-        {
-          align: "center",
           title: "因子名称",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "name"
         },
         {
-          align: "center",
           title: "因子编码",
           key: "code",
           dataIndex: "code"
         },
         {
-          align: "center",
           title: "均值单位",
           key: "avgUnit",
           dataIndex: "avgUnit"
         },
         {
-          align: "center",
           title: "总值单位",
           key: "sumUnit",
           dataIndex: "sumUnit"
@@ -146,6 +137,7 @@ export default {
           align: "center",
           title: "类型",
           key: "type",
+          scopedSlots: { customRender: "type" },
           dataIndex: "type"
         },
         {
@@ -155,13 +147,11 @@ export default {
           dataIndex: "protocolType"
         },
         {
-          align: "center",
           title: "参考值上限",
           key: "ceilval",
           dataIndex: "ceilval"
         },
         {
-          align: "center",
           title: "参考值下限",
           key: "floorval",
           dataIndex: "floorval"

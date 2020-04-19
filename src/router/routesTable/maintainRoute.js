@@ -14,6 +14,20 @@ const maintainRoutes = [
       )
   },
   {
+    path: "/maintain/board",
+    name: "maintain-board",
+    key: "board",
+    meta: {
+      title: "任务看板",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-maintain" */
+        "@/views/maintain/board.vue"
+      )
+  },
+  {
     path: "/maintain/plan",
     name: "maintain-plan",
     key: "plan",
@@ -28,31 +42,17 @@ const maintainRoutes = [
       )
   },
   {
-    path: "/maintain/inspection",
-    name: "maintain-inspection",
-    key: "inspection",
+    path: "/maintain/scheme",
+    name: "maintain-scheme",
+    key: "scheme",
     meta: {
-      title: "日常巡检",
+      title: "运维方案",
       back: false
     },
     component: () =>
       import(
-        /* webpackChunkName: "view-maintain" */
-        "@/views/maintain/inspection.vue"
-      )
-  },
-  {
-    path: "/maintain/maintain-log",
-    name: "maintain-maintain-log",
-    key: "maintain-log",
-    meta: {
-      title: "运维记录",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-maintain" */
-        "@/views/maintain/maintain-log.vue"
+        /* webpackChunkName: "view-scheme" */
+        "@/views/maintain/scheme.vue"
       )
   },
   {
@@ -60,7 +60,7 @@ const maintainRoutes = [
     name: "-complaint",
     key: "complaint",
     meta: {
-      title: "上报投诉",
+      title: "客户投诉",
       back: false
     },
     component: () =>

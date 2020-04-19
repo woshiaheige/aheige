@@ -23,12 +23,11 @@
     >
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">超标数据</div>
+        <div class="title">超标列表</div>
       </div>
       <a-table
         size="middle"
         :loading="loading"
-        bordered
         :rowKey="(record, index) => index"
         :columns="columns"
         :dataSource="tableData"
@@ -62,58 +61,41 @@ export default {
       tableData: [],
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          }
-        },
-        {
           title: "企业名称",
           dataIndex: "enterpriseName",
-          key: "enterpriseName",
-          align: "center"
+          key: "enterpriseName"
         },
         {
           title: "监测点",
           dataIndex: "pointName",
-          key: "pointName",
-          align: "center"
+          key: "pointName"
         },
         {
           title: "监测因子",
           dataIndex: "divisorName",
-          key: "divisorName",
-          align: "center"
+          key: "divisorName"
         },
         {
           title: "实时值",
           dataIndex: "rtd",
-          key: "rtd",
-          align: "center"
+          key: "rtd"
         },
         {
           title: "上限值",
           dataIndex: "floorval",
           key: "floorval",
-          align: "center",
           customRender: (text, row) => Number(row.floorval).toFixed(4)
         },
         {
           title: "下限值",
           dataIndex: "ceilval",
           key: "ceilval",
-          align: "center",
           customRender: (text, row) => Number(row.ceilval).toFixed(4)
         },
         {
           title: "超标时间",
           dataIndex: "dateTime",
           key: "dateTime",
-          align: "center",
           width: 200
         }
       ],

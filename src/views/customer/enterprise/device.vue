@@ -2,14 +2,14 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="设备名称" v-model="list.name"></a-input>
+        <a-form-item label="设备名称">
+          <a-input placeholder="请输入" v-model="list.name"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="生产厂家" v-model="list.manufacturer"></a-input>
+        <a-form-item label="生产厂家">
+          <a-input placeholder="请输入" v-model="list.manufacturer"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="设备型号" v-model="list.number"></a-input>
+        <a-form-item label="设备型号">
+          <a-input placeholder="请输入" v-model="list.number"></a-input>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
@@ -18,10 +18,15 @@
         </a-form-item>
       </a-form>
     </a-card>
-    <a-card :bordered="false" class="device" title="监测设备" v-margin:top="16">
-      <a-button type="primary" @click="onEdit('add')" slot="extra">
-        <a-icon type="plus" />新建
-      </a-button>
+    <a-card :bordered="false" class="device" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">设备列表</div>
+        <div class="extra">
+          <a-button type="primary" @click="onEdit('add')">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
       <a-table
         rowKey="id"
         size="middle"
@@ -31,6 +36,11 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="type" slot-scope="type">
+          <a-tag color="blue" v-if="type == 32">水类</a-tag>
+          <a-tag color="red" v-if="type == 31">气类</a-tag>
+          <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
+        </template>
         <span slot="downLoad" slot-scope="row">
           <a @click="onDown(row)">附件下载</a>
         </span>
@@ -74,52 +84,36 @@ export default {
       },
       columns: [
         {
-          title: "序号",
-          align: "center",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
           title: "设备名称",
           dataIndex: "name",
-          key: "name",
-          align: "center"
+          key: "name"
         },
         {
           title: "生产厂家",
           dataIndex: "manufacturer",
-          key: "manufacturer",
-          align: "center"
+          key: "manufacturer"
         },
         {
           title: "设备型号",
           dataIndex: "number",
-          key: "number",
-          align: "center"
+          key: "number"
         },
         {
           title: "设备类型",
           dataIndex: "type",
           key: "type",
           align: "center",
-          customRender: text => {
-            if (text == "31") {
-              return "气类";
-            } else if (text == "32") {
-              return "水类";
-            }
-          }
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "验收时间",
           key: "gmtReceptionTime",
-          dataIndex: "gmtReceptionTime",
-          align: "center"
+          dataIndex: "gmtReceptionTime"
         },
         {
           title: "验收材料",
           key: "downLoad",
-          scopedSlots: { customRender: "downLoad" },
-          align: "center"
+          scopedSlots: { customRender: "downLoad" }
         },
         {
           title: "操作",

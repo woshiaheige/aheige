@@ -210,7 +210,7 @@ export default {
         } else {
           this.$api.customer.addEnterPrise(this.formData).then(res => {
             if (res.data.state == 0) {
-              this.$message.success("新增成功");
+              this.$message.success("新建成功");
               this.$emit("refresh");
               this.handleCancel();
             }
@@ -244,7 +244,7 @@ export default {
           this.title = "编辑";
           this.getEditData();
         } else {
-          this.title = "新增";
+          this.title = "新建";
         }
       }
     }

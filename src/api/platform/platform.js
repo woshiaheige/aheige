@@ -14,7 +14,7 @@ const platform = {
       params: data
     });
   },
-  //新增因子
+  //新建因子
   addSysDivisor(data) {
     return axios.post(base.api + "divisor/addSysDivisor", data);
   },
@@ -46,7 +46,7 @@ const platform = {
       params: data
     });
   },
-  //新增行业
+  //新建行业
   addSysIndustry(data) {
     return axios.post(base.api + "sysIndustry/addSysIndustry", data);
   },

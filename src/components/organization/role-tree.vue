@@ -177,7 +177,7 @@ export default {
       });
     },
     addRole(name) {
-      //新增
+      //新建
       let data = {
         resourceIds: this.resourceIdList,
         id: this.roleId,

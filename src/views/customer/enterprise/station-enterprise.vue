@@ -27,15 +27,15 @@
         </a-form-item>
       </a-form>
     </a-card>
-    <a-card
-      :bordered="false"
-      class="enterprise"
-      title="监测点管理"
-      v-margin:top="16"
-    >
-      <a-button type="primary" @click="onEdit('add')" slot="extra">
-        <a-icon type="plus" />新建
-      </a-button>
+    <a-card :bordered="false" class="enterprise" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">监控点列表</div>
+        <div class="extra">
+          <a-button type="primary" @click="onEdit('add')">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
       <a-table
         rowKey="id"
         size="middle"
@@ -45,6 +45,10 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="transferType" slot-scope="transferType">
+          <a-tag color="blue" v-if="transferType == 1">无线传输</a-tag>
+          <a-tag color="green" v-if="transferType == 2">有线传输</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
           <a-divider type="vertical" />
@@ -88,40 +92,26 @@ export default {
       total: 1,
       columns: [
         {
-          title: "序号",
-          align: "center",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
           title: "监控点名称",
           dataIndex: "name",
-          key: "name",
-          align: "center"
+          key: "name"
         },
         {
           title: "所属企业",
           dataIndex: "enterpriseName",
-          key: "enterpriseName",
-          align: "center"
+          key: "enterpriseName"
         },
         {
           title: "MN号码",
           dataIndex: "mn",
-          key: "mn",
-          align: "center"
+          key: "mn"
         },
         {
           title: "传输类型",
           key: "transferType",
           dataIndex: "transferType",
-          align: "center",
-          customRender: text => {
-            if (text == "1") {
-              return "无线传输";
-            } else if (text == "2") {
-              return "有线传输";
-            }
-          }
+          scopedSlots: { customRender: "transferType" },
+          align: "center"
         },
         {
           title: "操作",

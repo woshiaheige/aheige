@@ -1,59 +1,103 @@
 <template>
-  <a-card :bordered="false" class="maintain">
-    <span slot="title">任务一览</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-button type="primary" html-type="submit" @click="show = true">
-          突发任务
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="tableData"
-      :pagination="false"
-      :loading="loading"
-      v-margin:top="16"
-    >
-      <span slot="action">
-        <a @click="delayShow = true">申请延期</a>
-        <a-divider type="vertical" />
-        <a @click="closeShow = true">任务关闭</a>
-      </span>
-      <a slot="check">
-        <a @click="detailShow = true">详情</a>
-        <a-divider type="vertical" />
-        <a>报告</a>
-      </a>
-    </a-table>
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showQuickJumper
-      showSizeChanger
-      :defaultCurrent="current"
-      :defaultPageSize="pageSize"
-      :total="total"
-    />
-    <!--新增-->
-    <add-edit
-      :visible="show"
-      :planList="planList"
-      :stationList="stationList"
-      @cancel="cancel"
-    ></add-edit>
-    <!--延期-->
-    <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
-    <!--关闭-->
-    <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
-    <!--详情-->
-    <detail-modal
-      :visible="detailShow"
-      :tableData="tableData"
-      @cancel="cancel"
-    ></detail-modal>
-  </a-card>
+  <div>
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item label="企业名称">
+          <a-input placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item label="监控点名称">
+          <a-input placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item label="运维小组">
+          <a-select
+            defaultValue="all"
+            style="width: 120px"
+            @change="handleChange"
+          >
+            <a-select-option value="all">全部</a-select-option>
+            <a-select-option value="jack">运维1组</a-select-option>
+            <a-select-option value="lucy">运维2组</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="任务状态">
+          <a-select
+            defaultValue="all"
+            style="width: 120px"
+            @change="handleChange"
+          >
+            <a-select-option value="all">全部</a-select-option>
+            <a-select-option value="jack">未完成</a-select-option>
+            <a-select-option value="lucy">已完成</a-select-option>
+            <a-select-option value="lucy">已逾期</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="任务时间">
+          <a-range-picker @change="onChange" />
+        </a-form-item>
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="onSubmit()">
+            查询
+          </a-button>
+        </a-form-item>
+        <a-form-item> </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card :bordered="false" class="maintain" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">任务一览</div>
+        <div class="extra">
+          <a-button type="primary" html-type="submit" @click="show = true">
+            <a-icon type="plus" />突发任务
+          </a-button>
+        </div>
+      </div>
+      <a-table
+        size="middle"
+        :columns="columns"
+        :dataSource="tableData"
+        :pagination="false"
+        :loading="loading"
+        v-margin:top="16"
+      >
+        <span slot="action">
+          <a @click="delayShow = true">申请延期</a>
+          <a-divider type="vertical" />
+          <a @click="closeShow = true">任务关闭</a>
+        </span>
+        <a slot="check">
+          <a @click="detailShow = true">详情</a>
+          <a-divider type="vertical" />
+          <a>报告</a>
+        </a>
+      </a-table>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showQuickJumper
+        showSizeChanger
+        :defaultCurrent="current"
+        :defaultPageSize="pageSize"
+        :total="total"
+      />
+      <!--新建-->
+      <add-edit
+        :visible="show"
+        :planList="planList"
+        :stationList="stationList"
+        @cancel="cancel"
+      ></add-edit>
+      <!--延期-->
+      <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
+      <!--关闭-->
+      <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
+      <!--详情-->
+      <detail-modal
+        :visible="detailShow"
+        :tableData="tableData"
+        @cancel="cancel"
+      ></detail-modal>
+    </a-card>
+  </div>
 </template>
 <script>
 import addEdit from "@/components/maintain/mission/add-edit";
@@ -70,11 +114,7 @@ export default {
       loading: false,
       columns: [
         {
-          title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
-          title: "任务名称（编号）",
+          title: "任务名称",
           dataIndex: "name"
         },
         {
@@ -114,11 +154,6 @@ export default {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" }
-        },
-        {
-          title: "查看",
-          key: "check",
-          scopedSlots: { customRender: "check" }
         }
       ],
       tableData: [],

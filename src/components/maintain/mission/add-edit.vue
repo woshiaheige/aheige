@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="新增突发任务"
+    title="新建突发任务"
     v-model="status"
     @ok="handleOk"
     @cancel="handleCancel"

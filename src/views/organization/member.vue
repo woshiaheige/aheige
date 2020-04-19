@@ -2,11 +2,20 @@
   <div class="organization">
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="姓名" v-model="formInline.name"></a-input>
+        <a-form-item label="用户姓名">
+          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="手机号" v-model="formInline.phone"></a-input>
+        <a-form-item label="用户账号">
+          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
+        </a-form-item>
+        <a-form-item label="手机号码">
+          <a-input placeholder="请输入" v-model="formInline.phone"></a-input>
+        </a-form-item>
+        <a-form-item label="用户状态">
+          <a-select defaultValue="normal">
+            <a-select-option value="normal">正常</a-select-option>
+            <a-select-option value="lock">锁定</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item style="float:right">
           <a-button type="primary" @click="onSubmit">
@@ -17,9 +26,9 @@
     </a-card>
     <a-card v-margin:top="16">
       <div class="card-header">
-        <div class="title">用户管理</div>
+        <div class="title">用户列表</div>
         <div class="extra">
-          <a-button type="success" @click="visible = true">
+          <a-button type="primary" @click="visible = true">
             <a-icon type="plus" />新建
           </a-button>
         </div>
@@ -34,13 +43,17 @@
         :pagination="false"
         v-margin:top="16"
       >
+        <template slot="status" slot-scope="text, row">
+          <a-tag color="green" v-if="row.isLocked != 1">正常</a-tag>
+          <a-tag color="red" v-else>锁定</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>
           <a-divider type="vertical" />
           <a @click="onDelete(row)">删除</a>
           <a-divider type="vertical" />
-          <a @click="onLock(row)" v-show="row.isLocked == 1">锁定</a>
-          <a @click="unLock(row)" v-show="row.isLocked == 0">激活</a>
+          <a @click="onLock(row)" v-show="row.isLocked == 1">解锁</a>
+          <a @click="unLock(row)" v-show="row.isLocked == 0">锁定</a>
         </span>
       </a-table>
       <a-pagination
@@ -79,40 +92,25 @@ export default {
       },
       columns: [
         {
-          title: "序号",
-          customRender: (text, row, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          },
-          width: 100
-        },
-        {
           title: "姓名",
-          dataIndex: "name",
-          align: "center"
+          dataIndex: "name"
         },
         {
           title: "账号",
-          dataIndex: "username",
-          align: "center"
+          dataIndex: "username"
         },
         {
           title: "手机号码",
-          dataIndex: "phone",
-          align: "center"
+          dataIndex: "phone"
         },
         {
           title: "用户权限",
-          dataIndex: "roleName",
-          align: "center"
+          dataIndex: "roleName"
         },
         {
           title: "用户状态",
           dataIndex: "status",
-          customRender: (text, row) => {
-            return row.isLocked == 1 ? "冻结" : "激活";
-          },
+          scopedSlots: { customRender: "status" },
           align: "center"
         },
         {

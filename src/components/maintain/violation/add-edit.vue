@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="新增违章"
+    title="新建违章"
     v-model="status"
     @ok="handleOk"
     @cancel="handleCancel"

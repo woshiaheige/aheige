@@ -21,6 +21,7 @@ import "@/assets/style/i-maintain/scheme.less";
 import "@/assets/style/i-maintain/template.less";
 import "@/assets/style/maintain/maintain.less";
 import "@/assets/style/index/index.less";
+import "@/assets/style/index/map.less";
 import "@/assets/style/organization/organization.less";
 import "@/assets/style/report/daily.less";
 import "@/assets/style/report/team.less";

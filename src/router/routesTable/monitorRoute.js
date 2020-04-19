@@ -20,7 +20,7 @@ const monitorRoute = [
     name: "monitor-standing-data",
     key: "monitor-standing-data",
     meta: {
-      title: "实时数据",
+      title: "监测数据",
       back: true
     },
     component: () =>
@@ -44,21 +44,6 @@ const monitorRoute = [
         "@/views/monitor/exceed.vue"
       )
   },
-  //数据报表
-  {
-    path: "/monitor/report",
-    name: "monitor-report",
-    key: "monitor-report",
-    meta: {
-      title: "数据报表",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-monitor" */
-        "@/views/monitor/report.vue"
-      )
-  },
   //异常数据
   {
     path: "/monitor/unusual",
@@ -72,6 +57,21 @@ const monitorRoute = [
       import(
         /* webpackChunkName: "view-monitor" */
         "@/views/monitor/unusual.vue"
+      )
+  },
+  //数据报表
+  {
+    path: "/monitor/report",
+    name: "monitor-report",
+    key: "monitor-report",
+    meta: {
+      title: "数据报表",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-monitor" */
+        "@/views/monitor/report.vue"
       )
   }
 ];

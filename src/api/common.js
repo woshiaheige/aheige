@@ -13,7 +13,7 @@ const common = {
       params: data
     });
   },
-  //新增字典
+  //新建字典
   addSysDict(data) {
     return axios.post(base.api + "sysDict/addSysDict", data);
   },

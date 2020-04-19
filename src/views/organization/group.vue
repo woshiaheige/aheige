@@ -1,24 +1,24 @@
 <template>
   <div class="organization">
     <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="小组名称" v-model="formInline.name"></a-input>
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">小组管理</div>
+        <div class="title">小组列表</div>
         <div class="extra">
-          <a-button type="success" @click="visible = true">
-            <a-icon type="plus" />新建
-          </a-button>
+          <a-form layout="inline">
+            <a-form-item>
+              <a-button type="primary" @click="visible = true">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="小组名称"
+                style="width: 200px"
+                v-model="formInline.name"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
         </div>
       </div>
       <a-list
@@ -27,18 +27,14 @@
         :loading="loading"
       >
         <a-list-item slot="renderItem" slot-scope="item">
-          <a-card hoverable>
-            <span slot="title">{{ item.name }}</span>
+          <a-card :title="item.name">
             <template class="ant-card-actions" slot="actions">
-              <a @click="onEdit(item)">编辑</a>
-              <!-- <a @click="onGroupShow(item)">小组成员</a> -->
-              <a @click="onDelete(item)">删除小组</a>
+              <span key="edit" @click="onEdit(item)">编辑</span>
+              <span key="delete" @click="onDelete(item)" v-color="'#ed4014'"
+                >删除</span
+              >
             </template>
-            <a-tag
-              v-for="(member, key) of item.users"
-              :key="key"
-              color="#2db7f5"
-            >
+            <a-tag v-for="(member, key) of item.users" :key="key" color="blue">
               {{ member.name }}
             </a-tag>
           </a-card>
@@ -58,13 +54,13 @@
       />
     </a-card>
 
-    <!-- 新增编辑小组 -->
+    <!-- 新建编辑小组 -->
     <group-edit
       :visible.sync="visible"
       :groupDetail="groupDetail"
       @updateTable="getTableData"
     />
-    <!-- 新增编辑组员
+    <!-- 新建编辑组员
     <group-member :visible.sync="groupVisible" /> -->
   </div>
 </template>

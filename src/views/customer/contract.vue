@@ -25,15 +25,15 @@
         </a-form-item>
       </a-form>
     </a-card>
-    <a-card
-      :bordered="false"
-      class="contract"
-      title="合同管理"
-      v-margin:top="16"
-    >
-      <a-button type="primary" @click="onEdit('add')" slot="extra">
-        <a-icon type="plus" />新建
-      </a-button>
+    <a-card :bordered="false" class="contract" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">合同管理</div>
+        <div class="extra">
+          <a-button type="primary" @click="onEdit('add')">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
       <a-table
         rowKey="id"
         size="middle"
@@ -47,6 +47,10 @@
           <span>{{ row.startTime }}</span
           >至<span>{{ row.endTime }}</span>
         </span>
+        <template slot="state" slot-scope="state">
+          <a-tag color="red" v-if="state == 4">合同终结</a-tag>
+          <a-tag color="green" v-if="state == 1">履约中</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -98,44 +102,26 @@ export default {
       ],
       columns: [
         {
-          title: "序号",
-          customRender: (text, row, index) => `${index + 1}`,
-          align: "center"
-        },
-        {
           title: "企业名称",
           dataIndex: "enterpriseName",
-          key: "enterpriseName",
-          align: "center"
+          key: "enterpriseName"
         },
         {
           title: "合同编号",
           dataIndex: "number",
-          key: "number",
-          align: "center"
+          key: "number"
         },
         {
           title: "合同期限",
           dataIndex: "gmtEnd",
-          key: "gmtEnd",
-          align: "center"
+          key: "gmtEnd"
         },
         {
           title: "合同状态",
           dataIndex: "state",
           key: "state",
           align: "center",
-          customRender: text => {
-            if (text == "1") {
-              return "履行中";
-            } else if (text == "2") {
-              return "已过期";
-            } else if (text == "3") {
-              return "即将到期";
-            } else if (text == "4") {
-              return "合同终结";
-            }
-          }
+          scopedSlots: { customRender: "state" }
         },
         {
           title: "操作",

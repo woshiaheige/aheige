@@ -6,7 +6,7 @@
     <a-form layout="inline">
       <a-form-item>
         <a-button type="primary" html-type="submit" @click="onEdit()">
-          新增分类
+          新建分类
         </a-button>
       </a-form-item>
     </a-form>

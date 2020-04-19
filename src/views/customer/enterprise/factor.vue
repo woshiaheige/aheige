@@ -1,39 +1,35 @@
 <template>
   <div>
-    <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item label="因子名称">
-          <a-select
-            placeholder="请选择"
-            v-model="list.divisorId"
-            v-width="150"
-            allowClear
-          >
-            <a-select-option
-              v-for="item in factorOptions"
-              :key="item.id"
-              :value="item.id"
-            >
-              {{ item.name }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit()">
-            查找
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card
-      :bordered="false"
-      class="station"
-      title="监测因子"
-      v-margin:top="16"
-    >
-      <a-button type="primary" @click="onEdit('add')" slot="extra">
-        <a-icon type="plus" />新建
-      </a-button>
+    <a-card :bordered="false" class="station">
+      <div class="card-header">
+        <div class="title">因子列表</div>
+        <div class="extra">
+          <a-form layout="inline">
+            <a-form-item>
+              <a-button type="primary" @click="onEdit('add')">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-select
+                placeholder="请选择因子"
+                showSearch
+                v-model="list.divisorId"
+                v-width="150"
+                allowClear
+              >
+                <a-select-option
+                  v-for="item in factorOptions"
+                  :key="item.id"
+                  :value="item.id"
+                >
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-form>
+        </div>
+      </div>
       <a-table
         rowKey="id"
         size="middle"
@@ -43,6 +39,11 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="type" slot-scope="type">
+          <a-tag color="blue" v-if="type == 32">水类</a-tag>
+          <a-tag color="red" v-if="type == 31">气类</a-tag>
+          <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -83,52 +84,36 @@ export default {
       list: {},
       columns: [
         {
-          title: "序号",
-          align: "center",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
           title: "因子名称",
           dataIndex: "name",
-          key: "name",
-          align: "center"
+          key: "name"
         },
         {
           title: "因子编码",
           dataIndex: "code",
-          key: "code",
-          align: "center"
+          key: "code"
         },
         {
           title: "上限",
           dataIndex: "ceilval",
-          key: "ceilval",
-          align: "center"
+          key: "ceilval"
         },
         {
           title: "下限",
           dataIndex: "floorval",
-          key: "floorval",
-          align: "center"
+          key: "floorval"
         },
         {
           title: "因子类型",
           dataIndex: "type",
           key: "type",
           align: "center",
-          customRender: text => {
-            if (text == "31") {
-              return "气类";
-            } else if (text == "32") {
-              return "水类";
-            }
-          }
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "单位名称",
           dataIndex: "avgUnit",
-          key: "avgUnit",
-          align: "center"
+          key: "avgUnit"
         },
         {
           title: "操作",

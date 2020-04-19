@@ -83,7 +83,7 @@ const iMaintain = {
     });
   },
 
-  //新增方案
+  //新建方案
   addMaintainProgramme(data) {
     return axios.post(
       base.api + "maintainProgramme/addMaintainProgramme",
@@ -124,7 +124,7 @@ const iMaintain = {
       params: data
     });
   },
-  //新增方案项详情
+  //新建方案项详情
   addMaintainProgrammeItem(data) {
     return axios.post(
       base.api + "maintainProgrammeItem/addMaintainProgrammeItem",

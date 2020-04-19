@@ -13,6 +13,7 @@
       <div class="logo">
         <!-- <a-icon type="cloud" theme="filled" v-fontsize="28" />
         <span>博控智维云</span> -->
+        <img :src="require('@/assets/img/logo.png')" alt="" />
       </div>
       <a-menu
         theme="dark"
@@ -98,7 +99,7 @@ export default {
     return {
       routes: [
         {
-          path: "/index",
+          path: "/index/data",
           breadcrumbName: "首页"
         }
       ],
@@ -109,7 +110,17 @@ export default {
         {
           title: "运维一览",
           key: "index",
-          icon: "home"
+          icon: "home",
+          children: [
+            {
+              title: "运维监控",
+              key: "index-data"
+            },
+            {
+              title: "地图监控",
+              key: "index-map"
+            }
+          ]
         },
         {
           title: "监控中心",
@@ -124,13 +135,14 @@ export default {
               title: "超标数据",
               key: "monitor-exceed"
             },
-            {
-              title: "数据报表",
-              key: "monitor-report"
-            },
+
             {
               title: "异常数据",
               key: "monitor-unusual"
+            },
+            {
+              title: "数据报表",
+              key: "monitor-report"
             }
           ]
         },
@@ -139,10 +151,6 @@ export default {
           key: "approval",
           icon: "audit",
           children: [
-            {
-              title: "发起审批",
-              key: "approval-to-start"
-            },
             {
               title: "我的审批",
               key: "approval-start"
@@ -163,20 +171,20 @@ export default {
               key: "mission"
             },
             {
+              title: "任务看板",
+              key: "board"
+            },
+            {
               title: "运维计划",
               key: "plan"
             },
             {
-              title: "上报投诉",
+              title: "运维方案",
+              key: "scheme"
+            },
+            {
+              title: "客户投诉",
               key: "complaint"
-            },
-            {
-              title: "日常巡检",
-              key: "inspection"
-            },
-            {
-              title: "运维记录",
-              key: "maintain-log"
             },
             {
               title: "运维知识",
@@ -334,10 +342,10 @@ export default {
       this.selectedKeys = this.selectedMenu;
     },
     setBreadcrumbName() {
-      if (this.$route.path === "/index") {
+      if (this.$route.path === "/index/data") {
         this.routes = [
           {
-            path: "/index",
+            path: "/index/data",
             breadcrumbName: "首页"
           }
         ];
@@ -345,7 +353,7 @@ export default {
         if (!this.$route.meta.back) {
           this.routes = [
             {
-              path: "/index",
+              path: "/index/data",
               breadcrumbName: "首页"
             },
             {

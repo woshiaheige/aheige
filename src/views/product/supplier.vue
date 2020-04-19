@@ -1,27 +1,24 @@
 <template>
-  <div>
-    <a-card v-margin:bottom="28">
-      <a-form-model layout="inline" @submit="onSubmit" @submit.native.prevent>
-        <a-form-model-item label="供应商名称">
-          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="联系人名称">
-          <a-input placeholder="请输入" v-model="formInline.contact"></a-input>
-        </a-form-model-item>
-        <a-form-model-item style="float:right">
-          <a-button type="primary" html-type="submit">
-            查询
-          </a-button>
-        </a-form-model-item>
-      </a-form-model>
-    </a-card>
+  <a-form-model-item>
     <a-card :bordered="false" class="standing">
       <div class="card-header">
-        <div class="title">企业列表</div>
+        <div class="title">供应商列表</div>
         <div class="extra">
-          <a-button type="primary" @click="onEdit()">
-            <a-icon type="plus" />新增
-          </a-button>
+          <a-form layout="inline" :model="formInline">
+            <a-form-item>
+              <a-button type="primary" @click="onEdit()">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="输入供应商名称"
+                style="width: 200px"
+                v-model="formInline.name"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
         </div>
       </div>
       <a-table
@@ -32,8 +29,10 @@
         :dataSource="tableData"
         v-margin:top="16"
         :pagination="false"
-        bordered
       >
+        <template slot="star" slot-scope="level">
+          <a-rate :value="level" disabled />
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -51,11 +50,11 @@
         @showSizeChange="sizechange"
         :total="total"
       />
-      <!-- 新增供应商 -->
+      <!-- 新建供应商 -->
       <add-edit :obj="modalInfo" @cancel="cancel" @getTableData="getTableData">
       </add-edit>
     </a-card>
-  </div>
+  </a-form-model-item>
 </template>
 
 <script>
@@ -75,39 +74,25 @@ export default {
       modalInfo: { show: false },
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          }
-        },
-        {
           title: "供应商名称",
-          dataIndex: "name",
-          align: "center"
+          dataIndex: "name"
         },
         {
           title: "地址",
-          dataIndex: "fullAddress",
-          align: "center"
+          dataIndex: "fullAddress"
         },
         {
           title: "联系人",
-          dataIndex: "contact",
-          align: "center"
+          dataIndex: "contact"
         },
         {
           title: "联系电话",
-          dataIndex: "telephone",
-          align: "center"
+          dataIndex: "telephone"
         },
         {
           title: "评级",
           dataIndex: "level",
-          align: "center"
+          scopedSlots: { customRender: "star" }
         },
         {
           title: "操作",

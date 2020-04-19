@@ -41,7 +41,7 @@ export default {
       if (this.groupName) {
         return "编辑小组";
       } else {
-        return "新增小组";
+        return "新建小组";
       }
     }
   },

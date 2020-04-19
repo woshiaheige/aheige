@@ -11,7 +11,7 @@ import monitorRoute from "../router/routesTable/monitorRoute"; //监控中心
 const RouterTable = [
   {
     path: "/",
-    redirect: "/index"
+    redirect: "/index/data"
   },
   {
     path: "/",

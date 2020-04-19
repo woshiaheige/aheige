@@ -27,7 +27,7 @@ const organization = {
       params: data
     });
   },
-  //新增用户
+  //新建用户
   addSysUser(data) {
     return axios.post(base.api + "sysUser/addSysUser", data);
   },
@@ -60,7 +60,7 @@ const organization = {
       params: data
     });
   },
-  //新增权限
+  //新建权限
   addSysRole(data) {
     return axios.post(base.api + "sysRole/addSysRole", data);
   },

@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     title() {
-      let title = this.dictionaryDetail ? "编辑字典" : "新增字典";
+      let title = this.dictionaryDetail ? "编辑字典" : "新建字典";
       return title;
     }
   },

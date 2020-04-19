@@ -1,0 +1,57 @@
+.map {
+  .map-container {
+    position: relative;
+    #map {
+      width: 100%;
+      height: calc(100vh - 320px);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .status-flag {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+    }
+
+    .alarm-list {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 300px;
+      min-height: 50px;
+      height: 600px;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 16px;
+      border-radius: 15px;
+      overflow: auto;
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f3f3f3;
+        .title {
+          font-size: 16px;
+          font-weight: 500;
+        }
+        .value {
+          font-size: 24px;
+          color: #f50;
+        }
+      }
+      .check-type,
+      .select-time {
+        margin: 8px auto;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+          line-height: 28px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

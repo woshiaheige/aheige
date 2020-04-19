@@ -1,13 +1,26 @@
 <template>
   <a-card :bordered="false" class="maintain">
-    <span slot="title">上报投诉</span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-button type="primary" html-type="submit" @click="onEdit()">
-          新增上报信息
-        </a-button>
-      </a-form-item>
-    </a-form>
+    <div class="card-header">
+      <div class="title">投诉列表</div>
+      <div class="extra">
+        <a-form layout="inline">
+          <a-form-item>
+            <a-radio-group defaultValue="a" buttonStyle="solid">
+              <a-radio-button value="a">全部</a-radio-button>
+              <a-radio-button value="b">未处理</a-radio-button>
+              <a-radio-button value="c">已处理</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item>
+            <a-input-search
+              placeholder="请输入企业名称"
+              style="width: 200px"
+              @search="onSubmit"
+            />
+          </a-form-item>
+        </a-form>
+      </div>
+    </div>
     <a-table
       size="middle"
       :columns="columns"
@@ -16,7 +29,7 @@
       v-margin:top="16"
     >
       <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
+        <a @click="onEdit(row)">查看</a>
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
       </span>
@@ -42,16 +55,8 @@ export default {
       total: 0,
       columns: [
         {
-          title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
-          title: "上报人",
+          title: "企业名称",
           dataIndex: "userName"
-        },
-        {
-          title: "上报来源",
-          dataIndex: "source"
         },
         {
           title: "状态",

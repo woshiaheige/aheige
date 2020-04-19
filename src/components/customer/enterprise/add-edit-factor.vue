@@ -54,7 +54,7 @@ export default {
       }
     };
     return {
-      title: "新增",
+      title: "新建",
       formData: {
         pointId: this.$route.query.id
       },
@@ -98,7 +98,7 @@ export default {
         } else {
           this.$api.customer.addFactor(this.formData).then(res => {
             if (res.data.state == 0) {
-              that.$message.success("新增成功");
+              that.$message.success("新建成功");
               that.$emit("refresh");
               that.handleCancel();
             }
@@ -129,7 +129,7 @@ export default {
           this.title = "编辑";
           this.getEditData();
         } else {
-          this.title = "新增";
+          this.title = "新建";
         }
       }
     }

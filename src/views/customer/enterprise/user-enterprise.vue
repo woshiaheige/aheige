@@ -17,7 +17,7 @@
       </a-form-item>
       <a-form-item>
         <a-button type="success" html-type="submit" @click="onEdit()">
-          新增
+          新建
         </a-button>
       </a-form-item>
     </a-form>

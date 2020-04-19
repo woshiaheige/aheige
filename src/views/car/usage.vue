@@ -1,6 +1,15 @@
 <template>
   <a-card :bordered="false" class="maintain">
-    <span slot="title">车辆使用记录</span>
+    <div class="card-header">
+      <div class="title">使用记录</div>
+      <div class="extra">
+        <a-input-search
+          placeholder="请输入车牌号码"
+          style="width: 200px"
+          @search="onSubmit"
+        />
+      </div>
+    </div>
     <a-table
       size="middle"
       :columns="columns"
@@ -37,14 +46,6 @@ export default {
       pagesize: 10,
       loading: false,
       columns: [
-        {
-          title: "序号",
-          customRender: (text, row, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          }
-        },
         {
           title: "车辆",
           dataIndex: "number"

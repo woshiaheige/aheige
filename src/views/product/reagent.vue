@@ -1,35 +1,39 @@
 <template>
-  <a-card :bordered="false" class="standing" title="物品管理">
-    <!-- <a-button type="primary" slot="extra" @click="edit('', 'add')"
-      >新增</a-button
-    > -->
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="输入试剂名称" v-model="reagent"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查找
-        </a-button>
-        <a-button type="primary" v-margin:left="10" @click="edit('', 'add')">
-          新增
-        </a-button>
-        <a-button
-          type="primary"
-          v-margin:left="10"
-          @click="warehouseFun('out')"
-        >
-          出库
-        </a-button>
-        <a-button
-          type="primary"
-          v-margin:left="10"
-          @click="warehouseFun('enter')"
-        >
-          入库
-        </a-button>
-      </a-form-item>
-    </a-form>
+  <a-card :bordered="false" class="standing">
+    <div class="card-header">
+      <div class="title">试剂列表</div>
+      <div class="extra">
+        <a-form layout="inline" :model="formInline">
+          <a-form-item>
+            <a-button type="primary" @click="edit('', 'add')">
+              <a-icon type="plus" />新建
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="danger" shape="round" @click="warehouseFun('out')">
+              <a-icon type="caret-up" />出库
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button
+              type="success"
+              shape="round"
+              @click="warehouseFun('enter')"
+            >
+              <a-icon type="caret-down" />入库
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-input-search
+              placeholder="输入试剂名称"
+              style="width: 200px"
+              v-model="reagent"
+              @search="onSubmit"
+            />
+          </a-form-item>
+        </a-form>
+      </div>
+    </div>
     <a-table
       size="middle"
       :columns="columns"
@@ -76,34 +80,24 @@ export default {
       total: 0,
       columns: [
         {
-          title: "序号",
-          align: "center",
-          customRender: (text, row, index) => `${index + 1}`
-        },
-        {
           title: "试剂名称",
-          dataIndex: "name",
-          align: "center"
+          dataIndex: "name"
         },
         {
           title: "品牌",
-          dataIndex: "brand",
-          align: "center"
+          dataIndex: "brand"
         },
         {
           title: "型号",
-          dataIndex: "type",
-          align: "center"
+          dataIndex: "type"
         },
         {
           title: "编码",
-          dataIndex: "coding",
-          align: "center"
+          dataIndex: "coding"
         },
         {
           title: "库存",
-          dataIndex: "inventory",
-          align: "center"
+          dataIndex: "inventory"
         },
         {
           title: "单位",

@@ -1,24 +1,24 @@
 <template>
   <div class="platform">
     <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="行业名称" v-model="formInline.name"></a-input>
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
-    <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">行业设置</div>
+        <div class="title">行业列表</div>
         <div class="extra">
-          <a-button type="success" @click="visible = true">
-            <a-icon type="plus" />新建
-          </a-button>
+          <a-form layout="inline">
+            <a-form-item>
+              <a-button type="primary" @click="visible = true">
+                <a-icon type="plus" />新建
+              </a-button>
+            </a-form-item>
+            <a-form-item>
+              <a-input-search
+                placeholder="输入行业名称"
+                style="width: 200px"
+                v-model="formInline.name"
+                @search="onSubmit"
+              />
+            </a-form-item>
+          </a-form>
         </div>
       </div>
       <a-table
@@ -70,19 +70,8 @@ export default {
       },
       columns: [
         {
-          title: "序号",
-          customRender: (text, row, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
-          },
-          width: 100,
-          align: "center"
-        },
-        {
           title: "行业名称",
-          dataIndex: "name",
-          align: "center"
+          dataIndex: "name"
         },
         {
           width: 200,
