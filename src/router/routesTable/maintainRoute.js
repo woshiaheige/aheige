@@ -46,7 +46,7 @@ const maintainRoutes = [
     name: "maintain-board",
     key: "board",
     meta: {
-      title: "任务看板",
+      title: "计划看板",
       back: false
     },
     component: () =>
