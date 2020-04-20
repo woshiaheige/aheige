@@ -1,122 +1,288 @@
-.login {
+@buttonColor: rgba(9, 114, 188, 1);
+@boxColor: rgba(241, 243, 244, 1);
+@inputColor: #e3e5e6;
+@shadow: #868c8f 1px 1px 50px 1px;
+
+.login,
+.sign-up {
   width: 100vw;
   height: 100vh;
+
+  .title-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 1);
+    border: 0.76px solid rgba(170, 169, 169, 1);
+    opacity: 0.5;
+    margin-bottom: 40px;
+    transform: translateY(-1.26px);
+  }
+
+  .login-signup-header {
+    width: 100%;
+    height: 52px;
+    background-color: #171717;
+    position: fixed;
+    top: 0;
+    padding: 10px 5px;
+
+    .slider-logo {
+      float: left;
+      height: 100%;
+      background: none;
+    }
+  }
+
+  .ivu-input {
+    border: 1px solid rgba(106, 106, 106, 1);
+    padding: 4px 15px;
+    background-color: @inputColor;
+  }
+
+  .ivu-input:focus {
+    box-shadow: none;
+    border-color: #aaa9a9;
+    background-color: @boxColor;
+  }
+
+  .ivu-checkbox-input {
+    background-color: @inputColor;
+  }
+
+  .ivu-icon-md-arrow-dropright {
+    color: #9ba2a5;
+    position: absolute;
+    right: 0;
+    transform: rotateZ(45deg);
+  }
+
+  .verify-button {
+    height: 42px;
+    vertical-align: top;
+    background-color: @buttonColor;
+  }
+
+  .to-login-block {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+
+    .to-login {
+      font-size: 12px;
+      color: #2d8cf0;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      margin: 0 auto;
+    }
+  }
+}
+
+.login {
+  background: url("../../img/login_bg.png");
+  background-size: cover;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-position: center 0;
 
   .login-box {
-    width: 920px;
-    border-radius: 10px;
-    display: flex;
-    height: 550px;
-    .left,
-    .right {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    .left {
-      width: 520px;
-      background: rgba(13, 22, 41, 1);
-      opacity: 0.8;
-      .welcome {
-        font-size: 20px;
-        font-family: "Microsoft YaHei";
-        font-weight: 300;
-        color: rgba(248, 248, 248, 1);
-      }
+    position: absolute;
+    top: 27%;
+    left: 54.5%;
+    width: 380px;
+    height: 398px;
+    background-color: @boxColor;
+    padding: 40px 40px;
+    border-radius: 4px;
+    box-shadow: @shadow;
 
-      .title {
-        font-size: 32px;
-        line-height: 32px;
-        font-family: "FZZhengHeiS-EB-GB";
-        font-weight: 400;
-        color: rgba(248, 248, 248, 1);
-      }
-
-      .login-img {
-        background: url(../../img/login_img.png) no-repeat;
-        width: 224px;
-        height: 227px;
-      }
+    .login-title {
+      font-size: 16px;
+      font-family: "Microsoft YaHei";
+      font-weight: 400;
+      width: fit-content;
+      border-bottom: 2px solid rgba(64, 64, 64, 1);
+      color: rgba(64, 64, 64, 1);
+      padding-bottom: 20px;
     }
 
-    .right {
-      background: rgba(255, 255, 255, 1);
-      width: 400px;
-      .ant-input {
-        width: 240px;
-        border: none;
-        outline: none;
-        box-shadow: none;
-        border-bottom: 1px solid rgba(51, 51, 51, 1);
-        border-radius: 0;
-      }
-      input:focus {
-        outline: none;
-        box-shadow: none;
-
-        &::-webkit-input-placeholder {
-          color: #1476d0;
+    .ant-form {
+      text-align: center;
+      .ant-form-item {
+        margin-bottom: 20px;
+        &:last-child {
+          height: 44px;
+          margin-top: 70px;
+          .ant-form-item-control {
+            height: 100%;
+          }
+        }
+        .ant-input {
+          height: 42px;
+          padding-left: 50px !important;
         }
 
-        &::-moz-placeholder {
-          color: #1476d0;
+        .ant-input-prefix {
+          width: 12px;
+          i {
+            font-size: 16px;
+            line-height: 42px;
+
+            &::before {
+              padding: 0 12px;
+              border-right: 1px solid #9ba2a5;
+            }
+          }
         }
 
-        &:-ms-input-placeholder {
-          color: #1476d0;
+        .ivu-input-suffix {
+          i {
+            font-size: 18px;
+            line-height: 42px;
+          }
+        }
+
+        .ivu-input-default {
+          padding-left: 56px;
+        }
+
+        .ivu-icon-md-arrow-dropright {
+          bottom: 0;
         }
       }
-      .ant-btn {
-        margin-top: 77px;
+
+      .link {
+        float: right;
+
+        a,
+        #forgetPass {
+          font-size: 12px;
+          color: inherit;
+          cursor: pointer;
+
+          &:last-child {
+            margin-left: 10px;
+          }
+
+          &:focus {
+            outline: -webkit-focus-ring-color auto 1px;
+          }
+        }
       }
-      // .login-form {
-      //   .ivu-form-item-label {
-      //     font-size: 16px;
-      //     font-family: "Microsoft YaHei";
-      //     font-weight: 400;
-      //     color: rgba(51, 51, 51, 1);
-      //   }
 
-      //   .ivu-input {
-      //     width: 240px;
-      //     border: none;
-      //     outline: none;
-      //     box-shadow: none;
-      //     border-bottom: 1px solid rgba(51, 51, 51, 1);
-      //     border-radius: 0;
-      //   }
+      .verify-code {
+        width: 188px;
+      }
 
-      //   input:focus {
-      //     outline: none;
-      //     box-shadow: none;
+      .verify-button {
+        margin-left: 10px;
+        width: 102px;
+        background-color: @buttonColor;
+      }
 
-      //     &::-webkit-input-placeholder {
-      //       color: #1476d0;
-      //     }
+      .login-button {
+        width: 100%;
+        height: 44px;
+        background-color: @buttonColor;
+        margin-top: 20px;
+      }
+    }
+  }
+}
 
-      //     &::-moz-placeholder {
-      //       color: #1476d0;
-      //     }
+.sign-up {
+  // background: url("../../img/signup_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 0;
 
-      //     &:-ms-input-placeholder {
-      //       color: #1476d0;
-      //     }
-      //   }
+  .signup-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 8% auto;
+    width: 440px;
+    height: 622px;
+    background: @boxColor;
+    border-radius: 4px;
+    padding: 36px 41px;
+    box-shadow: @shadow;
 
-      //   .ivu-btn {
-      //     width: 240px;
-      //     height: 38px;
-      //     background: rgba(20, 118, 208, 1);
-      //     border-radius: 3px;
-      //     margin-top: 77px;
-      //   }
-      // }
+    .signup-title {
+      font-size: 16px;
+      font-family: "Microsoft YaHei";
+      font-weight: 400;
+      width: fit-content;
+      border-bottom: 2px solid rgba(64, 64, 64, 1);
+      color: rgba(64, 64, 64, 1);
+      padding-bottom: 20px;
+
+      i {
+        cursor: pointer;
+      }
+    }
+
+    .ivu-form {
+      text-align: center;
+
+      .ivu-form-item-error-tip {
+        top: 75%;
+      }
+
+      .ivu-form-item {
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-top: 40px;
+        }
+
+        .ivu-input {
+          height: 42px;
+          margin-bottom: 10px;
+        }
+
+        .ivu-input-icon-validate {
+          display: none;
+        }
+
+        .ivu-input-suffix {
+          i {
+            font-size: 18px;
+            line-height: 42px;
+          }
+        }
+
+        .ivu-icon-md-arrow-dropright {
+          bottom: 10px;
+        }
+      }
+
+      .agreement {
+        .ivu-checkbox-wrapper {
+          font-size: 12px;
+
+          span {
+            margin-right: 5px;
+          }
+        }
+      }
+
+      .verify-code {
+        width: 220px;
+      }
+
+      .verify-button {
+        margin-left: 18px;
+        width: 120px;
+        background-color: @buttonColor;
+      }
+
+      .signup-button {
+        width: 100%;
+        height: 44px;
+        margin-top: 45px;
+        background-color: @buttonColor;
+      }
     }
   }
 }
