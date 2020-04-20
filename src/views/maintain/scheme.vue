@@ -11,7 +11,11 @@
       </div>
       <a-row :gutter="16">
         <a-col :span="6">
-          <a-radio-group defaultValue="a" buttonStyle="solid">
+          <a-radio-group
+            defaultValue="a"
+            buttonStyle="solid"
+            @change="changeType"
+          >
             <a-radio-button value="a">水类运维</a-radio-button>
             <a-radio-button value="b">气类运维</a-radio-button>
             <a-radio-button value="c">其他运维</a-radio-button>
@@ -23,24 +27,50 @@
             v-model="current"
             mode="vertical"
             :defaultSelectedKeys="['type1']"
+            v-if="type == 'a'"
           >
             <a-menu-item key="type1">
-              巡检（周计划）
+              日检查维护
             </a-menu-item>
             <a-menu-item key="type2">
-              质控（周计划）
+              周检查维护
             </a-menu-item>
             <a-menu-item key="type3">
-              比对（周计划）
+              月检查维护
             </a-menu-item>
             <a-menu-item key="type4">
-              校准（周计划）
+              季检查维护
             </a-menu-item>
             <a-menu-item key="type5">
-              标定（月计划）
+              定期校验
             </a-menu-item>
             <a-menu-item key="type6">
-              标气更换（月计划）
+              比对监测
+            </a-menu-item>
+          </a-menu>
+          <a-menu
+            v-model="current"
+            mode="vertical"
+            :defaultSelectedKeys="['type1']"
+            v-if="type == 'b'"
+          >
+            <a-menu-item key="type1">
+              日常巡检
+            </a-menu-item>
+            <a-menu-item key="type2">
+              日常维护
+            </a-menu-item>
+            <a-menu-item key="type3">
+              定期校准
+            </a-menu-item>
+            <a-menu-item key="type4">
+              定期维护
+            </a-menu-item>
+            <a-menu-item key="type5">
+              定期校验
+            </a-menu-item>
+            <a-menu-item key="type6">
+              比对监测
             </a-menu-item>
           </a-menu>
         </a-col>
@@ -106,7 +136,8 @@ export default {
         }
       ],
       addSchemeModal: false,
-      addSchemeListModal: false
+      addSchemeListModal: false,
+      type: "a"
     };
   },
   methods: {
@@ -115,6 +146,9 @@ export default {
     },
     addSchemeList() {
       this.addSchemeListModal = true;
+    },
+    changeType(e) {
+      this.type = e.target.value;
     }
   }
 };

@@ -41,7 +41,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -58,7 +58,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -75,7 +75,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -92,7 +92,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -109,7 +109,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -126,7 +126,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -143,7 +143,7 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>小组1-张三 方案1</p>
+                  <p>运维1组-张天志 运维任务：日常巡检</p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -163,24 +163,24 @@
 import dispatchEdit from "@/components/maintain/dispatch/dispatch-edit";
 const data = [
   {
-    title: "企业1 监测点1",
-    description: "任务1 方案1 小组1 张三"
+    title: "广州市污水处理厂-废水排口",
+    description: "任务1 运维任务：日常巡检 小组1 张三"
   },
   {
-    title: "企业1 监测点1",
-    description: "任务1 方案1 小组1 张三"
+    title: "广州市污水处理厂-废水排口",
+    description: "任务1 运维任务：日常巡检 小组1 张三"
   },
   {
-    title: "企业1 监测点1",
-    description: "任务1 方案1 小组1 张三"
+    title: "广州市污水处理厂-废水排口",
+    description: "任务1 运维任务：日常巡检 小组1 张三"
   },
   {
-    title: "企业1 监测点1",
-    description: "任务1 方案1 小组1 张三"
+    title: "广州市污水处理厂-废水排口",
+    description: "任务1 运维任务：日常巡检 小组1 张三"
   },
   {
-    title: "企业1 监测点1",
-    description: "任务1 方案1 小组1 张三"
+    title: "广州市污水处理厂-废水排口",
+    description: "任务1 运维任务：日常巡检 小组1 张三"
   }
 ];
 export default {

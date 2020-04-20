@@ -107,10 +107,6 @@ export default {
           dataIndex: "number"
         },
         {
-          title: "运维小组",
-          dataIndex: "number"
-        },
-        {
           title: "计划状态",
           dataIndex: "number"
         },
