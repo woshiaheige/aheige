@@ -4,7 +4,9 @@
       <div class="card-header">
         <div class="title">方案设置</div>
         <div class="extra">
-          <a-button type="primary" icon="plus">新建项目</a-button>
+          <a-button type="primary" icon="plus" @click="addSchemeList"
+            >新建项目</a-button
+          >
         </div>
       </div>
       <a-row :gutter="16">
@@ -14,7 +16,9 @@
             <a-radio-button value="b">气类运维</a-radio-button>
             <a-radio-button value="c">其他运维</a-radio-button>
           </a-radio-group>
-          <a-button type="dashed" block v-margin:top="16">新建方案</a-button>
+          <a-button type="dashed" block v-margin:top="16" @click="addNewScheme"
+            >新建方案</a-button
+          >
           <a-menu
             v-model="current"
             mode="vertical"
@@ -66,11 +70,27 @@
         </a-col>
       </a-row>
     </a-card>
+
+    <add-scheme
+      :visible="addSchemeModal"
+      @close="addSchemeModal = false"
+    ></add-scheme>
+
+    <add-scheme-list
+      :visible="addSchemeListModal"
+      @close="addSchemeListModal = false"
+    ></add-scheme-list>
   </div>
 </template>
 
 <script>
+import addScheme from "@/components/maintain/scheme/add-scheme.vue";
+import addSchemeList from "@/components/maintain/scheme/add-scheme-list.vue";
 export default {
+  components: {
+    addScheme,
+    addSchemeList
+  },
   data() {
     return {
       current: ["type1"],
@@ -84,8 +104,18 @@ export default {
           key: "action",
           scopedSlots: { customRender: "action" }
         }
-      ]
+      ],
+      addSchemeModal: false,
+      addSchemeListModal: false
     };
+  },
+  methods: {
+    addNewScheme() {
+      this.addSchemeModal = true;
+    },
+    addSchemeList() {
+      this.addSchemeListModal = true;
+    }
   }
 };
 </script>
