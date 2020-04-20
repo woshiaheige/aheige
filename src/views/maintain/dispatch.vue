@@ -1,33 +1,102 @@
 <template>
   <div class="dispatch">
     <a-card title="星期一" :bordered="false">
-      <a-list itemLayout="horizontal" :dataSource="data" class="dispatch-list">
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
         <a-list-item slot="renderItem" slot-scope="item">
-          <a slot="actions">编辑</a>
-          <a slot="actions">删除</a>
-          <a-list-item-meta :description="item.description">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
             <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
           </a-list-item-meta>
         </a-list-item>
       </a-list>
     </a-card>
     <a-card title="星期二" :bordered="false">
-      <p><a-badge status="success" text="任务一" /></p>
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
+            <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-card>
     <a-card title="星期三" :bordered="false">
-      <p><a-badge status="success" text="任务一" /></p>
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
+            <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-card>
     <a-card title="星期四" :bordered="false">
-      <p><a-badge status="success" text="任务一" /></p>
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
+            <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-card>
     <a-card title="星期五" :bordered="false">
-      <p><a-badge status="success" text="任务一" /></p>
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
+            <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-card>
     <a-card title="星期六" :bordered="false">
-      <p><a-badge status="success" text="任务一" /></p>
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
+            <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-card>
     <a-card title="星期日" :bordered="false">
-      <p><a-badge status="success" text="任务一" /></p>
+      <a-list itemLayout="vertical" :dataSource="data" class="dispatch-list">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a slot="actions">调度</a>
+          <a-list-item-meta>
+            <span slot="title">{{ item.title }}</span>
+            <div slot="description">
+              <p>小组1-张三</p>
+              <p>方案1</p>
+            </div>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-card>
   </div>
 </template>
