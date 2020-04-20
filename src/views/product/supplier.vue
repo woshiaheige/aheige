@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import addEdit from "@/components/customer/supplier/add-edit";
+import addEdit from "@/components/product/supplier/add-edit";
 export default {
   components: { addEdit },
   data() {

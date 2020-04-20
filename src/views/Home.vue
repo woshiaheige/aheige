@@ -11,9 +11,8 @@
       }"
     >
       <div class="logo">
-        <!-- <a-icon type="cloud" theme="filled" v-fontsize="28" />
-        <span>博控智维云</span> -->
         <img :src="require('@/assets/img/logo.png')" alt="" />
+        <span>博控智维云</span>
       </div>
       <a-menu
         theme="dark"

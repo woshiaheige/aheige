@@ -16,22 +16,8 @@ const customer = {
   },
 
   delEnterPrise(data) {
-    return axios({
-      url: base.api + "cusEnterprise/deleteCusEnterprise",
-      method: "post",
-      data: data,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      transformRequest: [
-        data => {
-          let params = "";
-          for (var index in data) {
-            params += index + "=" + data[index] + "&";
-          }
-          return params;
-        }
-      ]
+    return axios.get(base.api + "cusEnterprise/deleteCusEnterprise", {
+      params: data
     });
   },
   getEnterPriseById(data) {
@@ -53,22 +39,8 @@ const customer = {
     return axios.post(base.api + "cusPoint/editCusPoint", data);
   },
   delStation(data) {
-    return axios({
-      url: base.api + "cusPoint/deleteCusPoint",
-      method: "post",
-      data: data,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      transformRequest: [
-        data => {
-          let params = "";
-          for (var index in data) {
-            params += index + "=" + data[index] + "&";
-          }
-          return params;
-        }
-      ]
+    return axios.get(base.api + "cusPoint/deleteCusPoint", {
+      params: data
     });
   },
   getStationById(data) {
@@ -89,22 +61,8 @@ const customer = {
     return axios.post(base.api + "cusPointDivisor/update", data);
   },
   delFactor(data) {
-    return axios({
-      url: base.api + "cusPointDivisor/delete",
-      method: "post",
-      data: data,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      transformRequest: [
-        data => {
-          let params = "";
-          for (var index in data) {
-            params += index + "=" + data[index] + "&";
-          }
-          return params;
-        }
-      ]
+    return axios.get(base.api + "cusPointDivisor/delete", {
+      params: data
     });
   },
   getFactorById(data) {
@@ -125,22 +83,8 @@ const customer = {
     return axios.post(base.api + "sysInstrument/editSysInstrument", data);
   },
   delDevice(data) {
-    return axios({
-      url: base.api + "sysInstrument/deleteSysInstrument",
-      method: "post",
-      data: data,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      transformRequest: [
-        data => {
-          let params = "";
-          for (var index in data) {
-            params += index + "=" + data[index] + "&";
-          }
-          return params;
-        }
-      ]
+    return axios.get(base.api + "sysInstrument/deleteSysInstrument", {
+      params: data
     });
   },
   getDeviceById(data) {
@@ -161,22 +105,8 @@ const customer = {
     return axios.post(base.api + "contract/editCusContract", data);
   },
   delContract(data) {
-    return axios({
-      url: base.api + "contract/deleteContract",
-      method: "post",
-      data: data,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      transformRequest: [
-        data => {
-          let params = "";
-          for (var index in data) {
-            params += index + "=" + data[index] + "&";
-          }
-          return params;
-        }
-      ]
+    return axios.get(base.api + "contract/deleteContract", {
+      params: data
     });
   },
   getContractById(data) {

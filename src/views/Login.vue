@@ -1,97 +1,243 @@
 <template>
-  <div class="login" v-lazy:background-image="loginBg">
-    <div class="login-box">
-      <div class="left">
-        <div v-margin:bottom="64" style="width:440px">
-          <div class="welcome" v-margin:bottom="10">欢迎来到</div>
-          <div class="title">
-            <p v-margin:bottom="10">运维项目</p>
-            <p>运维项目平台</p>
-          </div>
-        </div>
-
-        <div class="login-img"></div>
+  <div class="login">
+    <div class="login-signup-header">
+      <div class="slider-logo">
+        <img :src="require('@/assets/img/logo.png')" alt="" />
       </div>
-      <div class="right">
-        <a-form-model :model="form" :rules="rules" ref="ruleForm">
-          <a-form-model-item label="用户名" prop="username">
-            <a-input v-model="form.username" />
-          </a-form-model-item>
-          <a-form-model-item label="密码" prop="password">
-            <a-input-password v-model="form.password" />
-          </a-form-model-item>
-          <a-form-model-item>
-            <a-button type="primary" block @click="onHandleSubmit">
-              登录
-            </a-button>
-          </a-form-model-item>
-        </a-form-model>
+    </div>
+    <div class="login-box">
+      <div class="login-title">{{ forgetFlag ? "找回密码" : "登录" }}</div>
+      <div class="title-line"></div>
+      <a-form-model
+        ref="login"
+        :model="formValidate"
+        :rules="ruleValidate"
+        v-if="!forgetFlag"
+      >
+        <a-form-model-item prop="user">
+          <a-input
+            v-model="formValidate.user"
+            placeholder="手机/用户名"
+            @pressEnter="handleSubmit('login')"
+          >
+            <a-icon slot="prefix" type="user" />
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item prop="password">
+          <a-input-password
+            v-model="formValidate.password"
+            placeholder="密码"
+            @pressEnter="handleSubmit('login')"
+          >
+            <a-icon slot="prefix" type="lock" />
+          </a-input-password>
+        </a-form-model-item>
+        <div class="link">
+          <span id="forgetPass">忘记密码？</span>
+          <router-link to="/signup">注册</router-link>
+        </div>
+        <a-form-model-item>
+          <a-button
+            type="primary"
+            class="login-button"
+            @click="handleSubmit('login')"
+            >登录</a-button
+          >
+        </a-form-model-item>
+      </a-form-model>
+      <a-form-model
+        ref="login"
+        :model="formValidate"
+        :rules="ruleValidate"
+        v-if="forgetFlag"
+      >
+        <a-form-model-item prop="user">
+          <a-input
+            v-model="formValidate.user"
+            placeholder="请输入手机号"
+            @pressEnter="handleSubmit('login')"
+          >
+            <a-icon type="tablet" slot="prefix" />
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item prop="code">
+          <a-input
+            :maxlength="4"
+            v-model="formValidate.code"
+            placeholder="验证码"
+            class="verify-code"
+            @on-focus="onFocus('code')"
+            @on-blur="onBlur('code')"
+          >
+            <a-icon type="barcode" slot="prefix" />
+          </a-input>
+          <a-button
+            type="primary"
+            class="verify-button"
+            @click="getVerifyCode"
+            :disabled="disable"
+            >{{ buttonText }}</a-button
+          >
+        </a-form-model-item>
+        <a-form-model-item class="login-button-form">
+          <a-button
+            type="primary"
+            class="login-button"
+            @click="handleSubmit('login')"
+            :disabled="disable"
+            >找回密码</a-button
+          >
+        </a-form-model-item>
+      </a-form-model>
+      <div class="to-login-block">
+        <span id="toLogin" class="to-login" v-if="forgetFlag">返回登录</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import loginBg from "@/assets/img/login_bg.png";
 export default {
   data() {
     return {
-      loginBg,
-      form: {
-        username: "",
+      formValidate: {
+        user: "",
         password: ""
       },
-      rules: {
-        username: [
-          { required: true, message: "用户名不能为空", trigger: "blur" }
-        ],
-        password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
-      }
+      ruleValidate: {},
+      disable: false,
+      countdown: 60,
+      forgetFlag: false
     };
   },
-  methods: {
-    onHandleSubmit() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          let data = {
-            deadline: "",
-            deptId: "",
-            email: "",
-            enterpriseId: "",
-            gmtCreate: "",
-            gmtModified: "",
-            id: 0,
-            isDeleted: 0,
-            isLocked: 0,
-            lastLoginTime: "",
-            username: this.form.username,
-            password: this.$md5(this.form.password),
-            phone: "",
-            salt: "",
-            sex: "",
-            type: 0,
-            name: "",
-            wechatId: ""
-          };
-          this.$api.login
-            .login(data)
-            .then(res => {
-              if (res.data.state == 0) {
-                sessionStorage.setItem("token", res.data.data.token);
-                this.$message.success("登录成功！");
-                this.$router.push("/");
-              } else {
-                this.$message.error(res.data.msg);
-              }
-            })
-            .catch(err => {
-              console.log(err);
+
+  computed: {
+    buttonText() {
+      if (this.disable) {
+        return this.countdown + "s后重新发送";
+      } else {
+        return "发送验证码";
+      }
+    }
+  },
+  watch: {
+    forgetFlag(newVal) {
+      let that = this;
+
+      if (newVal) {
+        console.log(newVal);
+        this.$nextTick(() => {
+          document
+            .getElementById("toLogin")
+            .addEventListener("click", function() {
+              console.log("click");
+              that.forgetFlag = false;
             });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+        });
+      } else {
+        console.log(newVal);
+        this.$nextTick(() => {
+          document
+            .getElementById("forgetPass")
+            .addEventListener("click", function() {
+              console.log("click");
+              that.forgetFlag = true;
+            });
+        });
+      }
+    }
+  },
+  mounted() {
+    this.setForgetPassword();
+  },
+  methods: {
+    handleSubmit(ref) {
+      let that = this;
+      if (
+        this.formValidate.user.trim() == "" ||
+        this.formValidate.password.trim() == ""
+      ) {
+        this.$message.warning("请输入正确的用户名或密码！");
+      } else {
+        this.$refs[ref].validate(valid => {
+          if (valid) {
+            let data = {
+              username: that.formValidate.user,
+              password: this.$md5(that.formValidate.password)
+            };
+            that.$api.login
+              .login(data)
+              .then(res => {
+                console.log(res);
+                if (res.data.state == 0) {
+                  that.$message.success("登录成功！");
+                  sessionStorage.setItem("token", res.data.data.token);
+                  sessionStorage.setItem("userid", res.data.data.id);
+                  sessionStorage.setItem(
+                    "routeId",
+                    JSON.stringify(res.data.data.resources)
+                  );
+                  this.$store.dispatch(
+                    "createRouterTable",
+                    res.data.data.resources
+                  ); //动态添加路由
+                  let userinfo = {
+                    username: res.data.data.username,
+                    company: res.data.data.enterpriseName,
+                    enterpriseId: res.data.data.enterpriseId,
+                    roleId: res.data.data.role
+                  };
+
+                  sessionStorage.setItem("userinfo", JSON.stringify(userinfo));
+                  that.$router.push("/");
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        });
+      }
+    },
+    getVerifyCode() {
+      let data = {
+        phone: this.formValidate.user
+      };
+      let that = this;
+      if (data.phone != "") {
+        this.$api.common.getVerifyCode(data).then(res => {
+          console.log(res);
+          that.disable = true;
+
+          let clock = window.setInterval(() => {
+            that.countdown--;
+            if (that.countdown < 0) {
+              //当倒计时小于0时清除定时器
+              window.clearInterval(clock);
+              that.disable = false;
+              that.countdown = 60;
+            }
+          }, 1000);
+        });
+      } else {
+        this.$message.warning("请填写手机");
+      }
+    },
+    setForgetPassword() {
+      let that = this;
+
+      document
+        .getElementById("forgetPass")
+        .addEventListener("click", function() {
+          console.log("click");
+          that.forgetFlag = true;
+        });
+    },
+    onFocus(input) {
+      console.log(input);
+    },
+    onBlur(input) {
+      console.log(input);
     }
   }
 };

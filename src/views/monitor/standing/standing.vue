@@ -115,8 +115,7 @@ export default {
         },
         {
           title: "监控点名称",
-          dataIndex: "name",
-          align: "center"
+          dataIndex: "name"
         },
         {
           title: "监测因子数",

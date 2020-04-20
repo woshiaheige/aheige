@@ -6,13 +6,7 @@
     @cancel="handleCancel"
     okText="保存"
   >
-    <a-form-model
-      :model="formInline"
-      :rules="rules"
-      ref="ruleForm"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 18 }"
-    >
+    <a-form-model :model="formInline" :rules="rules" ref="ruleForm">
       <a-form-model-item label="供应商名称" prop="name">
         <a-input placeholder="请输入" v-model="formInline.name" />
       </a-form-model-item>
