@@ -57,7 +57,11 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="验收时间" prop="gmtReceptionTime">
-        <a-date-picker v-width="350" v-model="formData.gmtReceptionTime" />
+        <a-date-picker
+          v-width="350"
+          v-model="formData.gmtReceptionTime"
+          @change="onChange"
+        />
       </a-form-model-item>
       <a-form-model-item label="验收材料">
         <a-upload
@@ -119,11 +123,11 @@ export default {
           return false;
         }
         //验证通过
-        if (this.formData.gmtReceptionTime) {
-          this.formData.gmtReceptionTime = this.$moment(
-            this.formData.gmtReceptionTime
-          ).format("YYYY-MM-DD hh:mm:ss");
-        }
+        // if (this.formData.gmtReceptionTime) {
+        //   this.formData.gmtReceptionTime = this.$moment(
+        //     this.formData.gmtReceptionTime
+        //   ).format("YYYY-MM-DD hh:mm:ss");
+        // }
         if (this.modelData.type == "edit") {
           this.$api.customer.editDevice(this.formData).then(res => {
             if (res.data.state == 0) {
@@ -149,7 +153,6 @@ export default {
       this.$refs.ruleForm.resetFields();
     },
     handleChange(info) {
-      console.log(info);
       let fileList = [...info.fileList];
 
       fileList = fileList.slice(-1);
@@ -160,6 +163,7 @@ export default {
         }
         return file;
       });
+      console.log(fileList);
 
       this.fileList = fileList;
       if (info.file.status === "done") {
@@ -174,13 +178,21 @@ export default {
         .getDeviceById({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
-            this.formData = res.data.data;
+            this.fileList = [
+              {
+                uid: "-1",
+                name: res.data.data.fileName,
+                status: "done",
+                url: ""
+              }
+            ];
             if (res.data.data.gmtReceptionTime != null) {
-              this.formData.gmtReceptionTime = this.$moment(
+              res.data.data.gmtReceptionTime = this.$moment(
                 res.data.data.gmtReceptionTime,
                 "YYYY-MM-DD"
               );
             }
+            this.formData = res.data.data;
           }
         });
     },
@@ -203,10 +215,15 @@ export default {
     getFactor() {
       this.$api.common.selectFactor().then(res => {
         if (res.data.state == 0) {
-          console.log(this.factorOptions);
           this.factorOptions = res.data.data;
         }
       });
+    },
+    onChange(value) {
+      // this.formData.gmtReceptionTime = dateString;
+      this.formData.gmtReceptionTime = value;
+      console.log("Selected Time: ", this.formData.gmtReceptionTime);
+      console.log(typeof this.formData.gmtReceptionTime);
     }
   },
   watch: {
@@ -215,7 +232,8 @@ export default {
         this.getStation();
         this.getPointSelect();
         this.getFactor();
-        // this.formData.gmtReceptionTime = "";
+        this.fileList = [];
+        this.formData.gmtReceptionTime = null;
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

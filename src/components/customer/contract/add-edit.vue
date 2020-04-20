@@ -155,19 +155,17 @@ export default {
           return false;
         }
         //验证通过
+        // let data = JSON.parse(JSON.stringfy(this.formData));
+        let data = this.formData;
 
-        this.formData.gmtBegin = this.$moment(this.formData.gmtBegin).format(
+        data.gmtBegin = this.$moment(data.gmtBegin).format(
           "YYYY-MM-DD hh:mm:ss"
         );
-        this.formData.gmtEnd = this.$moment(this.formData.gmtEnd).format(
-          "YYYY-MM-DD hh:mm:ss"
-        );
-        this.formData.gmtSign = this.$moment(this.formData.gmtSign).format(
-          "YYYY-MM-DD hh:mm:ss"
-        );
+        data.gmtEnd = this.$moment(data.gmtEnd).format("YYYY-MM-DD hh:mm:ss");
+        data.gmtSign = this.$moment(data.gmtSign).format("YYYY-MM-DD hh:mm:ss");
 
         if (this.modelData.type == "edit") {
-          this.$api.customer.editContract(this.formData).then(res => {
+          this.$api.customer.editContract(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
               this.$emit("refresh");
@@ -175,7 +173,7 @@ export default {
             }
           });
         } else {
-          this.$api.customer.addContract(this.formData).then(res => {
+          this.$api.customer.addContract(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("新建成功");
               this.$emit("refresh");
@@ -227,9 +225,10 @@ export default {
     },
     onChange(date, dateString) {
       console.log(date);
-      this.formData.time = dateString;
-      this.formData.gmtBegin = dateString[0];
-      this.formData.gmtEnd = dateString[1];
+      console.log(dateString);
+      this.formData.gmtBegin = date;
+      // this.formData.gmtBegin = dateString[0];
+      // this.formData.gmtEnd = dateString[1];
     }
   },
   watch: {
