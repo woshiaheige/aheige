@@ -8,10 +8,10 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="小组名称">
         <a-input
-          placeholder="小组名称"
+          placeholder="请输入"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '输入小组名称' }] }
+            { rules: [{ required: true, message: '请输入小组名称' }] }
           ]"
         />
       </a-form-item>

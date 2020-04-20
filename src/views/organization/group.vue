@@ -12,7 +12,7 @@
             </a-form-item>
             <a-form-item>
               <a-input-search
-                placeholder="小组名称"
+                placeholder="请输入小组名称"
                 style="width: 200px"
                 v-model="formInline.name"
                 @search="onSubmit"

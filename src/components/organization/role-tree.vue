@@ -8,10 +8,10 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="权限名称">
         <a-input
-          placeholder="权限名称"
+          placeholder="请输入"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '输入权限名称' }] }
+            { rules: [{ required: true, message: '请输入权限名称' }] }
           ]"
         />
       </a-form-item>
@@ -19,7 +19,7 @@
         <a-select
           placeholder="请选择"
           v-decorator="[
-            'resourceNames',
+            'type',
             { rules: [{ required: true, message: '请选择权限类型' }] }
           ]"
         >
@@ -95,7 +95,7 @@ export default {
           setTimeout(() => {
             this.form.setFieldsValue({
               name: this.roleDetail.name,
-              resourceNames: this.roleDetail.resourceNames
+              type: `${this.roleDetail.type}`
             });
           }, 50);
           this.roleId = this.roleDetail.id;

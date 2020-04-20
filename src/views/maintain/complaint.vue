@@ -42,15 +42,18 @@
       :defaultCurrent="current"
       :total="total"
     />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
+    <!-- <add-edit :obj="obj" @cancel="cancel"></add-edit> -->
+    <complaint-detail :visible.sync="visible" :complainDetail="detail" />
   </a-card>
 </template>
 <script>
-import addEdit from "@/components/maintain/complaint/add-edit";
+// import addEdit from "@/components/maintain/complaint/add-edit";
+import complaintDetail from "@/components/maintain/complaint/complaint-detail";
 export default {
-  components: { addEdit },
+  components: { complaintDetail },
   data() {
     return {
+      visible: false,
       current: 1,
       total: 0,
       columns: [
@@ -73,9 +76,7 @@ export default {
         }
       ],
       tableData: [],
-      obj: {
-        show: false
-      }
+      detail: ""
     };
   },
   methods: {
@@ -87,8 +88,8 @@ export default {
     },
     onEdit(row) {
       console.log(row);
-      this.obj.show = true;
-      this.obj.row = row;
+      this.visible = true;
+      this.detail = row;
     },
     onDelete(row) {
       console.log(row);
@@ -102,9 +103,6 @@ export default {
           console.log("Cancel");
         }
       });
-    },
-    cancel(value) {
-      this.obj.show = value;
     }
   },
   mounted() {

@@ -44,6 +44,11 @@
         v-margin:top="16"
         :pagination="false"
       >
+        <template slot="reportType" slot-scope="reportType">
+          <a-tag color="green" v-if="reportType == 1">季报表</a-tag>
+          <a-tag color="cyan" v-if="reportType == 2">月报表</a-tag>
+          <a-tag color="blue" v-if="reportType == 3">周报表</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="toMonitorData(row)">查看</a>
         </span>
@@ -85,13 +90,13 @@ export default {
         },
         {
           title: "报表类型",
-          dataIndex: "rportType",
-          key: "rportType",
+          dataIndex: "reportType",
           width: 200,
-          align: "center"
+          align: "center",
+          scopedSlots: { customRender: "reportType" }
         },
         {
-          title: "超标时间",
+          title: "推送时间",
           dataIndex: "dateTime",
           key: "dateTime",
           width: 200,
@@ -118,27 +123,35 @@ export default {
   methods: {
     getTableData() {
       this.loading = true;
-      let data = {
-        index: this.current,
-        size: this.pagesize,
-        beginTime: this.formInline.beginTime,
-        endTime: this.formInline.endTime,
-        enterpriseName: this.formInline.enterpriseName,
-        mn: this.formInline.mn,
-        pointName: this.formInline.pointName
-      };
-      this.$api.monitor
-        .getWarnData(data)
-        .then(res => {
-          this.total = res.data.data.total;
-          this.tableData = res.data.data.list;
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.tableData = [
+        {
+          enterpriseName: "广州鸿政企业有限公司",
+          dateTime: "2019-08-26 16:00:00",
+          reportType: 1
+        },
+        {
+          enterpriseName: "北京永瑞恒信有限公司",
+          dateTime: "2019-08-26 16:00:00",
+          reportType: 2
+        },
+        {
+          enterpriseName: "北京永瑞恒信有限公司",
+          dateTime: "2019-08-26 16:00:00",
+          reportType: 1
+        },
+        {
+          enterpriseName: "广东蓝祺有限公司",
+          dateTime: "2019-08-26 16:00:00",
+          reportType: 3
+        },
+        {
+          enterpriseName: "福建驰骤有限公司",
+          dateTime: "2019-08-26 16:00:00",
+          reportType: 1
+        }
+      ];
+      this.total = 5;
+      this.loading = false;
     },
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
