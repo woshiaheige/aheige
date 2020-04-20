@@ -28,6 +28,20 @@ const maintainRoutes = [
       )
   },
   {
+    path: "/maintain/dispatch",
+    name: "maintain-dispatch",
+    key: "dispatch",
+    meta: {
+      title: "任务调度",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-maintain" */
+        "@/views/maintain/dispatch.vue"
+      )
+  },
+  {
     path: "/maintain/board",
     name: "maintain-board",
     key: "board",
@@ -95,6 +109,20 @@ const maintainRoutes = [
       import(
         /* webpackChunkName: "view-maintain" */
         "@/views/maintain/knowledge"
+      )
+  },
+  {
+    path: "/maintain/notification",
+    name: "maintain-notification",
+    key: "notification",
+    meta: {
+      title: "报表推送",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-maintain" */
+        "@/views/maintain/notification"
       )
   }
 ];
