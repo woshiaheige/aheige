@@ -14,7 +14,7 @@
               placeholder="请输入车牌号码"
               style="width: 200px"
               @search="onSubmit"
-              v-model="formInline.name"
+              v-model="formInline.number"
             />
           </a-form-item>
         </a-form>
@@ -27,8 +27,8 @@
           :headStyle="{ background: '#2d8cf0', color: '#ffffff' }"
         >
           <template class="ant-card-actions" slot="actions">
-            <span key="edit" @click="onEdit(row, 'edit')">编辑</span>
-            <span key="delete" @click="onDelect(row)" v-color="'#ed4014'"
+            <span key="edit" @click="onEdit(item, 'edit')">编辑</span>
+            <span key="delete" @click="onDelect(item)" v-color="'#ed4014'"
               >删除</span
             >
           </template>
@@ -61,7 +61,7 @@ export default {
     return {
       modalInfo: { show: false },
       formInline: {
-        name: ""
+        number: ""
       },
       current: 1,
       loading: false,
@@ -113,7 +113,7 @@ export default {
       let params = {
         size: this.size,
         page: this.current,
-        name: this.formInline.name
+        number: this.formInline.number
       };
       this.loading = true;
       this.$api.car

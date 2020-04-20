@@ -8,52 +8,52 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="姓名">
         <a-input
-          placeholder="输入姓名"
+          placeholder="请输入"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '输入姓名' }] }
+            { rules: [{ required: true, message: '请输入姓名' }] }
           ]"
         />
       </a-form-item>
       <a-form-item label="账号">
         <a-input
-          placeholder="输入账号"
+          placeholder="请输入"
           v-decorator="[
             'username',
-            { rules: [{ required: true, message: '输入账号' }] }
+            { rules: [{ required: true, message: '请输入账号' }] }
           ]"
         />
       </a-form-item>
       <a-form-item label="密码">
         <a-input
-          placeholder="输入密码"
+          placeholder="请输入"
           type="password"
           @blur="validatePassword"
           v-decorator="[
             'password',
-            { rules: [{ required: true, message: '输入密码' }] }
+            { rules: [{ required: true, message: '请输入密码' }] }
           ]"
         />
       </a-form-item>
       <a-form-item label="手机号码">
         <a-input
           @blur="validatePhone"
-          placeholder="输入手机号码"
+          placeholder="请输入"
           v-decorator="[
             'phone',
-            { rules: [{ required: true, message: '输入手机号码' }] }
+            { rules: [{ required: true, message: '请输入手机号码' }] }
           ]"
         />
       </a-form-item>
       <a-form-item label="微信ID">
-        <a-input placeholder="输入微信ID" v-decorator="['wechatId']" />
+        <a-input placeholder="请输入" v-decorator="['wechatId']" />
       </a-form-item>
       <a-form-item label="选择权限">
         <a-select
-          placeholder="选择权限"
+          placeholder="请选择"
           v-decorator="[
             'roleId',
-            { rules: [{ required: true, message: '选择权限' }] }
+            { rules: [{ required: true, message: '请选择权限' }] }
           ]"
           @select="roleSelect"
         >
@@ -67,10 +67,10 @@
       </a-form-item>
       <a-form-item label="运维小组" v-if="roleId == 3">
         <a-select
-          placeholder="选择运维小组"
+          placeholder="请选择"
           v-decorator="[
             'groupId',
-            { rules: [{ required: true, message: '选择运维小组' }] }
+            { rules: [{ required: true, message: '请选择运维小组' }] }
           ]"
         >
           <a-select-option
@@ -83,10 +83,10 @@
       </a-form-item>
       <a-form-item label="审核权限" v-if="roleId == 2">
         <a-select
-          placeholder="选择审核权限"
+          placeholder="请选择"
           v-decorator="[
             'approvalIds',
-            { rules: [{ required: true, message: '选择审核权限' }] }
+            { rules: [{ required: true, message: '请选择审核权限' }] }
           ]"
         >
           <a-select-option

@@ -1,21 +1,25 @@
 <template>
   <div>
     <a-row :gutter="16">
-      <a-col :span="7">
-        <a-card :bordered="false" :tabList="tabList">
-          <a-radio-group defaultValue="a" buttonStyle="solid">
-            <a-radio-button value="a">水类站点</a-radio-button>
-            <a-radio-button value="b">气类站点</a-radio-button>
-            <a-radio-button value="c">其他站点</a-radio-button>
-          </a-radio-group>
-          <a-list>
-            <a-list-item slot="renderItem">
-              XX污水处理厂废水排口
-            </a-list-item>
-          </a-list>
+      <a-col :span="8">
+        <a-card :bordered="false">
+          <a-tabs tabPosition="left" size="small">
+            <a-tab-pane v-for="(tab, key) of tabList" :key="key" :tab="tab.tab">
+              <a-radio-group defaultValue="a" buttonStyle="solid">
+                <a-radio-button value="a">水类站点</a-radio-button>
+                <a-radio-button value="b">气类站点</a-radio-button>
+                <a-radio-button value="c">其他站点</a-radio-button>
+              </a-radio-group>
+              <a-list>
+                <a-list-item slot="renderItem">
+                  XX污水处理厂废水排口
+                </a-list-item>
+              </a-list>
+            </a-tab-pane>
+          </a-tabs>
         </a-card>
       </a-col>
-      <a-col :span="17">
+      <a-col :span="16">
         <a-card :bordered="false" class="maintain">
           <div class="card-header">
             <div class="title">站点运维方案</div>

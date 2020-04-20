@@ -2,26 +2,50 @@
   <div class="organization">
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item label="用户姓名">
-          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
-        </a-form-item>
-        <a-form-item label="用户账号">
-          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
-        </a-form-item>
-        <a-form-item label="手机号码">
-          <a-input placeholder="请输入" v-model="formInline.phone"></a-input>
-        </a-form-item>
-        <a-form-item label="用户状态">
-          <a-select defaultValue="normal">
-            <a-select-option value="normal">正常</a-select-option>
-            <a-select-option value="lock">锁定</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item style="float:right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
+        <a-row>
+          <a-col>
+            <a-form-item label="用户姓名">
+              <a-input placeholder="请输入" v-model="formInline.name"></a-input>
+            </a-form-item>
+            <a-form-item label="用户账号">
+              <a-input
+                placeholder="请输入"
+                v-model="formInline.username"
+              ></a-input>
+            </a-form-item>
+            <a-form-item style="float:right">
+              <a-button type="primary" @click="onSubmit">
+                查询
+              </a-button>
+            </a-form-item>
+            <a-form-item style="float:right">
+              <a-button type="primary" @click="reset">
+                重置
+              </a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col>
+            <a-form-item label="手机号码">
+              <a-input
+                placeholder="请输入"
+                v-model="formInline.phone"
+              ></a-input>
+            </a-form-item>
+            <a-form-item label="用户状态">
+              <a-select
+                defaultValue="all"
+                v-model="formInline.isLocked"
+                style="width:100px"
+              >
+                <a-select-option value="all">全部</a-select-option>
+                <a-select-option value="0">正常</a-select-option>
+                <a-select-option value="1">锁定</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
       </a-form>
     </a-card>
     <a-card v-margin:top="16">
@@ -90,7 +114,9 @@ export default {
       loading: false,
       formInline: {
         name: "",
-        phone: ""
+        username: "",
+        phone: "",
+        isLocked: "all"
       },
       columns: [
         {
@@ -134,7 +160,10 @@ export default {
         size: this.size,
         page: this.current,
         name: this.formInline.name,
-        phone: this.formInline.phone
+        phone: this.formInline.phone,
+        isLocked:
+          this.formInline.isLocked == "all" ? "" : this.formInline.isLocked,
+        username: this.formInline.username
       };
       this.loading = true;
       this.$api.organization
@@ -228,6 +257,9 @@ export default {
     cancel(value) {
       this.obj.show = value;
       this.checkObj.show = value;
+    },
+    reset() {
+      this.formInline = this.$options.data().formInline;
     }
   },
   mounted() {

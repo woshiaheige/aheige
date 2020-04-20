@@ -12,7 +12,7 @@
             </a-form-item>
             <a-form-item>
               <a-input-search
-                placeholder="权限名称"
+                placeholder="请输入权限名称"
                 style="width: 200px"
                 v-model="formInline.name"
                 @search="onSubmit"
@@ -37,10 +37,11 @@
           <a-list-item-meta>
             <a-tag
               slot="description"
-              v-for="(role, key) of item.resourceIds"
+              color="blue"
+              v-for="(role, key) of item.resourceNames"
               :key="key"
-              v-margin="20"
-              >{{ role.name }}</a-tag
+              v-margin="10"
+              >{{ role }}</a-tag
             >
             <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
@@ -77,7 +78,7 @@ export default {
       visible: false,
       current: 1,
       size: 10,
-      total: 3,
+      total: 0,
       formInline: { name: "" },
       tableData: [],
       obj: {
