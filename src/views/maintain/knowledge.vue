@@ -29,10 +29,25 @@
             :defaultSelectedKeys="['type1']"
           >
             <a-menu-item key="type1">
-              操作手册
+              运维制度规范
             </a-menu-item>
             <a-menu-item key="type2">
-              运维政策
+              质控体系规范
+            </a-menu-item>
+            <a-menu-item key="type3">
+              作业指导书
+            </a-menu-item>
+            <a-menu-item key="type4">
+              设备说明书
+            </a-menu-item>
+            <a-menu-item key="type5">
+              常见问题知识库
+            </a-menu-item>
+            <a-menu-item key="type6">
+              应急预案
+            </a-menu-item>
+            <a-menu-item key="type7">
+              专家指南
             </a-menu-item>
           </a-menu>
         </a-col>
