@@ -164,7 +164,7 @@ export default {
       ],
       tableData: [
         {
-          enterpriseName: "烧腊有限公司",
+          enterpriseName: "环保有限公司",
           station: "站点1",
           type: 31,
           status: 2,
