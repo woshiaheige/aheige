@@ -320,7 +320,9 @@ export default {
   },
   mounted() {
     this.setMenu();
-    this.routes = JSON.parse(sessionStorage.getItem("routes"));
+    if (sessionStorage.getItem("routes")) {
+      this.routes = JSON.parse(sessionStorage.getItem("routes"));
+    }
   },
   methods: {
     changeMenu(object) {
