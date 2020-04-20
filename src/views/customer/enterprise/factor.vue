@@ -17,6 +17,7 @@
                 v-model="list.divisorId"
                 v-width="150"
                 allowClear
+                :filterOption="filterOption"
               >
                 <a-select-option
                   v-for="item in factorOptions"
@@ -82,6 +83,13 @@ export default {
       total: 1,
       loading: false,
       list: {},
+      filterOption(input, option) {
+        return (
+          option.componentOptions.children[0].text
+            .toLowerCase()
+            .indexOf(input.toLowerCase()) >= 0
+        );
+      },
       columns: [
         {
           title: "因子名称",

@@ -181,11 +181,16 @@ export default {
       this.obj.row = row;
     },
     onDown(row) {
-      console.log(row);
       if (row.fileId == null) {
         this.$message.warn("没有附件");
         return;
       }
+      console.log(row.fileId);
+      this.$api.customer.downloadFile({ id: row.fileId }).then(res => {
+        if (res.data.state == 0) {
+          console.log(1);
+        }
+      });
     }
   },
   mounted() {
