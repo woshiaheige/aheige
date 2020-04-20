@@ -25,6 +25,7 @@
         :grid="{ gutter: 16, column: 4 }"
         :dataSource="tableData"
         :loading="loading"
+        class="card-list"
       >
         <a-list-item slot="renderItem" slot-scope="item">
           <a-card :title="item.name">
@@ -37,6 +38,7 @@
             <a-tag v-for="(member, key) of item.users" :key="key" color="blue">
               {{ member.name }}
             </a-tag>
+            <a-empty v-if="item.users.length == 0" style="width:100%" />
           </a-card>
         </a-list-item>
       </a-list>
@@ -80,14 +82,14 @@ export default {
       current: 1,
       total: 0,
       loading: false,
-      pagesize: 8,
+      size: 8,
       tableData: []
     };
   },
   methods: {
     getTableData() {
       let params = {
-        size: this.pagesize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name
       };
@@ -135,7 +137,7 @@ export default {
       });
     },
     onSubmit() {
-      this.pagesize = 8; //每页数量
+      this.size = 8; //每页数量
       this.current = 1; //页码
       this.getTableData();
     }

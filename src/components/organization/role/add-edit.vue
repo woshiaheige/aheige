@@ -15,12 +15,25 @@
       </a-form-item> -->
       <a-form-item label="权限名称">
         <a-input
-          placeholder="权限名称"
+          placeholder="请选择"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '输入权限名称' }] }
+            { rules: [{ required: true, message: '请选择权限名称' }] }
           ]"
         />
+      </a-form-item>
+      <a-form-item label="权限类型">
+        <a-radio-group
+          name="radioGroup"
+          placeholder="请选择"
+          v-decorator="[
+            'type',
+            { rules: [{ required: true, message: '请选择权限类型' }] }
+          ]"
+        >
+          <a-radio :value="1">可用</a-radio>
+          <a-radio :value="2">不可用</a-radio>
+        </a-radio-group>
       </a-form-item>
       <!-- <a-form-item label="状态">
         <a-radio-group name="radioGroup" :defaultValue="1">

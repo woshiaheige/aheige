@@ -176,10 +176,15 @@ export default {
             password: this.$md5(nval.password),
             phone: nval.phone,
             wechatId: nval.wechatId,
-            roleId: nval.roleId,
-            groupId: nval.groupId,
-            approvalIds: nval.approvalIds
+            roleId: nval.roleId
           });
+          if (nval.roleId == 3) {
+            //设置运维小组
+            this.form.setFieldsValue({ groupId: nval.groupId });
+          } else if (nval.roleId == 2) {
+            //审核权限
+            this.form.setFieldsValue({ approvalIds: nval.approvalIds });
+          }
         }, 50);
       }
     }

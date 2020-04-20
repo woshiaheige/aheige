@@ -9,11 +9,7 @@
           <a-input placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item label="运维小组">
-          <a-select
-            defaultValue="all"
-            style="width: 120px"
-            @change="handleChange"
-          >
+          <a-select defaultValue="all" style="width: 120px" v-model="form">
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="jack">运维1组</a-select-option>
             <a-select-option value="lucy">运维2组</a-select-option>
@@ -112,6 +108,10 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
+      formInline: {
+        name: "",
+        phone: ""
+      },
       columns: [
         {
           title: "任务名称",
