@@ -4,19 +4,19 @@
       <a-row>
         <a-col :span="8">
           <div class="header-info">
-            <span>本周任务数</span>
+            <span>巡检次数</span>
             <p>35</p>
           </div>
         </a-col>
         <a-col :span="8">
           <div class="header-info">
-            <span>废气因子</span>
+            <span>清洗次数</span>
             <p>67</p>
           </div>
         </a-col>
         <a-col :span="8">
           <div class="header-info none-border">
-            <span>废水因子</span>
+            <span>校准次数</span>
             <p>83</p>
           </div>
         </a-col>
