@@ -43,7 +43,7 @@ export default {
     return {
       current: 1,
       total: 0,
-      pagesize: 10,
+      size: 10,
       loading: false,
       columns: [
         {
@@ -79,7 +79,7 @@ export default {
     getTableData() {
       this.loading = true;
       let params = {
-        pagesize: this.pagesize,
+        size: this.size,
         page: this.current
       };
       this.$api.car

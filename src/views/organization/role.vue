@@ -76,7 +76,7 @@ export default {
       loading: false,
       visible: false,
       current: 1,
-      pageSize: 10,
+      size: 10,
       total: 3,
       formInline: { name: "" },
       tableData: [],
@@ -94,7 +94,7 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        pagesize: this.pagesize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name
       };

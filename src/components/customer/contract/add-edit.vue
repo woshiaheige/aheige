@@ -72,9 +72,9 @@
         <a-upload
           name="file"
           :multiple="true"
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          :action="$base.api + 'files/uploadFile'"
+          :fileList="fileList"
           @change="handleChange"
-          v-decorator="['files', { rules: [{ message: '请上传文件' }] }]"
         >
           <a-button> <a-icon type="upload" /> 选择文件 </a-button>
         </a-upload>
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import base from "@/api/base";
 export default {
   props: {
     statusOption: Array,
@@ -94,6 +95,7 @@ export default {
       loading: false,
       enterpriseList: [],
       formData: {},
+      fileList: [],
       title: "",
       rules: {
         enterpriseId: [
@@ -142,7 +144,9 @@ export default {
       set() {}
     }
   },
-  mounted() {},
+  mounted() {
+    console.log(base.api);
+  },
   methods: {
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -196,13 +200,24 @@ export default {
         });
     },
     handleChange(info) {
-      if (info.file.status === "uploading") {
-        this.loading = true;
-        return;
-      }
+      console.log(info);
+      let fileList = [...info.fileList];
+
+      fileList = fileList.slice(-1);
+
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      this.fileList = fileList;
       if (info.file.status === "done") {
-        // getBase64(info.file.originFileObj, imageUrl => {
-        // });
+        this.formData.fileId = info.file.response.data;
+        this.$message.success("上传成功");
+      } else if (info.file.status === "error") {
+        this.$message.error("上传失败");
       }
     },
     enterpriseOptions() {

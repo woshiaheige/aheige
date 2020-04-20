@@ -4,9 +4,14 @@
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="监控点位" key="1"></a-tab-pane>
         <a-tab-pane tab="运维车辆" key="2"></a-tab-pane>
-        <a-button type="primary" icon="reload" slot="tabBarExtraContent"
-          >更新</a-button
-        >
+        <div slot="tabBarExtraContent">
+          <template class="extra">
+            <a-statistic-countdown
+              :value="Date.now() + 1000 * 60"
+              format="s 秒后自动更新"
+            />
+          </template>
+        </div>
       </a-tabs>
       <div class="map-container">
         <div id="map"></div>
