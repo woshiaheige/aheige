@@ -43,6 +43,8 @@
         showSizeChanger
         :pageSize.sync="pagesize"
         :defaultCurrent="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
         :total="total"
       />
     </a-card>

@@ -73,14 +73,12 @@ export default {
         {
           title: "企业名称",
           dataIndex: "enterpriseName",
-          key: "enterpriseName",
-          align: "center"
+          key: "enterpriseName"
         },
         {
           title: "监控点名称",
           dataIndex: "poiName",
-          key: "poiName",
-          align: "center"
+          key: "poiName"
         },
         {
           title: "分钟数据数",
