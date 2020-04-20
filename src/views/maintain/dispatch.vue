@@ -37,7 +37,7 @@
             class="dispatch-list"
           >
             <a-list-item slot="renderItem" slot-scope="item">
-              <a slot="actions">调度</a>
+              <a slot="actions" @click="toDispatch">调度</a>
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
@@ -151,10 +151,16 @@
         >
       </a-tabs>
     </a-card>
+
+    <dispatch-edit
+      :visible="editModal"
+      @close="editModal = false"
+    ></dispatch-edit>
   </div>
 </template>
 
 <script>
+import dispatchEdit from "@/components/maintain/dispatch/dispatch-edit";
 const data = [
   {
     title: "企业1 监测点1",
@@ -178,13 +184,21 @@ const data = [
   }
 ];
 export default {
+  components: {
+    dispatchEdit
+  },
   data() {
     return {
-      data
+      data,
+      editModal: false
     };
   },
   mounted() {},
-  methods: {}
+  methods: {
+    toDispatch() {
+      this.editModal = true;
+    }
+  }
 };
 </script>
 
