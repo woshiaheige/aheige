@@ -14,6 +14,20 @@ const maintainRoutes = [
       )
   },
   {
+    path: "/maintain/mission/detail",
+    name: "maintain-mission-detail",
+    key: "maintain-mission-detail",
+    meta: {
+      title: "站点管理",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-maintain" */
+        "@/views/maintain/mission-detail.vue"
+      )
+  },
+  {
     path: "/maintain/board",
     name: "maintain-board",
     key: "board",

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false">
+    <!-- <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
           <a-input placeholder="请输入"></a-input>
@@ -41,10 +41,10 @@
         </a-form-item>
         <a-form-item> </a-form-item>
       </a-form>
-    </a-card>
+    </a-card> -->
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">任务一览</div>
+        <div class="title">站点管理</div>
         <!-- <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -59,12 +59,6 @@
         :loading="loading"
         v-margin:top="16"
       >
-        <span slot="action" slot-scope="row">
-          <!-- <a @click="delayShow = true">申请延期</a>
-          <a-divider type="vertical" />
-          <a @click="closeShow = true">任务关闭</a> -->
-          <a @click="goDetail(row)">详情</a>
-        </span>
       </a-table>
       <a-pagination
         size="small"
@@ -110,15 +104,23 @@ export default {
       loading: false,
       columns: [
         {
-          title: "企业名称",
+          title: "任务方案",
           dataIndex: "enterpriseName"
         },
         {
-          title: "监控点",
+          title: "运维小组",
           dataIndex: "station"
         },
         {
-          title: "任务状态",
+          title: "运维人员",
+          dataIndex: "station"
+        },
+        {
+          title: "运维时间",
+          dataIndex: "time"
+        },
+        {
+          title: "运维状态",
           dataIndex: "status",
           customRender: text => {
             if (text == 1) {
@@ -135,22 +137,18 @@ export default {
           },
           align: "center",
           width: 150
-        },
-        {
-          title: "任务数量",
-          dataIndex: "num"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center",
-          width: 100
         }
+        // {
+        //   title: "操作",
+        //   key: "action",
+        //   scopedSlots: { customRender: "action" },
+        //   align: "center",
+        //   width: 100
+        // }
       ],
       tableData: [
         {
-          num: 10
+          time: "2020-02-02"
         }
       ],
       stationList: [],
@@ -203,12 +201,6 @@ export default {
         if (res.data.state == 0) {
           this.planList = res.data.data;
         }
-      });
-    },
-    goDetail(row) {
-      this.$router.push({
-        path: "/maintain/mission/detail",
-        query: { id: row.id }
       });
     }
   },
