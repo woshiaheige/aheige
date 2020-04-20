@@ -20,7 +20,7 @@
             ><a-form-model-item label="因子名称" prop="name">
               <a-input
                 v-model="form.name"
-                placeholder="输入因子名称"
+                placeholder="请输入"
               /> </a-form-model-item
           ></a-col>
           <a-col :span="12"
@@ -28,7 +28,7 @@
               <a-input
                 :disabled="factorsDetail != ''"
                 v-model="form.code"
-                placeholder="输入因子编号"
+                placeholder="请输入"
               /> </a-form-model-item
           ></a-col>
         </a-row>
@@ -37,14 +37,14 @@
             ><a-form-model-item label="均值单位" prop="avgUnit">
               <a-input
                 v-model="form.avgUnit"
-                placeholder="输入均值单位"
+                placeholder="请输入"
               /> </a-form-model-item
           ></a-col>
           <a-col :span="12"
             ><a-form-model-item label="总量单位" prop="sumUnit">
               <a-input
                 v-model="form.sumUnit"
-                placeholder="输入总量单位"
+                placeholder="请输入"
               /> </a-form-model-item
           ></a-col>
         </a-row>
@@ -54,7 +54,7 @@
               <a-select
                 :disabled="factorsDetail != ''"
                 v-model="form.type"
-                placeholder="选择因子类型"
+                placeholder="请选择"
               >
                 <a-select-option value="32">废水</a-select-option>
                 <a-select-option value="31">废气</a-select-option>
@@ -66,7 +66,7 @@
               <a-select
                 :disabled="factorsDetail != ''"
                 v-model="form.protocolType"
-                placeholder="选择协议类型"
+                placeholder="请选择"
               >
                 <a-select-option value="5">05协议</a-select-option>
                 <a-select-option value="17">17协议</a-select-option>
@@ -77,28 +77,22 @@
         </a-row>
         <a-row>
           <a-col :span="12"
-            ><a-form-model-item
-              label="参考值上限"
-              prop="ceilval"
-              placeholder="输入参考值上限"
-            >
+            ><a-form-model-item label="参考值上限" prop="ceilval">
               <a-input-number
                 :max="100000"
                 :step="0.0001"
                 style="width:100%"
+                placeholder="请输入"
                 v-model="form.ceilval"
               ></a-input-number> </a-form-model-item
           ></a-col>
           <a-col :span="12"
-            ><a-form-model-item
-              label="参考值下限"
-              prop="floorval"
-              placeholder="输入参考值下限"
-            >
+            ><a-form-model-item label="参考值下限" prop="floorval">
               <a-input-number
                 :min="-100000"
                 :step="0.0001"
                 style="width:100%"
+                placeholder="请输入"
                 v-model="form.floorval"
               ></a-input-number> </a-form-model-item
           ></a-col>
@@ -145,8 +139,8 @@ export default {
         code: "",
         avgUnit: "",
         sumUnit: "",
-        type: "32",
-        protocolType: "17",
+        // type: "",
+        // protocolType: "",
         ceilval: "",
         floorval: ""
       },

@@ -8,7 +8,7 @@
         <a-form-item label="监控点名称">
           <a-input placeholder="请输入"></a-input>
         </a-form-item>
-        <a-form-item label="运维小组">
+        <!-- <a-form-item label="运维小组">
           <a-select
             defaultValue="all"
             style="width: 120px"
@@ -18,22 +18,18 @@
             <a-select-option value="jack">运维1组</a-select-option>
             <a-select-option value="lucy">运维2组</a-select-option>
           </a-select>
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="任务状态">
-          <a-select
-            defaultValue="all"
-            style="width: 120px"
-            @change="handleChange"
-          >
+          <a-select defaultValue="all" style="width: 120px">
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="jack">未完成</a-select-option>
             <a-select-option value="lucy">已完成</a-select-option>
             <a-select-option value="lucy">已逾期</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="任务时间">
+        <!-- <a-form-item label="任务时间">
           <a-range-picker @change="onChange" />
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
             查询
@@ -44,7 +40,7 @@
     </a-card>
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">任务一览</div>
+        <div class="title">监测点列表</div>
         <!-- <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -76,38 +72,42 @@
         :total="total"
       />
       <!--新建-->
-      <add-edit
+      <!-- <add-edit
         :visible="show"
         :planList="planList"
         :stationList="stationList"
         @cancel="cancel"
-      ></add-edit>
+      ></add-edit> -->
       <!--延期-->
-      <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
+      <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
       <!--关闭-->
-      <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
+      <!-- <close-modal :visible="closeShow" @cancel="cancel"></close-modal> -->
       <!--详情-->
-      <detail-modal
+      <!-- <detail-modal
         :visible="detailShow"
         :tableData="tableData"
         @cancel="cancel"
-      ></detail-modal>
+      ></detail-modal> -->
     </a-card>
   </div>
 </template>
 <script>
-import addEdit from "@/components/maintain/mission/add-edit";
-import detailModal from "@/components/maintain/mission/detail";
-import delayModal from "@/components/maintain/mission/delay";
-import closeModal from "@/components/maintain/mission/close";
+// import addEdit from "@/components/maintain/mission/add-edit";
+// import detailModal from "@/components/maintain/mission/detail";
+// import delayModal from "@/components/maintain/mission/delay";
+// import closeModal from "@/components/maintain/mission/close";
 export default {
-  components: { addEdit, delayModal, closeModal, detailModal },
+  // components: { addEdit, delayModal, closeModal, detailModal },
   data() {
     return {
       current: 1,
       pageSize: 10,
       total: 0,
       loading: false,
+      formInline: {
+        name: "",
+        phone: ""
+      },
       columns: [
         {
           title: "企业名称",
@@ -154,11 +154,11 @@ export default {
         }
       ],
       stationList: [],
-      planList: [],
-      show: false,
-      delayShow: false,
-      closeShow: false,
-      detailShow: false
+      planList: []
+      // show: false,
+      // delayShow: false,
+      // closeShow: false,
+      // detailShow: false
     };
   },
   methods: {
@@ -184,13 +184,13 @@ export default {
       //     this.loading = false;
       //   });
     },
-    cancel(value) {
-      this.show = value;
-      this.delayShow = value;
-      this.closeShow = value;
-      this.detailShow = value;
-      this.getTableData();
-    },
+    // cancel(value) {
+    //   this.show = value;
+    //   this.delayShow = value;
+    //   this.closeShow = value;
+    //   this.detailShow = value;
+    //   this.getTableData();
+    // },
     getStation() {
       this.$api.common.selectStation().then(res => {
         if (res.data.state == 0) {

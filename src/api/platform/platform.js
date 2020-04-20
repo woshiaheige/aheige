@@ -28,7 +28,12 @@ const platform = {
       params: data
     });
   },
-
+  //获取统计因子
+  countDivisor(data) {
+    return axios.get(base.api + "divisor/countDivisor", {
+      params: data
+    });
+  },
   //因子详情
   getSysDivisorById(data) {
     return axios.get(base.api + "divisor/getSysDivisorById", {

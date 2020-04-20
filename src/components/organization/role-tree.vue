@@ -15,6 +15,22 @@
           ]"
         />
       </a-form-item>
+      <a-form-item label="权限类型">
+        <a-select
+          placeholder="请选择"
+          v-decorator="[
+            'resourceNames',
+            { rules: [{ required: true, message: '请选择权限类型' }] }
+          ]"
+        >
+          <a-select-option
+            :value="item.id"
+            v-for="(item, index) of roleTypeList"
+            :key="index"
+            >{{ item.label }}</a-select-option
+          >
+        </a-select>
+      </a-form-item>
     </a-form>
     <a-tree
       checkable
@@ -53,7 +69,13 @@ export default {
       roleId: "",
       userRoleId: "", //用户的角色id(用来判断如果用户修改自己的角色则刷新组件)
       resourceIdList: [],
-      menuIds: [] //获取已授权的id
+      menuIds: [], //获取已授权的id
+      roleTypeList: [
+        { label: "超级管理员", id: "1" },
+        { label: "运维主管", id: "2" },
+        { label: "运维人员", id: "3" },
+        { label: "仓库人员", id: "4" }
+      ] //权限类型
     };
   },
 
@@ -72,7 +94,8 @@ export default {
         if (this.roleDetail) {
           setTimeout(() => {
             this.form.setFieldsValue({
-              name: this.roleDetail.name
+              name: this.roleDetail.name,
+              resourceNames: this.roleDetail.resourceNames
             });
           }, 50);
           this.roleId = this.roleDetail.id;

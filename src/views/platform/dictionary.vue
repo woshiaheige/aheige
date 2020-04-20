@@ -62,7 +62,7 @@ export default {
     return {
       current: 1,
       total: 0,
-      pagesize: 10,
+      size: 10,
       loading: false,
       dictionaryDetail: "",
       formInline: {
@@ -101,7 +101,7 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        pagesize: this.pagesize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name,
         code: this.formInline.code

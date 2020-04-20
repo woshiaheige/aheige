@@ -5,19 +5,19 @@
         <a-col :span="8">
           <div class="header-info">
             <span>因子总数</span>
-            <p>176</p>
+            <p>{{ divisorCount.total }}</p>
           </div>
         </a-col>
         <a-col :span="8">
           <div class="header-info">
             <span>废气因子</span>
-            <p>67</p>
+            <p>{{ divisorCount.gasCount }}</p>
           </div>
         </a-col>
         <a-col :span="8">
           <div class="header-info none-border">
             <span>废水因子</span>
-            <p>83</p>
+            <p>{{ divisorCount.waterCount }}</p>
           </div>
         </a-col>
       </a-row>
@@ -33,13 +33,10 @@
               </a-button>
             </a-form-item>
             <a-form-item>
-              <a-radio-group
-                :value="formInline.type"
-                @change="handleTypeChange"
-              >
+              <a-radio-group v-model="formInline.type" @change="onSubmit">
                 <a-radio-button value="all">全部</a-radio-button>
-                <a-radio-button value="default">废水</a-radio-button>
-                <a-radio-button value="small">废气</a-radio-button>
+                <a-radio-button value="31">废水</a-radio-button>
+                <a-radio-button value="32">废气</a-radio-button>
               </a-radio-group>
             </a-form-item>
             <a-form-item>
@@ -106,13 +103,14 @@ export default {
       factorsDetail: "", //因子详情
       current: 1,
       total: 0,
-      pagesize: 10,
+      size: 10,
       loading: false,
       formInline: {
         name: "",
         code: "",
         type: "all"
       },
+      divisorCount: {}, //因子数量
       columns: [
         {
           title: "因子名称",
@@ -211,10 +209,11 @@ export default {
     },
     getTableData() {
       let params = {
-        pagesize: this.pagesize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name,
-        code: this.formInline.code
+        code: this.formInline.code,
+        type: this.formInline.type == "all" ? "" : this.formInline.type
       };
       this.loading = true;
       this.$api.platform
@@ -229,10 +228,18 @@ export default {
         .catch(() => {
           this.loading = false;
         });
+    },
+    countDivisor() {
+      this.$api.platform.countDivisor().then(res => {
+        if (res.data.state == 0) {
+          this.divisorCount = res.data.data;
+        }
+      });
     }
   },
   mounted() {
     this.getTableData();
+    this.countDivisor();
   }
 };
 </script>
