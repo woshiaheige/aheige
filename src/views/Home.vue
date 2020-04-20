@@ -320,7 +320,7 @@ export default {
   },
   mounted() {
     this.setMenu();
-    this.setBreadcrumbName();
+    this.routes = JSON.parse(sessionStorage.getItem("routes"));
   },
   methods: {
     changeMenu(object) {
@@ -372,6 +372,8 @@ export default {
           }
         }
       }
+
+      sessionStorage.setItem("routes", JSON.stringify(this.routes));
     }
   }
 };

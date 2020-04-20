@@ -18,7 +18,7 @@ const maintainRoutes = [
     name: "maintain-mission-detail",
     key: "maintain-mission-detail",
     meta: {
-      title: "站点管理",
+      title: "站点任务",
       back: true
     },
     component: () =>

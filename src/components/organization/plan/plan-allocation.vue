@@ -10,11 +10,14 @@
     >
       <a-card :bordered="false">
         <a-form layout="inline">
+          <a-form-item label="计划名称">
+            <a-input></a-input>
+          </a-form-item>
           <a-form-item label="运维期限">
             <a-range-picker></a-range-picker>
           </a-form-item>
         </a-form>
-        <a-divider dashed></a-divider>
+        <a-divider></a-divider>
         <a-transfer
           :titles="['所有方案', '已配置方案']"
           :listStyle="{
@@ -22,7 +25,7 @@
             height: '300px'
           }"
         />
-        <a-divider dashed></a-divider>
+        <a-divider></a-divider>
         <a-button type="primary">配置方案</a-button>
       </a-card>
     </a-drawer>
