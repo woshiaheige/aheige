@@ -14,7 +14,7 @@
     >
       <a-form-item label="车牌">
         <a-input
-          placeholder="输入车牌"
+          placeholder="请输入"
           v-decorator="[
             'number',
             { rules: [{ required: true, message: '请输入车牌' }] }
@@ -22,25 +22,19 @@
         />
       </a-form-item>
       <a-form-item label="品牌型号">
-        <a-input placeholder="输入品牌型号" v-decorator="['model']" />
+        <a-input placeholder="请输入" v-decorator="['model']" />
       </a-form-item>
       <a-form-item label="车架号">
-        <a-input placeholder="输入车架号" v-decorator="['frameNumber']" />
+        <a-input placeholder="请输入" v-decorator="['frameNumber']" />
       </a-form-item>
       <a-form-item label="购置时间">
-        <a-date-picker
-          placeholder="选择购置时间"
-          v-decorator="['gmtPurchase']"
-        />
+        <a-date-picker placeholder="请选择" v-decorator="['gmtPurchase']" />
       </a-form-item>
       <a-form-item label="上次年检时间">
-        <a-date-picker
-          placeholder="选择上次年检时间"
-          v-decorator="['gmtInspection']"
-        />
+        <a-date-picker placeholder="请选择" v-decorator="['gmtInspection']" />
       </a-form-item>
       <a-form-item label="GPS">
-        <a-input placeholder="输入GPS" v-decorator="['gps']" />
+        <a-input placeholder="请输入" v-decorator="['gps']" />
       </a-form-item>
     </a-form>
     <template slot="footer">

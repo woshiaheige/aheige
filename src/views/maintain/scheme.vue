@@ -4,39 +4,73 @@
       <div class="card-header">
         <div class="title">方案设置</div>
         <div class="extra">
-          <a-button type="primary" icon="plus">新建项目</a-button>
+          <a-button type="primary" icon="plus" @click="addSchemeList"
+            >新建项目</a-button
+          >
         </div>
       </div>
       <a-row :gutter="16">
         <a-col :span="6">
-          <a-radio-group defaultValue="a" buttonStyle="solid">
+          <a-radio-group
+            defaultValue="a"
+            buttonStyle="solid"
+            @change="changeType"
+          >
             <a-radio-button value="a">水类运维</a-radio-button>
             <a-radio-button value="b">气类运维</a-radio-button>
             <a-radio-button value="c">其他运维</a-radio-button>
           </a-radio-group>
-          <a-button type="dashed" block v-margin:top="16">新建方案</a-button>
+          <a-button type="dashed" block v-margin:top="16" @click="addNewScheme"
+            >新建方案</a-button
+          >
           <a-menu
             v-model="current"
             mode="vertical"
             :defaultSelectedKeys="['type1']"
+            v-if="type == 'a'"
           >
             <a-menu-item key="type1">
-              巡检（周计划）
+              日检查维护
             </a-menu-item>
             <a-menu-item key="type2">
-              质控（周计划）
+              周检查维护
             </a-menu-item>
             <a-menu-item key="type3">
-              比对（周计划）
+              月检查维护
             </a-menu-item>
             <a-menu-item key="type4">
-              校准（周计划）
+              季检查维护
             </a-menu-item>
             <a-menu-item key="type5">
-              标定（月计划）
+              定期校验
             </a-menu-item>
             <a-menu-item key="type6">
-              标气更换（月计划）
+              比对监测
+            </a-menu-item>
+          </a-menu>
+          <a-menu
+            v-model="current"
+            mode="vertical"
+            :defaultSelectedKeys="['type1']"
+            v-if="type == 'b'"
+          >
+            <a-menu-item key="type1">
+              日常巡检
+            </a-menu-item>
+            <a-menu-item key="type2">
+              日常维护
+            </a-menu-item>
+            <a-menu-item key="type3">
+              定期校准
+            </a-menu-item>
+            <a-menu-item key="type4">
+              定期维护
+            </a-menu-item>
+            <a-menu-item key="type5">
+              定期校验
+            </a-menu-item>
+            <a-menu-item key="type6">
+              比对监测
             </a-menu-item>
           </a-menu>
         </a-col>
@@ -66,11 +100,27 @@
         </a-col>
       </a-row>
     </a-card>
+
+    <add-scheme
+      :visible="addSchemeModal"
+      @close="addSchemeModal = false"
+    ></add-scheme>
+
+    <add-scheme-list
+      :visible="addSchemeListModal"
+      @close="addSchemeListModal = false"
+    ></add-scheme-list>
   </div>
 </template>
 
 <script>
+import addScheme from "@/components/maintain/scheme/add-scheme.vue";
+import addSchemeList from "@/components/maintain/scheme/add-scheme-list.vue";
 export default {
+  components: {
+    addScheme,
+    addSchemeList
+  },
   data() {
     return {
       current: ["type1"],
@@ -84,8 +134,22 @@ export default {
           key: "action",
           scopedSlots: { customRender: "action" }
         }
-      ]
+      ],
+      addSchemeModal: false,
+      addSchemeListModal: false,
+      type: "a"
     };
+  },
+  methods: {
+    addNewScheme() {
+      this.addSchemeModal = true;
+    },
+    addSchemeList() {
+      this.addSchemeListModal = true;
+    },
+    changeType(e) {
+      this.type = e.target.value;
+    }
   }
 };
 </script>

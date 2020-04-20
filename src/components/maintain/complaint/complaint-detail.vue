@@ -5,17 +5,13 @@
     @cancel="closeModal"
     @ok="handleOk"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="行业名称">
-        <a-input
-          placeholder="请输入"
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入行业名称' }] }
-          ]"
-        />
-      </a-form-item>
-    </a-form>
+    <a-descriptions>
+      <a-descriptions-item label="上报客户">小张</a-descriptions-item>
+      <a-descriptions-item label="手机号码">1810000000</a-descriptions-item>
+      <a-descriptions-item label="投诉内容"
+        >我使用的账号有异常</a-descriptions-item
+      >
+    </a-descriptions>
   </a-modal>
 </template>
 
@@ -26,26 +22,25 @@ export default {
       required: true,
       type: Boolean
     },
-    industryDetail: {
+    complainDetail: {
       required: false
     }
   },
   data() {
     return {
-      form: this.$form.createForm(this, "industryEdit"),
-      industryId: ""
+      form: this.$form.createForm(this),
+      complainId: ""
     };
   },
   computed: {
     title() {
-      let title = this.industryDetail ? "编辑行业" : "新建行业";
-      return title;
+      return "投诉详情";
     }
   },
   watch: {
-    industryDetail(nval) {
+    complainDetail(nval) {
       if (nval) {
-        this.industryId = nval.id;
+        this.complainId = nval.id;
         setTimeout(() => {
           this.form.setFieldsValue({
             name: nval.name
@@ -57,29 +52,28 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
-      this.reset();
     },
     reset() {
-      this.industryId = "";
+      this.complainId = "";
       this.form.resetFields();
     },
     handleOk() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          if (this.industryId) {
-            this.editIndustry(values);
+          if (this.complainId) {
+            this.editComplain(values);
           } else {
-            this.addIndustry(values);
+            this.addComplain(values);
           }
         }
       });
     },
-    editIndustry(values) {
+    editComplain(values) {
       let params = values;
-      params.id = this.industryId;
-      this.$api.platform.updateSysIndustry(params).then(res => {
+      params.id = this.complainId;
+      this.$api.organization.editSyscomplain(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("修改行业成功");
+          this.$message.success("修改小组成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
@@ -88,11 +82,11 @@ export default {
         }
       });
     },
-    addIndustry(values) {
+    addComplain(values) {
       let params = values;
-      this.$api.platform.addSysIndustry(params).then(res => {
+      this.$api.organization.addSyscomplain(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("新建行业成功");
+          this.$message.success("新建小组成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();

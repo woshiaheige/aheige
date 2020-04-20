@@ -4,7 +4,11 @@
       <a-calendar>
         <ul class="events" slot="dateCellRender" slot-scope="value">
           <li v-for="item in getListData(value)" :key="item.content">
-            <a-badge :status="item.type" :text="item.content" />
+            <a-badge
+              :status="item.type"
+              :text="item.content"
+              :title="item.content"
+            />
           </li>
         </ul>
         <template slot="monthCellRender" slot-scope="value">
@@ -30,28 +34,44 @@ export default {
       switch (value.date()) {
         case 8:
           listData = [
-            { type: "warning", content: "This is warning event." },
-            { type: "success", content: "This is usual event." }
+            {
+              type: "default",
+              content:
+                "广州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
+            },
+            {
+              type: "success",
+              content:
+                "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
+            }
           ];
           break;
         case 10:
           listData = [
-            { type: "warning", content: "This is warning event." },
-            { type: "success", content: "This is usual event." },
-            { type: "error", content: "This is error event." }
+            {
+              type: "default",
+              content:
+                "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
+            },
+            {
+              type: "success",
+              content:
+                "惠州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
+            }
           ];
           break;
         case 15:
           listData = [
-            { type: "warning", content: "This is warning event" },
+            {
+              type: "default",
+              content:
+                "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
+            },
             {
               type: "success",
-              content: "This is very long usual event。。...."
-            },
-            { type: "error", content: "This is error event 1." },
-            { type: "error", content: "This is error event 2." },
-            { type: "error", content: "This is error event 3." },
-            { type: "error", content: "This is error event 4." }
+              content:
+                "广州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
+            }
           ];
           break;
         default:

@@ -63,7 +63,7 @@
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-form-item label="周任务分配时间">
+          <a-form-item label="周任务推送时间">
             <a-select
               defaultValue="defaultWeek"
               v-model="formValue.missionCreate.value"
@@ -80,7 +80,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="月任务分配时间">
+          <a-form-item label="月任务推送时间">
             <a-select
               defaultValue="defaultMonth"
               v-model="formValue.missionCreate.value"

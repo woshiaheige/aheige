@@ -1,19 +1,16 @@
 <template>
   <a-modal
-    :title="title"
+    title="新增项目"
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="行业名称">
-        <a-input
-          placeholder="请输入"
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入行业名称' }] }
-          ]"
-        />
+      <a-form-item label="项目名称">
+        <a-input placeholder="请输入"></a-input>
+      </a-form-item>
+      <a-form-item label="备注">
+        <a-input type="textarea" placeholder="请输入"></a-input>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -26,26 +23,29 @@ export default {
       required: true,
       type: Boolean
     },
-    industryDetail: {
+    groupDetail: {
       required: false
     }
   },
   data() {
     return {
-      form: this.$form.createForm(this, "industryEdit"),
-      industryId: ""
+      form: this.$form.createForm(this),
+      groupId: ""
     };
   },
   computed: {
     title() {
-      let title = this.industryDetail ? "编辑行业" : "新建行业";
-      return title;
+      if (this.groupName) {
+        return "编辑小组";
+      } else {
+        return "新建小组";
+      }
     }
   },
   watch: {
-    industryDetail(nval) {
+    groupDetail(nval) {
       if (nval) {
-        this.industryId = nval.id;
+        this.groupId = nval.id;
         setTimeout(() => {
           this.form.setFieldsValue({
             name: nval.name
@@ -56,30 +56,29 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$emit("update:visible", false);
-      this.reset();
+      this.$emit("close");
     },
     reset() {
-      this.industryId = "";
+      this.groupId = "";
       this.form.resetFields();
     },
     handleOk() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          if (this.industryId) {
-            this.editIndustry(values);
+          if (this.groupId) {
+            this.editGroup(values);
           } else {
-            this.addIndustry(values);
+            this.addGroup(values);
           }
         }
       });
     },
-    editIndustry(values) {
+    editGroup(values) {
       let params = values;
-      params.id = this.industryId;
-      this.$api.platform.updateSysIndustry(params).then(res => {
+      params.id = this.groupId;
+      this.$api.organization.editSysGroup(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("修改行业成功");
+          this.$message.success("修改小组成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
@@ -88,11 +87,11 @@ export default {
         }
       });
     },
-    addIndustry(values) {
+    addGroup(values) {
       let params = values;
-      this.$api.platform.addSysIndustry(params).then(res => {
+      this.$api.organization.addSysGroup(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("新建行业成功");
+          this.$message.success("新建小组成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();

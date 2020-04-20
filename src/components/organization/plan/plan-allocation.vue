@@ -13,12 +13,6 @@
           <a-form-item label="运维期限">
             <a-range-picker></a-range-picker>
           </a-form-item>
-          <a-form-item label="运维小组">
-            <a-select defaultValue="jack" style="width: 120px">
-              <a-select-option value="jack">运维1组</a-select-option>
-              <a-select-option value="lucy">运维2组</a-select-option>
-            </a-select>
-          </a-form-item>
         </a-form>
         <a-divider dashed></a-divider>
         <a-transfer

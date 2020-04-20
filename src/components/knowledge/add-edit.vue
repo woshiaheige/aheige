@@ -10,21 +10,23 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="文章标题">
         <a-input
-          placeholder="文章标题"
+          placeholder="请输入"
           v-decorator="[
             'title',
-            { rules: [{ required: true, message: 'Please input your note!' }] }
+            { rules: [{ required: true, message: '请输入文章标题' }] }
           ]"
         />
       </a-form-item>
       <a-form-item label="知识库分类">
-        <a-input
-          type="textarea"
+        <a-select
+          placeholder="请选择"
           v-decorator="[
-            'desc',
-            { rules: [{ required: true, message: 'Please input your note!' }] }
+            'type',
+            { rules: [{ required: true, message: '请选择知识库分类' }] }
           ]"
-        />
+        >
+          <a-select-option value="1">操作手册</a-select-option>
+        </a-select>
       </a-form-item>
       <quill-editor
         v-model="content"
