@@ -164,7 +164,11 @@ export default {
               key: "mission"
             },
             {
-              title: "任务看板",
+              title: "任务调度",
+              key: "dispatch"
+            },
+            {
+              title: "计划看板",
               key: "board"
             },
             {
@@ -182,6 +186,10 @@ export default {
             {
               title: "运维知识",
               key: "knowledge"
+            },
+            {
+              title: "报表推送",
+              key: "notification"
             }
           ]
         },
@@ -318,7 +326,7 @@ export default {
   methods: {
     changeMenu(object) {
       for (let i in routeTable[1].children) {
-        if (routeTable[1].children[i].key == object.key) {
+        if (routeTable[1].children[i].key === object.key) {
           this.$router.push(routeTable[1].children[i].path);
         }
       }

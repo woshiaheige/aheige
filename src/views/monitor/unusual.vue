@@ -68,10 +68,6 @@ export default {
           dataIndex: "pointName"
         },
         {
-          title: "因子名称",
-          dataIndex: "divisorName"
-        },
-        {
           title: "异常类型",
           dataIndex: "flag",
           customRender: text => {
@@ -92,6 +88,11 @@ export default {
             }
           }
         },
+        {
+          title: "因子名称",
+          dataIndex: "divisorName"
+        },
+
         {
           title: "异常值",
           dataIndex: "rtd"

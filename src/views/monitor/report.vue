@@ -25,7 +25,6 @@
       <a-table
         :loading="loading"
         size="middle"
-        bordered
         :rowKey="(record, index) => index"
         :columns="columns"
         :dataSource="tableData"

@@ -54,12 +54,12 @@
           <a-tag color="orange" v-if="level == 4">县控</a-tag>
         </template>
         <template slot="onlineState" slot-scope="onlineState">
-          <a-tag color="blue" v-if="onlineState == 0">在线</a-tag>
-          <a-tag color="red" v-if="onlineState == 1">离线</a-tag>
+          <a-badge status="success" text="在线" v-if="onlineState == 0" />
+          <a-badge status="error" text="离线" v-if="onlineState == 1" />
         </template>
         <template slot="isNormal" slot-scope="isNormal">
-          <a-tag color="blue" v-if="isNormal == 0">正常</a-tag>
-          <a-tag color="red" v-if="isNormal == 1">异常</a-tag>
+          <a-badge status="success" text="正常" v-if="isNormal == 0" />
+          <a-badge status="error" text="异常" v-if="isNormal == 1" />
         </template>
         <span slot="action" slot-scope="row">
           <a @click="toMonitorData(row)">查看数据</a>

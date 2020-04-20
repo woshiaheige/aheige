@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false">
+    <!-- <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
           <a-input placeholder="请输入"></a-input>
@@ -8,7 +8,7 @@
         <a-form-item label="监控点名称">
           <a-input placeholder="请输入"></a-input>
         </a-form-item>
-        <!-- <a-form-item label="运维小组">
+        <a-form-item label="运维小组">
           <a-select
             defaultValue="all"
             style="width: 120px"
@@ -18,18 +18,22 @@
             <a-select-option value="jack">运维1组</a-select-option>
             <a-select-option value="lucy">运维2组</a-select-option>
           </a-select>
-        </a-form-item> -->
+        </a-form-item>
         <a-form-item label="任务状态">
-          <a-select defaultValue="all" style="width: 120px">
+          <a-select
+            defaultValue="all"
+            style="width: 120px"
+            @change="handleChange"
+          >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="jack">未完成</a-select-option>
             <a-select-option value="lucy">已完成</a-select-option>
             <a-select-option value="lucy">已逾期</a-select-option>
           </a-select>
         </a-form-item>
-        <!-- <a-form-item label="任务时间">
+        <a-form-item label="任务时间">
           <a-range-picker @change="onChange" />
-        </a-form-item> -->
+        </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
             查询
@@ -37,10 +41,10 @@
         </a-form-item>
         <a-form-item> </a-form-item>
       </a-form>
-    </a-card>
+    </a-card> -->
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">监测点列表</div>
+        <div class="title">任务列表</div>
         <!-- <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -55,12 +59,6 @@
         :loading="loading"
         v-margin:top="16"
       >
-        <span slot="action" slot-scope="row">
-          <!-- <a @click="delayShow = true">申请延期</a>
-          <a-divider type="vertical" />
-          <a @click="closeShow = true">任务关闭</a> -->
-          <a @click="goDetail(row)">详情</a>
-        </span>
       </a-table>
       <a-pagination
         size="small"
@@ -104,21 +102,25 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
-      formInline: {
-        name: "",
-        phone: ""
-      },
       columns: [
         {
-          title: "企业名称",
+          title: "任务方案",
           dataIndex: "enterpriseName"
         },
         {
-          title: "监控点",
+          title: "运维小组",
           dataIndex: "station"
         },
         {
-          title: "任务状态",
+          title: "运维人员",
+          dataIndex: "name"
+        },
+        {
+          title: "运维时间",
+          dataIndex: "time"
+        },
+        {
+          title: "运维状态",
           dataIndex: "status",
           customRender: text => {
             if (text == 1) {
@@ -135,22 +137,18 @@ export default {
           },
           align: "center",
           width: 150
-        },
-        {
-          title: "任务数量",
-          dataIndex: "num"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center",
-          width: 100
         }
+        // {
+        //   title: "操作",
+        //   key: "action",
+        //   scopedSlots: { customRender: "action" },
+        //   align: "center",
+        //   width: 100
+        // }
       ],
       tableData: [
         {
-          num: 10
+          time: "2020-02-02"
         }
       ],
       stationList: [],
@@ -183,7 +181,7 @@ export default {
       //     console.log(error);
       //     this.loading = false;
       //   });
-    },
+    }
     // cancel(value) {
     //   this.show = value;
     //   this.delayShow = value;
@@ -191,30 +189,24 @@ export default {
     //   this.detailShow = value;
     //   this.getTableData();
     // },
-    getStation() {
-      this.$api.common.selectStation().then(res => {
-        if (res.data.state == 0) {
-          this.stationList = res.data.data;
-        }
-      });
-    },
-    getPlan() {
-      this.$api.common.selectPlan().then(res => {
-        if (res.data.state == 0) {
-          this.planList = res.data.data;
-        }
-      });
-    },
-    goDetail(row) {
-      this.$router.push({
-        path: "/maintain/mission/detail",
-        query: { id: row.id }
-      });
-    }
+    // getStation() {
+    //   this.$api.common.selectStation().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.stationList = res.data.data;
+    //     }
+    //   });
+    // },
+    // getPlan() {
+    //   this.$api.common.selectPlan().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.planList = res.data.data;
+    //     }
+    //   });
+    // }
   },
   mounted() {
-    this.getStation();
-    this.getPlan();
+    // this.getStation();
+    // this.getPlan();
     this.getTableData();
   }
 };
