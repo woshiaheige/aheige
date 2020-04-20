@@ -76,7 +76,7 @@
           任务转交
         </template>
         <template slot="status" slot-scope="status">
-          <a-tag color="blue">{{ status }}</a-tag>
+          <a-badge status="success" :text="status" />
         </template>
         <span slot="action" slot-scope="row">
           <a @click="check(row)">查看</a>
