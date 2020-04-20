@@ -149,13 +149,15 @@ export default {
   },
   methods: {
     handleOk() {
+      // let that = this;
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
         }
         //验证通过
-        // let data = JSON.parse(JSON.stringfy(this.formData));
+        console.log(this.formData);
+        // let data = JSON.parse(window.JSON.stringfy(that.formData));
         let data = this.formData;
 
         data.gmtBegin = this.$moment(data.gmtBegin).format(
@@ -193,6 +195,17 @@ export default {
         .getContractById({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
+            this.fileList = [
+              {
+                uid: "-1",
+                name: res.data.data.fileName,
+                status: "done",
+                url: ""
+              }
+            ];
+            res.data.data.gmtBegin = this.$moment(res.data.data.gmtBegin);
+            res.data.data.gmtEnd = this.$moment(res.data.data.gmtEnd);
+            res.data.data.gmtSign = this.$moment(res.data.data.gmtSign);
             this.formData = res.data.data;
           }
         });
@@ -235,6 +248,7 @@ export default {
     "value.show"() {
       if (this.value.show == true) {
         this.enterpriseOptions();
+        this.fileList = [];
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

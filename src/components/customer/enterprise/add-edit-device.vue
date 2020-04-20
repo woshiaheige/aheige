@@ -57,11 +57,7 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="验收时间" prop="gmtReceptionTime">
-        <a-date-picker
-          v-width="350"
-          v-model="formData.gmtReceptionTime"
-          @change="onChange"
-        />
+        <a-date-picker v-width="350" v-model="formData.gmtReceptionTime" />
       </a-form-model-item>
       <a-form-model-item label="验收材料">
         <a-upload
@@ -123,11 +119,11 @@ export default {
           return false;
         }
         //验证通过
-        // if (this.formData.gmtReceptionTime) {
-        //   this.formData.gmtReceptionTime = this.$moment(
-        //     this.formData.gmtReceptionTime
-        //   ).format("YYYY-MM-DD hh:mm:ss");
-        // }
+        if (this.formData.gmtReceptionTime) {
+          this.formData.gmtReceptionTime = this.$moment(
+            this.formData.gmtReceptionTime
+          ).format("YYYY-MM-DD hh:mm:ss");
+        }
         if (this.modelData.type == "edit") {
           this.$api.customer.editDevice(this.formData).then(res => {
             if (res.data.state == 0) {
@@ -188,8 +184,7 @@ export default {
             ];
             if (res.data.data.gmtReceptionTime != null) {
               res.data.data.gmtReceptionTime = this.$moment(
-                res.data.data.gmtReceptionTime,
-                "YYYY-MM-DD"
+                res.data.data.gmtReceptionTime
               );
             }
             this.formData = res.data.data;
