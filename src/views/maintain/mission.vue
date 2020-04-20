@@ -40,7 +40,7 @@
     </a-card>
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">监测点列表</div>
+        <div class="title">任务列表</div>
         <!-- <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -55,11 +55,19 @@
         :loading="loading"
         v-margin:top="16"
       >
+        <template slot="status" slot-scope="status">
+          <a-badge status="success" :text="status == 1 ? '已创建' : '处理中'" />
+        </template>
+        <template slot="type" slot-scope="type">
+          <a-tag color="blue" v-if="type == 32">水类</a-tag>
+          <a-tag color="red" v-if="type == 31">气类</a-tag>
+          <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
+        </template>
         <span slot="action" slot-scope="row">
           <!-- <a @click="delayShow = true">申请延期</a>
           <a-divider type="vertical" />
           <a @click="closeShow = true">任务关闭</a> -->
-          <a @click="goDetail(row)">详情</a>
+          <a @click="goDetail(row)">任务详情</a>
         </span>
       </a-table>
       <a-pagination
@@ -110,25 +118,31 @@ export default {
           dataIndex: "enterpriseName"
         },
         {
-          title: "监控点",
+          title: "运维站点",
           dataIndex: "station"
+        },
+        {
+          title: "站点类别",
+          dataIndex: "type",
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "任务状态",
           dataIndex: "status",
-          customRender: text => {
-            if (text == 1) {
-              return "已创建";
-            } else if (text == 2) {
-              return "处理中";
-            } else if (text == 3) {
-              return "已完成";
-            } else if (text == 4) {
-              return "已延期";
-            } else if (text == 5) {
-              return "已关闭";
-            }
-          },
+          scopedSlots: { customRender: "status" },
+          // customRender: text => {
+          //   if (text == 1) {
+          //     return "已创建";
+          //   } else if (text == 2) {
+          //     return "处理中";
+          //   } else if (text == 3) {
+          //     return "已完成";
+          //   } else if (text == 4) {
+          //     return "已延期";
+          //   } else if (text == 5) {
+          //     return "已关闭";
+          //   }
+          // },
           align: "center",
           width: 150
         },
@@ -146,6 +160,10 @@ export default {
       ],
       tableData: [
         {
+          enterpriseName: "烧腊有限公司",
+          station: "站点1",
+          type: 31,
+          status: 2,
           num: 10
         }
       ],
