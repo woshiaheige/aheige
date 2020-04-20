@@ -59,6 +59,15 @@
         :loading="loading"
         v-margin:top="16"
       >
+        <template slot="status" slot-scope="status">
+          <a-badge status="success" :text="status == 1 ? '已创建' : '处理中'" />
+        </template>
+        <span slot="action" slot-scope="row">
+          <!-- <a @click="delayShow = true">申请延期</a>
+          <a-divider type="vertical" />
+          <a @click="closeShow = true">任务关闭</a> -->
+          <a @click="goDetail(row)">详情</a>
+        </span>
       </a-table>
       <a-pagination
         size="small"
@@ -69,47 +78,32 @@
         :defaultPageSize="pageSize"
         :total="total"
       />
-      <!--新建-->
-      <!-- <add-edit
-        :visible="show"
-        :planList="planList"
-        :stationList="stationList"
-        @cancel="cancel"
-      ></add-edit> -->
-      <!--延期-->
-      <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
-      <!--关闭-->
-      <!-- <close-modal :visible="closeShow" @cancel="cancel"></close-modal> -->
-      <!--详情-->
-      <!-- <detail-modal
-        :visible="detailShow"
-        :tableData="tableData"
-        @cancel="cancel"
-      ></detail-modal> -->
+      <add-edit v-model="obj" @refresh="getTableData"></add-edit>
     </a-card>
   </div>
 </template>
 <script>
-// import addEdit from "@/components/maintain/mission/add-edit";
-// import detailModal from "@/components/maintain/mission/detail";
-// import delayModal from "@/components/maintain/mission/delay";
-// import closeModal from "@/components/maintain/mission/close";
+import addEdit from "@/components/maintain/mission/info";
+
 export default {
-  // components: { addEdit, delayModal, closeModal, detailModal },
+  components: { addEdit },
   data() {
     return {
       current: 1,
       pageSize: 10,
       total: 0,
       loading: false,
+      obj: {
+        show: false
+      },
       columns: [
         {
           title: "任务方案",
-          dataIndex: "enterpriseName"
+          dataIndex: "plan"
         },
         {
           title: "运维小组",
-          dataIndex: "station"
+          dataIndex: "team"
         },
         {
           title: "运维人员",
@@ -122,41 +116,41 @@ export default {
         {
           title: "运维状态",
           dataIndex: "status",
-          customRender: text => {
-            if (text == 1) {
-              return "已创建";
-            } else if (text == 2) {
-              return "处理中";
-            } else if (text == 3) {
-              return "已完成";
-            } else if (text == 4) {
-              return "已延期";
-            } else if (text == 5) {
-              return "已关闭";
-            }
-          },
+          scopedSlots: { customRender: "status" },
+          // customRender: text => {
+          //   if (text == 1) {
+          //     return "已创建";
+          //   } else if (text == 2) {
+          //     return "处理中";
+          //   } else if (text == 3) {
+          //     return "已完成";
+          //   } else if (text == 4) {
+          //     return "已延期";
+          //   } else if (text == 5) {
+          //     return "已关闭";
+          //   }
+          // },
           align: "center",
           width: 150
+        },
+        {
+          title: "操作",
+          key: "action",
+          scopedSlots: { customRender: "action" },
+          align: "center",
+          width: 100
         }
-        // {
-        //   title: "操作",
-        //   key: "action",
-        //   scopedSlots: { customRender: "action" },
-        //   align: "center",
-        //   width: 100
-        // }
       ],
       tableData: [
         {
-          time: "2020-02-02"
+          plan: "方案1",
+          team: "A小组",
+          name: "张三",
+          time: "2020-04-22"
         }
       ],
       stationList: [],
       planList: []
-      // show: false,
-      // delayShow: false,
-      // closeShow: false,
-      // detailShow: false
     };
   },
   methods: {
@@ -181,32 +175,13 @@ export default {
       //     console.log(error);
       //     this.loading = false;
       //   });
+    },
+    goDetail(row) {
+      this.obj.show = true;
+      this.obj.row = row;
     }
-    // cancel(value) {
-    //   this.show = value;
-    //   this.delayShow = value;
-    //   this.closeShow = value;
-    //   this.detailShow = value;
-    //   this.getTableData();
-    // },
-    // getStation() {
-    //   this.$api.common.selectStation().then(res => {
-    //     if (res.data.state == 0) {
-    //       this.stationList = res.data.data;
-    //     }
-    //   });
-    // },
-    // getPlan() {
-    //   this.$api.common.selectPlan().then(res => {
-    //     if (res.data.state == 0) {
-    //       this.planList = res.data.data;
-    //     }
-    //   });
-    // }
   },
   mounted() {
-    // this.getStation();
-    // this.getPlan();
     this.getTableData();
   }
 };
