@@ -11,7 +11,7 @@
           placeholder="行业名称"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '输入行业名称' }] }
+            { rules: [{ required: true, message: '请输入' }] }
           ]"
         />
       </a-form-item>

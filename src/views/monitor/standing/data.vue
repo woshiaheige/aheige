@@ -1,29 +1,26 @@
 <template>
   <div>
-    <a-card :bordered="false">
-      <a-form-model layout="inline">
-        <a-form-model-item label="时间范围">
-          <a-range-picker @change="onChange" />
-        </a-form-model-item>
-        <a-form-model-item style="float:right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-model-item>
-      </a-form-model>
-    </a-card>
-
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
         <div class="title">数据列表</div>
         <div class="extra">
-          <a-radio-group :value="formInline.type" @change="handleTypeChange">
-            <a-radio-button value="all">实时数据</a-radio-button>
-            <a-radio-button value="default">分钟数据</a-radio-button>
-            <a-radio-button value="small">小时数据</a-radio-button>
-            <a-radio-button value="small">日数据</a-radio-button>
-            <a-radio-button value="small">月数据</a-radio-button>
-          </a-radio-group>
+          <a-form-model layout="inline">
+            <a-form-model-item>
+              <a-range-picker @change="onChange" />
+            </a-form-model-item>
+            <a-form-model-item>
+              <a-radio-group
+                :value="formInline.type"
+                @change="handleTypeChange"
+              >
+                <a-radio-button value="all">实时数据</a-radio-button>
+                <a-radio-button value="default">分钟数据</a-radio-button>
+                <a-radio-button value="small">小时数据</a-radio-button>
+                <a-radio-button value="small">日数据</a-radio-button>
+                <a-radio-button value="small">月数据</a-radio-button>
+              </a-radio-group>
+            </a-form-model-item>
+          </a-form-model>
         </div>
       </div>
       <a-table
@@ -82,6 +79,7 @@ export default {
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";
+      this.getTableData();
     },
     //设置pointid
     setPointId() {
@@ -149,7 +147,6 @@ export default {
                   title: element.title,
                   dataIndex: element.field,
                   key: element.field,
-                  align: "center",
                   customRender: (text, row) => `${row[element.field].rtd}`
                 });
               }

@@ -24,7 +24,9 @@ const car = {
   },
   //删除车辆
   deleteAssetVehicle(data) {
-    return axios.post(base.api + "assetVehicle/deleteAssetVehicle", data);
+    return axios.get(base.api + "assetVehicle/deleteAssetVehicle", {
+      params: data
+    });
   },
   //车辆使用列表
   manageVehicleUse(data) {

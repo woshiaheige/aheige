@@ -112,6 +112,10 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
+      formInline: {
+        name: "",
+        phone: ""
+      },
       columns: [
         {
           title: "企业名称",

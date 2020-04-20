@@ -96,7 +96,8 @@ export default {
           title: "超标时间",
           dataIndex: "dateTime",
           key: "dateTime",
-          width: 200
+          width: 200,
+          align: "center"
         }
       ],
       formInline: {

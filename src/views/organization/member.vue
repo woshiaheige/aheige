@@ -49,11 +49,13 @@
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="onDelete(row)">删除</a>
-          <a-divider type="vertical" />
-          <a @click="onLock(row)" v-show="row.isLocked == 1">解锁</a>
-          <a @click="unLock(row)" v-show="row.isLocked == 0">锁定</a>
+          <span v-if="row.id != 1">
+            <a-divider type="vertical" />
+            <a @click="onDelete(row)">删除</a>
+            <a-divider type="vertical" />
+            <a @click="onLock(row)" v-show="row.isLocked == 1">解锁</a>
+            <a @click="unLock(row)" v-show="row.isLocked == 0">锁定</a>
+          </span>
         </span>
       </a-table>
       <a-pagination
@@ -84,7 +86,7 @@ export default {
     return {
       current: 1,
       total: 0,
-      pagesize: 10,
+      size: 10,
       loading: false,
       formInline: {
         name: "",
@@ -129,7 +131,7 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        pagesize: this.pagesize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name,
         phone: this.formInline.phone

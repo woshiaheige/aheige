@@ -12,7 +12,7 @@
             </a-form-item>
             <a-form-item>
               <a-input-search
-                placeholder="输入行业名称"
+                placeholder="请输入行业名称"
                 style="width: 200px"
                 v-model="formInline.name"
                 @search="onSubmit"
@@ -62,7 +62,7 @@ export default {
     return {
       current: 1,
       total: 0,
-      pagesize: 10,
+      size: 10,
       loading: false,
       industryDetail: "",
       formInline: {
@@ -88,7 +88,7 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        pagesize: this.pagesize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name
       };

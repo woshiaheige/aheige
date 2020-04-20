@@ -3,7 +3,7 @@
     <div class="card-header">
       <div class="title">车辆列表</div>
       <div class="extra">
-        <a-form layout="inline" :model="formInline">
+        <a-form layout="inline">
           <a-form-item>
             <a-button type="primary" @click="onEdit('', 'add')">
               <a-icon type="plus" />新建
@@ -14,6 +14,7 @@
               placeholder="请输入车牌号码"
               style="width: 200px"
               @search="onSubmit"
+              v-model="formInline.name"
             />
           </a-form-item>
         </a-form>
@@ -43,6 +44,7 @@
       v-margin:top="16"
       showSizeChanger
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
       :current="current"
       @change="pagechange"
       @showSizeChange="sizechange"
@@ -58,18 +60,19 @@ export default {
   data() {
     return {
       modalInfo: { show: false },
+      formInline: {
+        name: ""
+      },
       current: 1,
       loading: false,
-      pagesize: 10,
+      size: 10,
       total: 0,
       columns: [
         {
           title: "序号",
           align: "center",
           customRender: (text, row, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-            );
+            return <span>{index + (this.current - 1) * this.size + 1}</span>;
           }
         },
         {
@@ -108,8 +111,9 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        pagesize: this.pagesize,
-        page: this.current
+        size: this.size,
+        page: this.current,
+        name: this.formInline.name
       };
       this.loading = true;
       this.$api.car
