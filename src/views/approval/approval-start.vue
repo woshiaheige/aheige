@@ -111,12 +111,12 @@ export default {
           scopedSlots: { customRender: "status" }
         },
         {
-          title: "申请时间",
-          dataIndex: "time"
-        },
-        {
           title: "审批人",
           dataIndex: "people"
+        },
+        {
+          title: "申请时间",
+          dataIndex: "time"
         },
         {
           title: "审核时间",
