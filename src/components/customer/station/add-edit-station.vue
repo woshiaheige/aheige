@@ -59,8 +59,8 @@
         <a-select placeholder="监测点类型" v-model="formData.type">
           <a-select-option
             v-for="item in pointOptions"
-            :key="item.id"
-            :value="item.id"
+            :key="item.value"
+            :value="Number(item.value)"
           >
             {{ item.name }}
           </a-select-option>
@@ -111,11 +111,11 @@ export default {
       transferList: [
         {
           name: "有线传输",
-          id: 1
+          id: 2
         },
         {
           name: "无线传输",
-          id: 2
+          id: 1
         }
       ],
       protocolList: [
