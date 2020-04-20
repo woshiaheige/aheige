@@ -44,7 +44,7 @@
     </a-card> -->
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">站点管理</div>
+        <div class="title">任务列表</div>
         <!-- <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -70,32 +70,32 @@
         :total="total"
       />
       <!--新建-->
-      <add-edit
+      <!-- <add-edit
         :visible="show"
         :planList="planList"
         :stationList="stationList"
         @cancel="cancel"
-      ></add-edit>
+      ></add-edit> -->
       <!--延期-->
-      <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal>
+      <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
       <!--关闭-->
-      <close-modal :visible="closeShow" @cancel="cancel"></close-modal>
+      <!-- <close-modal :visible="closeShow" @cancel="cancel"></close-modal> -->
       <!--详情-->
-      <detail-modal
+      <!-- <detail-modal
         :visible="detailShow"
         :tableData="tableData"
         @cancel="cancel"
-      ></detail-modal>
+      ></detail-modal> -->
     </a-card>
   </div>
 </template>
 <script>
-import addEdit from "@/components/maintain/mission/add-edit";
-import detailModal from "@/components/maintain/mission/detail";
-import delayModal from "@/components/maintain/mission/delay";
-import closeModal from "@/components/maintain/mission/close";
+// import addEdit from "@/components/maintain/mission/add-edit";
+// import detailModal from "@/components/maintain/mission/detail";
+// import delayModal from "@/components/maintain/mission/delay";
+// import closeModal from "@/components/maintain/mission/close";
 export default {
-  components: { addEdit, delayModal, closeModal, detailModal },
+  // components: { addEdit, delayModal, closeModal, detailModal },
   data() {
     return {
       current: 1,
@@ -113,7 +113,7 @@ export default {
         },
         {
           title: "运维人员",
-          dataIndex: "station"
+          dataIndex: "name"
         },
         {
           title: "运维时间",
@@ -152,11 +152,11 @@ export default {
         }
       ],
       stationList: [],
-      planList: [],
-      show: false,
-      delayShow: false,
-      closeShow: false,
-      detailShow: false
+      planList: []
+      // show: false,
+      // delayShow: false,
+      // closeShow: false,
+      // detailShow: false
     };
   },
   methods: {
@@ -181,32 +181,32 @@ export default {
       //     console.log(error);
       //     this.loading = false;
       //   });
-    },
-    cancel(value) {
-      this.show = value;
-      this.delayShow = value;
-      this.closeShow = value;
-      this.detailShow = value;
-      this.getTableData();
-    },
-    getStation() {
-      this.$api.common.selectStation().then(res => {
-        if (res.data.state == 0) {
-          this.stationList = res.data.data;
-        }
-      });
-    },
-    getPlan() {
-      this.$api.common.selectPlan().then(res => {
-        if (res.data.state == 0) {
-          this.planList = res.data.data;
-        }
-      });
     }
+    // cancel(value) {
+    //   this.show = value;
+    //   this.delayShow = value;
+    //   this.closeShow = value;
+    //   this.detailShow = value;
+    //   this.getTableData();
+    // },
+    // getStation() {
+    //   this.$api.common.selectStation().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.stationList = res.data.data;
+    //     }
+    //   });
+    // },
+    // getPlan() {
+    //   this.$api.common.selectPlan().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.planList = res.data.data;
+    //     }
+    //   });
+    // }
   },
   mounted() {
-    this.getStation();
-    this.getPlan();
+    // this.getStation();
+    // this.getPlan();
     this.getTableData();
   }
 };
