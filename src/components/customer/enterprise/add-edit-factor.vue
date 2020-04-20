@@ -19,6 +19,7 @@
             v-for="item in factorOptions"
             :key="item.id"
             :value="item.id"
+            :filterOption="filterOption"
           >
             {{ item.name }}
           </a-select-option>
@@ -67,6 +68,13 @@ export default {
           }
         ],
         ceilval: [{ validator: validateNum, trigger: "blur" }]
+      },
+      filterOption(input, option) {
+        return (
+          option.componentOptions.children[0].text
+            .toLowerCase()
+            .indexOf(input.toLowerCase()) >= 0
+        );
       }
     };
   },

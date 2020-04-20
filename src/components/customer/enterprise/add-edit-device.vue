@@ -57,17 +57,14 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="验收时间" prop="gmtReceptionTime">
-        <a-date-picker
-          @change="onChange"
-          v-width="350"
-          v-model="formData.gmtReceptionTime"
-        />
+        <a-date-picker v-width="350" v-model="formData.gmtReceptionTime" />
       </a-form-model-item>
       <a-form-model-item label="验收材料">
         <a-upload
           name="file"
           :multiple="true"
           :action="$base.api + 'files/uploadFile'"
+          :fileList="fileList"
           @change="handleChange"
         >
           <a-button> <a-icon type="upload" /> 上传材料</a-button>
@@ -88,6 +85,7 @@ export default {
       stationOptions: [],
       pointOptions: [],
       factorOptions: [],
+      fileList: [],
       formData: {
         pointId: this.$route.query.id
       },
@@ -150,18 +148,26 @@ export default {
       this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
-    onChange(date, dateString) {
-      console.log(date, dateString);
-    },
     handleChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
+      console.log(info);
+      let fileList = [...info.fileList];
+
+      fileList = fileList.slice(-1);
+
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      this.fileList = fileList;
+      if (info.file.status === "done") {
+        this.formData.fileId = info.file.response.data;
+        this.$message.success("上传成功");
+      } else if (info.file.status === "error") {
+        this.$message.error("上传失败");
       }
-      // if (info.file.status === "done") {
-      //   this.$message.success(`${info.file.name} file uploaded successfully`);
-      // } else if (info.file.status === "error") {
-      //   this.$message.error(`${info.file.name} file upload failed.`);
-      // }
     },
     getEditData() {
       this.$api.customer
@@ -209,7 +215,7 @@ export default {
         this.getStation();
         this.getPointSelect();
         this.getFactor();
-        this.formData.gmtReceptionTime = "";
+        // this.formData.gmtReceptionTime = "";
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

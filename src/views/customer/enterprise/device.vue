@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import base from "@/api/base";
 import addEdit from "@/components/customer/enterprise/add-edit-device";
 export default {
   components: { addEdit },
@@ -181,11 +182,13 @@ export default {
       this.obj.row = row;
     },
     onDown(row) {
-      console.log(row);
       if (row.fileId == null) {
         this.$message.warn("没有附件");
         return;
       }
+      this.$api.customer.downloadFile({ id: row.fileId }).then(() => {
+        window.location.href = base.api + "files/download/file/" + row.fileId;
+      });
     }
   },
   mounted() {

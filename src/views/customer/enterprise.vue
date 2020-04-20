@@ -136,12 +136,14 @@ export default {
           dataIndex: "controlLevel",
           key: "controlLevel",
           scopedSlots: { customRender: "controlLevel" },
-          align: "center"
+          align: "center",
+          width: 150
         },
         {
           title: "行业类型",
-          dataIndex: "address",
-          key: "address"
+          dataIndex: "industryName",
+          key: "industryName",
+          width: 150
         },
         {
           title: "环保负责人",
@@ -151,7 +153,7 @@ export default {
         {
           title: "操作",
           key: "action",
-          width: 300,
+          width: 240,
           scopedSlots: { customRender: "action" },
           align: "center"
         }
@@ -182,8 +184,16 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
-            this.tableData = res.data.data.records;
-            this.total = Number(res.data.data.total);
+            let result = res.data.data;
+            result.records.forEach(item => {
+              this.typeList.forEach(element => {
+                if (item.industryId == element.id) {
+                  item.industry = element.name;
+                }
+              });
+            });
+            this.tableData = result.records;
+            this.total = Number(result.total);
           }
         })
         .catch(error => {
