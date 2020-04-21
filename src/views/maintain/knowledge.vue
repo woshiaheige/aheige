@@ -14,7 +14,8 @@
               <a-input-search
                 placeholder="请输入文章名称"
                 style="width: 200px"
-                @search="onSubmit"
+                v-model="formInline.title"
+                @search="search"
               />
             </a-form-item>
           </a-form>
@@ -75,16 +76,19 @@
             :detail="articleDetail"
             :typeList="menuList"
             :type="menu"
-            @updateTable="knowledgeClass"
+            @updateTable="getTableData"
           ></add-edit>
 
           <!-- 新增编辑类型 -->
           <type-edit
             :visible.sync="knowledgeTypeVisible"
             :detail="knowledgeTypeDetail"
-            @updateTable="getTableData"
+            @updateTable="knowledgeClass"
           />
-          <article-modal></article-modal>
+          <article-modal
+            :visible.sync="articleDetailVisible"
+            :detail="articleModalDetail"
+          ></article-modal>
         </a-col>
       </a-row>
     </a-card>
@@ -98,12 +102,14 @@ export default {
   components: { addEdit, typeEdit, articleModal },
   data() {
     return {
+      formInline: { title: "" },
       loading: false,
       knowledgeTypeVisible: false, //分类
       knowledgeTypeDetail: "",
       articleVisible: false, //文章
       articleDetailVisible: false, //文章详情
       articleDetail: "",
+      articleModalDetail: "",
       menuList: [],
       menu: [],
       current: 1,
@@ -149,6 +155,32 @@ export default {
     }
   },
   methods: {
+    search() {
+      //不以分类搜索
+      this.current = 1;
+      this.menu = [];
+      let params = {
+        size: this.size,
+        page: this.current,
+        title: this.formInline.title
+      };
+      this.loading = true;
+      this.$api.maintain
+        .article(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+            if (this.tableData.length != 0) {
+              this.menu = [this.tableData[0].classId];
+            }
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    },
     knowledgeClass() {
       this.$api.maintain.knowledgeClass().then(res => {
         if (res.data.state == 0) {
@@ -161,7 +193,8 @@ export default {
       let params = {
         size: this.size,
         page: this.current,
-        classId: this.menu[0]
+        classId: this.menu[0],
+        title: this.formInline.title
       };
       this.loading = true;
       this.$api.maintain
@@ -219,10 +252,11 @@ export default {
       });
     },
     onDetail(row) {
+      //查看详情
       this.$api.maintain.getArticleById({ id: row.id }).then(res => {
         if (res.data.state == 0) {
           this.articleDetailVisible = true;
-          this.articleDetail = res.data.data;
+          this.articleModalDetail = res.data.data;
         } else {
           this.$message.error(res.data.msg);
         }
@@ -233,7 +267,7 @@ export default {
       let _this = this;
       this.$confirm({
         title: "删除",
-        content: `是否删除文章 ${row.name}`,
+        content: `是否删除文章 ${row.title}`,
         onOk() {
           console.log("OK");
           _this.$api.maintain

@@ -20,7 +20,7 @@ const monitorRoute = [
     name: "monitor-standing-data",
     key: "monitor-standing-data",
     meta: {
-      title: "监测数据",
+      title: "站点数据",
       back: true
     },
     component: () =>

@@ -24,22 +24,8 @@ const product = {
   },
 
   delGoods(data) {
-    return axios({
-      url: base.api + "assetGoods/deleteAssetGoods",
-      method: "post",
-      data: data,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      transformRequest: [
-        data => {
-          let params = "";
-          for (var index in data) {
-            params += index + "=" + data[index] + "&";
-          }
-          return params;
-        }
-      ]
+    return axios.get(base.api + "assetGoods/deleteAssetGoods", {
+      params: data
     });
   },
   getGoodsById(data) {

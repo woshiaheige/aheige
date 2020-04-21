@@ -7,9 +7,11 @@
   >
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="标题">{{ detail.title }}</a-descriptions-item>
-      <a-descriptions-item label="知识库分类">张三</a-descriptions-item>
-      <a-descriptions-item label="详情">
-        <div v-html="detail.content"></div>
+      <a-descriptions-item label="知识库分类">{{
+        detail.className
+      }}</a-descriptions-item>
+      <a-descriptions-item label="详情" class="ql-container ql-snow">
+        <div v-html="detail.content" class="article-detail"></div>
       </a-descriptions-item>
     </a-descriptions>
   </a-modal>
@@ -23,7 +25,10 @@ export default {
       type: Boolean
     },
     detail: {
-      required: false
+      required: true,
+      default: function() {
+        return {};
+      }
     }
   },
   data() {
@@ -44,7 +49,15 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+    },
+    handleOk() {
+      this.$emit("update:visible", false);
     }
   }
 };
 </script>
+<style>
+.article-detail img {
+  max-width: 100%;
+}
+</style>
