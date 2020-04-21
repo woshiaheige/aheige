@@ -12,65 +12,45 @@
       <a-row :gutter="16">
         <a-col :span="6">
           <a-radio-group
-            defaultValue="a"
+            defaultValue="31"
             buttonStyle="solid"
             @change="changeType"
           >
-            <a-radio-button value="a">水类运维</a-radio-button>
-            <a-radio-button value="b">气类运维</a-radio-button>
-            <a-radio-button value="c">其他运维</a-radio-button>
+            <a-radio-button value="31">气类运维</a-radio-button>
+            <a-radio-button value="32">水类运维</a-radio-button>
+            <a-radio-button value="0">其他运维</a-radio-button>
           </a-radio-group>
           <a-button type="dashed" block v-margin:top="16" @click="addNewScheme"
             >新建方案</a-button
           >
           <a-menu
-            v-model="current"
+            v-model="currentScheme"
             mode="vertical"
-            :defaultSelectedKeys="['type1']"
-            v-if="type == 'a'"
+            :defaultSelectedKeys="[gasSchemeList[0].id]"
+            v-if="type == '31'"
           >
-            <a-menu-item key="type1">
-              日检查维护
-            </a-menu-item>
-            <a-menu-item key="type2">
-              周检查维护
-            </a-menu-item>
-            <a-menu-item key="type3">
-              月检查维护
-            </a-menu-item>
-            <a-menu-item key="type4">
-              季检查维护
-            </a-menu-item>
-            <a-menu-item key="type5">
-              定期校验
-            </a-menu-item>
-            <a-menu-item key="type6">
-              比对监测
+            <a-menu-item v-for="item in gasSchemeList" :key="item.id">
+              {{ item.name }}
             </a-menu-item>
           </a-menu>
           <a-menu
-            v-model="current"
+            v-model="currentScheme"
             mode="vertical"
-            :defaultSelectedKeys="['type1']"
-            v-if="type == 'b'"
+            :defaultSelectedKeys="[waterSchemeList[0].id]"
+            v-if="type == '32'"
           >
-            <a-menu-item key="type1">
-              日常巡检
+            <a-menu-item v-for="item in waterSchemeList" :key="item.id">
+              {{ item.name }}
             </a-menu-item>
-            <a-menu-item key="type2">
-              日常维护
-            </a-menu-item>
-            <a-menu-item key="type3">
-              定期校准
-            </a-menu-item>
-            <a-menu-item key="type4">
-              定期维护
-            </a-menu-item>
-            <a-menu-item key="type5">
-              定期校验
-            </a-menu-item>
-            <a-menu-item key="type6">
-              比对监测
+          </a-menu>
+          <a-menu
+            v-model="currentScheme"
+            mode="vertical"
+            :defaultSelectedKeys="[otherSchemeList[0].id]"
+            v-if="type == '0'"
+          >
+            <a-menu-item v-for="item in otherSchemeList" :key="item.id">
+              {{ item.name }}
             </a-menu-item>
           </a-menu>
         </a-col>
@@ -123,7 +103,7 @@ export default {
   },
   data() {
     return {
-      current: ["type1"],
+      currentScheme: ["type1"],
       columns: [
         {
           title: "运维项目",
@@ -137,8 +117,14 @@ export default {
       ],
       addSchemeModal: false,
       addSchemeListModal: false,
-      type: "a"
+      type: "a",
+      waterSchemeList: [],
+      gasSchemeList: [],
+      otherSchemeList: []
     };
+  },
+  mounted() {
+    this.getScheme();
   },
   methods: {
     addNewScheme() {
@@ -149,6 +135,22 @@ export default {
     },
     changeType(e) {
       this.type = e.target.value;
+    },
+    getScheme() {
+      this.$api.maintain.getScheme().then(res => {
+        res.data.data.forEach(item => {
+          switch (item.maintainType) {
+            case 31:
+              this.gasSchemeList.push(item);
+              break;
+            case 32:
+              this.waterSchemeList.push(item);
+              break;
+            case 0:
+              this.otherSchemeList.push(item);
+          }
+        });
+      });
     }
   }
 };

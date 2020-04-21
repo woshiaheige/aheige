@@ -53,6 +53,10 @@ const maintain = {
     return axios.get(base.mock + "member/list", {
       params: data
     });
+  },
+  //方案
+  getScheme() {
+    return axios.get(base.api + "/maintainProgramme/query");
   }
 };
 
