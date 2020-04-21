@@ -193,9 +193,7 @@ export default {
     toMonitorData(row) {
       this.$router.push({
         name: "monitor-standing-data",
-        params: {
-          row
-        }
+        query: { id: row.pointId }
       });
     }
   }
