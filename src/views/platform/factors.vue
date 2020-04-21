@@ -35,8 +35,8 @@
             <a-form-item>
               <a-radio-group v-model="formInline.type" @change="onSubmit">
                 <a-radio-button value="all">全部</a-radio-button>
-                <a-radio-button value="31">废水</a-radio-button>
-                <a-radio-button value="32">废气</a-radio-button>
+                <a-radio-button value="32">废水</a-radio-button>
+                <a-radio-button value="31">废气</a-radio-button>
               </a-radio-group>
             </a-form-item>
             <a-form-item>
@@ -158,6 +158,7 @@ export default {
           align: "center",
           title: "操作",
           key: "action",
+          width: 200,
           scopedSlots: { customRender: "action" }
         }
       ],

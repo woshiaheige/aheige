@@ -54,9 +54,61 @@ const maintain = {
       params: data
     });
   },
+  //知识库分类
+  knowledgeClass(data) {
+    return axios.get(base.api + "knowledgeClass/", {
+      params: data
+    });
+  },
+  //新增知识库分类
+  addKnowledgeClass(data) {
+    return axios.post(base.api + "knowledgeClass/addKnowledgeClass", data);
+  },
+  //修改知识库分类
+  updateKnowledgeClass(data) {
+    return axios.post(base.api + "knowledgeClass/update", data);
+  },
+  //删除知识库分类
+  deleteKnowledgeClass(data) {
+    return axios.get(base.api + "knowledgeClass/delete", {
+      params: data
+    });
+  },
+  //新增文章
+  addKnowledgeArticle(data) {
+    return axios.post(base.api + "article/addKnowledgeArticle", data);
+  },
+  //编辑文章
+  updateKnowledgeArticle(data) {
+    return axios.post(base.api + "article/update", data);
+  },
+  //删除文章
+  deleteKnowledgeArticle(data) {
+    return axios.get(base.api + "article/delete", {
+      params: data
+    });
+  },
+  //文章列表
+  article(data) {
+    return axios.get(base.api + "article/", {
+      params: data
+    });
+  },
+  //文章详情
+  getArticleById(data) {
+    return axios.get(base.api + "article/getArticleById", {
+      params: data
+    });
+  },
   //方案
   getScheme() {
     return axios.get(base.api + "/maintainProgramme/query");
+  },
+  addScheme(data) {
+    return axios.post(
+      base.api + "/maintainProgramme/addMaintainProgramme",
+      data
+    );
   }
 };
 

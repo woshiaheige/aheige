@@ -26,31 +26,70 @@
           <a-menu
             v-model="currentScheme"
             mode="vertical"
-            :defaultSelectedKeys="[gasSchemeList[0].id]"
+            :defaultSelectedKeys="[
+              gasSchemeList.length > 0 ? gasSchemeList[0].id : ''
+            ]"
             v-if="type == '31'"
           >
             <a-menu-item v-for="item in gasSchemeList" :key="item.id">
               {{ item.name }}
+              <a-divider type="vertical" v-show="currentScheme == item.id" />
+              <a-icon
+                type="edit"
+                v-show="currentScheme == item.id"
+                @click="onEditScheme(item)"
+              />
+              <a-icon
+                type="delete"
+                v-show="currentScheme == item.id"
+                @click="onDeleteScheme(item)"
+              />
             </a-menu-item>
           </a-menu>
           <a-menu
             v-model="currentScheme"
             mode="vertical"
-            :defaultSelectedKeys="[waterSchemeList[0].id]"
+            :defaultSelectedKeys="[
+              waterSchemeList.length > 0 ? waterSchemeList[0].id : ''
+            ]"
             v-if="type == '32'"
           >
             <a-menu-item v-for="item in waterSchemeList" :key="item.id">
               {{ item.name }}
+              <a-divider type="vertical" v-show="currentScheme == item.id" />
+              <a-icon
+                type="edit"
+                v-show="currentScheme == item.id"
+                @click="onEditScheme(item)"
+              />
+              <a-icon
+                type="delete"
+                v-show="currentScheme == item.id"
+                @click="onDeleteScheme(item)"
+              />
             </a-menu-item>
           </a-menu>
           <a-menu
             v-model="currentScheme"
             mode="vertical"
-            :defaultSelectedKeys="[otherSchemeList[0].id]"
+            :defaultSelectedKeys="[
+              otherSchemeList.length > 0 ? otherSchemeList[0].id : ''
+            ]"
             v-if="type == '0'"
           >
             <a-menu-item v-for="item in otherSchemeList" :key="item.id">
               {{ item.name }}
+              <a-divider type="vertical" v-show="currentScheme == item.id" />
+              <a-icon
+                type="edit"
+                v-show="currentScheme == item.id"
+                @click="onEditScheme(item)"
+              />
+              <a-icon
+                type="delete"
+                v-show="currentScheme == item.id"
+                @click="onDeleteScheme(item)"
+              />
             </a-menu-item>
           </a-menu>
         </a-col>
@@ -117,10 +156,11 @@ export default {
       ],
       addSchemeModal: false,
       addSchemeListModal: false,
-      type: "a",
+      type: "31",
       waterSchemeList: [],
       gasSchemeList: [],
-      otherSchemeList: []
+      otherSchemeList: [],
+      menu: []
     };
   },
   mounted() {
