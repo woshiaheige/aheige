@@ -119,13 +119,23 @@ export default {
           return false;
         }
         //验证通过
-        if (this.formData.gmtReceptionTime) {
-          this.formData.gmtReceptionTime = this.$moment(
-            this.formData.gmtReceptionTime
-          ).format("YYYY-MM-DD hh:mm:ss");
+        let data = {
+          divisorId: this.formData.divisorId,
+          fileId: this.formData.fileId,
+          gmtReceptionTime: this.formData.gmtReceptionTime,
+          manufacturer: this.formData.manufacturer,
+          name: this.formData.name,
+          number: this.formData.number,
+          pointId: this.formData.pointId,
+          type: this.formData.type
+        };
+        if (data.gmtReceptionTime) {
+          data.gmtReceptionTime = this.$moment(data.gmtReceptionTime).format(
+            "YYYY-MM-DD hh:mm:ss"
+          );
         }
         if (this.modelData.type == "edit") {
-          this.$api.customer.editDevice(this.formData).then(res => {
+          this.$api.customer.editDevice(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
               this.$emit("refresh");
@@ -133,7 +143,7 @@ export default {
             }
           });
         } else {
-          this.$api.customer.addDevice(this.formData).then(res => {
+          this.$api.customer.addDevice(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("新建成功");
               this.$emit("refresh");
@@ -159,7 +169,6 @@ export default {
         }
         return file;
       });
-      console.log(fileList);
 
       this.fileList = fileList;
       if (info.file.status === "done") {
@@ -213,12 +222,6 @@ export default {
           this.factorOptions = res.data.data;
         }
       });
-    },
-    onChange(value) {
-      // this.formData.gmtReceptionTime = dateString;
-      this.formData.gmtReceptionTime = value;
-      console.log("Selected Time: ", this.formData.gmtReceptionTime);
-      console.log(typeof this.formData.gmtReceptionTime);
     }
   },
   watch: {
@@ -228,7 +231,6 @@ export default {
         this.getPointSelect();
         this.getFactor();
         this.fileList = [];
-        this.formData.gmtReceptionTime = null;
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

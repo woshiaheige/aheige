@@ -3,6 +3,14 @@
     <a-row :gutter="16">
       <a-col :span="8">
         <a-card :bordered="false">
+          <div class="card-header">
+            <div class="title">配置站点</div>
+            <div class="extra">
+              <div class="extra">
+                <span>10</span>
+              </div>
+            </div>
+          </div>
           <a-tabs tabPosition="left" size="small">
             <a-tab-pane v-for="(tab, key) of tabList" :key="key" :tab="tab.tab">
               <a-radio-group defaultValue="a" buttonStyle="solid">

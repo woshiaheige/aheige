@@ -149,22 +149,31 @@ export default {
   },
   methods: {
     handleOk() {
-      // let that = this;
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
         }
         //验证通过
-        console.log(this.formData);
-        // let data = JSON.parse(window.JSON.stringfy(that.formData));
-        let data = this.formData;
-
-        data.gmtBegin = this.$moment(data.gmtBegin).format(
-          "YYYY-MM-DD hh:mm:ss"
-        );
-        data.gmtEnd = this.$moment(data.gmtEnd).format("YYYY-MM-DD hh:mm:ss");
-        data.gmtSign = this.$moment(data.gmtSign).format("YYYY-MM-DD hh:mm:ss");
+        let data = {
+          fileId: this.formData.fileId,
+          enterpriseId: this.formData.enterpriseId,
+          id: this.formData.id,
+          money: this.formData.money,
+          number: this.formData.number,
+          state: this.formData.state,
+          userName: this.formData.userName,
+          description: this.formData.description,
+          gmtBegin: this.$moment(this.formData.gmtBegin).format(
+            "YYYY-MM-DD hh:mm:ss"
+          ),
+          gmtEnd: this.$moment(this.formData.gmtEnd).format(
+            "YYYY-MM-DD hh:mm:ss"
+          ),
+          gmtSign: this.$moment(this.formData.gmtSign).format(
+            "YYYY-MM-DD hh:mm:ss"
+          )
+        };
 
         if (this.modelData.type == "edit") {
           this.$api.customer.editContract(data).then(res => {
