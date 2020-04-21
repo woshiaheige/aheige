@@ -3,6 +3,7 @@
  */
 import axios from "axios";
 import router from "../router";
+import { message } from "ant-design-vue";
 
 var instance = axios.create({
   timeout: 1000 * 30
@@ -11,8 +12,7 @@ var instance = axios.create({
 instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.interceptors.request.use(
   config => {
-    // let token = sessionStorage.getItem("token");
-    let token = "8888";
+    let token = sessionStorage.getItem("token");
     config.headers["token"] = token;
     return config;
   },
@@ -23,12 +23,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     if (response.status === 200) {
+      if (response.data.state && response.data.state != 0) {
+        message.warning(response.data.msg);
+      }
       return Promise.resolve(response);
-      // if (response.data.state != 0) {
-      //   return Promise.reject(response);
-      // } else {
-      //   return Promise.resolve(response);
-      // }
     } else {
       return Promise.reject(response);
     }
