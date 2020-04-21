@@ -39,7 +39,7 @@
           <a-select-option
             v-for="item in pointOptions"
             :key="item.value"
-            :value="item.value"
+            :value="Number(item.value)"
           >
             {{ item.name }}
           </a-select-option>
@@ -120,6 +120,7 @@ export default {
         }
         //验证通过
         let data = {
+          id: this.formData.id,
           divisorId: this.formData.divisorId,
           fileId: this.formData.fileId,
           gmtReceptionTime: this.formData.gmtReceptionTime,
@@ -183,14 +184,16 @@ export default {
         .getDeviceById({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
-            this.fileList = [
-              {
-                uid: "-1",
-                name: res.data.data.fileName,
-                status: "done",
-                url: ""
-              }
-            ];
+            if (res.data.data.fileName) {
+              this.fileList = [
+                {
+                  uid: "-1",
+                  name: res.data.data.fileName,
+                  status: "done",
+                  url: ""
+                }
+              ];
+            }
             if (res.data.data.gmtReceptionTime != null) {
               res.data.data.gmtReceptionTime = this.$moment(
                 res.data.data.gmtReceptionTime

@@ -83,7 +83,7 @@ export default {
     },
     //设置pointid
     setPointId() {
-      this.formInline.pointId = this.$route.query.row.pointId;
+      this.formInline.pointId = this.$route.query.id;
     },
     //获取实时数据
     getTableData() {

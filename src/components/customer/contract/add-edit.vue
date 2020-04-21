@@ -204,14 +204,16 @@ export default {
         .getContractById({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
-            this.fileList = [
-              {
-                uid: "-1",
-                name: res.data.data.fileName,
-                status: "done",
-                url: ""
-              }
-            ];
+            if (res.data.data.fileName) {
+              this.fileList = [
+                {
+                  uid: "-1",
+                  name: res.data.data.fileName,
+                  status: "done",
+                  url: ""
+                }
+              ];
+            }
             res.data.data.gmtBegin = this.$moment(res.data.data.gmtBegin);
             res.data.data.gmtEnd = this.$moment(res.data.data.gmtEnd);
             res.data.data.gmtSign = this.$moment(res.data.data.gmtSign);
@@ -248,7 +250,6 @@ export default {
     onChange(date, dateString) {
       console.log(date);
       console.log(dateString);
-      this.formData.gmtBegin = date;
       // this.formData.gmtBegin = dateString[0];
       // this.formData.gmtEnd = dateString[1];
     }
