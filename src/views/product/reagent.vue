@@ -3,23 +3,19 @@
     <div class="card-header">
       <div class="title">试剂列表</div>
       <div class="extra">
-        <a-form layout="inline" :model="formInline">
+        <a-form layout="inline">
           <a-form-item>
-            <a-button type="primary" @click="edit('', 'add')">
+            <a-button type="primary" @click="onEdit('', 'add')">
               <a-icon type="plus" />新建
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="danger" shape="round" @click="warehouseFun('out')">
+            <a-button type="danger" shape="round" @click="onStock('out')">
               <a-icon type="caret-up" />出库
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button
-              type="success"
-              shape="round"
-              @click="warehouseFun('enter')"
-            >
+            <a-button type="success" shape="round" @click="onStock('enter')">
               <a-icon type="caret-down" />入库
             </a-button>
           </a-form-item>
@@ -35,49 +31,56 @@
       </div>
     </div>
     <a-table
+      rowKey="id"
       size="middle"
       :columns="columns"
-      :dataSource="data"
+      :dataSource="tableData"
       v-margin:top="16"
       :pagination="false"
+      :loading="loading"
     >
       <span slot="action" slot-scope="row">
-        <a @click="edit(row, 'edit')">编辑</a>
+        <a @click="onEdit(row, 'edit')">编辑</a>
         <a-divider type="vertical" />
-        <a @click="detail(row)">库存详情</a>
+        <a @click="onDetail(row)">库存详情</a>
         <a-divider type="vertical" />
-        <a @click="delect(row)">删除</a>
+        <a @click="onDelete(row)">删除</a>
       </span>
     </a-table>
 
     <a-pagination
       size="small"
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
+      :defaultCurrent="current"
+      :pageSize.sync="pageSize"
       :total="total"
-      :current="current"
+      :showTotal="total => `共 ${total} 条`"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
-    <modal v-model="modalInfo"> </modal>
-    <warehouse-modal v-model="warehouseInfo"> </warehouse-modal>
-    <warehouse-detail v-model="warehouseDetail"> </warehouse-detail>
+    <add-edit v-model="addInfo"> </add-edit>
+    <out-in v-model="stockInfo"> </out-in>
+    <detail-modal v-model="detailInfo"> </detail-modal>
   </a-card>
 </template>
 
 <script>
-import modal from "@/components/standing/product-modal";
-import warehouseModal from "@/components/standing/warehouse-modal";
-import warehouseDetail from "@/components/standing/warehouse-detail";
+import addEdit from "@/components/product/reagent/add-edit";
+import outIn from "@/components/product/reagent/out-in";
+import detailModal from "@/components/product/reagent/detail";
 export default {
-  components: { modal, warehouseModal, warehouseDetail },
+  components: { addEdit, outIn, detailModal },
   data() {
     return {
       reagent: "",
-      modalInfo: { show: false },
-      warehouseInfo: { show: false },
-      warehouseDetail: { show: false, info: { name: "" } },
+      addInfo: { show: false },
+      stockInfo: { show: false },
+      detailInfo: { show: false, info: { name: "" } },
       current: 1,
-      total: 0,
+      pageSize: 10,
+      total: 1,
+      loading: false,
       columns: [
         {
           title: "试剂名称",
@@ -93,11 +96,11 @@ export default {
         },
         {
           title: "编码",
-          dataIndex: "coding"
+          dataIndex: "number"
         },
         {
           title: "库存",
-          dataIndex: "inventory"
+          dataIndex: "goodsCount"
         },
         {
           title: "单位",
@@ -111,7 +114,7 @@ export default {
           scopedSlots: { customRender: "action" }
         }
       ],
-      data: []
+      tableData: []
     };
   },
   mounted() {
@@ -119,44 +122,64 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.standing.getProductList().then(res => {
-        this.data = res.data.data;
-        this.total = res.data.total;
-      });
-    },
-    edit(row, type) {
-      this.modalInfo = {
-        show: true,
-        info: row,
-        type: type
+      let data = {
+        page: this.current,
+        size: this.pageSize
       };
+      this.loading = true;
+      this.$api.product
+        .getGoodsList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
-    delect(row) {
-      console.log(row);
+    onDelete(row) {
+      let that = this;
       this.$confirm({
-        title: "确定删除" + row.name + "吗?",
-        okText: "确定",
-        cancelText: "取消",
+        title: "删除",
+        content: "是否删除",
         onOk() {
-          console.log("OK");
+          that.$api.customer
+            .delDevice({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("删除成功");
+                that.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");
         }
       });
     },
-    warehouseFun(type) {
-      console.log(type);
-      this.warehouseInfo = {
+    onEdit(row, type) {
+      this.addInfo = {
+        show: true,
+        row: row,
+        type: type
+      };
+    },
+    onStock(type) {
+      this.stockInfo = {
         show: true,
         type: type
       };
     },
-    detail(row) {
-      console.log(row);
-      this.warehouseDetail = {
+    onDetail(row) {
+      this.detailInfo = {
         show: true,
-        info: row
+        row: row
       };
     }
   }
