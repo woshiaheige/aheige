@@ -31,11 +31,11 @@
       </a-form-model-item>
       <a-form-model-item label="评级" prop="level">
         <a-select placeholder="请选择" v-model="formInline.level">
-          <a-select-option value="1">1</a-select-option>
-          <a-select-option value="2">2</a-select-option>
-          <a-select-option value="3">3</a-select-option>
-          <a-select-option value="4">4</a-select-option>
-          <a-select-option value="5">5</a-select-option>
+          <a-select-option :value="1">1</a-select-option>
+          <a-select-option :value="2">2</a-select-option>
+          <a-select-option :value="3">3</a-select-option>
+          <a-select-option :value="4">4</a-select-option>
+          <a-select-option :value="5">5</a-select-option>
         </a-select>
       </a-form-model-item>
     </a-form-model>
@@ -74,6 +74,55 @@ export default {
     }
   },
   methods: {
+    //修改供应商
+    editSupplier() {
+      let data = {
+        id: this.obj.row.id,
+        name: this.formInline.name,
+        regionId: this.formInline.regionId,
+        address: this.formInline.address,
+        contact: this.formInline.contact,
+        telephone: this.formInline.telephone,
+        level: this.formInline.level
+      };
+      this.$api.product
+        .postEditSupplier(data)
+        .then(res => {
+          console.log(res);
+          if (res.data.state == 0) {
+            this.$message.success("修改成功");
+            this.$emit("getTableData");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.$refs.ruleForm.resetFields();
+          this.$emit("cancel", false);
+        });
+    },
+    //通过id查询供应商
+    getSupplierById() {
+      let data = {
+        id: this.obj.row.id
+      };
+      this.$api.product
+        .getSupplierById(data)
+        .then(res => {
+          console.log(res);
+          this.formInline.name = res.data.data.name;
+          this.formInline.regionId = res.data.data.regionId;
+          this.formInline.address = res.data.data.address;
+          this.formInline.contact = res.data.data.contact;
+          this.formInline.telephone = res.data.data.telephone;
+          this.formInline.level = res.data.data.level;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //新建供应商
     postAddSupplier() {
       let data = {
         name: this.formInline.name,
@@ -97,9 +146,11 @@ export default {
           this.$message.error("系统繁忙");
         })
         .finally(() => {
+          this.$refs.ruleForm.resetFields();
           this.$emit("cancel", false);
         });
     },
+    //获取区域列表
     getArea() {
       let data = {
         id: ""
@@ -115,15 +166,22 @@ export default {
           console.log(err);
         });
     },
+    //点击ok
     handleOk(e) {
       e.preventDefault();
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.postAddSupplier();
+          if (this.obj.row != "" && this.obj.row != undefined) {
+            this.editSupplier();
+          } else {
+            this.postAddSupplier();
+          }
         }
       });
     },
+    //点击取消
     handleCancel() {
+      this.$refs.ruleForm.resetFields();
       this.$emit("cancel", false);
     }
   },
@@ -135,6 +193,7 @@ export default {
       if (this.status == true) {
         if (this.obj.row != "" && this.obj.row != undefined) {
           this.title = "编辑";
+          this.getSupplierById();
         } else {
           this.title = "新建";
         }

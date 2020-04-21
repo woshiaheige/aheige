@@ -4,11 +4,16 @@
       <a-calendar>
         <ul class="events" slot="dateCellRender" slot-scope="value">
           <li v-for="item in getListData(value)" :key="item.content">
-            <a-badge
-              :status="item.type"
-              :text="item.content"
-              :title="item.content"
-            />
+            <a-popover>
+              <template slot="content">
+                <P>{{ item.content }}</P>
+              </template>
+              <a-badge
+                :status="item.type"
+                :text="item.content"
+                :title="item.content"
+              />
+            </a-popover>
           </li>
         </ul>
         <template slot="monthCellRender" slot-scope="value">
