@@ -33,14 +33,7 @@
     >
       <div class="card-header">
         <div class="title">数据列表</div>
-        <div class="extra">
-          <a-radio-group>
-            <a-radio-button value="1">实时数据</a-radio-button>
-            <a-radio-button value="2">分钟数据</a-radio-button>
-            <a-radio-button value="3">小时数据</a-radio-button>
-            <a-radio-button value="4">日数据</a-radio-button>
-          </a-radio-group>
-        </div>
+        <div class="extra"></div>
       </div>
       <a-table
         :loading="loading"
@@ -78,7 +71,10 @@
       <div class="card-header">
         <div class="title">数据图表</div>
         <div class="extra">
-          <a-select :defaultValue="columnsList[0].name">
+          <a-select
+            :defaultValue="columnsList[0].name"
+            @change="onColumnsChange"
+          >
             <a-select-option
               v-for="item in columnsList"
               :value="item.value"
@@ -88,7 +84,7 @@
           </a-select>
         </div>
       </div>
-      <ve-line :data="chartData"></ve-line>
+      <ve-line :data="chartData" :legend-visible="false"></ve-line>
     </a-card>
   </div>
 </template>
@@ -97,12 +93,7 @@
 export default {
   data() {
     return {
-      columnsList: [
-        { name: "一氧化碳", value: "1" },
-        { name: "二氧化碳", value: "2" },
-        { name: "平均温度", value: "3" },
-        { name: "氧气含量", value: "4" }
-      ],
+      columnsList: [],
       loading: false,
       pointId: "",
       pagesize: 10,
@@ -170,6 +161,8 @@ export default {
     this.getTableData();
   },
   methods: {
+    //
+    onColumnsChange() {},
     //时间改变事件
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
@@ -215,6 +208,7 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             let _data = res.data.data || [];
+            let tempColumns = [];
             let temp = [
               {
                 align: "center",
@@ -245,9 +239,14 @@ export default {
                   key: element.field,
                   customRender: (text, row) => `${row[element.field].rtd}`
                 });
+                tempColumns.push({
+                  name: element.title,
+                  value: element.field
+                });
               }
             });
             this.columns = temp;
+            this.columnsList = tempColumns;
           }
         })
         .catch(err => {
