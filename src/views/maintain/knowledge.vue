@@ -4,9 +4,9 @@
       <div class="card-header">
         <div class="title">知识库设置</div>
         <div class="extra">
-          <a-form layout="inline" :model="formInline">
+          <a-form layout="inline">
             <a-form-item>
-              <a-button type="primary" @click="onEdit()">
+              <a-button type="primary" @click="onEdit(false)">
                 <a-icon type="plus" />新建文章
               </a-button>
             </a-form-item>
@@ -22,44 +22,37 @@
       </div>
       <a-row :gutter="16">
         <a-col :span="4">
-          <a-button type="dashed" block>新建分类</a-button>
-          <a-menu
-            v-model="current"
-            mode="vertical"
-            :defaultSelectedKeys="['type1']"
+          <a-button type="dashed" block @click="knowledgeTypeVisible = true"
+            >新建分类</a-button
           >
-            <a-menu-item key="type1">
-              运维制度规范
-            </a-menu-item>
-            <a-menu-item key="type2">
-              质控体系规范
-            </a-menu-item>
-            <a-menu-item key="type3">
-              作业指导书
-            </a-menu-item>
-            <a-menu-item key="type4">
-              设备说明书
-            </a-menu-item>
-            <a-menu-item key="type5">
-              常见问题知识库
-            </a-menu-item>
-            <a-menu-item key="type6">
-              应急预案
-            </a-menu-item>
-            <a-menu-item key="type7">
-              专家指南
+          <a-menu v-model="menu" mode="vertical">
+            <a-menu-item :key="item.id" v-for="item of menuList">
+              {{ item.name }}
+              <a-divider type="vertical" v-show="menu == item.id" />
+              <a-icon
+                type="edit"
+                v-show="menu == item.id"
+                @click="onEditKnowledgeType(item)"
+              />
+              <a-icon
+                type="delete"
+                v-show="menu == item.id"
+                @click="onDeleteKnowledgeType(item)"
+              />
             </a-menu-item>
           </a-menu>
         </a-col>
         <a-col :span="20">
           <a-table
+            :loading="loading"
             size="middle"
+            rowKey="id"
             :columns="columns"
             :dataSource="tableData"
             :pagination="false"
           >
             <span slot="action" slot-scope="row">
-              <a @click="onEdit(row)">查看</a>
+              <a @click="onDetail(row)">查看</a>
               <a-divider type="vertical" />
               <a @click="onEdit(row)">编辑</a>
               <a-divider type="vertical" />
@@ -69,12 +62,29 @@
           <a-pagination
             size="small"
             v-margin:top="16"
-            showQuickJumper
             showSizeChanger
-            :defaultCurrent="current"
             :total="total"
+            :showTotal="total => `共 ${total} 条`"
+            :current="current"
+            @change="pagechange"
+            @showSizeChange="sizechange"
           />
-          <add-edit :obj="obj" @cancel="cancel"></add-edit>
+          <!-- 新建编辑文章 -->
+          <add-edit
+            :visible.sync="articleVisible"
+            :detail="articleDetail"
+            :typeList="menuList"
+            :type="menu"
+            @updateTable="knowledgeClass"
+          ></add-edit>
+
+          <!-- 新增编辑类型 -->
+          <type-edit
+            :visible.sync="knowledgeTypeVisible"
+            :detail="knowledgeTypeDetail"
+            @updateTable="getTableData"
+          />
+          <article-modal></article-modal>
         </a-col>
       </a-row>
     </a-card>
@@ -82,12 +92,23 @@
 </template>
 <script>
 import addEdit from "@/components/knowledge/add-edit";
+import typeEdit from "@/components/knowledge/type-edit";
+import articleModal from "@/components/knowledge/article-modal";
 export default {
-  components: { addEdit },
+  components: { addEdit, typeEdit, articleModal },
   data() {
     return {
-      current: ["type1"],
+      loading: false,
+      knowledgeTypeVisible: false, //分类
+      knowledgeTypeDetail: "",
+      articleVisible: false, //文章
+      articleDetailVisible: false, //文章详情
+      articleDetail: "",
+      menuList: [],
+      menu: [],
+      current: 1,
       total: 0,
+      size: 10,
       columns: [
         {
           title: "标题",
@@ -95,47 +116,136 @@ export default {
         },
         {
           title: "知识库分类",
-          dataIndex: "type"
+          dataIndex: "className"
         },
         {
           title: "创建人",
-          dataIndex: "name"
+          dataIndex: "userName"
         },
         {
           title: "创建时间",
-          dataIndex: "time"
+          dataIndex: "gmtCreate"
         },
         {
           title: "操作",
           key: "action",
+          width: 200,
+          align: "center",
           scopedSlots: { customRender: "action" }
         }
       ],
       tableData: [],
       obj: {
         show: false
+      },
+      typeObj: {
+        show: false
       }
     };
   },
+  watch: {
+    menu() {
+      this.onSubmit();
+    }
+  },
   methods: {
+    knowledgeClass() {
+      this.$api.maintain.knowledgeClass().then(res => {
+        if (res.data.state == 0) {
+          this.menuList = res.data.data.records;
+          this.menu = [res.data.data.records[0].id];
+        }
+      });
+    },
     getTableData() {
-      this.$api.maintain.getAnnouncementList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
+      let params = {
+        size: this.size,
+        page: this.current,
+        classId: this.menu[0]
+      };
+      this.loading = true;
+      this.$api.maintain
+        .article(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    },
+    onEditKnowledgeType(row) {
+      this.knowledgeTypeVisible = true;
+      this.knowledgeTypeDetail = row;
+    },
+    onDeleteKnowledgeType(row) {
+      let _this = this;
+      this.$confirm({
+        title: "删除",
+        content: `是否删除分类 ${row.name}`,
+        onOk() {
+          console.log("OK");
+          _this.$api.maintain.deleteKnowledgeClass({ id: row.id }).then(res => {
+            if (res.data.state == 0) {
+              _this.$message.success("删除成功");
+              _this.knowledgeClass();
+            } else {
+              _this.$message.error(res.data.msg);
+            }
+          });
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
       });
     },
     onEdit(row) {
-      console.log(row);
-      this.obj.show = true;
-      this.obj.row = row;
+      if (row == false) {
+        //新增
+        this.articleVisible = true;
+        this.articleDetail = "";
+        return;
+      }
+      this.$api.maintain.getArticleById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.articleVisible = true;
+          this.articleDetail = res.data.data;
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
     },
+    onDetail(row) {
+      this.$api.maintain.getArticleById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.articleDetailVisible = true;
+          this.articleDetail = res.data.data;
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+
     onDelete(row) {
-      console.log(row);
+      let _this = this;
       this.$confirm({
         title: "删除",
-        content: "是否删除",
+        content: `是否删除文章 ${row.name}`,
         onOk() {
           console.log("OK");
+          _this.$api.maintain
+            .deleteKnowledgeArticle({ id: row.id })
+            .then(res => {
+              if (res.data.state == 0) {
+                _this.$message.success("删除成功");
+                _this.getTableData();
+              } else {
+                _this.$message.error(res.data.msg);
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");
@@ -144,10 +254,12 @@ export default {
     },
     cancel(value) {
       this.obj.show = value;
+      this.typeObj.show = value;
     }
   },
   mounted() {
-    this.getTableData();
+    this.knowledgeClass();
+    // this.getTableData();
   }
 };
 </script>

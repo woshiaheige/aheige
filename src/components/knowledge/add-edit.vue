@@ -1,11 +1,10 @@
 <template>
   <a-modal
-    :title="title + '知识库文章'"
-    v-model="status"
+    :title="title"
+    :visible="visible"
+    @cancel="closeModal"
     @ok="handleOk"
-    @cancel="handleCancel"
     :width="600"
-    okText="保存"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="文章标题">
@@ -21,91 +20,152 @@
         <a-select
           placeholder="请选择"
           v-decorator="[
-            'type',
+            'classId',
             { rules: [{ required: true, message: '请选择知识库分类' }] }
           ]"
         >
-          <a-select-option value="1">操作手册</a-select-option>
+          <a-select-option
+            :value="item.id"
+            v-for="(item, index) of typeList"
+            :key="index"
+            >{{ item.name }}</a-select-option
+          >
         </a-select>
       </a-form-item>
-      <quill-editor
-        v-model="content"
-        ref="myQuillEditor"
-        :options="editorOption"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-      >
-      </quill-editor>
+      <editor v-model="content" v-if="showEditor" />
     </a-form>
   </a-modal>
 </template>
 <script>
-import { quillEditor } from "vue-quill-editor"; //调用编辑器
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import setTitle from "@/assets/lib/set-quill-title.js";
+import editor from "@/components/common/editor";
 export default {
-  components: { quillEditor },
+  components: { editor },
   props: {
-    obj: Object
+    visible: {
+      required: true,
+      type: Boolean
+    },
+    detail: {
+      required: false
+    },
+    typeList: {
+      //知识库分类
+      required: true,
+      default: function() {
+        return [];
+      }
+    },
+    type: {
+      required: false //选中状态的知识库分类
+    }
   },
   data() {
     return {
-      title: "新建",
       form: this.$form.createForm(this),
       content: "",
-      editorOption: {}
+      editorOption: {},
+      detailId: "",
+      showEditor: false,
+      toggleEditorTimer: ""
     };
   },
   computed: {
-    status: {
-      get() {
-        return this.obj.show;
-      },
-      set() {}
+    title() {
+      let title = this.detail ? "编辑文章" : "新建文章";
+      return title;
     },
     editor() {
       return this.$refs.myQuillEditor.quill;
     }
   },
-  methods: {
-    handleOk() {
-      this.handleCancel();
-    },
-    handleCancel() {
-      this.$emit("cancel", false);
-    },
-    // 失去焦点事件
-    onEditorBlur(quill) {
-      console.log("editor blur!", quill);
-    },
-    // 获得焦点事件
-    onEditorFocus(quill) {
-      console.log("editor focus!", quill);
-    },
-    //转码：后台返回的内容字符串
-    escapeStringHTML(str) {
-      str = str.replace(/&lt;/g, "<");
-      str = str.replace(/&gt;/g, ">");
-      return str;
-    }
-  },
-  mounted() {},
   watch: {
-    status() {
-      if (this.status == true) {
+    detail(nval) {
+      if (nval) {
+        this.detailId = nval.id;
+        this.content = nval.content;
+        this.toggleEditor();
         setTimeout(() => {
-          setTitle.addQuillTitle();
-        }, 100);
-        if (this.obj.row != "" && this.obj.row != undefined) {
-          this.title = "编辑";
-        } else {
-          this.title = "新建";
-        }
+          this.form.setFieldsValue({
+            title: nval.title,
+            classId: nval.classId
+          });
+        }, 50);
+      }
+    },
+    visible(nval) {
+      if (nval) {
+        this.toggleEditor();
+      }
+      if (nval && this.type && !this.detail) {
+        //新增
+        setTimeout(() => {
+          this.form.setFieldsValue({ classId: this.type[0] });
+        }, 50);
       }
     }
-  }
+  },
+  methods: {
+    toggleEditor() {
+      //避免富文本无法加载数据
+      if (this.toggleEditorTimer) {
+        clearTimeout(this.toggleEditorTimer);
+      }
+      this.toggleEditorTimer = setTimeout(() => {
+        this.showEditor = true;
+      }, 200);
+    },
+    closeModal() {
+      this.showEditor = false;
+      this.$emit("update:visible", false);
+      this.reset();
+    },
+    reset() {
+      this.content = "";
+      this.detailId = "";
+      this.form.resetFields();
+    },
+    handleOk() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          if (this.detailId) {
+            this.editknowledge(values);
+          } else {
+            this.addknowledge(values);
+          }
+        }
+      });
+    },
+    editknowledge(values) {
+      let params = values;
+      params.content = this.content;
+      params.id = this.detailId;
+      this.$api.maintain.updateKnowledgeArticle(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改文章成功");
+          this.$emit("update:visible", false);
+          this.$emit("updateTable");
+          this.reset();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+    addknowledge(values) {
+      let params = values;
+      params.content = this.content;
+      this.$api.maintain.addKnowledgeArticle(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("新建文章成功");
+          this.$emit("update:visible", false);
+          this.$emit("updateTable");
+          this.reset();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    }
+  },
+  mounted() {}
 };
 </script>
 <style lang="less" scoped></style>
