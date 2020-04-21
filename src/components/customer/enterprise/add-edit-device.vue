@@ -45,8 +45,12 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="监测因子" prop="divisorId">
-        <a-select placeholder="监测因子" v-model="formData.divisorId">
+      <a-form-model-item label="监测因子" prop="divisorIds">
+        <a-select
+          placeholder="监测因子"
+          mode="multiple"
+          v-model="formData.divisorIds"
+        >
           <a-select-option
             v-for="item in factorOptions"
             :key="item.id"
@@ -121,7 +125,7 @@ export default {
         //验证通过
         let data = {
           id: this.formData.id,
-          divisorId: this.formData.divisorId,
+          divisorIds: this.formData.divisorIds,
           fileId: this.formData.fileId,
           gmtReceptionTime: this.formData.gmtReceptionTime,
           manufacturer: this.formData.manufacturer,
@@ -211,7 +215,7 @@ export default {
         }
       });
     },
-    //监测点类型下拉
+    //设备类型下拉
     getPointSelect() {
       let params = ["SYS_POINT_TYPE"];
       this.$api.common.geDictByParam(params).then(res => {
