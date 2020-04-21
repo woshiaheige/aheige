@@ -1,27 +1,39 @@
 <template>
   <div>
-    <a-card :bordered="false" v-margin:top="16">
+    <a-card>
+      <a-form-model layout="inline">
+        <a-form-model-item label="时间范围">
+          <a-range-picker @change="onChange" />
+        </a-form-model-item>
+        <a-form-model-item label="数据类型">
+          <a-radio-group v-model="formInline.type">
+            <a-radio-button value="1">实时数据</a-radio-button>
+            <a-radio-button value="2">分钟数据</a-radio-button>
+            <a-radio-button value="3">小时数据</a-radio-button>
+            <a-radio-button value="4">日数据</a-radio-button>
+          </a-radio-group>
+        </a-form-model-item>
+        <a-form-model-item style="float:right"
+          ><a-select v-model="formInline.showType">
+            <a-select-option value="data">数据</a-select-option>
+            <a-select-option value="chart">图表</a-select-option>
+          </a-select></a-form-model-item
+        >
+        <a-form-model-item style="float:right">
+          <a-button type="primary" @click="onSubmit">
+            查询
+          </a-button>
+        </a-form-model-item>
+      </a-form-model>
+    </a-card>
+    <a-card
+      :bordered="false"
+      v-margin:top="16"
+      v-if="formInline.showType == 'data'"
+    >
       <div class="card-header">
         <div class="title">数据列表</div>
-        <div class="extra">
-          <a-form-model layout="inline">
-            <a-form-model-item>
-              <a-range-picker @change="onChange" />
-            </a-form-model-item>
-            <a-form-model-item>
-              <a-radio-group
-                :value="formInline.type"
-                @change="handleTypeChange"
-              >
-                <a-radio-button value="all">实时数据</a-radio-button>
-                <a-radio-button value="default">分钟数据</a-radio-button>
-                <a-radio-button value="small">小时数据</a-radio-button>
-                <a-radio-button value="small">日数据</a-radio-button>
-                <a-radio-button value="small">月数据</a-radio-button>
-              </a-radio-group>
-            </a-form-model-item>
-          </a-form-model>
-        </div>
+        <div class="extra"></div>
       </div>
       <a-table
         :loading="loading"
@@ -47,6 +59,32 @@
         @showSizeChange="sizechange"
         :total="total"
       />
+      <div v-if="formInline.showType == 'chart'">
+        <ve-line :data="chartData"></ve-line>
+      </div>
+    </a-card>
+    <a-card
+      :bordered="false"
+      v-margin:top="16"
+      v-if="formInline.showType == 'chart'"
+    >
+      <div class="card-header">
+        <div class="title">数据图表</div>
+        <div class="extra">
+          <a-select
+            :defaultValue="columnsList[0].name"
+            @change="onColumnsChange"
+          >
+            <a-select-option
+              v-for="item in columnsList"
+              :value="item.value"
+              :key="item.value"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
+        </div>
+      </div>
+      <ve-line :data="chartData" :legend-visible="false"></ve-line>
     </a-card>
   </div>
 </template>
@@ -55,6 +93,7 @@
 export default {
   data() {
     return {
+      columnsList: [],
       loading: false,
       pointId: "",
       pagesize: 10,
@@ -65,7 +104,54 @@ export default {
       formInline: {
         beginTime: "2019-12-03 00:00:00",
         endTime: "2019-12-03 23:59:59",
-        pointId: ""
+        pointId: "",
+        type: "1",
+        showType: "data"
+      },
+      chartData: {
+        columns: ["时间", "一氧化碳"],
+        rows: [
+          {
+            时间: "2020-04-03 14:24:09",
+            一氧化碳: 40
+          },
+          {
+            时间: "2020-04-03 14:23:00",
+            一氧化碳: 36
+          },
+          {
+            时间: "2020-04-03 14:22:00",
+            一氧化碳: 25
+          },
+          {
+            时间: "2020-04-03 14:21:59",
+            一氧化碳: 28
+          },
+          {
+            时间: "2020-04-03 14:21:49",
+            一氧化碳: 37
+          },
+          {
+            时间: "2020-04-03 14:21:39",
+            一氧化碳: 42
+          },
+          {
+            时间: "2020-04-03 14:21:29",
+            一氧化碳: 51
+          },
+          {
+            时间: "2020-04-03 14:21:19",
+            一氧化碳: 41
+          },
+          {
+            时间: "2020-04-03 14:21:09",
+            一氧化碳: 45
+          },
+          {
+            时间: "2020-04-03 14:21:00",
+            一氧化碳: 46
+          }
+        ]
       }
     };
   },
@@ -75,11 +161,13 @@ export default {
     this.getTableData();
   },
   methods: {
+    //
+    onColumnsChange() {},
     //时间改变事件
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";
-      this.getTableData();
+      this.onSubmit();
     },
     //设置pointid
     setPointId() {
@@ -93,7 +181,8 @@ export default {
         size: this.pagesize,
         pointId: this.formInline.pointId,
         startTime: this.formInline.beginTime,
-        endTime: this.formInline.endTime
+        endTime: this.formInline.endTime,
+        type: this.formInline.type
       };
       this.$api.monitor
         .getRealData(data)
@@ -119,6 +208,7 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             let _data = res.data.data || [];
+            let tempColumns = [];
             let temp = [
               {
                 align: "center",
@@ -149,9 +239,14 @@ export default {
                   key: element.field,
                   customRender: (text, row) => `${row[element.field].rtd}`
                 });
+                tempColumns.push({
+                  name: element.title,
+                  value: element.field
+                });
               }
             });
             this.columns = temp;
+            this.columnsList = tempColumns;
           }
         })
         .catch(err => {

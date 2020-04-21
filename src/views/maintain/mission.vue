@@ -41,11 +41,11 @@
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
         <div class="title">任务列表</div>
-        <!-- <div class="extra">
+        <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
           </a-button>
-        </div> -->
+        </div>
       </div>
       <a-table
         size="middle"
@@ -80,12 +80,12 @@
         :total="total"
       />
       <!--新建-->
-      <!-- <add-edit
+      <add-edit
         :visible="show"
         :planList="planList"
         :stationList="stationList"
         @cancel="cancel"
-      ></add-edit> -->
+      ></add-edit>
       <!--延期-->
       <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
       <!--关闭-->
@@ -100,12 +100,12 @@
   </div>
 </template>
 <script>
-// import addEdit from "@/components/maintain/mission/add-edit";
+import addEdit from "@/components/maintain/mission/add-edit";
 // import detailModal from "@/components/maintain/mission/detail";
 // import delayModal from "@/components/maintain/mission/delay";
 // import closeModal from "@/components/maintain/mission/close";
 export default {
-  // components: { addEdit, delayModal, closeModal, detailModal },
+  components: { addEdit },
   data() {
     return {
       current: 1,
@@ -172,8 +172,8 @@ export default {
         }
       ],
       stationList: [],
-      planList: []
-      // show: false,
+      planList: [],
+      show: false
       // delayShow: false,
       // closeShow: false,
       // detailShow: false
@@ -202,13 +202,13 @@ export default {
       //     this.loading = false;
       //   });
     },
-    // cancel(value) {
-    //   this.show = value;
-    //   this.delayShow = value;
-    //   this.closeShow = value;
-    //   this.detailShow = value;
-    //   this.getTableData();
-    // },
+    cancel(value) {
+      this.show = value;
+      this.delayShow = value;
+      this.closeShow = value;
+      this.detailShow = value;
+      this.getTableData();
+    },
     getStation() {
       this.$api.common.selectStation().then(res => {
         if (res.data.state == 0) {

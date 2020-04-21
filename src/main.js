@@ -50,7 +50,6 @@ import api from "@/api/index";
 import base from "@/api/base";
 import common from "@/assets/lib/common"; //公共Page和onSubmit
 import loading from "@/assets/lib/loading";
-
 Vue.mixin(common);
 Vue.mixin(loading);
 

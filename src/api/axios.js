@@ -34,6 +34,8 @@ instance.interceptors.response.use(
   error => {
     if (error.response) {
       if (error.response.status === 500) {
+        message.destroy();
+        message.error("请连接网络");
         return Promise.reject(error);
       } else if (error.status === 404 || error.response.status === 403) {
         router.push("/404");
@@ -42,8 +44,11 @@ instance.interceptors.response.use(
       }
     } else {
       if (error.status === 500) {
+        message.destroy();
+        message.error("请连接网络");
         return Promise.reject(error);
       } else if (error.status === 404 || error.status === 403) {
+        router.push("/404");
         return Promise.reject(error);
       } else {
         return Promise.reject(error);
