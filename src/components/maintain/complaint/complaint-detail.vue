@@ -6,11 +6,15 @@
     @ok="handleOk"
   >
     <a-descriptions :column="1" bordered>
-      <a-descriptions-item label="上报客户">小张</a-descriptions-item>
-      <a-descriptions-item label="手机号码">1810000000</a-descriptions-item>
-      <a-descriptions-item label="投诉内容"
-        >我使用的账号有异常</a-descriptions-item
-      >
+      <a-descriptions-item label="上报客户">{{
+        complaintDetail.userName
+      }}</a-descriptions-item>
+      <a-descriptions-item label="手机号码">{{
+        complaintDetail.contact
+      }}</a-descriptions-item>
+      <a-descriptions-item label="投诉内容">{{
+        complaintDetail.content
+      }}</a-descriptions-item>
     </a-descriptions>
   </a-modal>
 </template>
@@ -22,15 +26,12 @@ export default {
       required: true,
       type: Boolean
     },
-    complainDetail: {
+    complaintDetail: {
       required: false
     }
   },
   data() {
-    return {
-      form: this.$form.createForm(this),
-      complainId: ""
-    };
+    return {};
   },
   computed: {
     title() {
@@ -38,14 +39,9 @@ export default {
     }
   },
   watch: {
-    complainDetail(nval) {
+    complaintDetail(nval) {
       if (nval) {
         this.complainId = nval.id;
-        setTimeout(() => {
-          this.form.setFieldsValue({
-            name: nval.name
-          });
-        }, 50);
       }
     }
   },

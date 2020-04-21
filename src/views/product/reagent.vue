@@ -15,7 +15,7 @@
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="success" shape="round" @click="onStock('enter')">
+            <a-button type="success" shape="round" @click="onStock('in')">
               <a-icon type="caret-down" />入库
             </a-button>
           </a-form-item>
@@ -23,7 +23,7 @@
             <a-input-search
               placeholder="输入试剂名称"
               style="width: 200px"
-              v-model="reagent"
+              v-model="name"
               @search="onSubmit"
             />
           </a-form-item>
@@ -59,8 +59,8 @@
       @change="pagechange"
       @showSizeChange="sizechange"
     />
-    <add-edit v-model="addInfo"> </add-edit>
-    <out-in v-model="stockInfo"> </out-in>
+    <add-edit v-model="addInfo" @refresh="getTableData"> </add-edit>
+    <out-in v-model="stockInfo" @refresh="getTableData"> </out-in>
     <detail-modal v-model="detailInfo"> </detail-modal>
   </a-card>
 </template>
@@ -73,10 +73,10 @@ export default {
   components: { addEdit, outIn, detailModal },
   data() {
     return {
-      reagent: "",
+      name: "",
       addInfo: { show: false },
       stockInfo: { show: false },
-      detailInfo: { show: false, info: { name: "" } },
+      detailInfo: { show: false },
       current: 1,
       pageSize: 10,
       total: 1,
@@ -92,7 +92,7 @@ export default {
         },
         {
           title: "型号",
-          dataIndex: "type"
+          dataIndex: "model"
         },
         {
           title: "编码",
@@ -124,7 +124,8 @@ export default {
     getTableData() {
       let data = {
         page: this.current,
-        size: this.pageSize
+        size: this.pageSize,
+        name: this.name
       };
       this.loading = true;
       this.$api.product
@@ -147,8 +148,8 @@ export default {
         title: "删除",
         content: "是否删除",
         onOk() {
-          that.$api.customer
-            .delDevice({
+          that.$api.product
+            .delGoods({
               id: row.id
             })
             .then(res => {

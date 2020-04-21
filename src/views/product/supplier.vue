@@ -50,7 +50,7 @@
         @showSizeChange="sizechange"
         :total="total"
       />
-      <!-- 新建供应商 -->
+      <!-- 新建编辑供应商 -->
       <add-edit :obj="modalInfo" @cancel="cancel" @getTableData="getTableData">
       </add-edit>
     </a-card>
@@ -134,12 +134,25 @@ export default {
       this.modalInfo.row = row;
     },
     onDelete(row) {
-      console.log(row);
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          let data = {
+            id: row.id
+          };
+          that.$api.product
+            .delSupplier(data)
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("删除成功");
+                that.getTableData();
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
         },
         onCancel() {
           console.log("Cancel");

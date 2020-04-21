@@ -50,7 +50,7 @@
           <a-tag color="blue" v-if="reportType == 3">周报表</a-tag>
         </template>
         <span slot="action" slot-scope="row">
-          <a @click="toMonitorData(row)">查看</a>
+          <a @click="toReportModal(row)">查看</a>
         </span>
       </a-table>
       <a-pagination
@@ -65,13 +65,22 @@
         :total="total"
       />
     </a-card>
+    <notification-modal
+      :visible="modal.show"
+      @cancel="onCancel"
+    ></notification-modal>
   </div>
 </template>
 
 <script>
+import notificationModal from "@/components/maintain/notification/notification-modal";
 export default {
+  components: { notificationModal },
   data() {
     return {
+      modal: {
+        show: false
+      },
       rportTypeList: [
         { name: "季报表", value: 1 },
         { name: "月报表", value: 2 },
@@ -121,6 +130,12 @@ export default {
     this.getTableData();
   },
   methods: {
+    onCancel() {
+      this.modal.show = false;
+    },
+    toReportModal() {
+      this.modal.show = true;
+    },
     getTableData() {
       this.loading = true;
       this.tableData = [

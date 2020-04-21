@@ -64,6 +64,13 @@ const maintain = {
   addKnowledgeClass(data) {
     return axios.post(base.api + "knowledgeClass/addKnowledgeClass", data);
   },
+  //获取知识库分类
+  getClassById(data) {
+    return axios.get(base.api + "knowledgeClass/getClassById", {
+      params: data
+    });
+  },
+
   //修改知识库分类
   updateKnowledgeClass(data) {
     return axios.post(base.api + "knowledgeClass/update", data);
@@ -99,6 +106,22 @@ const maintain = {
     return axios.get(base.api + "article/getArticleById", {
       params: data
     });
+  },
+  //客户投诉列
+  getManageComplaintsPage(data) {
+    return axios.get(base.api + "manageComplaint/getManageComplaintsPage/", {
+      params: data
+    });
+  },
+  //投诉详情
+  getManageComplaintById(data) {
+    return axios.get(base.api + "manageComplaint/getManageComplaintById", {
+      params: data
+    });
+  },
+  //投诉处理
+  editManageComplaint(data) {
+    return axios.post(base.api + "manageComplaint/editManageComplaint", data);
   },
   //方案
   getScheme() {
