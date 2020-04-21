@@ -5,10 +5,14 @@
       <div class="extra">
         <a-form layout="inline">
           <a-form-item>
-            <a-radio-group defaultValue="a" buttonStyle="solid">
-              <a-radio-button value="a">全部</a-radio-button>
-              <a-radio-button value="b">未处理</a-radio-button>
-              <a-radio-button value="c">已处理</a-radio-button>
+            <a-radio-group
+              v-model="formInline.state"
+              buttonStyle="solid"
+              @change="onSubmit"
+            >
+              <a-radio-button value="all">全部</a-radio-button>
+              <a-radio-button value="1">未处理</a-radio-button>
+              <a-radio-button value="3">已处理</a-radio-button>
             </a-radio-group>
           </a-form-item>
           <a-form-item>
@@ -22,52 +26,74 @@
       </div>
     </div>
     <a-table
+      rowKey="id"
       size="middle"
+      :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       :pagination="false"
       v-margin:top="16"
     >
+      <template slot="state" slot-scope="state, row">
+        <a-badge status="success" :text="row.stateName" v-if="state != 1" />
+        <a-badge status="warning" :text="row.stateName" v-if="state == 1" />
+      </template>
       <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">查看</a>
+        <a @click="onDetail(row)">查看</a>
         <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
+        <a @click="onEdit(row)">处理</a>
       </span>
     </a-table>
     <a-pagination
       size="small"
       v-margin:top="16"
-      showQuickJumper
       showSizeChanger
-      :defaultCurrent="current"
       :total="total"
+      :showTotal="total => `共 ${total} 条`"
+      :current="current"
+      @change="pagechange"
+      @showSizeChange="sizechange"
     />
-    <!-- <add-edit :obj="obj" @cancel="cancel"></add-edit> -->
+    <!-- 处理投诉 -->
+    <complaint-dispose
+      :visible.sync="disposeVisible"
+      :complainDetail="detail"
+    />
+
+    <!-- 投诉详情 -->
     <complaint-detail :visible.sync="visible" :complainDetail="detail" />
   </a-card>
 </template>
 <script>
-// import addEdit from "@/components/maintain/complaint/add-edit";
+import complaintDispose from "@/components/maintain/complaint/complaint-dispose";
 import complaintDetail from "@/components/maintain/complaint/complaint-detail";
 export default {
-  components: { complaintDetail },
+  components: { complaintDetail, complaintDispose },
   data() {
     return {
+      loading: false,
+      disposeVisible: false,
+      formInline: {
+        name: "",
+        state: "all"
+      },
       visible: false,
       current: 1,
+      size: 10,
       total: 0,
       columns: [
         {
           title: "企业名称",
-          dataIndex: "userName"
+          dataIndex: "enterpriseName"
         },
         {
           title: "状态",
-          dataIndex: "status1"
+          dataIndex: "state",
+          scopedSlots: { customRender: "state" }
         },
         {
           title: "上报时间",
-          dataIndex: "time1"
+          dataIndex: "gmtCreate"
         },
         {
           title: "操作",
@@ -81,28 +107,38 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$api.maintain.getMissionList().then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
+      let params = {
+        size: this.size,
+        page: this.current,
+        name: this.formInline.name,
+        state: this.formInline.state == "all" ? "" : this.formInline.state
+      };
+      this.loading = true;
+      this.$api.maintain
+        .getManageComplaintsPage(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    },
+    onDetail(row) {
+      console.log(row);
+      this.$api.maintain.getManageComplaintById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.visible = true;
+          this.detail = res.data.data;
+        }
       });
     },
     onEdit(row) {
       console.log(row);
-      this.visible = true;
-      this.detail = row;
-    },
-    onDelete(row) {
-      console.log(row);
-      this.$confirm({
-        title: "删除",
-        content: "是否删除",
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {
-          console.log("Cancel");
-        }
-      });
+      this.disposeVisible = true;
     }
   },
   mounted() {

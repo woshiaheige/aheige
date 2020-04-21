@@ -211,8 +211,14 @@ export default {
         });
     },
     onEditKnowledgeType(row) {
-      this.knowledgeTypeVisible = true;
-      this.knowledgeTypeDetail = row;
+      this.$api.maintain.getClassById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.knowledgeTypeDetail = res.data.data;
+          this.knowledgeTypeVisible = true;
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
     },
     onDeleteKnowledgeType(row) {
       let _this = this;
