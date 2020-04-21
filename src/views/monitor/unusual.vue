@@ -11,7 +11,7 @@
         <a-form-model-item label="MN号码">
           <a-input v-model="formInline.mn" placeholder="请输入" />
         </a-form-model-item>
-        <a-form-model-item label="时间范围">
+        <a-form-model-item label="异常时间">
           <a-range-picker @change="onChange" />
         </a-form-model-item>
         <a-form-model-item style="float:right">
@@ -94,10 +94,14 @@ export default {
           title: "因子名称",
           dataIndex: "divisorName"
         },
-
         {
           title: "异常值",
           dataIndex: "rtd"
+        },
+        {
+          title: "异常时间",
+          dataIndex: "dateTime",
+          width: 200
         }
       ],
       formInline: {

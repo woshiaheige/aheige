@@ -123,7 +123,6 @@ export default {
   watch: {
     forgetFlag(newVal) {
       let that = this;
-
       if (newVal) {
         console.log(newVal);
         this.$nextTick(() => {
@@ -190,6 +189,8 @@ export default {
 
                   sessionStorage.setItem("userinfo", JSON.stringify(userinfo));
                   that.$router.push("/");
+                } else {
+                  this.$message.warning(res.data.msg);
                 }
               })
               .catch(err => {
