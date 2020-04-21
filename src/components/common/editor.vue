@@ -47,8 +47,9 @@ import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
-// import ImageResize from "quill-image-resize-module";
-// Quill.register("modules/imageResize", ImageResize);
+import Quill from "quill";
+import ImageResize from "quill-image-resize-module";
+Quill.register("modules/imageResize", ImageResize);
 export default {
   props: {
     /*编辑器的内容*/
@@ -75,7 +76,16 @@ export default {
         theme: "snow", // or 'bubble'
         placeholder: "您想说点什么？",
         modules: {
-          // imageResize: {},
+          imageResize: {
+            //添加
+            displayStyles: {
+              //添加
+              backgroundColor: "black",
+              border: "none",
+              color: "white"
+            },
+            modules: ["Resize", "DisplaySize", "Toolbar"] //添加
+          },
           toolbar: {
             container: toolbarOptions,
             // container: "#toolbar",
