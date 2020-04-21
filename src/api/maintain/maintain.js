@@ -118,6 +118,20 @@ const maintain = {
     return axios.get(base.api + "manageComplaint/getManageComplaintById", {
       params: data
     });
+  },
+  //投诉处理
+  editManageComplaint(data) {
+    return axios.post(base.api + "manageComplaint/editManageComplaint", data);
+  },
+  //方案
+  getScheme() {
+    return axios.get(base.api + "/maintainProgramme/query");
+  },
+  addScheme(data) {
+    return axios.post(
+      base.api + "/maintainProgramme/addMaintainProgramme",
+      data
+    );
   }
 };
 

@@ -96,9 +96,7 @@ export default {
       },
       statusOption: [
         { name: "履行中", value: 1 },
-        { name: "已过期", value: 2 },
-        { name: "即将到期", value: 3 },
-        { name: "合同终结", value: 4 }
+        { name: "合同终结", value: 2 }
       ],
       columns: [
         {

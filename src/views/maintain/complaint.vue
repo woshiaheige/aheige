@@ -19,6 +19,7 @@
             <a-input-search
               placeholder="请输入企业名称"
               style="width: 200px"
+              v-model="formInline.enterpriseName"
               @search="onSubmit"
             />
           </a-form-item>
@@ -41,7 +42,7 @@
       <span slot="action" slot-scope="row">
         <a @click="onDetail(row)">查看</a>
         <a-divider type="vertical" />
-        <a @click="onEdit(row)">处理</a>
+        <a @click="onEdit(row)" v-show="row.state == 1">处理</a>
       </span>
     </a-table>
     <a-pagination
@@ -57,11 +58,11 @@
     <!-- 处理投诉 -->
     <complaint-dispose
       :visible.sync="disposeVisible"
-      :complainDetail="detail"
+      :complaintDetail="detail"
     />
 
     <!-- 投诉详情 -->
-    <complaint-detail :visible.sync="visible" :complainDetail="detail" />
+    <complaint-detail :visible.sync="visible" :complaintDetail="detail" />
   </a-card>
 </template>
 <script>
@@ -74,7 +75,7 @@ export default {
       loading: false,
       disposeVisible: false,
       formInline: {
-        name: "",
+        enterpriseName: "",
         state: "all"
       },
       visible: false,
@@ -110,7 +111,7 @@ export default {
       let params = {
         size: this.size,
         page: this.current,
-        name: this.formInline.name,
+        enterpriseName: this.formInline.enterpriseName,
         state: this.formInline.state == "all" ? "" : this.formInline.state
       };
       this.loading = true;
@@ -137,8 +138,12 @@ export default {
       });
     },
     onEdit(row) {
-      console.log(row);
-      this.disposeVisible = true;
+      this.$api.maintain.getManageComplaintById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.disposeVisible = true;
+          this.detail = res.data.data;
+        }
+      });
     }
   },
   mounted() {

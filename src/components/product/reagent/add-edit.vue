@@ -17,6 +17,12 @@
       <a-form-model-item label="名称" prop="name">
         <a-input placeholder="名称" v-model="formData.name" />
       </a-form-model-item>
+      <a-form-model-item label="品牌" prop="brand">
+        <a-input placeholder="输入品牌" v-model="formData.brand" />
+      </a-form-model-item>
+      <a-form-model-item label="型号" prop="model">
+        <a-input placeholder="输入型号" v-model="formData.model" />
+      </a-form-model-item>
       <a-form-model-item label="编号" prop="number">
         <a-input placeholder="输入编号" v-model="formData.number" />
       </a-form-model-item>
@@ -54,6 +60,13 @@ export default {
           {
             required: true,
             message: "请输入名称",
+            trigger: "blur"
+          }
+        ],
+        unit: [
+          {
+            required: true,
+            message: "请输入库存单位",
             trigger: "blur"
           }
         ]
@@ -96,6 +109,8 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
+      this.$refs.ruleForm.clearValidate();
+      this.$refs.ruleForm.resetFields();
     },
     getEditData() {
       this.$api.product

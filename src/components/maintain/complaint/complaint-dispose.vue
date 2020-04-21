@@ -11,7 +11,7 @@
           placeholder="请输入"
           type="textarea"
           v-decorator="[
-            'name',
+            'content',
             { rules: [{ required: true, message: '请输入反馈意见' }] }
           ]"
         />
@@ -27,14 +27,14 @@ export default {
       required: true,
       type: Boolean
     },
-    industryDetail: {
+    complaintDetail: {
       required: false
     }
   },
   data() {
     return {
       form: this.$form.createForm(this),
-      industryId: ""
+      complaintId: ""
     };
   },
   computed: {
@@ -43,14 +43,10 @@ export default {
     }
   },
   watch: {
-    industryDetail(nval) {
+    complaintDetail(nval) {
+      console.log(nval, 444);
       if (nval) {
-        this.industryId = nval.id;
-        setTimeout(() => {
-          this.form.setFieldsValue({
-            name: nval.name
-          });
-        }, 50);
+        this.complaintId = nval.id;
       }
     }
   },
@@ -60,22 +56,23 @@ export default {
       this.reset();
     },
     reset() {
-      this.industryId = "";
+      this.complaintId = "";
       this.form.resetFields();
     },
     handleOk() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.editIndustry(values);
+          this.editManageComplaint(values);
         }
       });
     },
-    editIndustry(values) {
+    editManageComplaint(values) {
       let params = values;
-      params.id = this.industryId;
-      this.$api.platform.updateSysIndustry(params).then(res => {
+      params.id = this.complaintId;
+      params.state = 3; //处理
+      this.$api.maintain.editManageComplaint(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("修改行业成功");
+          this.$message.success("提交成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();

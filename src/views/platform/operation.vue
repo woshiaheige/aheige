@@ -30,7 +30,7 @@
           <a-form-item label="周任务生成时间">
             <a-select
               defaultValue="defaultWeek"
-              v-model="formValue.missionCreate.value"
+              v-model="formValue.missionWeekCreate.value"
               placeholder="请选择"
               style="width:200px"
             >
@@ -47,7 +47,7 @@
           <a-form-item label="月任务生成时间">
             <a-select
               defaultValue="defaultMonth"
-              v-model="formValue.missionCreate.value"
+              v-model="formValue.missionMonthCreate.value"
               placeholder="请选择"
               style="width:200px"
             >
@@ -66,7 +66,7 @@
           <a-form-item label="周任务推送时间">
             <a-select
               defaultValue="defaultWeek"
-              v-model="formValue.missionCreate.value"
+              v-model="formValue.missionWeekPush.value"
               placeholder="请选择"
               style="width:200px"
             >
@@ -83,7 +83,7 @@
           <a-form-item label="月任务推送时间">
             <a-select
               defaultValue="defaultMonth"
-              v-model="formValue.missionCreate.value"
+              v-model="formValue.missionMonthPush.value"
               placeholder="请选择"
               style="width:200px"
             >
@@ -156,8 +156,10 @@ export default {
       formValue: {
         // verify: 0,
         // distance: 0, //验证距离
-        missionCreate: { id: "", value: "1" }, //任务生成时间
-        missionAllocation: { id: "", value: "1" }, //任务分配时间
+        missionWeekCreate: { id: "", value: "1" }, //周任务生成时间
+        missionMonthCreate: { id: "", value: "1" }, //月任务生成时间
+        missionWeekPush: { id: "", value: "1" }, //周任务推送时间
+        missionMonthPush: { id: "", value: "1" }, //月任务推送时间
         spaceMin: { id: "", value: "" }, //最小间隔时间
         remind: { id: "", value: "" }, //到期提醒天数
         mission: { id: "", value: "" }
@@ -196,6 +198,10 @@ export default {
     },
     geDictByParam() {
       let params = [
+        "SYS_PARAMETER_WEEK_TASK_GENERATE",
+        "SYS_PARAMETER_MONTH_TASK_GENERATE",
+        "SYS_PARAMETER_WEEK_TASK_PUSH",
+        "SYS_PARAMETER_MONTH_TASK_PUSH",
         "SYS_PARAMETER_WARN_INTERVAL",
         "SYS_PARAMETER_CONTRACT_REMINDER",
         "SYS_PARAMETER_TASK_COMPLETION"
@@ -204,6 +210,31 @@ export default {
         let data = res.data;
         data.forEach(item => {
           switch (item.code) {
+            case "SYS_PARAMETER_WEEK_TASK_GENERATE":
+              this.formValue.missionWeekCreate = {
+                id: item.id,
+                value: item.value
+              };
+              break;
+            case "SYS_PARAMETER_MONTH_TASK_GENERATE":
+              this.formValue.missionMonthCreate = {
+                id: item.id,
+                value: item.value
+              };
+              break;
+            case "SYS_PARAMETER_WEEK_TASK_PUSH":
+              this.formValue.missionWeekPush = {
+                id: item.id,
+                value: item.value
+              };
+              break;
+            case "SYS_PARAMETER_MONTH_TASK_PUSH":
+              this.formValue.missionMonthPush = {
+                id: item.id,
+                value: item.value
+              };
+              break;
+
             case "SYS_PARAMETER_WARN_INTERVAL":
               this.formValue.spaceMin = { id: item.id, value: item.value };
               break;

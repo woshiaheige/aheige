@@ -25,6 +25,10 @@ const routes = [
       import(
         /* webpackChunkName: "view-notSupport" */ "@/views/Not-support.vue"
       )
+  },
+  {
+    path: "*",
+    redirect: "/404"
   }
 ];
 

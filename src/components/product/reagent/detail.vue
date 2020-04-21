@@ -1,17 +1,32 @@
 <template>
-  <a-modal
-    :title="carModal.info.name + '库存详情'"
-    v-model="carModal.show"
-    @cancel="handleCancel"
-  >
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="data"
-      v-margin:top="16"
-      :pagination="false"
-    >
-    </a-table>
+  <a-modal :title="title" :visible="modelData.show" @cancel="handleCancel">
+    <div v-margin:bottom="25">
+      <a-table
+        rowKey="id"
+        size="middle"
+        :columns="columns"
+        :dataSource="tableData"
+        :pagination="false"
+        :loading="loading"
+      >
+        <template slot="type" slot-scope="type">
+          <a-tag color="red" v-if="type == 1">出库</a-tag>
+          <a-tag color="blue" v-if="type == 2">入库</a-tag>
+        </template>
+      </a-table>
+      <a-pagination
+        v-if="tableData.length > 0"
+        size="small"
+        showSizeChanger
+        v-margin:top="5"
+        :defaultCurrent="current"
+        :pageSize.sync="pageSize"
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+    </div>
     <template slot="footer">
       <a-button @click="handleCancel">关闭</a-button>
     </template>
@@ -26,50 +41,80 @@ export default {
   },
   data() {
     return {
+      current: 1,
+      pageSize: 10,
+      total: 0,
+      loading: false,
+      title: "",
       columns: [
         {
           title: "类型",
           dataIndex: "type",
-          align: "center"
+          scopedSlots: { customRender: "type" },
+          align: "center",
+          width: 80
         },
         {
           title: "数量",
-          dataIndex: "num",
+          dataIndex: "stockCount",
           align: "center"
         },
         {
           title: "时间",
-          dataIndex: "date",
+          dataIndex: "gmtCreate",
           align: "center"
         },
         {
           title: "操作人",
-          dataIndex: "operator",
+          dataIndex: "username",
           align: "center"
         }
       ],
-      data: [
-        {
-          key: "1",
-          type: "入库",
-          num: "500",
-          date: "2020.5.21",
-          operator: "陈琛琛"
-        }
-      ]
+      tableData: []
     };
   },
   computed: {
-    carModal() {
+    modelData() {
       return this.value;
     }
   },
   methods: {
+    getTableData() {
+      let data = {
+        size: this.pageSize,
+        page: this.current,
+        goodId: this.modelData.row.id
+      };
+      this.loading = true;
+      this.$api.product
+        .getStockList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
     handleCancel() {
-      this.carModal.show = false;
+      this.modelData.show = false;
     }
   },
-  mounted() {}
+  mounted() {},
+  watch: {
+    "value.show"() {
+      if (this.value.show == true) {
+        this.current = 1;
+        this.pageSize = 10;
+        this.getTableData();
+        this.title = this.modelData.row.name + "库存详情";
+      }
+    }
+  }
 };
 </script>
 <style lang="less" scoped></style>
