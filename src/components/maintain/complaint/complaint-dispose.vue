@@ -44,7 +44,6 @@ export default {
   },
   watch: {
     complaintDetail(nval) {
-      console.log(nval, 444);
       if (nval) {
         this.complaintId = nval.id;
       }

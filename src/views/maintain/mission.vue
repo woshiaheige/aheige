@@ -4,6 +4,22 @@
       <a-form layout="inline">
         <a-form-item label="企业名称">
           <a-input placeholder="请输入"></a-input>
+          <!-- <a-select
+            showSearch
+            :value="formInline.enterpriseName"
+            placeholder="请输入"
+            style="width: 200px"
+            :defaultActiveFirstOption="false"
+            :showArrow="false"
+            :filterOption="false"
+            @search="handleSearch"
+            @change="handleChange"
+            :notFoundContent="null"
+          >
+            <a-select-option v-for="d in data" :key="d.value">{{
+              d.text
+            }}</a-select-option>
+          </a-select> -->
         </a-form-item>
         <a-form-item label="监控点名称">
           <a-input placeholder="请输入"></a-input>
@@ -49,6 +65,7 @@
       </div>
       <a-table
         size="middle"
+        rowKey="id"
         :columns="columns"
         :dataSource="tableData"
         :pagination="false"
@@ -76,7 +93,7 @@
         showQuickJumper
         showSizeChanger
         :defaultCurrent="current"
-        :defaultPageSize="pageSize"
+        :defaultsize="size"
         :total="total"
       />
       <!--新建-->
@@ -109,11 +126,11 @@ export default {
   data() {
     return {
       current: 1,
-      pageSize: 10,
+      size: 10,
       total: 0,
       loading: false,
       formInline: {
-        name: "",
+        enterpriseName: "",
         phone: ""
       },
       columns: [
@@ -180,27 +197,34 @@ export default {
     };
   },
   methods: {
+    handleSearch(value) {
+      console.log(value, 111);
+    },
+    handleChange(value) {
+      console.log(value);
+      this.value = value;
+    },
     getTableData() {
-      // let data = {
-      //   page: this.current,
-      //   size: this.pageSize,
-      //   pointId: "",
-      //   state: ""
-      // };
-      // this.loading = true;
-      // this.$api.maintain
-      //   .getManageTaskList(data)
-      //   .then(res => {
-      //     if (res.data.state == 0) {
-      //       this.loading = false;
-      //       this.tableData = res.data.data.records;
-      //       this.total = Number(res.data.data.total);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     this.loading = false;
-      //   });
+      let params = {
+        page: this.current,
+        size: this.size,
+        pointId: "",
+        state: ""
+      };
+      this.loading = true;
+      this.$api.maintain
+        .getManageTaskList(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     cancel(value) {
       this.show = value;
@@ -216,13 +240,13 @@ export default {
         }
       });
     },
-    getPlan() {
-      this.$api.common.selectPlan().then(res => {
-        if (res.data.state == 0) {
-          this.planList = res.data.data;
-        }
-      });
-    },
+    // getPlan() {
+    //   this.$api.common.selectPlan().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.planList = res.data.data;
+    //     }
+    //   });
+    // },
     goDetail(row) {
       this.$router.push({
         path: "/maintain/mission/detail",
@@ -232,7 +256,7 @@ export default {
   },
   mounted() {
     this.getStation();
-    this.getPlan();
+    // this.getPlan();
     this.getTableData();
   }
 };
