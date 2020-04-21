@@ -15,6 +15,9 @@
           ]"
         />
       </a-form-item>
+      <a-form-item label="输入排序">
+        <a-input placeholder="请输入" type="number" v-decorator="['sort']" />
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -48,7 +51,8 @@ export default {
         this.knowledgeId = nval.id;
         setTimeout(() => {
           this.form.setFieldsValue({
-            name: nval.name
+            name: nval.name,
+            sort: nval.sort
           });
         }, 50);
       }
