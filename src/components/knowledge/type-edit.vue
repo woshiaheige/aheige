@@ -5,13 +5,17 @@
     @cancel="closeModal"
     @ok="handleOk"
   >
-    <a-descriptions :column="1" bordered>
-      <a-descriptions-item label="上报客户">小张</a-descriptions-item>
-      <a-descriptions-item label="手机号码">1810000000</a-descriptions-item>
-      <a-descriptions-item label="投诉内容"
-        >我使用的账号有异常</a-descriptions-item
-      >
-    </a-descriptions>
+    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="分类名称">
+        <a-input
+          placeholder="请输入"
+          v-decorator="[
+            'name',
+            { rules: [{ required: true, message: '请输入分类名称' }] }
+          ]"
+        />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 
@@ -22,25 +26,26 @@ export default {
       required: true,
       type: Boolean
     },
-    complainDetail: {
+    detail: {
       required: false
     }
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      complainId: ""
+      form: this.$form.createForm(this, "knowledgeEdit"),
+      knowledgeId: ""
     };
   },
   computed: {
     title() {
-      return "投诉详情";
+      let title = this.detail ? "编辑知识库分类" : "新建知识库分类";
+      return title;
     }
   },
   watch: {
-    complainDetail(nval) {
+    detail(nval) {
       if (nval) {
-        this.complainId = nval.id;
+        this.knowledgeId = nval.id;
         setTimeout(() => {
           this.form.setFieldsValue({
             name: nval.name
@@ -52,28 +57,29 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+      this.reset();
     },
     reset() {
-      this.complainId = "";
+      this.knowledgeId = "";
       this.form.resetFields();
     },
     handleOk() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          if (this.complainId) {
-            this.editComplain(values);
+          if (this.knowledgeId) {
+            this.editknowledge(values);
           } else {
-            this.addComplain(values);
+            this.addknowledge(values);
           }
         }
       });
     },
-    editComplain(values) {
+    editknowledge(values) {
       let params = values;
-      params.id = this.complainId;
-      this.$api.organization.editSyscomplain(params).then(res => {
+      params.id = this.knowledgeId;
+      this.$api.maintain.updateKnowledgeClass(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("修改小组成功");
+          this.$message.success("修改知识库分类成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
@@ -82,11 +88,11 @@ export default {
         }
       });
     },
-    addComplain(values) {
+    addknowledge(values) {
       let params = values;
-      this.$api.organization.addSyscomplain(params).then(res => {
+      this.$api.maintain.addKnowledgeClass(params).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("新建小组成功");
+          this.$message.success("新建知识库分类成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();

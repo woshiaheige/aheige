@@ -26,7 +26,9 @@
 export default {
   name: "",
   data() {
-    return {};
+    return {
+      listDetail: ""
+    };
   },
   methods: {
     getListData(value) {

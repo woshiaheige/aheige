@@ -43,6 +43,10 @@ module.exports = {
         test: new RegExp("\\.(" + productionGzipExtensions.join("|") + ")$"),
         threshold: 10240,
         minRatio: 0.8
+      }),
+      new webpack.ProvidePlugin({
+        "window.Quill": "quill/dist/quill.js",
+        Quill: "quill/dist/quill.js"
       })
     ],
     optimization: {

@@ -1,6 +1,6 @@
 import base from "./base";
 import axios from "./axios";
-// import qs from "qs";
+import qs from "qs";
 
 const common = {
   //获取字典》》根据参数查询
@@ -82,7 +82,19 @@ const common = {
     return axios.get(base.api + "sysRegion/getArea", {
       params: data
     });
-  }
+  },
+  //文件上传_1(返回一个FileVo文件对象)
+  uploadFile(data) {
+    return axios({
+      url: base.api + "files/upload",
+      method: "post",
+      data: qs.stringify(data),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    });
+  },
+  uploadFileApi: base.api + "files/upload"
 };
 
 export default common;
