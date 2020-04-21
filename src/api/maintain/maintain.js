@@ -102,11 +102,36 @@ const maintain = {
   },
   //方案
   getScheme() {
-    return axios.get(base.api + "/maintainProgramme/query");
+    return axios.get(base.api + "maintainProgramme/query");
   },
+  //新增方案
   addScheme(data) {
     return axios.post(
-      base.api + "/maintainProgramme/addMaintainProgramme",
+      base.api + "maintainProgramme/addMaintainProgramme",
+      data
+    );
+  },
+  //修改方案
+  editScheme(data) {
+    return axios.post(
+      base.api + "maintainProgramme/editMaintainProgramme",
+      data
+    );
+  },
+  //删除方案
+  deleteScheme(data) {
+    return axios.get(base.api + "maintainProgramme/deleteMaintainProgramme", {
+      params: data
+    });
+  },
+  //方案项
+  getSchemeList(data) {
+    return axios.get(base.api + "maintainProgrammeItem/", { params: data });
+  },
+  //添加方案项
+  addSchemeList(data) {
+    return axios.post(
+      base.api + "maintainProgrammeItem/addMaintainProgrammeItem",
       data
     );
   }
