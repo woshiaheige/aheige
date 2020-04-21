@@ -25,17 +25,6 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="选择任务项" prop="planId">
-        <a-select v-model="formData.planId" placeholder="任务项">
-          <a-select-option
-            v-for="item in planList"
-            :key="item.id"
-            :value="item.id"
-          >
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
-      </a-form-model-item>
       <a-form-model-item label="任务名称" prop="name">
         <a-input placeholder="任务名称" v-model="formData.name" />
       </a-form-model-item>
