@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="title + '信息'"
+    :title="title + '企业'"
     :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"

@@ -32,6 +32,30 @@ const product = {
     return axios.get(base.api + "assetGoods/getAssetGoodsById", {
       params: data
     });
+  },
+  getGoodsSelect(data) {
+    return axios.get(base.api + "assetGoods/query", {
+      params: data
+    });
+  },
+  //获库存列表
+  getStockList(data) {
+    return axios.get(base.api + "assetStock/", {
+      params: data
+    });
+  },
+  addStock(data) {
+    return axios.post(base.api + "assetStock/addAssetStock", data);
+  },
+  delStock(data) {
+    return axios.get(base.api + "assetStock/deleteAssetStock", {
+      params: data
+    });
+  },
+  getStockById(data) {
+    return axios.get(base.api + "assetStock/getAssetStockById", {
+      params: data
+    });
   }
 };
 
