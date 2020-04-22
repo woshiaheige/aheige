@@ -34,8 +34,7 @@ export default {
       type: Boolean
     },
     schemeId: {
-      required: true,
-      type: String
+      required: true
     },
     schemeListDetail: {
       required: false
@@ -89,7 +88,7 @@ export default {
       this.$emit("close");
     },
     reset() {
-      this.form.resetFields();
+      this.$refs.form.resetFields();
     },
     handleOk() {
       this.$refs.form.validate(valid => {

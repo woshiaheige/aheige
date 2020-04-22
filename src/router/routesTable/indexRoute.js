@@ -4,7 +4,8 @@ const indexRoutes = [
     name: "index-data",
     key: "index-data",
     meta: {
-      title: "运维监控"
+      title: "运维监控",
+      back: false
     },
     component: () =>
       import(
@@ -17,7 +18,8 @@ const indexRoutes = [
     name: "index-map",
     key: "index-map",
     meta: {
-      title: "地图监控"
+      title: "地图监控",
+      back: false
     },
     component: () =>
       import(

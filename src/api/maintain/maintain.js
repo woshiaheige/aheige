@@ -124,8 +124,8 @@ const maintain = {
     return axios.post(base.api + "manageComplaint/editManageComplaint", data);
   },
   //方案
-  getScheme() {
-    return axios.get(base.api + "maintainProgramme/query");
+  getScheme(data) {
+    return axios.get(base.api + "maintainProgramme/query", { params: data });
   },
   //新增方案
   addScheme(data) {
@@ -157,6 +157,25 @@ const maintain = {
       base.api + "maintainProgrammeItem/addMaintainProgrammeItem",
       data
     );
+  },
+  //修改方案项
+  editSchemeList(data) {
+    return axios.post(
+      base.api + "maintainProgrammeItem/editMaintainProgrammeItem",
+      data
+    );
+  },
+  //删除方案项
+  deleteSchemeList(data) {
+    return axios.get(base.api + "maintainProgrammeItem/deleteProgrammeItem", {
+      params: data
+    });
+  },
+  //计划站点
+  getPlanStation(data) {
+    return axios.get(base.api + "maintainPlanPoint/query", {
+      params: data
+    });
   }
 };
 

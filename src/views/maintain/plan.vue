@@ -7,22 +7,32 @@
             <div class="title">配置站点</div>
             <div class="extra">
               <div class="extra">
-                <span>10</span>
+                <span>{{ stationList.length }}</span>
               </div>
             </div>
           </div>
-          <a-tabs tabPosition="left" size="small">
-            <a-tab-pane v-for="(tab, key) of tabList" :key="key" :tab="tab.tab">
-              <a-radio-group defaultValue="a" buttonStyle="solid">
-                <a-radio-button value="a">水类站点</a-radio-button>
-                <a-radio-button value="b">气类站点</a-radio-button>
-                <a-radio-button value="c">其他站点</a-radio-button>
+          <a-tabs
+            :defaultActiveKey="1"
+            tabPosition="left"
+            size="small"
+            v-model="currentTab"
+          >
+            <a-tab-pane v-for="item in tabList" :key="item.key" :tab="item.tab">
+              <a-radio-group
+                :defaultValue="31"
+                buttonStyle="solid"
+                v-model="currentType"
+              >
+                <a-radio-button :value="31">水类站点</a-radio-button>
+                <a-radio-button :value="32">气类站点</a-radio-button>
+                <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
-              <a-list>
-                <a-list-item slot="renderItem">
-                  XX污水处理厂废水排口
-                </a-list-item>
-              </a-list>
+              <a-menu v-model="currentStation" mode="vertical">
+                <a-menu-item v-for="item in stationList" :key="item.id">
+                  {{ item.name }}
+                </a-menu-item>
+                <a-empty v-margin:top="16" v-if="stationList.length <= 0" />
+              </a-menu>
             </a-tab-pane>
           </a-tabs>
         </a-card>
@@ -129,8 +139,20 @@ export default {
         }
       ],
       tableData: [],
-      planDetail: ""
+      planDetail: "",
+      currentTab: 1,
+      currentType: 31,
+      currentStation: [],
+      stationList: []
     };
+  },
+  watch: {
+    currentTab() {
+      this.getPlanStation();
+    },
+    currentType() {
+      this.getPlanStation();
+    }
   },
   methods: {
     getTableData() {
@@ -157,10 +179,20 @@ export default {
     },
     onAddClick() {
       this.visible = true;
+    },
+    getPlanStation() {
+      let data = {
+        flag: this.currentTab,
+        type: this.currentType
+      };
+      this.$api.maintain.getPlanStation(data).then(res => {
+        this.stationList = res.data.data;
+        this.currentStation.push(this.stationList[0].id);
+      });
     }
   },
   mounted() {
-    // this.getTableData();
+    this.getPlanStation();
   }
 };
 </script>
