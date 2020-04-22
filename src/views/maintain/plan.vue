@@ -63,11 +63,17 @@
             align="center"
             v-margin:top="16"
           >
-            <a slot="check" slot-scope="row">
+            <template slot="type" slot-scope="type, row">
+              {{ row.type == 1 ? "周计划" : "月计划" }}
+            </template>
+            <template slot="range" slot-scope="range, row">
+              {{ row.gmtBegin }} - {{ row.gmtEnd }}
+            </template>
+            <span slot="check" slot-scope="row">
               <a @click="onAddClick(row)">编辑</a>
               <a-divider type="vertical" />
               <a @click="goDetail(row)">删除</a>
-            </a>
+            </span>
           </a-table>
           <a-pagination
             size="small"
@@ -110,15 +116,17 @@ export default {
       columns: [
         {
           title: "计划名称",
-          dataIndex: "number"
+          dataIndex: "name"
         },
         {
           title: "方案周期",
-          dataIndex: "day"
+          dataIndex: "type",
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "运维期限",
-          dataIndex: "range"
+          dataIndex: "range",
+          scopedSlots: { customRender: "range" }
         },
         {
           title: "运维小组",
@@ -144,9 +152,11 @@ export default {
   watch: {
     currentTab() {
       this.getPlanStation();
+      this.getTableData();
     },
     currentType() {
       this.getPlanStation();
+      this.getTableData();
     },
     currentStation() {
       this.getTableData();
@@ -159,6 +169,7 @@ export default {
   },
   methods: {
     getTableData() {
+      this.tableData = [];
       let data = {
         page: this.current,
         size: this.size,
@@ -172,7 +183,7 @@ export default {
             if (res.data.state == 0) {
               this.loading = false;
               this.tableData = res.data.data.records;
-              this.total = res.data.data.total;
+              this.total = parseInt(res.data.data.total);
             } else {
               this.loading = false;
             }
@@ -200,6 +211,7 @@ export default {
         } else {
           this.currentStation = [];
         }
+        console.log(this.currentStation);
       });
     }
   },
