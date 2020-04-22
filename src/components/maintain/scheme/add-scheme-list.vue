@@ -54,7 +54,7 @@ export default {
             trigger: "blur"
           }
         ],
-        type: [
+        remark: [
           {
             required: false
           }
