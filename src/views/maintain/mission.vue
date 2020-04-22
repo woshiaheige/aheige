@@ -3,8 +3,8 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-input placeholder="请输入"></a-input>
-          <!-- <a-select
+          <!-- <a-input placeholder="请输入"></a-input> -->
+          <a-select
             showSearch
             :value="formInline.enterpriseName"
             placeholder="请输入"
@@ -12,14 +12,17 @@
             :defaultActiveFirstOption="false"
             :showArrow="false"
             :filterOption="false"
-            @search="handleSearch"
-            @change="handleChange"
+            @search="searchEnterprise"
             :notFoundContent="null"
           >
-            <a-select-option v-for="d in data" :key="d.value">{{
-              d.text
-            }}</a-select-option>
-          </a-select> -->
+            <a-select-option
+              v-for="(item, index) in enterpriseList"
+              @click="slectEnterprise(item)"
+              :key="index"
+              :value="item.name"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
         <a-form-item label="监控点名称">
           <a-input placeholder="请输入"></a-input>
@@ -97,12 +100,12 @@
         :total="total"
       />
       <!--新建-->
-      <add-edit
+      <!-- <add-edit
         :visible="show"
         :planList="planList"
         :stationList="stationList"
         @cancel="cancel"
-      ></add-edit>
+      ></add-edit> -->
       <!--延期-->
       <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
       <!--关闭-->
@@ -117,12 +120,11 @@
   </div>
 </template>
 <script>
-import addEdit from "@/components/maintain/mission/add-edit";
+// import addEdit from "@/components/maintain/mission/add-edit";
 // import detailModal from "@/components/maintain/mission/detail";
 // import delayModal from "@/components/maintain/mission/delay";
 // import closeModal from "@/components/maintain/mission/close";
 export default {
-  components: { addEdit },
   data() {
     return {
       current: 1,
@@ -130,7 +132,10 @@ export default {
       total: 0,
       loading: false,
       formInline: {
-        enterpriseName: "",
+        enterpriseName: undefined,
+        enterpriseId: "",
+        pointId: "",
+        pointName: undefined,
         phone: ""
       },
       columns: [
@@ -151,19 +156,6 @@ export default {
           title: "任务状态",
           dataIndex: "status",
           scopedSlots: { customRender: "status" },
-          // customRender: text => {
-          //   if (text == 1) {
-          //     return "已创建";
-          //   } else if (text == 2) {
-          //     return "处理中";
-          //   } else if (text == 3) {
-          //     return "已完成";
-          //   } else if (text == 4) {
-          //     return "已延期";
-          //   } else if (text == 5) {
-          //     return "已关闭";
-          //   }
-          // },
           align: "center",
           width: 150
         },
@@ -188,21 +180,39 @@ export default {
           num: 10
         }
       ],
-      stationList: [],
-      planList: [],
-      show: false
+      enterpriseList: []
+      // stationList: [],
+      // planList: [],
+      // show: false,
       // delayShow: false,
       // closeShow: false,
       // detailShow: false
     };
   },
   methods: {
-    handleSearch(value) {
-      console.log(value, 111);
+    searchEnterprise(value) {
+      //搜索企业
+      this.formInline.enterpriseName = value;
+      this.$api.customer
+        .getEnterPriseList({ enterpriseName: value })
+        .then(res => {
+          this.enterpriseList = res.data.data.records;
+        });
     },
-    handleChange(value) {
-      console.log(value);
-      this.value = value;
+    slectEnterprise(value) {
+      this.formInline.enterpriseId = value.id;
+      this.formInline.enterpriseName = value.name;
+    },
+    searchPoint(value) {
+      //搜索站点
+      this.formInline.pointName = value;
+      this.$api.customer.getPointList({ pointName: value }).then(res => {
+        this.pointList = res.data.data.records;
+      });
+    },
+    slectPoint(value) {
+      this.formInline.pointId = value.id;
+      this.formInline.pointName = value.name;
     },
     getTableData() {
       let params = {
