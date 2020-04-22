@@ -11,14 +11,6 @@
         <a-input placeholder="请输入" v-model="formInline.name" />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
-        <!-- <a-select placeholder="请选择" v-model="formInline.regionId">
-          <a-select-option
-            :value="item.id"
-            v-for="item in regionList"
-            :key="item.id"
-            >{{ item.name }}</a-select-option
-          >
-        </a-select> -->
         <a-cascader
           :options="cityList"
           v-model="formInline.regionId"
@@ -81,12 +73,11 @@ export default {
     }
   },
   methods: {
+    //通过区域id，设置省id和市id
     setRegionId(id) {
       if (id) {
         let temp1 = id.substring(0, 2) + "0000";
         let temp2 = id.substring(0, 4) + "00";
-        console.log(temp1);
-        console.log(temp2);
         this.formInline.regionId = [temp1, temp2, id];
       }
     },
@@ -105,7 +96,6 @@ export default {
       this.$api.product
         .postEditSupplier(data)
         .then(res => {
-          console.log(res);
           if (res.data.state == 0) {
             this.$message.success("修改成功");
             this.$emit("getTableData");
@@ -127,9 +117,7 @@ export default {
       this.$api.product
         .getSupplierById(data)
         .then(res => {
-          // console.log(res);
           this.formInline.name = res.data.data.name;
-          // this.formInline.regionId = res.data.data.regionId;
           this.formInline.address = res.data.data.address;
           this.formInline.contact = res.data.data.contact;
           this.formInline.telephone = res.data.data.telephone;
@@ -144,7 +132,7 @@ export default {
     postAddSupplier() {
       let data = {
         name: this.formInline.name,
-        regionId: this.formInline.regionId,
+        regionId: this.formInline.regionId[this.formInline.regionId.length - 1],
         address: this.formInline.address,
         contact: this.formInline.contact,
         telephone: this.formInline.telephone,
@@ -153,7 +141,6 @@ export default {
       this.$api.product
         .postAddSupplier(data)
         .then(res => {
-          console.log(res);
           if (res.data.state == 0) {
             this.$message.success("新建成功");
             this.$emit("getTableData");
