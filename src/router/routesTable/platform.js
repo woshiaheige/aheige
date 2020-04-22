@@ -10,7 +10,7 @@ const platform = [
     component: () =>
       import(
         /* webpackChunkName: "view-platform" */
-        "@/views/platform/factors.vue"
+        "@/views/platform/device.vue"
       )
   },
   {
