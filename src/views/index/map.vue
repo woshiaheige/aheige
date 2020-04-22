@@ -4,6 +4,7 @@
       <a-tabs defaultActiveKey="1" @change="callback">
         <a-tab-pane tab="监控点位" key="1"></a-tab-pane>
         <a-tab-pane tab="运维车辆" key="2"></a-tab-pane>
+        <a-tab-pane tab="运维人员" key="3"></a-tab-pane>
         <div slot="tabBarExtraContent">
           <template class="extra">
             <a-statistic-countdown
@@ -44,6 +45,16 @@
           <div class="header">
             <div class="title">运维车辆</div>
             <div class="value">5</div>
+          </div>
+          <a-date-picker @change="onChange" class="select-time" />
+          <a-list>
+            <a-list-item slot="renderItem"> 粤A45221 </a-list-item>
+          </a-list>
+        </div>
+        <div class="alarm-list" v-if="active == 3">
+          <div class="header">
+            <div class="title">运维人员</div>
+            <div class="value">6</div>
           </div>
           <a-date-picker @change="onChange" class="select-time" />
           <a-list>

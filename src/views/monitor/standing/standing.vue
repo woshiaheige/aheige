@@ -63,6 +63,8 @@
         </template>
         <span slot="action" slot-scope="row">
           <a @click="toMonitorData(row)">查看数据</a>
+          <a-divider type="vertical" />
+          <a @click="stationControl(row)">设备反控</a>
         </span>
       </a-table>
 
@@ -78,13 +80,17 @@
         :total="total"
       />
     </a-card>
+    <station-control :visible="visible" @cancel="onCancel"></station-control>
   </div>
 </template>
 
 <script>
+import stationControl from "@/components/monitor/station-control.vue";
 export default {
+  components: { stationControl },
   data() {
     return {
+      visible: false,
       controlOptions: [
         { name: "国控", value: 1 },
         { name: "省控", value: 2 },
@@ -143,7 +149,7 @@ export default {
         },
         {
           title: "操作",
-          width: 120,
+          width: 200,
           align: "center",
           scopedSlots: { customRender: "action" }
         }
@@ -159,6 +165,15 @@ export default {
     this.getTableData();
   },
   methods: {
+    //关闭弹窗
+    onCancel() {
+      this.visible = false;
+    },
+    //设备反控
+    stationControl(row) {
+      console.log(row);
+      this.visible = true;
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
