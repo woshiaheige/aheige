@@ -5,7 +5,6 @@
         <a-form-item label="企业名称">
           <a-select
             showSearch
-            allowClear
             v-model="formInline.enterpriseName"
             placeholder="请输入"
             style="width: 200px"
@@ -27,7 +26,6 @@
         <a-form-item label="监控点名称">
           <a-select
             showSearch
-            allowClear
             v-model="formInline.pointName"
             placeholder="请输入"
             style="width: 200px"
