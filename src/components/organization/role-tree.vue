@@ -69,7 +69,7 @@ export default {
       roleId: "",
       userRoleId: "", //用户的角色id(用来判断如果用户修改自己的角色则刷新组件)
       resourceIdList: [],
-      menuIds: [], //获取已授权的id
+      // menuIds: [], //获取已授权的id
       roleTypeList: [
         { label: "超级管理员", id: "1" },
         { label: "运维主管", id: "2" },
@@ -92,6 +92,7 @@ export default {
         // this.userRoleId = JSON.parse(sessionStorage.getItem("userinfo")).roleId;
         this.queryResourceTree();
         if (this.roleDetail) {
+          //编辑权限
           setTimeout(() => {
             this.form.setFieldsValue({
               name: this.roleDetail.name,
@@ -100,6 +101,10 @@ export default {
           }, 50);
           this.roleId = this.roleDetail.id;
           this.getSysRoleById(this.roleId);
+        } else {
+          setTimeout(() => {
+            this.initRole();
+          }, 500);
         }
       }
     }
@@ -115,14 +120,22 @@ export default {
       this.roleId = "";
       this.userRoleId = "";
       this.resourceIdList = [];
-      this.menuIds = [];
+      // this.menuIds = [];
       this.form.resetFields();
+    },
+    initRole() {
+      //添加默认权限
+      if (this.resourceIdList.indexOf("1001") == -1) {
+        this.resourceIdList.push("1001");
+      }
+      console.log(this.resourceIdList);
     },
     queryResourceTree() {
       //获取树
       this.$api.organization.queryResourceTree().then(res => {
         if (res.data.state == "0") {
           this.dataList = res.data.data;
+          this.treeDispose(this.dataList);
         }
       });
     },
@@ -137,6 +150,7 @@ export default {
         if (res.data.state == "0" && res.data.data.resourceIds) {
           setTimeout(() => {
             this.resourceIdList = res.data.data.resourceIds;
+            this.initRole();
             this.expandedKeys = res.data.data.resourceIds;
           }, 200);
         }
@@ -147,17 +161,16 @@ export default {
     },
     treeDispose(array) {
       //树处理
+
       array.forEach(item => {
         if (item.children && item.children.length > 0) {
           this.treeDispose(item.children);
           //console.log(item);
         }
-        if (
-          item.id !== "110000" &&
-          item.id !== "120000" &&
-          item.id !== "130000" &&
-          item.id !== "140000"
-        ) {
+        if (item.id == "1001") {
+          //设置运维监控为默认值
+          this.$set(item, "disabled", true);
+
           // this.menuIds.forEach(i => {
           //   if (item.id == i.menuId) {
           //     this.$set(item, "checked", true);
@@ -221,7 +234,7 @@ export default {
       });
     },
     onExpand(expandedKeys) {
-      console.log("onExpand", expandedKeys);
+      // console.log("onExpand", expandedKeys);
       this.expandedKeys = expandedKeys;
       this.autoExpandParent = false;
     }
