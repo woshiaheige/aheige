@@ -5,7 +5,8 @@
         <a-form-item label="企业名称">
           <a-select
             showSearch
-            :value="formInline.enterpriseName"
+            allowClear
+            v-model="formInline.enterpriseName"
             placeholder="请输入"
             style="width: 200px"
             :defaultActiveFirstOption="false"
@@ -26,7 +27,8 @@
         <a-form-item label="监控点名称">
           <a-select
             showSearch
-            :value="formInline.pointName"
+            allowClear
+            v-model="formInline.pointName"
             placeholder="请输入"
             style="width: 200px"
             :defaultActiveFirstOption="false"
@@ -212,7 +214,6 @@ export default {
   methods: {
     searchEnterprise(value) {
       //搜索企业
-      this.formInline.enterpriseName = value;
       this.$api.customer
         .getEnterPriseList({ enterpriseName: value })
         .then(res => {
@@ -225,7 +226,6 @@ export default {
     },
     searchPoint(value) {
       //搜索站点
-      this.formInline.pointName = value;
       this.$api.customer.getStationList({ pointName: value }).then(res => {
         this.pointList = res.data.data.records;
       });

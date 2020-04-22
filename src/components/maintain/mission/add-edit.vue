@@ -216,8 +216,12 @@ export default {
           gmtEnd: undefined,
           enterpriseName: undefined,
           pointName: undefined,
+          groupName: undefined,
+          memberName: undefined,
           enterpriseId: "",
-          pointId: ""
+          pointId: "",
+          groupId: "",
+          memberId: ""
         };
       }
     },
