@@ -232,7 +232,7 @@ export default {
           icon: "gold",
           children: [
             {
-              title: "试剂管理",
+              title: "物资库存",
               key: "reagent"
             },
             {
