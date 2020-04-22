@@ -81,83 +81,13 @@
         <a-card :bordered="false">
           <a-tabs defaultActiveKey="1" @change="changeTabs">
             <a-tab-pane tab="站点报警提醒" key="1">
-              <a-list itemLayout="horizontal" :dataSource="warnList">
-                <a-list-item slot="renderItem">
-                  <a slot="actions">查看详情</a>
-                  <a-list-item-meta
-                    description="XXX监测点发生数据告警，请及时处理！"
-                  >
-                    <a slot="title">企业名称</a>
-                    <a-avatar
-                      slot="avatar"
-                      :src="require('@/assets/img/alarm.png')"
-                    />
-                  </a-list-item-meta>
-                  <div v-margin:right="48">
-                    <p>报警类型</p>
-                    <p>数据超标</p>
-                  </div>
-                  <div>
-                    <p>报警时间</p>
-                    <p>2020-04-21 11:45:21</p>
-                  </div>
-                </a-list-item>
-              </a-list>
-              <a-pagination
-                size="small"
-                :defaultCurrent="current"
-                :total="total"
-              />
+              <point-list ref="pointList"></point-list>
             </a-tab-pane>
             <a-tab-pane tab="合同到期提醒" key="2">
-              <a-list itemLayout="horizontal" :dataSource="list">
-                <a-list-item slot="renderItem">
-                  <a slot="actions">查看详情</a>
-                  <a-list-item-meta
-                    description="合同将于2020-04-31日到期，请及时续签！"
-                  >
-                    <a slot="title">企业名称</a>
-                    <a-avatar
-                      slot="avatar"
-                      :src="require('@/assets/img/contract.png')"
-                    />
-                  </a-list-item-meta>
-                  <div>
-                    <p>剩余天数</p>
-                    <p>4天</p>
-                  </div>
-                </a-list-item>
-              </a-list>
-              <a-pagination
-                size="small"
-                :defaultCurrent="current"
-                :total="total"
-              />
+              <contract-list ref="contractList"></contract-list>
             </a-tab-pane>
             <a-tab-pane tab="客户投诉提醒" key="3">
-              <a-list itemLayout="horizontal" :dataSource="list">
-                <a-list-item slot="renderItem">
-                  <a slot="actions">查看详情</a>
-                  <a-list-item-meta
-                    description="客户于2020-04-31 12:34:56发起投诉，请及时处理！"
-                  >
-                    <a slot="title">企业名称</a>
-                    <a-avatar
-                      slot="avatar"
-                      :src="require('@/assets/img/complain.png')"
-                    />
-                  </a-list-item-meta>
-                  <div>
-                    <p>已持续</p>
-                    <p>3天</p>
-                  </div>
-                </a-list-item>
-              </a-list>
-              <a-pagination
-                size="small"
-                :defaultCurrent="current"
-                :total="total"
-              />
+              <customer-list ref="customerList"></customer-list>
             </a-tab-pane>
           </a-tabs>
         </a-card>
@@ -186,7 +116,11 @@
 </template>
 
 <script>
+import pointList from "@/components/index/point-list.vue";
+import contractList from "@/components/index/contract-list.vue";
+import customerList from "@/components/index/customer-list.vue";
 export default {
+  components: { pointList, contractList, customerList },
   data() {
     return {
       current: 1,
@@ -292,21 +226,11 @@ export default {
       });
     },
     //消息提醒列表
-    getRemindsData(key) {
-      let data = {
-        index: this.current,
-        size: 10,
-        type: key //1： 站点预警提醒，2：合同提醒 3：客户投诉
-      };
-      this.$api.index.reminds(data).then(res => {
-        if (res.data.state == 0) {
-          this.warnList = res.data.data.records;
-        }
-      });
-    },
+
     changeTabs(key) {
       this.current = 1;
-      this.getRemindsData(key);
+      console.log(key);
+      // this.getRemindsData(key);
     }
   }
 };

@@ -98,6 +98,11 @@ export default {
           key: "enterpriseName"
         },
         {
+          title: "监控点名称",
+          dataIndex: "pointName",
+          key: "pointName"
+        },
+        {
           title: "报表类型",
           dataIndex: "reportType",
           width: 200,
@@ -142,27 +147,32 @@ export default {
         {
           enterpriseName: "广州鸿政企业有限公司",
           dateTime: "2019-08-26 16:00:00",
-          reportType: 1
+          reportType: 1,
+          pointName: "排水口"
         },
         {
           enterpriseName: "北京永瑞恒信有限公司",
           dateTime: "2019-08-26 16:00:00",
-          reportType: 2
+          reportType: 2,
+          pointName: "排水口"
         },
         {
           enterpriseName: "北京永瑞恒信有限公司",
           dateTime: "2019-08-26 16:00:00",
-          reportType: 1
+          reportType: 1,
+          pointName: "排水口"
         },
         {
           enterpriseName: "广东蓝祺有限公司",
           dateTime: "2019-08-26 16:00:00",
-          reportType: 3
+          reportType: 3,
+          pointName: "排水口"
         },
         {
           enterpriseName: "福建驰骤有限公司",
           dateTime: "2019-08-26 16:00:00",
-          reportType: 1
+          reportType: 1,
+          pointName: "排水口"
         }
       ];
       this.total = 5;
