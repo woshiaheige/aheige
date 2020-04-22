@@ -36,8 +36,8 @@
       v-margin:top="16"
     >
       <template slot="state" slot-scope="state, row">
-        <a-badge status="success" :text="row.stateName" v-if="state != 1" />
-        <a-badge status="warning" :text="row.stateName" v-if="state == 1" />
+        <a-badge status="success" :text="row.stateName" v-show="state != 1" />
+        <a-badge status="warning" :text="row.stateName" v-show="state == 1" />
       </template>
       <span slot="action" slot-scope="row">
         <a @click="onDetail(row)">查看</a>
@@ -59,6 +59,7 @@
     <complaint-dispose
       :visible.sync="disposeVisible"
       :complaintDetail="detail"
+      @updateTable="getTableData"
     />
 
     <!-- 投诉详情 -->
@@ -75,7 +76,7 @@ export default {
       loading: false,
       disposeVisible: false,
       formInline: {
-        enterpriseName: "",
+        enterpriseName: undefined,
         state: "all"
       },
       visible: false,

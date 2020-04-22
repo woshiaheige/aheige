@@ -137,7 +137,7 @@ export default {
       let that = this;
       this.$confirm({
         title: "删除",
-        content: "是否删除",
+        content: `是否删除“${row.name}”供应商`,
         onOk() {
           let data = {
             id: row.id

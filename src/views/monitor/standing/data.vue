@@ -3,7 +3,11 @@
     <a-card>
       <a-form-model layout="inline">
         <a-form-model-item label="时间范围">
-          <a-range-picker @change="onChange" />
+          <a-range-picker
+            @change="onChange"
+            v-model="formInline.range"
+            format="YYYY-MM-DD"
+          />
         </a-form-model-item>
         <a-form-model-item label="数据类型">
           <a-radio-group v-model="formInline.type">
@@ -102,6 +106,7 @@ export default {
       tableData: [],
       columns: [],
       formInline: {
+        range: [],
         beginTime: "2019-12-03 00:00:00",
         endTime: "2019-12-03 23:59:59",
         pointId: "",
@@ -156,15 +161,24 @@ export default {
     };
   },
   mounted() {
+    // this.initTime();
     this.setPointId();
     this.getRealDataTitle();
     this.getTableData();
   },
   methods: {
+    //初始化时间
+    // initTime(){
+
+    // },
     //
     onColumnsChange() {},
     //时间改变事件
     onChange(date, dateString) {
+      console.log("---------------");
+      console.log(date);
+      console.log(dateString);
+      console.log("---------------");
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";
       this.onSubmit();

@@ -10,8 +10,8 @@
               </template>
               <a-badge
                 :status="item.type"
-                :text="item.content"
-                :title="item.content"
+                :text="item.plan"
+                :title="item.plan"
               />
             </a-popover>
           </li>
@@ -42,12 +42,14 @@ export default {
         case 8:
           listData = [
             {
+              plan: "计划A",
               type: "default",
               content:
                 "广州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
             },
             {
               type: "success",
+              plan: "计划B",
               content:
                 "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
             }
@@ -57,11 +59,13 @@ export default {
           listData = [
             {
               type: "default",
+              plan: "计划C",
               content:
                 "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
             },
             {
               type: "success",
+              plan: "计划D",
               content:
                 "惠州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
             }
