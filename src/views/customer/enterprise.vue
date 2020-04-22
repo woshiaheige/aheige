@@ -71,8 +71,8 @@
         </template>
         <span slot="action" slot-scope="row">
           <a @click="goPoint(row)">监控点管理</a>
-          <!-- <a-divider type="vertical" />
-          <a @click="goUser(row)">企业用户</a> -->
+          <a-divider type="vertical" />
+          <a @click="goUser(row)">企业用户</a>
           <a-divider type="vertical" />
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -153,7 +153,7 @@ export default {
         {
           title: "操作",
           key: "action",
-          width: 240,
+          width: 250,
           scopedSlots: { customRender: "action" },
           align: "center"
         }
