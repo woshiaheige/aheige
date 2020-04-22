@@ -128,7 +128,6 @@ export default {
       if (this.resourceIdList.indexOf("1001") == -1) {
         this.resourceIdList.push("1001");
       }
-      console.log(this.resourceIdList);
     },
     queryResourceTree() {
       //获取树
@@ -148,11 +147,11 @@ export default {
       this.resourceIdList = [];
       this.$api.organization.getSysRoleById(params).then(res => {
         if (res.data.state == "0" && res.data.data.resourceIds) {
-          setTimeout(() => {
+          this.$nextTick(() => {
             this.resourceIdList = res.data.data.resourceIds;
             this.initRole();
-            this.expandedKeys = res.data.data.resourceIds;
-          }, 200);
+            // this.expandedKeys = res.data.data.resourceIds;
+          });
         }
       });
     },
@@ -170,13 +169,6 @@ export default {
         if (item.id == "1001") {
           //设置运维监控为默认值
           this.$set(item, "disabled", true);
-
-          // this.menuIds.forEach(i => {
-          //   if (item.id == i.menuId) {
-          //     this.$set(item, "checked", true);
-          //   }
-          //   console.log(i);
-          // });
         }
       });
     },

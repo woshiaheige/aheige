@@ -40,7 +40,7 @@
               color="blue"
               v-for="(role, key) of item.resourceNames"
               :key="key"
-              v-margin="10"
+              v-margin="5"
               >{{ role }}</a-tag
             >
             <a slot="title">{{ item.name }}</a>
