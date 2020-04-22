@@ -5,14 +5,24 @@
     @cancel="closeModal"
     @ok="handleOk"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="项目名称">
-        <a-input placeholder="请输入"></a-input>
-      </a-form-item>
-      <a-form-item label="备注">
-        <a-input type="textarea" placeholder="请输入"></a-input>
-      </a-form-item>
-    </a-form>
+    <a-form-model
+      ref="form"
+      :model="form"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
+      <a-form-model-item label="项目名称" prop="name">
+        <a-input v-model="form.name" placeholder="请输入"></a-input>
+      </a-form-model-item>
+      <a-form-model-item label="备注" prop="remark">
+        <a-input
+          v-model="form.remark"
+          type="textarea"
+          placeholder="请输入"
+        ></a-input>
+      </a-form-model-item>
+    </a-form-model>
   </a-modal>
 </template>
 
@@ -23,22 +33,42 @@ export default {
       required: true,
       type: Boolean
     },
-    groupDetail: {
+    schemeId: {
+      required: true,
+      type: String
+    },
+    schemeListDetail: {
       required: false
     }
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      groupId: ""
+      form: {
+        name: "",
+        remark: ""
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "请输入项目名称",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: false
+          }
+        ]
+      }
     };
   },
   computed: {
     title() {
-      if (this.groupName) {
-        return "编辑小组";
+      if (this.schemeListDetail.id) {
+        return "编辑方案";
       } else {
-        return "新建小组";
+        return "新建方案";
       }
     }
   },
@@ -59,17 +89,24 @@ export default {
       this.$emit("close");
     },
     reset() {
-      this.groupId = "";
       this.form.resetFields();
     },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.groupId) {
-            this.editGroup(values);
-          } else {
-            this.addGroup(values);
-          }
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          let data = {
+            name: this.form.name,
+            remark: this.form.remark,
+            programmeId: this.schemeId
+          };
+
+          this.$api.maintain.addSchemeList(data).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("添加成功");
+              this.reset();
+              this.closeModal();
+            }
+          });
         }
       });
     },
