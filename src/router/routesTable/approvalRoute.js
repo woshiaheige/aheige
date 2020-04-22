@@ -26,20 +26,6 @@ const maintainRoutes = [
         /* webpackChunkName: "view-approval" */
         "@/views/approval/approval-start.vue"
       )
-  },
-  {
-    path: "/approval/approval-to-start",
-    name: "approval-to-start",
-    key: "approval-to-start",
-    meta: {
-      title: "发起审批",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-approval" */
-        "@/views/approval/approval-to-start.vue"
-      )
   }
 ];
 
