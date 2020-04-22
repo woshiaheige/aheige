@@ -11,14 +11,19 @@
         <a-input placeholder="请输入" v-model="formInline.name" />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
-        <a-select placeholder="请选择" v-model="formInline.regionId">
+        <!-- <a-select placeholder="请选择" v-model="formInline.regionId">
           <a-select-option
             :value="item.id"
             v-for="item in regionList"
             :key="item.id"
             >{{ item.name }}</a-select-option
           >
-        </a-select>
+        </a-select> -->
+        <a-cascader
+          :options="cityList"
+          v-model="formInline.regionId"
+          placeholder="请选择"
+        />
       </a-form-model-item>
       <a-form-model-item label="地址" prop="address">
         <a-input placeholder="请输入" v-model="formInline.address" />
@@ -42,6 +47,7 @@
   </a-modal>
 </template>
 <script>
+import cityList from "@/assets/json/city_code.json";
 export default {
   props: {
     obj: {
@@ -50,11 +56,12 @@ export default {
   },
   data() {
     return {
+      cityList,
       regionList: [],
       title: "",
       formInline: {
         name: "",
-        regionId: undefined,
+        regionId: [],
         address: "",
         contact: "",
         telephone: "",
@@ -74,12 +81,22 @@ export default {
     }
   },
   methods: {
+    setRegionId(id) {
+      if (id) {
+        let temp1 = id.substring(0, 2) + "0000";
+        let temp2 = id.substring(0, 4) + "00";
+        console.log(temp1);
+        console.log(temp2);
+        this.formInline.regionId = [temp1, temp2, id];
+      }
+    },
     //修改供应商
     editSupplier() {
       let data = {
         id: this.obj.row.id,
         name: this.formInline.name,
-        regionId: this.formInline.regionId,
+        regionId:
+          this.formInline.regionId[this.formInline.regionId.length - 1] || "",
         address: this.formInline.address,
         contact: this.formInline.contact,
         telephone: this.formInline.telephone,
@@ -110,13 +127,14 @@ export default {
       this.$api.product
         .getSupplierById(data)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.formInline.name = res.data.data.name;
-          this.formInline.regionId = res.data.data.regionId;
+          // this.formInline.regionId = res.data.data.regionId;
           this.formInline.address = res.data.data.address;
           this.formInline.contact = res.data.data.contact;
           this.formInline.telephone = res.data.data.telephone;
           this.formInline.level = res.data.data.level;
+          this.setRegionId(res.data.data.regionId);
         })
         .catch(err => {
           console.log(err);
