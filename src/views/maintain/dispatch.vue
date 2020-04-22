@@ -1,27 +1,5 @@
 <template>
   <div class="dispatch">
-    <a-card :bordered="false">
-      <a-row>
-        <a-col :span="8">
-          <div class="header-info">
-            <span>巡检</span>
-            <p>35</p>
-          </div>
-        </a-col>
-        <a-col :span="8">
-          <div class="header-info">
-            <span>清洗</span>
-            <p>67</p>
-          </div>
-        </a-col>
-        <a-col :span="8">
-          <div class="header-info none-border">
-            <span>校准</span>
-            <p>83</p>
-          </div>
-        </a-col>
-      </a-row>
-    </a-card>
     <a-card v-margin:top="16">
       <div class="card-header">
         <div class="title">本周任务</div>
@@ -41,7 +19,10 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -58,7 +39,10 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
             </a-list-item>
@@ -75,12 +59,14 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
-            </a-list-item>
-          </a-list></a-tab-pane
-        >
+            </a-list-item> </a-list
+        ></a-tab-pane>
         <a-tab-pane tab="星期四" key="4"
           ><a-list
             itemLayout="horizontal"
@@ -92,12 +78,14 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
-            </a-list-item>
-          </a-list></a-tab-pane
-        >
+            </a-list-item> </a-list
+        ></a-tab-pane>
         <a-tab-pane tab="星期五" key="5"
           ><a-list
             itemLayout="horizontal"
@@ -109,12 +97,14 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
-            </a-list-item>
-          </a-list></a-tab-pane
-        >
+            </a-list-item> </a-list
+        ></a-tab-pane>
         <a-tab-pane tab="星期六" key="6"
           ><a-list
             itemLayout="horizontal"
@@ -126,12 +116,14 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
-            </a-list-item>
-          </a-list></a-tab-pane
-        >
+            </a-list-item> </a-list
+        ></a-tab-pane>
         <a-tab-pane tab="星期日" key="7"
           ><a-list
             itemLayout="horizontal"
@@ -143,12 +135,14 @@
               <a-list-item-meta>
                 <span slot="title">{{ item.title }}</span>
                 <div slot="description">
-                  <p>运维1组-张天志 运维任务：日常巡检</p>
+                  <p>
+                    运维1组-张天志 运维任务：日常巡检
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                  </p>
                 </div>
               </a-list-item-meta>
-            </a-list-item>
-          </a-list></a-tab-pane
-        >
+            </a-list-item> </a-list
+        ></a-tab-pane>
       </a-tabs>
     </a-card>
 

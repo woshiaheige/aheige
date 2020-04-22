@@ -32,6 +32,7 @@
         </a-form-model>
         <a-divider></a-divider>
         <a-transfer
+          :dataSource="schemeList"
           :titles="['所有方案', '已配置方案']"
           :listStyle="{
             width: '300px',
@@ -51,8 +52,11 @@ export default {
       required: true,
       type: Boolean
     },
-    planDetail: {
-      required: false
+    stationId: {
+      required: true
+    },
+    stationType: {
+      required: true
     }
   },
   data() {
@@ -60,9 +64,11 @@ export default {
       placement: "right",
       form: {
         name: "",
+        group: 1,
         type: 1,
         date: 1
-      }
+      },
+      schemeList: []
     };
   },
   computed: {
@@ -92,10 +98,18 @@ export default {
   methods: {
     onClose() {
       this.$emit("update:visible", false);
-    }
+    },
     // onChange(e) {
     //   this.placement = e.target.value;
     // }
+    getScheme() {
+      let data = {
+        type: this.stationType
+      };
+      this.$api.maintain.getScheme(data).then(res => {
+        this.schemeList = res.data.data;
+      });
+    }
   }
 };
 </script>
