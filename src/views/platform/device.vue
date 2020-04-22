@@ -69,7 +69,7 @@
 
 <script>
 import base from "@/api/base";
-import addEdit from "@/components/customer/enterprise/add-edit-device";
+import addEdit from "@/components/platform/device/add-edit-device";
 export default {
   components: { addEdit },
   data() {
@@ -134,7 +134,7 @@ export default {
       let data = {
         page: this.current,
         size: this.pageSize,
-        pointId: this.$route.query.id,
+        // pointId: this.$route.query.id,
         manufacturer: this.list.manufacturer,
         name: this.list.name,
         number: this.list.number

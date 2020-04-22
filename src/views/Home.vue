@@ -232,7 +232,7 @@ export default {
           icon: "gold",
           children: [
             {
-              title: "试剂管理",
+              title: "物资库存",
               key: "reagent"
             },
             {
@@ -246,6 +246,10 @@ export default {
           key: "platform",
           icon: "setting",
           children: [
+            {
+              title: "设备管理",
+              key: "device"
+            },
             {
               title: "因子设置",
               key: "factors"

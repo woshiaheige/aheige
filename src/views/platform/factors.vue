@@ -60,11 +60,17 @@
         v-margin:top="16"
         :pagination="false"
       >
+        <template slot="protocolType" slot-scope="protocolType">
+          <span v-show="protocolType == '05'">05协议</span>
+          <span v-show="protocolType == '17'">17协议</span>
+          <span v-show="protocolType == '0'">扩张协议</span>
+        </template>
         <template slot="type" slot-scope="type">
           <a-tag color="blue" v-if="type == 32">水类</a-tag>
           <a-tag color="red" v-if="type == 31">气类</a-tag>
           <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
         </template>
+
         <span slot="action" slot-scope="row">
           <a @click="onAddFactorsEdit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -142,7 +148,8 @@ export default {
           align: "center",
           title: "协议类型",
           key: "protocolType",
-          dataIndex: "protocolType"
+          dataIndex: "protocolType",
+          scopedSlots: { customRender: "protocolType" }
         },
         {
           title: "参考值上限",

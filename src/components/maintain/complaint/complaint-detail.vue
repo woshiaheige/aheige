@@ -1,10 +1,5 @@
 <template>
-  <a-modal
-    :title="title"
-    :visible="visible"
-    @cancel="closeModal"
-    @ok="handleOk"
-  >
+  <a-modal :title="title" :visible="visible" @cancel="closeModal">
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="上报客户">{{
         complaintDetail.userName
@@ -16,6 +11,9 @@
         complaintDetail.content
       }}</a-descriptions-item>
     </a-descriptions>
+    <template slot="footer">
+      <a-button key="back" @click="closeModal">关闭</a-button>
+    </template>
   </a-modal>
 </template>
 
@@ -48,48 +46,14 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+      this.reset();
     },
     reset() {
       this.complainId = "";
-      this.form.resetFields();
     },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.complainId) {
-            this.editComplain(values);
-          } else {
-            this.addComplain(values);
-          }
-        }
-      });
-    },
-    editComplain(values) {
-      let params = values;
-      params.id = this.complainId;
-      this.$api.organization.editSyscomplain(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("修改小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        } else {
-          this.$message.error(res.data.msg);
-        }
-      });
-    },
-    addComplain(values) {
-      let params = values;
-      this.$api.organization.addSyscomplain(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("新建小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        } else {
-          this.$message.error(res.data.msg);
-        }
-      });
+      this.$emit("update:visible", false);
+      this.reset();
     }
   }
 };

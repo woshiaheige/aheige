@@ -52,6 +52,7 @@
         </div> -->
       </div>
       <a-table
+        rowKey="id"
         size="middle"
         :columns="columns"
         :dataSource="tableData"
@@ -59,8 +60,12 @@
         :loading="loading"
         v-margin:top="16"
       >
-        <template slot="status" slot-scope="status">
-          <a-badge status="success" :text="status == 1 ? '已创建' : '处理中'" />
+        <template slot="taskStatus" slot-scope="taskStatus">
+          <a-badge color="cyan" text="已创建" v-show="taskStatus == 1" />
+          <a-badge status="processing" text="处理中" v-show="taskStatus == 2" />
+          <a-badge status="success" text="已完成" v-show="taskStatus == 3" />
+          <a-badge status="warning" text="已延期" v-show="taskStatus == 4" />
+          <a-badge status="default" text="已关闭" v-show="taskStatus == 5" />
         </template>
         <span slot="action" slot-scope="row">
           <!-- <a @click="delayShow = true">申请延期</a>
@@ -72,13 +77,14 @@
       <a-pagination
         size="small"
         v-margin:top="16"
-        showQuickJumper
         showSizeChanger
-        :defaultCurrent="current"
-        :defaultPageSize="pageSize"
         :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
       />
-      <add-edit v-model="obj" @refresh="getTableData"></add-edit>
+      <add-edit :visible.sync="visible" :detail="missionDetail"></add-edit>
     </a-card>
   </div>
 </template>
@@ -89,17 +95,17 @@ export default {
   components: { addEdit },
   data() {
     return {
+      pointId: "",
       current: 1,
-      pageSize: 10,
+      size: 10,
       total: 0,
       loading: false,
-      obj: {
-        show: false
-      },
+      missionDetail: "",
+      visible: false,
       columns: [
         {
           title: "任务方案",
-          dataIndex: "plan"
+          dataIndex: "name"
         },
         {
           title: "运维小组",
@@ -107,29 +113,16 @@ export default {
         },
         {
           title: "运维人员",
-          dataIndex: "name"
+          dataIndex: "handleName"
         },
         {
           title: "运维时间",
-          dataIndex: "time"
+          dataIndex: "gmtCreate"
         },
         {
           title: "运维状态",
-          dataIndex: "status",
-          scopedSlots: { customRender: "status" },
-          // customRender: text => {
-          //   if (text == 1) {
-          //     return "已创建";
-          //   } else if (text == 2) {
-          //     return "处理中";
-          //   } else if (text == 3) {
-          //     return "已完成";
-          //   } else if (text == 4) {
-          //     return "已延期";
-          //   } else if (text == 5) {
-          //     return "已关闭";
-          //   }
-          // },
+          dataIndex: "taskStatus",
+          scopedSlots: { customRender: "taskStatus" },
           align: "center",
           width: 150
         },
@@ -143,45 +136,51 @@ export default {
       ],
       tableData: [
         {
-          plan: "方案1",
+          id: "1",
+          name: "方案1",
           team: "A小组",
-          name: "张三",
-          time: "2020-04-22"
+          taskStatus: 1,
+          handleName: "张三",
+          gmtCreate: "2020-04-22"
         }
-      ],
-      stationList: [],
-      planList: []
+      ]
     };
   },
   methods: {
     getTableData() {
-      // let data = {
-      //   page: this.current,
-      //   size: this.pageSize,
-      //   pointId: "",
-      //   state: ""
-      // };
-      // this.loading = true;
-      // this.$api.maintain
-      //   .getManageTaskList(data)
-      //   .then(res => {
-      //     if (res.data.state == 0) {
-      //       this.loading = false;
-      //       this.tableData = res.data.data.records;
-      //       this.total = Number(res.data.data.total);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     this.loading = false;
-      //   });
+      let params = {
+        page: this.current,
+        size: this.size,
+        pointId: this.pointId
+      };
+      this.loading = true;
+      this.$api.maintain
+        .getManageTaskList(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     goDetail(row) {
-      this.obj.show = true;
-      this.obj.row = row;
+      this.missionDetail = row;
+      this.visible = true;
+      // this.$api.maintain.getManageTaskById({ id: row.id }).then(res => {
+      //   if (res.data.state == 0) {
+      //     this.missionDetail = res.data.data;
+      //     this.visible = true;
+      //   }
+      // });
     }
   },
   mounted() {
+    this.pointId = this.$route.query.pointId || "";
     this.getTableData();
   }
 };

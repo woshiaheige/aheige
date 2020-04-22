@@ -3,33 +3,66 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-input placeholder="请输入"></a-input>
+          <a-select
+            showSearch
+            v-model="formInline.enterpriseName"
+            placeholder="请输入"
+            style="width: 200px"
+            :defaultActiveFirstOption="false"
+            :showArrow="false"
+            :filterOption="false"
+            @search="searchEnterprise"
+            :notFoundContent="null"
+          >
+            <a-select-option
+              v-for="(item, index) in enterpriseList"
+              @click="slectEnterprise(item)"
+              :key="index"
+              :value="item.name"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
         <a-form-item label="监控点名称">
-          <a-input placeholder="请输入"></a-input>
+          <a-select
+            showSearch
+            v-model="formInline.pointName"
+            placeholder="请输入"
+            style="width: 200px"
+            :defaultActiveFirstOption="false"
+            :showArrow="false"
+            :filterOption="false"
+            @search="searchPoint"
+            :notFoundContent="null"
+          >
+            <a-select-option
+              v-for="(item, index) in pointList"
+              @click="slectPoint(item)"
+              :key="index"
+              :value="item.name"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
-        <!-- <a-form-item label="运维小组">
+        <a-form-item label="任务状态">
           <a-select
             defaultValue="all"
             style="width: 120px"
-            @change="handleChange"
+            v-model="formInline.taskStatus"
           >
             <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="jack">运维1组</a-select-option>
-            <a-select-option value="lucy">运维2组</a-select-option>
-          </a-select>
-        </a-form-item> -->
-        <a-form-item label="任务状态">
-          <a-select defaultValue="all" style="width: 120px">
-            <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="jack">未完成</a-select-option>
-            <a-select-option value="lucy">已完成</a-select-option>
-            <a-select-option value="lucy">已逾期</a-select-option>
+            <a-select-option value="1">已完成</a-select-option>
+            <a-select-option value="2">处理中</a-select-option>
           </a-select>
         </a-form-item>
         <!-- <a-form-item label="任务时间">
           <a-range-picker @change="onChange" />
         </a-form-item> -->
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="resetFormInLine">
+            重置
+          </a-button>
+        </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
             查询
@@ -49,14 +82,18 @@
       </div>
       <a-table
         size="middle"
+        rowKey="id"
         :columns="columns"
         :dataSource="tableData"
         :pagination="false"
         :loading="loading"
         v-margin:top="16"
       >
-        <template slot="status" slot-scope="status">
-          <a-badge status="success" :text="status == 1 ? '已创建' : '处理中'" />
+        <template slot="taskStatus" slot-scope="taskStatus">
+          <a-badge
+            :status="taskStatus == 1 ? 'success' : 'warning'"
+            :text="taskStatus == 1 ? '已完成' : '处理中'"
+          />
         </template>
         <template slot="type" slot-scope="type">
           <a-tag color="blue" v-if="type == 32">水类</a-tag>
@@ -73,11 +110,12 @@
       <a-pagination
         size="small"
         v-margin:top="16"
-        showQuickJumper
         showSizeChanger
-        :defaultCurrent="current"
-        :defaultPageSize="pageSize"
         :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
       />
       <!--新建-->
       <add-edit
@@ -109,12 +147,15 @@ export default {
   data() {
     return {
       current: 1,
-      pageSize: 10,
+      size: 10,
       total: 0,
       loading: false,
       formInline: {
-        name: "",
-        phone: ""
+        enterpriseName: undefined,
+        enterpriseId: "",
+        pointId: "",
+        pointName: undefined,
+        taskStatus: "all"
       },
       columns: [
         {
@@ -123,36 +164,22 @@ export default {
         },
         {
           title: "运维站点",
-          dataIndex: "station"
+          dataIndex: "pointName"
         },
         {
           title: "站点类别",
-          dataIndex: "type",
-          scopedSlots: { customRender: "type" }
+          dataIndex: "pointTypeName"
         },
         {
           title: "任务状态",
-          dataIndex: "status",
-          scopedSlots: { customRender: "status" },
-          // customRender: text => {
-          //   if (text == 1) {
-          //     return "已创建";
-          //   } else if (text == 2) {
-          //     return "处理中";
-          //   } else if (text == 3) {
-          //     return "已完成";
-          //   } else if (text == 4) {
-          //     return "已延期";
-          //   } else if (text == 5) {
-          //     return "已关闭";
-          //   }
-          // },
+          dataIndex: "taskStatus",
+          scopedSlots: { customRender: "taskStatus" },
           align: "center",
           width: 150
         },
         {
           title: "任务数量",
-          dataIndex: "num"
+          dataIndex: "taskCount"
         },
         {
           title: "操作",
@@ -164,13 +191,16 @@ export default {
       ],
       tableData: [
         {
+          id: 1,
           enterpriseName: "环保有限公司",
-          station: "站点1",
-          type: 31,
-          status: 2,
-          num: 10
+          pointName: "站点1",
+          pointTypeName: "类别A",
+          taskStatus: 2,
+          taskCount: 10
         }
       ],
+      enterpriseList: [],
+      pointList: [],
       stationList: [],
       planList: [],
       show: false
@@ -180,27 +210,51 @@ export default {
     };
   },
   methods: {
+    searchEnterprise(value) {
+      //搜索企业
+      this.$api.customer
+        .getEnterPriseList({ enterpriseName: value })
+        .then(res => {
+          this.enterpriseList = res.data.data.records;
+        });
+    },
+    slectEnterprise(value) {
+      this.formInline.enterpriseId = value.id;
+      this.formInline.enterpriseName = value.name;
+    },
+    searchPoint(value) {
+      //搜索站点
+      this.$api.customer.getStationList({ pointName: value }).then(res => {
+        this.pointList = res.data.data.records;
+      });
+    },
+    slectPoint(value) {
+      this.formInline.pointId = value.id;
+      this.formInline.pointName = value.name;
+    },
     getTableData() {
-      // let data = {
-      //   page: this.current,
-      //   size: this.pageSize,
-      //   pointId: "",
-      //   state: ""
-      // };
-      // this.loading = true;
-      // this.$api.maintain
-      //   .getManageTaskList(data)
-      //   .then(res => {
-      //     if (res.data.state == 0) {
-      //       this.loading = false;
-      //       this.tableData = res.data.data.records;
-      //       this.total = Number(res.data.data.total);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     this.loading = false;
-      //   });
+      let params = {
+        page: this.current,
+        size: this.size,
+        enterpriseId: this.formInline.enterpriseId,
+        pointId: this.formInline.pointId,
+        taskStatus:
+          this.formInline.taskStatus == "all" ? "" : this.formInline.taskStatus
+      };
+      this.loading = true;
+      this.$api.maintain
+        .managePointTask(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     cancel(value) {
       this.show = value;
@@ -216,23 +270,26 @@ export default {
         }
       });
     },
-    getPlan() {
-      this.$api.common.selectPlan().then(res => {
-        if (res.data.state == 0) {
-          this.planList = res.data.data;
-        }
-      });
+    resetFormInLine() {
+      this.formInline = this.$options.data().formInline;
     },
+    // getPlan() {
+    //   this.$api.common.selectPlan().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.planList = res.data.data;
+    //     }
+    //   });
+    // },
     goDetail(row) {
       this.$router.push({
         path: "/maintain/mission/detail",
-        query: { id: row.id }
+        query: { pointId: row.pointId }
       });
     }
   },
   mounted() {
     this.getStation();
-    this.getPlan();
+    // this.getPlan();
     this.getTableData();
   }
 };
