@@ -21,7 +21,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -41,7 +41,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -61,7 +61,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -80,7 +80,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -99,7 +99,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -118,7 +118,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -137,7 +137,7 @@
                 <div slot="description">
                   <p>
                     运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="进行中" />
+                    <a-badge v-margin:left="5" status="default" text="已创建" />
                   </p>
                 </div>
               </a-list-item-meta>

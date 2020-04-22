@@ -27,7 +27,11 @@
                 <a-radio-button :value="32">气类站点</a-radio-button>
                 <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
-              <a-menu v-model="currentStation" mode="vertical">
+              <a-menu
+                v-model="currentStation"
+                mode="vertical"
+                @click="selectStation"
+              >
                 <a-menu-item v-for="item in stationList" :key="item.id">
                   {{ item.name }}
                 </a-menu-item>
@@ -90,7 +94,11 @@
         </a-card>
       </a-col>
     </a-row>
-    <plan-allocation :visible.sync="visible" :planDetail="planDetail" />
+    <plan-allocation
+      :visible.sync="visible"
+      :station-id="currentStation[0]"
+      :station-type="currentType"
+    />
   </div>
 </template>
 
@@ -139,10 +147,10 @@ export default {
         }
       ],
       tableData: [],
-      planDetail: "",
       currentTab: 1,
       currentType: 31,
       currentStation: [],
+      selectedStationDetail: {},
       stationList: []
     };
   },
@@ -187,8 +195,16 @@ export default {
       };
       this.$api.maintain.getPlanStation(data).then(res => {
         this.stationList = res.data.data;
-        this.currentStation.push(this.stationList[0].id);
+        if (this.stationList.length > 0) {
+          this.currentStation.push(this.stationList[0].id);
+        } else {
+          this.currentStation = [];
+        }
       });
+    },
+    selectStation(object) {
+      this.selectedStationDetail = object.item;
+      console.log(object);
     }
   },
   mounted() {
