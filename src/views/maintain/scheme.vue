@@ -14,7 +14,7 @@
           <a-radio-group
             :defaultValue="31"
             buttonStyle="solid"
-            @change="changeType"
+            v-model="currentType"
           >
             <a-radio-button :value="31">气类运维</a-radio-button>
             <a-radio-button :value="32">水类运维</a-radio-button>
@@ -23,9 +23,9 @@
           <a-button type="dashed" block v-margin:top="16" @click="addNewScheme"
             >新建方案</a-button
           >
-          <a-menu v-model="currentScheme" mode="vertical" v-if="type == 31">
-            <a-menu-item v-for="item in gasSchemeList" :key="item.id">
-              {{ item.name }}
+          <a-menu v-model="currentScheme" mode="vertical">
+            <a-menu-item v-for="item in schemeList" :key="item.id">
+              {{ item.name }}({{ item.type == 1 ? "周计划" : "月计划" }})
               <a-divider type="vertical" v-show="currentScheme == item.id" />
               <a-icon
                 type="edit"
@@ -38,53 +38,23 @@
                 @click="onDeleteScheme(item)"
               />
             </a-menu-item>
-          </a-menu>
-          <a-menu v-model="currentScheme" mode="vertical" v-if="type == 32">
-            <a-menu-item v-for="item in waterSchemeList" :key="item.id">
-              {{ item.name }}
-              <a-divider type="vertical" v-show="currentScheme == item.id" />
-              <a-icon
-                type="edit"
-                v-show="currentScheme == item.id"
-                @click="onEditScheme(item)"
-              />
-              <a-icon
-                type="delete"
-                v-show="currentScheme == item.id"
-                @click="onDeleteScheme(item)"
-              />
-            </a-menu-item>
-          </a-menu>
-          <a-menu v-model="currentScheme" mode="vertical" v-if="type == 0">
-            <a-menu-item v-for="item in otherSchemeList" :key="item.id">
-              {{ item.name }}
-              <a-divider type="vertical" v-show="currentScheme == item.id" />
-              <a-icon
-                type="edit"
-                v-show="currentScheme == item.id"
-                @click="onEditScheme(item)"
-              />
-              <a-icon
-                type="delete"
-                v-show="currentScheme == item.id"
-                @click="onDeleteScheme(item)"
-              />
-            </a-menu-item>
+            <a-empty v-margin:top="16" v-if="schemeList.length <= 0" />
           </a-menu>
         </a-col>
         <a-col :span="18">
           <a-table
             size="middle"
+            rowKey="id"
             :columns="columns"
             :dataSource="tableData"
             :pagination="false"
             :loading="loading"
           >
-            <a slot="action">
+            <span slot="action" slot-scope="row">
               <a @click="detailShow = true">编辑</a>
               <a-divider type="vertical" />
-              <a>删除</a>
-            </a>
+              <a @click="onDeleteSchemeList(row)">删除</a>
+            </span>
           </a-table>
           <a-pagination
             size="small"
@@ -140,16 +110,15 @@ export default {
       addSchemeModal: false,
       addSchemeListModal: false,
       type: 31,
-      waterSchemeList: [],
-      gasSchemeList: [],
-      otherSchemeList: [],
+      schemeList: [],
       menu: [],
       current: 1,
       pageSize: 10,
       total: 0,
       loading: false,
       tableData: [],
-      selectedScheme: {}
+      selectedScheme: {},
+      currentType: 31
     };
   },
   mounted() {
@@ -162,8 +131,19 @@ export default {
         this.getScheme();
       }
     },
-    currentScheme() {
-      this.getTableData();
+    addSchemeListModal(newVal) {
+      if (!newVal) {
+        this.getTableData();
+      }
+    },
+    currentScheme(newVal) {
+      this.tableData = [];
+      if (newVal.length > 0) {
+        this.getTableData();
+      }
+    },
+    currentType() {
+      this.getScheme();
     }
   },
   methods: {
@@ -177,44 +157,15 @@ export default {
       this.addSchemeModal = true;
       this.selectedScheme = item;
     },
-    changeType(e) {
-      this.type = e.target.value;
-      this.currentScheme = [];
-      if (e.target.value == 31) {
-        this.currentScheme.push(this.gasSchemeList[0].id);
-      } else if (e.target.value == 32) {
-        this.currentScheme.push(this.waterSchemeList[0].id);
-      } else if (e.target.value == 0) {
-        this.currentScheme.push(this.otherSchemeList[0].id);
-      }
-    },
-    reset() {
-      this.waterSchemeList = [];
-      this.gasSchemeList = [];
-      this.otherSchemeList = [];
-    },
     getScheme() {
-      this.$api.maintain.getScheme().then(res => {
-        res.data.data.forEach(item => {
-          switch (item.maintainType) {
-            case 31:
-              this.gasSchemeList.push(item);
-              break;
-            case 32:
-              this.waterSchemeList.push(item);
-              break;
-            case 0:
-              this.otherSchemeList.push(item);
-          }
-        });
-
+      let data = {
+        type: this.currentType
+      };
+      this.$api.maintain.getScheme(data).then(res => {
+        this.schemeList = res.data.data;
         this.currentScheme = [];
-        if (this.type == 31) {
-          this.currentScheme.push(this.gasSchemeList[0].id);
-        } else if (this.type == 32) {
-          this.currentScheme.push(this.waterSchemeList[0].id);
-        } else if (this.type == 0) {
-          this.currentScheme.push(this.otherSchemeList[0].id);
+        if (this.schemeList.length > 0) {
+          this.currentScheme.push(this.schemeList[0].id);
         }
       });
     },
@@ -234,8 +185,31 @@ export default {
           that.$api.maintain.deleteScheme(data).then(res => {
             if (res.data.state == 0) {
               that.$message.success("删除成功");
-              that.reset();
               that.getScheme();
+            }
+          });
+        },
+        onCancel() {}
+      });
+    },
+    onDeleteSchemeList(row) {
+      let that = this;
+      console.log(row);
+      this.$confirm({
+        title: "删除方案项",
+        content: "确定删除方案项" + row.name + "？",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          let data = {
+            id: row.id
+          };
+
+          that.$api.maintain.deleteSchemeList(data).then(res => {
+            if (res.data.state == 0) {
+              that.$message.success("删除成功");
+              that.getTableData();
             }
           });
         },

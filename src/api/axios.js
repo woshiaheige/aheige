@@ -12,8 +12,7 @@ var instance = axios.create({
 instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.interceptors.request.use(
   config => {
-    // let token = sessionStorage.getItem("token");
-    let token = "8888";
+    let token = sessionStorage.getItem("token");
     config.headers["token"] = token;
     return config;
   },
