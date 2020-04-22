@@ -152,11 +152,9 @@ export default {
   watch: {
     currentTab() {
       this.getPlanStation();
-      this.getTableData();
     },
     currentType() {
       this.getPlanStation();
-      this.getTableData();
     },
     currentStation() {
       this.getTableData();
