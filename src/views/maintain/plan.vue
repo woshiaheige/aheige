@@ -125,7 +125,7 @@ export default {
           dataIndex: "number"
         },
         {
-          title: "计划名称",
+          title: "运维小组",
           dataIndex: "number"
         },
         {

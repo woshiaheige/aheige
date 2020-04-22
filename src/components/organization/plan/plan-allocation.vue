@@ -5,7 +5,7 @@
       :placement="placement"
       :closable="false"
       @close="onClose"
-      :width="1100"
+      :width="1250"
       :visible="visible"
     >
       <a-card :bordered="false">
@@ -15,6 +15,12 @@
           </a-form-model-item>
           <a-form-model-item label="运维期限" prop="range">
             <a-range-picker v-model="form.range"></a-range-picker>
+          </a-form-model-item>
+          <a-form-model-item label="运维小组" prop="group">
+            <a-select v-model="form.group">
+              <a-select-option :value="1">小组1</a-select-option>
+              <a-select-option :value="2">小组2</a-select-option>
+            </a-select>
           </a-form-model-item>
           <a-form-model-item label="计划类别" prop="type">
             <a-select v-model="form.type">
@@ -60,6 +66,7 @@ export default {
       placement: "right",
       form: {
         name: "",
+        group: 1,
         type: 1,
         date: 1
       }

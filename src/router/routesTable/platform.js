@@ -1,5 +1,19 @@
 const platform = [
   {
+    path: "/platform/device",
+    name: "platform-device",
+    key: "device",
+    meta: {
+      title: "设备管理",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-platform" */
+        "@/views/platform/factors.vue"
+      )
+  },
+  {
     path: "/platform/factors",
     name: "platform-factors",
     key: "factors",

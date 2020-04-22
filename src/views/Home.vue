@@ -247,6 +247,10 @@ export default {
           icon: "setting",
           children: [
             {
+              title: "设备管理",
+              key: "device"
+            },
+            {
               title: "因子设置",
               key: "factors"
             },
