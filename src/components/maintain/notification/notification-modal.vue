@@ -8,12 +8,19 @@
       @cancel="handleCancel"
       :width="900"
     >
-      <a-descriptions
-        title="宏恒公司周报表"
-        layout="vertical"
-        bordered
-        size="small"
-      >
+      <a-card v-margin:bottom="16">
+        <a-table
+          :loading="loading"
+          size="middle"
+          :rowKey="(record, index) => index"
+          :columns="columns"
+          :dataSource="tableData"
+          v-margin:top="16"
+          :pagination="false"
+        >
+        </a-table>
+      </a-card>
+      <a-descriptions title="排水口" layout="vertical" bordered size="small">
         <a-descriptions-item
           :span="3"
           v-for="item in notificationData"
@@ -27,13 +34,11 @@
           >
             <a-list-item slot="renderItem" slot-scope="item">
               <a-list-item-meta>
-                <span slot="title">{{ item.pointName }}</span>
+                <span slot="title"
+                  >{{ item.personnel }}（{{ item.group }}）</span
+                >
                 <div slot="description">
-                  <p>
-                    {{ item.group }}-{{ item.personnel }} 运维任务：{{
-                      item.content
-                    }}
-                  </p>
+                  <p>运维任务：{{ item.content }}</p>
                 </div>
               </a-list-item-meta>
               <div>{{ item.dateTime }}</div>
@@ -55,6 +60,95 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      columns: [
+        {
+          title: "分钟数据数",
+          children: [
+            {
+              title: "应收条数",
+              dataIndex: "minOughtCount",
+              key: "minOughtCount",
+              align: "center"
+            },
+            {
+              title: "实收条数",
+              dataIndex: "minRealCount",
+              key: "minRealCount",
+              align: "center"
+            },
+            {
+              title: "数据完整率",
+              dataIndex: "minPro",
+              key: "minPro",
+              align: "center"
+            }
+          ]
+        },
+        {
+          title: "小时数据数",
+          children: [
+            {
+              title: "应收条数",
+              dataIndex: "hourOughtCount",
+              key: "hourOughtCount",
+              align: "center"
+            },
+            {
+              title: "实收条数",
+              dataIndex: "hourRealCount",
+              key: "hourRealCount",
+              align: "center"
+            },
+            {
+              title: "数据完整率",
+              dataIndex: "hourPro",
+              key: "hourPro",
+              align: "center"
+            }
+          ]
+        },
+        {
+          title: "日数据数",
+          children: [
+            {
+              title: "应收条数",
+              dataIndex: "dayOughtCount",
+              key: "dayOughtCount",
+              align: "center"
+            },
+            {
+              title: "实收条数",
+              dataIndex: "dayRealCount",
+              key: "dayRealCount",
+              align: "center"
+            },
+            {
+              title: "数据完整率",
+              dataIndex: "dayPro",
+              key: "dayPro",
+              align: "center"
+            }
+          ]
+        }
+      ],
+      tableData: [
+        {
+          poiName: "756877X5555553",
+          mn: "756877X5555553",
+          enterpriseName: "东莞利来远东针织有限公司",
+          dayRealCount: "0",
+          dayOughtCount: "1",
+          dayPro: "0.00%",
+          hourRealCount: "0",
+          hourOughtCount: "17",
+          hourPro: "0.00%",
+          minRealCount: "0",
+          minOughtCount: "102",
+          minPro: "0.00%",
+          dataTime: "2020-04-22~2020-04-23"
+        }
+      ],
       notificationData: [
         {
           dateLabel: "星期一",
