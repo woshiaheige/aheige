@@ -4,7 +4,7 @@ const productRoute = [
     name: "product-reagent",
     key: "reagent",
     meta: {
-      title: "试剂管理",
+      title: "物资库存",
       back: false
     },
     component: () =>

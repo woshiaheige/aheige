@@ -33,6 +33,7 @@
         <a-divider></a-divider>
         <a-transfer
           :dataSource="schemeList"
+          :render="item => item.title + '(' + item.description + ')'"
           :titles="['所有方案', '已配置方案']"
           :listStyle="{
             width: '300px',
@@ -71,6 +72,13 @@ export default {
       schemeList: []
     };
   },
+  watch: {
+    visible(newVal) {
+      if (newVal) {
+        this.getScheme();
+      }
+    }
+  },
   computed: {
     dateList() {
       if (this.form.type == 1) {
@@ -107,7 +115,15 @@ export default {
         type: this.stationType
       };
       this.$api.maintain.getScheme(data).then(res => {
-        this.schemeList = res.data.data;
+        res.data.data.forEach(item => {
+          this.schemeList.push({
+            key: item.id,
+            title: `${item.name}`,
+            description: item.type == 1 ? "周计划" : "月计划"
+          });
+        });
+
+        console.log(this.schemeList);
       });
     }
   }
