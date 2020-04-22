@@ -69,7 +69,7 @@
 </template>
 <script>
 // import addEdit from "@/components/organization/role/add-edit";
-import roleTree from "@/components/organization/role-tree";
+import roleTree from "@/components/organization/role/role-tree";
 export default {
   components: { roleTree },
   data() {

@@ -84,54 +84,48 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$emit("close");
-    },
-    reset() {
       this.$refs.form.resetFields();
+      this.$emit("close");
     },
     handleOk() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          let data = {
-            maintainType: this.maintainType,
-            name: this.form.name,
-            type: this.form.type
-          };
+          if (this.schemeDetail.id) {
+            this.editScheme();
+          } else {
+            this.addScheme();
+          }
+        }
+      });
+    },
+    editScheme() {
+      let data = {
+        id: this.schemeDetail.id,
+        maintainType: this.maintainType,
+        name: this.form.name,
+        type: this.form.type
+      };
 
-          this.$api.maintain.addScheme(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("添加成功");
-              this.reset();
-              this.closeModal();
-            }
-          });
+      this.$api.maintain.editScheme(data).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("编辑成功");
+          this.reset();
+          this.closeModal();
         }
       });
     },
-    editGroup(values) {
-      let params = values;
-      params.id = this.groupId;
-      this.$api.organization.editSysGroup(params).then(res => {
+    addScheme() {
+      let data = {
+        maintainType: this.maintainType,
+        name: this.form.name,
+        type: this.form.type
+      };
+
+      this.$api.maintain.addScheme(data).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("修改小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
+          this.$message.success("添加成功");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
-        }
-      });
-    },
-    addGroup(values) {
-      let params = values;
-      this.$api.organization.addSysGroup(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("新建小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        } else {
-          this.$message.error(res.data.msg);
+          this.closeModal();
         }
       });
     }

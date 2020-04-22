@@ -51,7 +51,7 @@
             :loading="loading"
           >
             <span slot="action" slot-scope="row">
-              <a @click="detailShow = true">编辑</a>
+              <a @click="onEditSchemeList(row)">编辑</a>
               <a-divider type="vertical" />
               <a @click="onDeleteSchemeList(row)">删除</a>
             </span>
@@ -79,7 +79,7 @@
     <add-scheme-list
       :visible="addSchemeListModal"
       :scheme-id="currentScheme[0]"
-      :scheme-list-detail="selectedScheme"
+      :scheme-list-detail="selectedSchemeList"
       @close="addSchemeListModal = false"
     ></add-scheme-list>
   </div>
@@ -118,6 +118,7 @@ export default {
       loading: false,
       tableData: [],
       selectedScheme: {},
+      selectedSchemeList: {},
       currentType: 31
     };
   },
@@ -127,12 +128,13 @@ export default {
   watch: {
     addSchemeModal(newVal) {
       if (!newVal) {
-        this.reset();
+        this.selectedScheme = {};
         this.getScheme();
       }
     },
     addSchemeListModal(newVal) {
       if (!newVal) {
+        this.selectedSchemeList = {};
         this.getTableData();
       }
     },
@@ -151,7 +153,11 @@ export default {
       this.addSchemeModal = true;
     },
     addSchemeList() {
-      this.addSchemeListModal = true;
+      if (this.currentScheme.length > 0) {
+        this.addSchemeListModal = true;
+      } else {
+        this.$message.warning("请选择方案");
+      }
     },
     onEditScheme(item) {
       this.addSchemeModal = true;
@@ -167,6 +173,7 @@ export default {
         if (this.schemeList.length > 0) {
           this.currentScheme.push(this.schemeList[0].id);
         }
+        console.log(this.currentScheme);
       });
     },
     onDeleteScheme(item) {
@@ -215,6 +222,10 @@ export default {
         },
         onCancel() {}
       });
+    },
+    onEditSchemeList(row) {
+      this.addSchemeListModal = true;
+      this.selectedSchemeList = row;
     },
     getTableData() {
       let data = {

@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="title"
+    title="编辑计划"
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
@@ -12,15 +12,17 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="项目名称" prop="name">
+      <a-form-model-item label="计划名称" prop="name">
         <a-input v-model="form.name" placeholder="请输入"></a-input>
       </a-form-model-item>
-      <a-form-model-item label="备注" prop="remark">
-        <a-input
-          v-model="form.remark"
-          type="textarea"
-          placeholder="请输入"
-        ></a-input>
+      <a-form-model-item label="运维期限" prop="range">
+        <a-range-picker v-model="form.range"></a-range-picker>
+      </a-form-model-item>
+      <a-form-model-item label="运维小组" prop="group">
+        <a-select v-model="form.group">
+          <a-select-option :value="1">小组1</a-select-option>
+          <a-select-option :value="2">小组2</a-select-option>
+        </a-select>
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -33,49 +35,27 @@ export default {
       required: true,
       type: Boolean
     },
-    schemeId: {
-      required: true
-    },
-    schemeListDetail: {
-      required: false
+    planDetail: {
+      required: false,
+      type: Object
     }
   },
   data() {
     return {
       form: {
         name: "",
-        remark: ""
+        type: 1
       },
-      rules: {
-        name: [
-          {
-            required: true,
-            message: "请输入项目名称",
-            trigger: "blur"
-          }
-        ],
-        remark: [
-          {
-            required: false
-          }
-        ]
-      }
+      rules: {}
     };
   },
-  computed: {
-    title() {
-      if (this.schemeListDetail.id) {
-        return "编辑项目";
-      } else {
-        return "新增项目";
-      }
-    }
-  },
   watch: {
-    schemeListDetail(newVal) {
+    planDetail(newVal) {
       if (newVal.id) {
-        this.form.name = newVal.name;
-        this.form.remark = newVal.remark;
+        this.form = {
+          name: newVal.name,
+          range: [this.$moment(newVal.gmtBegin), this.$moment(newVal.gmtEnd)]
+        };
       }
     }
   },
@@ -87,23 +67,23 @@ export default {
     handleOk() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          if (this.schemeListDetail.id) {
-            this.editSchemeList();
+          if (this.schemeDetail.id) {
+            this.editScheme();
           } else {
-            this.addSchemeList();
+            this.addScheme();
           }
         }
       });
     },
-    editSchemeList() {
+    editScheme() {
       let data = {
-        id: this.schemeListDetail.id,
+        id: this.schemeDetail.id,
+        maintainType: this.maintainType,
         name: this.form.name,
-        remark: this.form.remark,
-        programmeId: this.schemeId
+        type: this.form.type
       };
 
-      this.$api.maintain.editSchemeList(data).then(res => {
+      this.$api.maintain.editScheme(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("编辑成功");
           this.reset();
@@ -111,14 +91,14 @@ export default {
         }
       });
     },
-    addSchemeList() {
+    addScheme() {
       let data = {
+        maintainType: this.maintainType,
         name: this.form.name,
-        remark: this.form.remark,
-        programmeId: this.schemeId
+        type: this.form.type
       };
 
-      this.$api.maintain.addSchemeList(data).then(res => {
+      this.$api.maintain.addScheme(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("添加成功");
           this.reset();

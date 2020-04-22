@@ -66,17 +66,6 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="监测设备" prop="device">
-        <a-select placeholder="监测设备" v-model="formData.device">
-          <a-select-option
-            v-for="item in deviceOptions"
-            :key="item.value"
-            :value="Number(item.value)"
-          >
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
-      </a-form-model-item>
       <a-form-model-item label="传输类型" prop="transferType">
         <a-select v-model="formData.transferType" placeholder="传输类型">
           <a-select-option
@@ -157,13 +146,6 @@ export default {
           {
             required: true,
             message: "请输入监测点名称",
-            trigger: "blur"
-          }
-        ],
-        device: [
-          {
-            required: true,
-            message: "请选择监测设备",
             trigger: "blur"
           }
         ],

@@ -67,12 +67,24 @@
               {{ row.type == 1 ? "周计划" : "月计划" }}
             </template>
             <template slot="range" slot-scope="range, row">
-              {{ row.gmtBegin }} - {{ row.gmtEnd }}
+              {{ $moment(row.gmtBegin).format("YYYY-MM-DD") }} -
+              {{ $moment(row.gmtEnd).format("YYYY-MM-DD") }}
+            </template>
+            <template slot="status" slot-scope="status, row">
+              <a-badge status="default" text="已创建" v-if="row.status == 1" />
+              <a-badge
+                status="processing"
+                text="处理中"
+                v-if="row.status == 2"
+              />
+              <a-badge status="success" text="已完成" v-if="row.status == 3" />
+              <a-badge status="error" text="已延期" v-if="row.status == 4" />
+              <a-badge status="success" text="已关闭" v-if="row.status == 5" />
             </template>
             <span slot="check" slot-scope="row">
-              <a @click="onAddClick(row)">编辑</a>
+              <a @click="onEditPlan(row)">编辑</a>
               <a-divider type="vertical" />
-              <a @click="goDetail(row)">删除</a>
+              <a @click="onDeletePlan(row)">删除</a>
             </span>
           </a-table>
           <a-pagination
@@ -93,18 +105,26 @@
       :station-id="currentStation[0]"
       :station-type="currentType"
     />
+    <edit-plan
+      :visible.sync="editModal"
+      :plan-detail="selectedPlan"
+      @close="editModal = false"
+    />
   </div>
 </template>
 
 <script>
-import planAllocation from "@/components/organization/plan/plan-allocation";
+import planAllocation from "@/components/maintain/plan/plan-allocation";
+import editPlan from "@/components/maintain/plan/edit-plan";
 export default {
   components: {
-    planAllocation
+    planAllocation,
+    editPlan
   },
   data() {
     return {
       visible: false,
+      editModal: false,
       tabList: [
         { tab: "未配置站点", key: 1 },
         { tab: "已配置站点", key: 2 }
@@ -134,7 +154,8 @@ export default {
         },
         {
           title: "计划状态",
-          dataIndex: "status"
+          dataIndex: "status",
+          scopedSlots: { customRender: "status" }
         },
         {
           title: "操作",
@@ -146,7 +167,8 @@ export default {
       currentTab: 1,
       currentType: 31,
       currentStation: [],
-      stationList: []
+      stationList: [],
+      selectedPlan: {}
     };
   },
   watch: {
@@ -191,11 +213,40 @@ export default {
           });
       }
     },
-    goDetail(row) {
-      console.log(row);
+    onEditPlan(row) {
+      this.selectedPlan = row;
+      this.editModal = true;
+    },
+    onDeletePlan(row) {
+      let that = this;
+
+      that.$confirm({
+        title: "删除计划",
+        content: "确定删除计划" + row.name + "？",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          let data = {
+            id: row.id
+          };
+
+          that.$api.maintain.deletePlan(data).then(res => {
+            if (res.data.state == 0) {
+              that.$message.success("删除成功");
+              that.getTableData();
+            }
+          });
+        },
+        onCancel() {}
+      });
     },
     onAddClick() {
-      this.visible = true;
+      if (this.currentStation.length > 0) {
+        this.visible = true;
+      } else {
+        this.$message.warning("请选择站点");
+      }
     },
     getPlanStation() {
       let data = {
@@ -204,10 +255,10 @@ export default {
       };
       this.$api.maintain.getPlanStation(data).then(res => {
         this.stationList = res.data.data;
+        this.currentStation = [];
+
         if (this.stationList.length > 0) {
           this.currentStation.push(this.stationList[0].id);
-        } else {
-          this.currentStation = [];
         }
         console.log(this.currentStation);
       });
