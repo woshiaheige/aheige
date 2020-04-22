@@ -35,7 +35,12 @@
                 >删除</span
               >
             </template>
-            <a-tag v-for="(member, key) of item.users" :key="key" color="blue">
+            <a-tag
+              v-for="(member, key) of item.users"
+              :key="key"
+              color="blue"
+              style="margin:5px"
+            >
               {{ member.name }}
             </a-tag>
             <a-empty v-if="item.users.length == 0" style="width:100%" />
