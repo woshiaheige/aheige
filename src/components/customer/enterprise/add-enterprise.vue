@@ -17,7 +17,14 @@
         <a-input v-model="formData.name" placeholder="企业名称" />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
-        <!-- <area-select ref="areaModel"></area-select> -->
+        <!-- <a-cascader
+          :fieldNames="{ label: 'name', value: 'code', children: 'city' }"
+          :options="options"
+          v-model="formData.regionId"
+          expandTrigger="hover"
+          placeholder="所属区域"
+          allowClear
+        /> -->
         <a-select v-model="formData.regionId" placeholder="所属区域">
           <a-select-option
             v-for="item in areaOptions"
@@ -77,11 +84,8 @@
 </template>
 
 <script>
-// import areaSelect from "@/components/common/area-select";
+import cityList from "@/assets/geojson/city_code.json";
 export default {
-  // components: {
-  //   areaSelect
-  // },
   props: {
     controlOptions: Array,
     typeList: Array,
@@ -102,6 +106,7 @@ export default {
     };
     return {
       title: "",
+      options: [],
       formData: {
         // name: "",
         // regionId: "",
@@ -190,9 +195,7 @@ export default {
       this.$refs.ruleForm.resetFields();
     },
     handleOk() {
-      // this.formData.regionId = this.$refs.areaModel.regionId;
-      // console.log(this.$refs.areaModel.regionId);
-      // console.log(this.formData.regionId);
+      console.log(this.formData.regionId);
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
@@ -239,6 +242,7 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.options = cityList;
         this.getArea();
         if (this.value.type == "edit") {
           this.title = "编辑";
