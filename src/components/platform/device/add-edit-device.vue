@@ -14,7 +14,7 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="所属监控点" prop="pointId">
+      <!-- <a-form-model-item label="所属监控点" prop="pointId">
         <a-select placeholder="所属监控点" v-model="formData.pointId" disabled>
           <a-select-option
             v-for="item in stationOptions"
@@ -24,7 +24,7 @@
             {{ item.name }}
           </a-select-option>
         </a-select>
-      </a-form-model-item>
+      </a-form-model-item> -->
       <a-form-model-item label="设备名称" prop="name">
         <a-input placeholder="设备名称" v-model="formData.name" />
       </a-form-model-item>
@@ -90,9 +90,7 @@ export default {
       pointOptions: [],
       factorOptions: [],
       fileList: [],
-      formData: {
-        pointId: this.$route.query.id
-      },
+      formData: {},
       rules: {
         name: [
           {
@@ -131,7 +129,6 @@ export default {
           manufacturer: this.formData.manufacturer,
           name: this.formData.name,
           number: this.formData.number,
-          pointId: this.formData.pointId,
           type: this.formData.type
         };
         if (data.gmtReceptionTime) {

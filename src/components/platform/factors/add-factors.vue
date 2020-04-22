@@ -68,7 +68,7 @@
                 v-model="form.protocolType"
                 placeholder="请选择"
               >
-                <a-select-option value="5">05协议</a-select-option>
+                <a-select-option value="05">05协议</a-select-option>
                 <a-select-option value="17">17协议</a-select-option>
                 <a-select-option value="0">扩张协议</a-select-option>
               </a-select>
@@ -176,14 +176,13 @@ export default {
   watch: {
     factorsDetail(nval) {
       if (nval) {
-        console.log(nval);
         this.factorId = nval.id;
         this.form = {
           name: nval.name,
           code: nval.code,
           avgUnit: nval.avgUnit,
           sumUnit: nval.sumUnit,
-          type: nval.type,
+          type: `${nval.type}`,
           protocolType: nval.protocolType,
           ceilval: nval.ceilval,
           floorval: nval.floorval
