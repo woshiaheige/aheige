@@ -1,10 +1,5 @@
 <template>
-  <a-modal
-    :title="title"
-    :visible="visible"
-    @cancel="closeModal"
-    @ok="handleOk"
-  >
+  <a-modal :title="title" :visible="visible" @cancel="closeModal">
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="标题">{{ detail.title }}</a-descriptions-item>
       <a-descriptions-item label="知识库分类">{{
@@ -14,6 +9,9 @@
         <div v-html="detail.content" class="article-detail"></div>
       </a-descriptions-item>
     </a-descriptions>
+    <template slot="footer">
+      <a-button key="back" @click="closeModal">关闭</a-button>
+    </template>
   </a-modal>
 </template>
 

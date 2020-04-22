@@ -48,13 +48,6 @@ export default {
       title: "",
       columns: [
         {
-          title: "类型",
-          dataIndex: "type",
-          scopedSlots: { customRender: "type" },
-          align: "center",
-          width: 80
-        },
-        {
           title: "数量",
           dataIndex: "stockCount",
           align: "center"

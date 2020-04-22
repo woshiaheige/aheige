@@ -3,7 +3,6 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <!-- <a-input placeholder="请输入"></a-input> -->
           <a-select
             showSearch
             :value="formInline.enterpriseName"
@@ -25,30 +24,45 @@
           </a-select>
         </a-form-item>
         <a-form-item label="监控点名称">
-          <a-input placeholder="请输入"></a-input>
+          <a-select
+            showSearch
+            :value="formInline.pointName"
+            placeholder="请输入"
+            style="width: 200px"
+            :defaultActiveFirstOption="false"
+            :showArrow="false"
+            :filterOption="false"
+            @search="searchPoint"
+            :notFoundContent="null"
+          >
+            <a-select-option
+              v-for="(item, index) in pointList"
+              @click="slectPoint(item)"
+              :key="index"
+              :value="item.name"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
-        <!-- <a-form-item label="运维小组">
+        <a-form-item label="任务状态">
           <a-select
             defaultValue="all"
             style="width: 120px"
-            @change="handleChange"
+            v-model="formInline.taskStatus"
           >
             <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="jack">运维1组</a-select-option>
-            <a-select-option value="lucy">运维2组</a-select-option>
-          </a-select>
-        </a-form-item> -->
-        <a-form-item label="任务状态">
-          <a-select defaultValue="all" style="width: 120px">
-            <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="jack">未完成</a-select-option>
-            <a-select-option value="lucy">已完成</a-select-option>
-            <a-select-option value="lucy">已逾期</a-select-option>
+            <a-select-option value="1">已完成</a-select-option>
+            <a-select-option value="2">处理中</a-select-option>
           </a-select>
         </a-form-item>
         <!-- <a-form-item label="任务时间">
           <a-range-picker @change="onChange" />
         </a-form-item> -->
+        <a-form-item style="float: right">
+          <a-button type="primary" @click="resetFormInLine">
+            重置
+          </a-button>
+        </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
             查询
@@ -75,8 +89,11 @@
         :loading="loading"
         v-margin:top="16"
       >
-        <template slot="status" slot-scope="status">
-          <a-badge status="success" :text="status == 1 ? '已创建' : '处理中'" />
+        <template slot="taskStatus" slot-scope="taskStatus">
+          <a-badge
+            :status="taskStatus == 1 ? 'success' : 'warning'"
+            :text="taskStatus == 1 ? '已完成' : '处理中'"
+          />
         </template>
         <template slot="type" slot-scope="type">
           <a-tag color="blue" v-if="type == 32">水类</a-tag>
@@ -93,19 +110,20 @@
       <a-pagination
         size="small"
         v-margin:top="16"
-        showQuickJumper
         showSizeChanger
-        :defaultCurrent="current"
-        :defaultsize="size"
         :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        :current="current"
+        @change="pagechange"
+        @showSizeChange="sizechange"
       />
       <!--新建-->
-      <!-- <add-edit
+      <add-edit
         :visible="show"
         :planList="planList"
         :stationList="stationList"
         @cancel="cancel"
-      ></add-edit> -->
+      ></add-edit>
       <!--延期-->
       <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
       <!--关闭-->
@@ -120,11 +138,12 @@
   </div>
 </template>
 <script>
-// import addEdit from "@/components/maintain/mission/add-edit";
+import addEdit from "@/components/maintain/mission/add-edit";
 // import detailModal from "@/components/maintain/mission/detail";
 // import delayModal from "@/components/maintain/mission/delay";
 // import closeModal from "@/components/maintain/mission/close";
 export default {
+  components: { addEdit },
   data() {
     return {
       current: 1,
@@ -136,7 +155,7 @@ export default {
         enterpriseId: "",
         pointId: "",
         pointName: undefined,
-        phone: ""
+        taskStatus: "all"
       },
       columns: [
         {
@@ -145,23 +164,22 @@ export default {
         },
         {
           title: "运维站点",
-          dataIndex: "station"
+          dataIndex: "pointName"
         },
         {
           title: "站点类别",
-          dataIndex: "type",
-          scopedSlots: { customRender: "type" }
+          dataIndex: "pointTypeName"
         },
         {
           title: "任务状态",
-          dataIndex: "status",
-          scopedSlots: { customRender: "status" },
+          dataIndex: "taskStatus",
+          scopedSlots: { customRender: "taskStatus" },
           align: "center",
           width: 150
         },
         {
           title: "任务数量",
-          dataIndex: "num"
+          dataIndex: "taskCount"
         },
         {
           title: "操作",
@@ -173,17 +191,19 @@ export default {
       ],
       tableData: [
         {
+          id: 1,
           enterpriseName: "环保有限公司",
-          station: "站点1",
-          type: 31,
-          status: 2,
-          num: 10
+          pointName: "站点1",
+          pointTypeName: "类别A",
+          taskStatus: 2,
+          taskCount: 10
         }
       ],
-      enterpriseList: []
-      // stationList: [],
-      // planList: [],
-      // show: false,
+      enterpriseList: [],
+      pointList: [],
+      stationList: [],
+      planList: [],
+      show: false
       // delayShow: false,
       // closeShow: false,
       // detailShow: false
@@ -206,7 +226,7 @@ export default {
     searchPoint(value) {
       //搜索站点
       this.formInline.pointName = value;
-      this.$api.customer.getPointList({ pointName: value }).then(res => {
+      this.$api.customer.getStationList({ pointName: value }).then(res => {
         this.pointList = res.data.data.records;
       });
     },
@@ -218,12 +238,14 @@ export default {
       let params = {
         page: this.current,
         size: this.size,
-        pointId: "",
-        state: ""
+        enterpriseId: this.formInline.enterpriseId,
+        pointId: this.formInline.pointId,
+        taskStatus:
+          this.formInline.taskStatus == "all" ? "" : this.formInline.taskStatus
       };
       this.loading = true;
       this.$api.maintain
-        .getManageTaskList(params)
+        .managePointTask(params)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
@@ -250,6 +272,9 @@ export default {
         }
       });
     },
+    resetFormInLine() {
+      this.formInline = this.$options.data().formInline;
+    },
     // getPlan() {
     //   this.$api.common.selectPlan().then(res => {
     //     if (res.data.state == 0) {
@@ -260,7 +285,7 @@ export default {
     goDetail(row) {
       this.$router.push({
         path: "/maintain/mission/detail",
-        query: { id: row.id }
+        query: { pointId: row.pointId }
       });
     }
   },

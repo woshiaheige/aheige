@@ -76,7 +76,7 @@ export default {
       loading: false,
       disposeVisible: false,
       formInline: {
-        enterpriseName: "",
+        enterpriseName: undefined,
         state: "all"
       },
       visible: false,

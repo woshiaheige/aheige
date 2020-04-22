@@ -1,10 +1,5 @@
 <template>
-  <a-modal
-    :title="title"
-    :visible="visible"
-    @cancel="closeModal"
-    @ok="handleOk"
-  >
+  <a-modal :title="title" :visible="visible" @cancel="closeModal">
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="上报客户">{{
         complaintDetail.userName
@@ -16,6 +11,9 @@
         complaintDetail.content
       }}</a-descriptions-item>
     </a-descriptions>
+    <template slot="footer">
+      <a-button key="back" @click="closeModal">关闭</a-button>
+    </template>
   </a-modal>
 </template>
 

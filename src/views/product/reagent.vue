@@ -42,7 +42,9 @@
       <span slot="action" slot-scope="row">
         <a @click="onEdit(row, 'edit')">编辑</a>
         <a-divider type="vertical" />
-        <a @click="onDetail(row)">库存详情</a>
+        <a @click="onDetailOut(row)">出库详情</a>
+        <a-divider type="vertical" />
+        <a @click="onDetailIn(row)">入库详情</a>
         <a-divider type="vertical" />
         <a @click="onDelete(row)">删除</a>
       </span>
@@ -61,22 +63,26 @@
     />
     <add-edit v-model="addInfo" @refresh="getTableData"> </add-edit>
     <out-in v-model="stockInfo" @refresh="getTableData"> </out-in>
-    <detail-modal v-model="detailInfo"> </detail-modal>
+
+    <reagent-out v-model="outDetailInfo" />
+    <reagent-in v-model="inDetailInfo" />
   </a-card>
 </template>
 
 <script>
 import addEdit from "@/components/product/reagent/add-edit";
 import outIn from "@/components/product/reagent/out-in";
-import detailModal from "@/components/product/reagent/detail";
+import reagentOut from "@/components/product/reagent/reagent-out";
+import reagentIn from "@/components/product/reagent/reagent-in";
 export default {
-  components: { addEdit, outIn, detailModal },
+  components: { addEdit, outIn, reagentOut, reagentIn },
   data() {
     return {
       name: "",
       addInfo: { show: false },
       stockInfo: { show: false },
-      detailInfo: { show: false },
+      outDetailInfo: { show: false },
+      inDetailInfo: { show: false },
       current: 1,
       pageSize: 10,
       total: 1,
@@ -177,8 +183,14 @@ export default {
         type: type
       };
     },
-    onDetail(row) {
-      this.detailInfo = {
+    onDetailIn(row) {
+      this.inDetailInfo = {
+        show: true,
+        row: row
+      };
+    },
+    onDetailOut(row) {
+      this.outDetailInfo = {
         show: true,
         row: row
       };
