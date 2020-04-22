@@ -27,11 +27,7 @@
                 <a-radio-button :value="32">气类站点</a-radio-button>
                 <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
-              <a-menu
-                v-model="currentStation"
-                mode="vertical"
-                @click="selectStation"
-              >
+              <a-menu v-model="currentStation" mode="vertical">
                 <a-menu-item v-for="item in stationList" :key="item.id">
                   {{ item.name }}
                 </a-menu-item>
@@ -53,14 +49,6 @@
                       <a-icon type="plus" />新建
                     </a-button>
                   </a-form-item>
-                  <!-- <a-form-item>
-              <a-input-search
-                placeholder="请输入运维方案"
-                style="width: 200px"
-                v-model="formInline.name"
-                @search="onSubmit"
-              />
-            </a-form-item> -->
                 </a-form>
               </div>
             </div>
@@ -126,19 +114,19 @@ export default {
         },
         {
           title: "方案周期",
-          dataIndex: "number"
+          dataIndex: "day"
         },
         {
           title: "运维期限",
-          dataIndex: "number"
+          dataIndex: "range"
         },
         {
           title: "运维小组",
-          dataIndex: "number"
+          dataIndex: "group"
         },
         {
           title: "计划状态",
-          dataIndex: "number"
+          dataIndex: "status"
         },
         {
           title: "操作",
@@ -150,7 +138,6 @@ export default {
       currentTab: 1,
       currentType: 31,
       currentStation: [],
-      selectedStationDetail: {},
       stationList: []
     };
   },
@@ -160,27 +147,40 @@ export default {
     },
     currentType() {
       this.getPlanStation();
+    },
+    currentStation() {
+      this.getTableData();
+    },
+    visible(newVal) {
+      if (!newVal) {
+        this.getTableData();
+      }
     }
   },
   methods: {
     getTableData() {
-      this.loading = true;
-      let params = {
+      let data = {
+        page: this.current,
         size: this.size,
-        page: this.current
+        pointId: this.currentStation[0]
       };
-      this.$api.car
-        .manageVehicleUse(params)
-        .then(res => {
-          if (res.data.state == 0) {
+      if (this.currentStation.length > 0) {
+        this.loading = true;
+        this.$api.maintain
+          .getPlan(data)
+          .then(res => {
+            if (res.data.state == 0) {
+              this.loading = false;
+              this.tableData = res.data.data.records;
+              this.total = res.data.data.total;
+            } else {
+              this.loading = false;
+            }
+          })
+          .catch(() => {
             this.loading = false;
-            this.tableData = res.data.data.records;
-            this.total = +res.data.data.total;
-          }
-        })
-        .catch(() => {
-          this.loading = false;
-        });
+          });
+      }
     },
     goDetail(row) {
       console.log(row);
@@ -201,10 +201,6 @@ export default {
           this.currentStation = [];
         }
       });
-    },
-    selectStation(object) {
-      this.selectedStationDetail = object.item;
-      console.log(object);
     }
   },
   mounted() {

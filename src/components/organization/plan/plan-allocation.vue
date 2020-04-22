@@ -39,9 +39,13 @@
             width: '300px',
             height: '300px'
           }"
+          :targetKeys="targetKeys"
+          :selectedKeys="selectedKeys"
+          @change="handleChange"
+          @selectChange="handleSelectChange"
         />
         <a-divider></a-divider>
-        <a-button type="primary">配置方案</a-button>
+        <a-button type="primary" @click="handleOk">配置方案</a-button>
       </a-card>
     </a-drawer>
   </div>
@@ -65,11 +69,29 @@ export default {
       placement: "right",
       form: {
         name: "",
-        group: 1,
+        range: [],
         type: 1,
-        date: 1
+        date: 0
       },
-      schemeList: []
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "请输入计划名称",
+            trigger: "blur"
+          }
+        ],
+        range: [
+          {
+            required: true,
+            message: "请输入运维期限",
+            trigger: "change"
+          }
+        ]
+      },
+      schemeList: [],
+      targetKeys: [],
+      selectedKeys: []
     };
   },
   watch: {
@@ -77,19 +99,22 @@ export default {
       if (newVal) {
         this.getScheme();
       }
+    },
+    "form.type"() {
+      this.getScheme();
     }
   },
   computed: {
     dateList() {
       if (this.form.type == 1) {
         return [
-          { name: "星期一", value: 1 },
-          { name: "星期二", value: 2 },
-          { name: "星期三", value: 3 },
-          { name: "星期四", value: 4 },
-          { name: "星期五", value: 5 },
-          { name: "星期六", value: 6 },
-          { name: "星期日", value: 7 }
+          { name: "星期一", value: 0 },
+          { name: "星期二", value: 1 },
+          { name: "星期三", value: 2 },
+          { name: "星期四", value: 3 },
+          { name: "星期五", value: 4 },
+          { name: "星期六", value: 5 },
+          { name: "星期日", value: 6 }
         ];
       } else {
         let arr = [];
@@ -107,24 +132,64 @@ export default {
     onClose() {
       this.$emit("update:visible", false);
     },
-    // onChange(e) {
-    //   this.placement = e.target.value;
-    // }
+    handleOk() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          let planArr = [];
+
+          this.targetKeys.forEach(item => {
+            planArr.push({
+              planDay: this.form.date,
+              programmeId: item
+            });
+          });
+
+          let data = {
+            gmtBegin: this.$moment(this.form.range[0]).format(
+              "YYYY-MM-DD HH:mm:ss"
+            ),
+            gmtEnd: this.$moment(this.form.range[1]).format(
+              "YYYY-MM-DD HH:mm:ss"
+            ),
+            name: this.form.name,
+            pointId: this.stationId,
+            planPoints: planArr,
+            type: this.form.type
+          };
+
+          this.$api.maintain.addPlan(data).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("配置成功");
+              this.onClose();
+            }
+          });
+        }
+      });
+    },
     getScheme() {
       let data = {
         type: this.stationType
       };
+      this.schemeList = [];
       this.$api.maintain.getScheme(data).then(res => {
         res.data.data.forEach(item => {
-          this.schemeList.push({
-            key: item.id,
-            title: `${item.name}`,
-            description: item.type == 1 ? "周计划" : "月计划"
-          });
+          if (this.form.type == item.type) {
+            this.schemeList.push({
+              key: item.id,
+              title: `${item.name}`,
+              description: item.type == 1 ? "周计划" : "月计划"
+            });
+          }
         });
 
         console.log(this.schemeList);
       });
+    },
+    handleChange(nextTargetKeys) {
+      this.targetKeys = nextTargetKeys;
+    },
+    handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
+      this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
     }
   }
 };
