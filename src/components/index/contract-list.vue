@@ -2,7 +2,7 @@
   <div>
     <a-list itemLayout="horizontal" :dataSource="warnList" :loading="loading">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a slot="actions">查看详情</a>
+        <a slot="actions" @click="goDetail(item.busineId, item.id)">查看详情</a>
         <a-list-item-meta :description="item.content">
           <a slot="title">{{ item.enterpriseName }}</a>
           <a-avatar slot="avatar" :src="require('@/assets/img/contract.png')" />
@@ -24,18 +24,28 @@
       @showSizeChange="sizechange"
       :total="total"
     />
+    <contract-detail
+      ref="child"
+      v-model="obj"
+      @refresh="getTableData"
+    ></contract-detail>
   </div>
 </template>
 
 <script>
+import contractDetail from "@/components/index/contract-detail";
 export default {
+  components: { contractDetail },
   data() {
     return {
       loading: false,
       warnList: [],
       total: 0,
       pagesize: 10,
-      current: 1
+      current: 1,
+      obj: {
+        show: false
+      }
     };
   },
   methods: {
@@ -56,6 +66,10 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    goDetail(id, msgId) {
+      this.obj.show = true;
+      this.$refs.child.getDetail(id, msgId);
     }
   },
   mounted() {

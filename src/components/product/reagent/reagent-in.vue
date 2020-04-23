@@ -44,18 +44,6 @@ export default {
       title: "",
       columns: [
         {
-          title: "企业",
-          dataIndex: "enterprise"
-        },
-        {
-          title: "监控点",
-          dataIndex: "pointName"
-        },
-        {
-          title: "设备",
-          dataIndex: "instrument"
-        },
-        {
           title: "数量",
           dataIndex: "stockCount",
           align: "center"

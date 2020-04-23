@@ -29,6 +29,48 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
+      <a-form-model-item
+        v-if="modelData.type == 'out'"
+        label="企业"
+        prop="enterpriseId"
+      >
+        <a-select v-model="formData.enterpriseId" placeholder="企业">
+          <a-select-option
+            v-for="(item, index) in companyOptions"
+            :key="index"
+            :value="item.id"
+            >{{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item
+        v-if="modelData.type == 'out'"
+        label="监测点"
+        prop="pointId"
+      >
+        <a-select v-model="formData.pointId" placeholder="监测点">
+          <a-select-option
+            v-for="(item, index) in stationOptions"
+            :key="index"
+            :value="item.id"
+            >{{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item
+        v-if="modelData.type == 'out'"
+        label="设备"
+        prop="devId"
+      >
+        <a-select v-model="formData.devId" placeholder="设备">
+          <a-select-option
+            v-for="(item, index) in deviceOptions"
+            :key="index"
+            :value="item.id"
+            >{{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-model-item>
       <a-form-model-item label="库存余量" prop="goodsCount">
         <a-input placeholder="库存余量" v-model="list.goodsCount" disabled />
       </a-form-model-item>
@@ -71,6 +113,9 @@ export default {
       }
     };
     return {
+      companyOptions: [],
+      deviceOptions: [],
+      stationOptions: [],
       nameOptions: [],
       formData: {},
       list: {},
@@ -89,6 +134,27 @@ export default {
             trigger: "blur"
           },
           { validator: validateNumber, trigger: "blur" }
+        ],
+        enterpriseId: [
+          {
+            required: true,
+            message: "请选择企业",
+            trigger: "change"
+          }
+        ],
+        pointId: [
+          {
+            required: true,
+            message: "请选择监测点",
+            trigger: "change"
+          }
+        ],
+        deviceId: [
+          {
+            required: true,
+            message: "请选择设备",
+            trigger: "change"
+          }
         ]
       }
     };
@@ -136,12 +202,41 @@ export default {
           this.list = item;
         }
       });
+    },
+    //监测点下拉
+    getStation() {
+      this.$api.common.selectStation().then(res => {
+        if (res.data.state == 0) {
+          this.stationOptions = res.data.data;
+        }
+      });
+    },
+    //企业下拉
+    getCompany() {
+      this.$api.common.selectEnterprise().then(res => {
+        if (res.data.state == 0) {
+          this.companyOptions = res.data.data;
+        }
+      });
+    },
+    //设备下拉
+    getDevice() {
+      this.$api.common.selectDevice().then(res => {
+        if (res.data.state == 0) {
+          this.deviceOptions = res.data.data;
+        }
+      });
     }
   },
   watch: {
     "value.show"() {
       if (this.value.show == true) {
         this.getSelect();
+        if (this.value.type == "out") {
+          this.getStation();
+          this.getCompany();
+          this.getDevice();
+        }
       }
     }
   }
