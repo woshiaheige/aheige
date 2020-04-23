@@ -3,7 +3,6 @@
     <a-drawer
       :title="title"
       :placement="placement"
-      :closable="false"
       @close="onClose"
       :width="1150"
       :visible="visible"
@@ -98,21 +97,30 @@ export default {
     };
   },
   watch: {
-    visible(newVal) {
+    async visible(newVal) {
       if (newVal) {
         this.targetKeys = [];
-        this.getScheme();
+        if (this.planDetail.id) {
+          this.form = {
+            name: this.planDetail.name,
+            range: [
+              this.$moment(this.planDetail.gmtBegin),
+              this.$moment(this.planDetail.gmtEnd)
+            ],
+            type: this.planDetail.type,
+            date: this.planDetail.programmes[0].planDay
+          };
+          await this.getScheme();
+          this.planDetail.programmes.forEach(item => {
+            this.targetKeys.push(item.id);
+          });
+        } else {
+          await this.getScheme();
+        }
       }
     },
-    planDetail(newVal) {
-      if (newVal.id) {
-        this.form = {
-          name: newVal.name,
-          range: [this.$moment(newVal.gmtBegin), this.$moment(newVal.gmtEnd)],
-          type: newVal.type,
-          date: newVal.programmes[0].planDay
-        };
-      }
+    targetKeys(newVal) {
+      console.log(newVal);
     }
   },
   computed: {
@@ -140,16 +148,16 @@ export default {
     },
     title() {
       if (this.planDetail.id) {
-        return "修改站点运维方案";
+        return "修改站点运维计划";
       } else {
-        return "配置站点运维方案";
+        return "配置站点运维计划";
       }
     },
     okText() {
       if (this.planDetail.id) {
-        return "修改方案";
+        return "修改计划";
       } else {
-        return "配置方案";
+        return "配置计划";
       }
     }
   },
@@ -164,45 +172,21 @@ export default {
       } else {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let planArr = [];
-
-            this.targetKeys.forEach(item => {
-              planArr.push({
-                planDay: this.form.date,
-                programmeId: item
-              });
-            });
-
-            let data = {
-              gmtBegin: this.$moment(this.form.range[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              ),
-              gmtEnd: this.$moment(this.form.range[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              ),
-              name: this.form.name,
-              pointId: this.stationId,
-              planPoints: planArr,
-              type: this.form.type
-            };
-
-            this.$api.maintain.addPlan(data).then(res => {
-              if (res.data.state == 0) {
-                this.$message.success("配置成功");
-                this.$emit("check", this.stationId);
-                this.onClose();
-              }
-            });
+            if (this.planDetail.id) {
+              this.editPlan();
+            } else {
+              this.addPlan();
+            }
           }
         });
       }
     },
-    getScheme() {
+    async getScheme() {
       let data = {
         type: this.stationType
       };
       this.schemeList = [];
-      this.$api.maintain.getScheme(data).then(res => {
+      await this.$api.maintain.getScheme(data).then(res => {
         res.data.data.forEach(item => {
           if (this.form.type == item.type) {
             this.schemeList.push({
@@ -228,6 +212,66 @@ export default {
       } else if (value == 2) {
         this.form.date = 1;
       }
+    },
+    addPlan() {
+      let planArr = [];
+
+      this.targetKeys.forEach(item => {
+        planArr.push({
+          planDay: this.form.date,
+          programmeId: item
+        });
+      });
+
+      let data = {
+        gmtBegin: this.$moment(this.form.range[0]).format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        gmtEnd: this.$moment(this.form.range[1]).format("YYYY-MM-DD HH:mm:ss"),
+        name: this.form.name,
+        pointId: this.stationId,
+        planPoints: planArr,
+        type: this.form.type
+      };
+
+      this.$api.maintain.addPlan(data).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("配置成功");
+          this.$emit("check", this.stationId);
+          this.onClose();
+        }
+      });
+    },
+    editPlan() {
+      let planArr = [];
+
+      this.targetKeys.forEach(item => {
+        planArr.push({
+          planDay: this.form.date,
+          programmeId: item
+        });
+      });
+
+      let data = {
+        id: this.planDetail.id,
+        gmtBegin: this.$moment(this.form.range[0]).format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        planPointId: this.planDetail.planPointId,
+        gmtEnd: this.$moment(this.form.range[1]).format("YYYY-MM-DD HH:mm:ss"),
+        name: this.form.name,
+        pointId: this.stationId,
+        planPoints: planArr,
+        type: this.form.type
+      };
+
+      this.$api.maintain.addPlan(data).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改成功");
+          this.$emit("check", this.stationId);
+          this.onClose();
+        }
+      });
     }
   }
 };
