@@ -5,8 +5,10 @@
         <a-form-model-item label="时间范围">
           <a-range-picker
             @change="onChange"
-            v-model="formInline.range"
-            format="YYYY-MM-DD"
+            :defaultValue="[
+              $moment('2015-06-06', dateFormat),
+              $moment('2015-06-06', dateFormat)
+            ]"
           />
         </a-form-model-item>
         <a-form-model-item label="数据类型">
@@ -97,6 +99,7 @@
 export default {
   data() {
     return {
+      dateFormat: "YYYY-MM-DD",
       columnsList: [],
       loading: false,
       pointId: "",
@@ -107,8 +110,8 @@ export default {
       columns: [],
       formInline: {
         range: [],
-        beginTime: "2019-12-03 00:00:00",
-        endTime: "2019-12-03 23:59:59",
+        beginTime: "",
+        endTime: "",
         pointId: "",
         type: "1",
         showType: "data"
@@ -161,24 +164,13 @@ export default {
     };
   },
   mounted() {
-    // this.initTime();
     this.setPointId();
     this.getRealDataTitle();
     this.getTableData();
   },
   methods: {
-    //初始化时间
-    // initTime(){
-
-    // },
-    //
-    onColumnsChange() {},
     //时间改变事件
     onChange(date, dateString) {
-      console.log("---------------");
-      console.log(date);
-      console.log(dateString);
-      console.log("---------------");
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";
       this.onSubmit();
@@ -189,209 +181,83 @@ export default {
     },
     //获取实时数据
     getTableData() {
-      // this.loading = true;
-      // let data = {
-      //   index: this.current,
-      //   size: this.pagesize,
-      //   pointId: this.formInline.pointId,
-      //   startTime: this.formInline.beginTime,
-      //   endTime: this.formInline.endTime,
-      //   type: this.formInline.type
-      // };
-      // this.$api.monitor
-      //   .getRealData(data)
-      //   .then(res => {
-      //     this.total = res.data.data.total;
-      //     this.tableData = res.data.data.list;
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   })
-      //   .finally(() => {
-      //     this.loading = false;
-      //   });
-      this.tableData = [
-        {
-          dataTime: "2020-04-21 10:02:12",
-          a01901: {
-            rtd: "20"
-          },
-          a19001: {
-            rtd: "30"
-          },
-          a04: {
-            rtd: "50"
-          },
-          a30: {
-            rtd: "41"
-          }
-        },
-        {
-          dataTime: "2020-04-21 11:08:10",
-          a01901: {
-            rtd: "62"
-          },
-          a19001: {
-            rtd: "11"
-          },
-          a04: {
-            rtd: "52"
-          },
-          a30: {
-            rtd: "14"
-          }
-        },
-        {
-          dataTime: "2020-04-21 12:12:07",
-          a01901: {
-            rtd: "95"
-          },
-          a19001: {
-            rtd: "41"
-          },
-          a04: {
-            rtd: "11"
-          },
-          a30: {
-            rtd: "23"
-          }
-        }
-      ];
-      this.total = 3;
+      this.loading = true;
+      let data = {
+        index: this.current,
+        size: this.pagesize,
+        pointId: this.formInline.pointId,
+        startTime: this.formInline.beginTime,
+        endTime: this.formInline.endTime,
+        type: this.formInline.type
+      };
+      this.$api.monitor
+        .getRealData(data)
+        .then(res => {
+          this.total = res.data.data.total;
+          this.tableData = res.data.data.list;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     //获取实时数据表头
     getRealDataTitle() {
-      // let data = {
-      //   cn: 1
-      // };
-      // let path = this.formInline.pointId;
-      // this.$api.monitor
-      //   .getRealDataTitle(data, path)
-      //   .then(res => {
-      //     if (res.data.state == 0) {
-      //       let _data = res.data.data || [];
-      //       let tempColumns = [];
-      //       let temp = [
-      //         {
-      //           align: "center",
-      //           title: "序号",
-      //           width: 100,
-      //           customRender: (_, __, index) => {
-      //             return (
-      //               <span>
-      //                 {index + (this.current - 1) * this.pagesize + 1}
-      //               </span>
-      //             );
-      //           }
-      //         }
-      //       ];
-      //       _data.forEach(element => {
-      //         if (element.title == "时间") {
-      //           temp.push({
-      //             title: element.title,
-      //             dataIndex: element.field,
-      //             key: element.field,
-      //             width: 200,
-      //             align: "center"
-      //           });
-      //         } else {
-      //           temp.push({
-      //             title: element.title,
-      //             dataIndex: element.field,
-      //             key: element.field,
-      //             customRender: (text, row) => `${row[element.field].rtd}`
-      //           });
-      //           tempColumns.push({
-      //             name: element.title,
-      //             value: element.field
-      //           });
-      //         }
-      //       });
-      //       this.columns = temp;
-      //       this.columnsList = tempColumns;
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
-      let res = {
-        data: {
-          state: 0,
-          msg: "请求成功",
-          data: [
-            {
-              title: "时间",
-              field: "dataTime",
-              children: [],
-              width: 154
-            },
-            {
-              title: "一氧化碳(mg/m3)",
-              field: "a04",
-              width: 110
-            },
-            {
-              title: "二氧化碳(mg/m3)",
-              field: "a30",
-              width: 110
-            },
-            {
-              title: "垃圾焚烧炉膛内焚 烧平均温度(℃)",
-              field: "a01901",
-              width: 110
-            },
-            {
-              title: "氧气含量(%)",
-              field: "a19001",
-              width: 110
-            }
-          ],
-          newObjectLog: null,
-          oldObjectLog: null,
-          addOrDeleteObjectLog: null,
-          operObject: null
-        }
+      let data = {
+        cn: 1
       };
-      if (res.data.state == 0) {
-        let _data = res.data.data || [];
-        let tempColumns = [];
-        let temp = [
-          {
-            align: "center",
-            title: "序号",
-            width: 100,
-            customRender: (_, __, index) => {
-              return (
-                <span>{index + (this.current - 1) * this.pagesize + 1}</span>
-              );
-            }
+      let path = this.formInline.pointId;
+      this.$api.monitor
+        .getRealDataTitle(data, path)
+        .then(res => {
+          if (res.data.state == 0) {
+            let _data = res.data.data || [];
+            let tempColumns = [];
+            let temp = [
+              {
+                align: "center",
+                title: "序号",
+                width: 100,
+                customRender: (_, __, index) => {
+                  return (
+                    <span>
+                      {index + (this.current - 1) * this.pagesize + 1}
+                    </span>
+                  );
+                }
+              }
+            ];
+            _data.forEach(element => {
+              if (element.title == "时间") {
+                temp.push({
+                  title: element.title,
+                  dataIndex: element.field,
+                  key: element.field,
+                  width: 200,
+                  align: "center"
+                });
+              } else {
+                temp.push({
+                  title: element.title,
+                  dataIndex: element.field,
+                  key: element.field,
+                  customRender: (text, row) => `${row[element.field].rtd}`
+                });
+                tempColumns.push({
+                  name: element.title,
+                  value: element.field
+                });
+              }
+            });
+            this.columns = temp;
+            this.columnsList = tempColumns;
           }
-        ];
-        _data.forEach(element => {
-          if (element.title == "时间") {
-            temp.push({
-              title: element.title,
-              dataIndex: element.field,
-              key: element.field,
-              width: 200,
-              align: "center"
-            });
-          } else {
-            temp.push({
-              title: element.title,
-              dataIndex: element.field,
-              key: element.field,
-              customRender: (text, row) => `${row[element.field].rtd}`
-            });
-            tempColumns.push({
-              name: element.title,
-              value: element.field
-            });
-          }
+        })
+        .catch(err => {
+          console.log(err);
         });
-        this.columns = temp;
-        this.columnsList = tempColumns;
-      }
     }
   }
 };
