@@ -41,9 +41,6 @@
           <a-tag color="red" v-if="type == 31">气类</a-tag>
           <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
         </template>
-        <span slot="downLoad" slot-scope="row">
-          <a @click="onDown(row)">附件下载</a>
-        </span>
         <span slot="action" slot-scope="row">
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -104,16 +101,6 @@ export default {
           key: "type",
           align: "center",
           scopedSlots: { customRender: "type" }
-        },
-        {
-          title: "验收时间",
-          key: "gmtReceptionTime",
-          dataIndex: "gmtReceptionTime"
-        },
-        {
-          title: "验收材料",
-          key: "downLoad",
-          scopedSlots: { customRender: "downLoad" }
         },
         {
           title: "操作",

@@ -189,8 +189,6 @@ export default {
 
                   sessionStorage.setItem("userinfo", JSON.stringify(userinfo));
                   that.$router.push("/");
-                } else {
-                  this.$message.warning(res.data.msg);
                 }
               })
               .catch(err => {

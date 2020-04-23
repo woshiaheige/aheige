@@ -155,6 +155,13 @@ export default {
             message: "请输入MN号码",
             trigger: "blur"
           }
+        ],
+        groupId: [
+          {
+            required: true,
+            message: "请选择所属小组",
+            trigger: "change"
+          }
         ]
       },
       isDisabled: false,

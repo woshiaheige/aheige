@@ -27,7 +27,7 @@
         />
       </a-form-item>
       <a-form-item label="密码">
-        <a-input
+        <a-input-password
           placeholder="请输入"
           type="password"
           v-decorator="[
@@ -36,8 +36,7 @@
               rules: [
                 {
                   message: '请输入数字，字母或特殊字符的组合,6位以上',
-                  required: true,
-                  pattern: validatePassword
+                  required: true
                 }
               ]
             }
