@@ -24,8 +24,8 @@
                 buttonStyle="solid"
                 v-model="currentType"
               >
-                <a-radio-button :value="31">水类站点</a-radio-button>
-                <a-radio-button :value="32">气类站点</a-radio-button>
+                <a-radio-button :value="31">气类站点</a-radio-button>
+                <a-radio-button :value="32">水类站点</a-radio-button>
                 <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
               <a-menu v-model="currentStation" mode="vertical">
@@ -72,15 +72,8 @@
               {{ $moment(row.gmtEnd).format("YYYY-MM-DD") }}
             </template>
             <template slot="status" slot-scope="status, row">
-              <a-badge status="default" text="已创建" v-if="row.status == 1" />
-              <a-badge
-                status="processing"
-                text="处理中"
-                v-if="row.status == 2"
-              />
-              <a-badge status="success" text="已完成" v-if="row.status == 3" />
-              <a-badge status="error" text="已延期" v-if="row.status == 4" />
-              <a-badge status="success" text="已关闭" v-if="row.status == 5" />
+              <a-badge status="default" text="未执行" v-if="row.status == 0" />
+              <a-badge status="success" text="已执行" v-if="row.status == 1" />
             </template>
             <span slot="check" slot-scope="row">
               <a @click="onAddClick(row)">编辑</a>

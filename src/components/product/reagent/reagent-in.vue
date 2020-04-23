@@ -72,7 +72,8 @@ export default {
       let data = {
         size: this.pageSize,
         page: this.current,
-        goodId: this.modelData.row.id
+        goodId: this.modelData.row.id,
+        tyle: 2 //1 出库 2 入库
       };
       this.loading = true;
       this.$api.product
