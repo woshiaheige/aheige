@@ -102,7 +102,7 @@ export default {
             type: this.form.type
           };
 
-          this.$api.maintain.editScheme(data).then(res => {
+          this.$api.maintain.editPlan(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
               this.closeModal();
