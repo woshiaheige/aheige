@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     title() {
-      if (this.groupName) {
+      if (this.groupId) {
         return "编辑小组";
       } else {
         return "新建小组";
@@ -60,6 +60,7 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:visible", false);
+      this.reset();
     },
     reset() {
       this.groupId = "";
