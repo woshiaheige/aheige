@@ -100,6 +100,7 @@ export default {
   watch: {
     visible(newVal) {
       if (newVal) {
+        this.targetKeys = [];
         this.getScheme();
       }
     },
