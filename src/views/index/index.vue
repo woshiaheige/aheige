@@ -134,38 +134,6 @@ export default {
           { name: "突发", value: 8 }
         ]
       },
-      list: [
-        {
-          title: "张三"
-        },
-        {
-          title: "李四"
-        },
-        {
-          title: "王二麻子"
-        },
-        {
-          title: "刘武"
-        },
-        {
-          title: "刘武"
-        },
-        {
-          title: "刘武"
-        },
-        {
-          title: "刘武"
-        },
-        {
-          title: "刘武"
-        },
-        {
-          title: "刘武"
-        },
-        {
-          title: "刘武"
-        }
-      ],
       rankingList: [],
       completionList: [],
       countList: {}
@@ -223,15 +191,16 @@ export default {
     },
     //消息提醒列表
     changeTabs(key) {
+      let that = this;
       switch (key) {
         case "1":
-          this.$refs.pointList.getTableData();
+          that.$refs.pointList.getTableData();
           break;
         case "2":
-          this.$refs.contractList.getTableData();
+          that.$refs.contractList.getTableData();
           break;
         case "3":
-          this.$refs.customerList.getTableData();
+          that.$refs.customerList.getTableData();
           break;
       }
     }
