@@ -108,13 +108,13 @@ export default {
     dateList() {
       if (this.form.type == 1) {
         return [
-          { name: "星期一", value: 0 },
-          { name: "星期二", value: 1 },
-          { name: "星期三", value: 2 },
-          { name: "星期四", value: 3 },
-          { name: "星期五", value: 4 },
-          { name: "星期六", value: 5 },
-          { name: "星期日", value: 6 }
+          { name: "星期一", value: 1 },
+          { name: "星期二", value: 2 },
+          { name: "星期三", value: 3 },
+          { name: "星期四", value: 4 },
+          { name: "星期五", value: 5 },
+          { name: "星期六", value: 6 },
+          { name: "星期日", value: 0 }
         ];
       } else {
         let arr = [];
