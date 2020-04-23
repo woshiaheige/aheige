@@ -132,6 +132,7 @@ export default {
     const validatePhone = /^1\d{10}$/;
     const validatePassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
     return {
+      initPassword: "", //编辑的密码
       validatePassword,
       validatePhone,
       memberId: "",
@@ -166,10 +167,11 @@ export default {
           this.gellAllSysGroup(); //获取小组
         }
         setTimeout(() => {
+          this.initPassword = nval.password;
           this.form.setFieldsValue({
             name: nval.name,
             username: nval.username,
-            password: this.$md5(nval.password),
+            password: nval.password,
             phone: nval.phone,
             wechatId: nval.wechatId,
             roleId: nval.roleId
@@ -221,6 +223,7 @@ export default {
       });
     },
     reset() {
+      this.initPassword = "";
       this.memberId = "";
       this.roleId = "";
       this.form.resetFields();
@@ -239,7 +242,11 @@ export default {
     editMember(values) {
       let params = values;
       params.id = this.memberId;
-      params.password = this.$md5(params.password);
+      if (this.initPassword != params.password) {
+        //避免重复加密
+        params.password = this.$md5(params.password);
+      }
+
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
