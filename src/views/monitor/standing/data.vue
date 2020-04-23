@@ -237,7 +237,7 @@ export default {
         index: this.current,
         size: this.formInline.showType == "data" ? this.pagesize : 10000,
         pointId: this.formInline.pointId,
-        startTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
+        beginTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
         endTime: this.formInline.range[1].format("YYYY-MM-DD HH:mm:ss"),
         type: this.formInline.type
       };

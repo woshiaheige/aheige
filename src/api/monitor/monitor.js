@@ -16,7 +16,7 @@ const monitor = {
   },
   //获取实时数据
   getRealData(data) {
-    return axios.get(base.api + "monitor/data/real", {
+    return axios.get(base.api + "monitor/data/", {
       params: data
     });
   },
