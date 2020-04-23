@@ -16,6 +16,7 @@
             tabPosition="left"
             size="small"
             v-model="currentTab"
+            @change="getPlanStation"
           >
             <a-tab-pane v-for="item in tabList" :key="item.key" :tab="item.tab">
               <a-radio-group
@@ -40,7 +41,7 @@
       <a-col :span="16">
         <a-card :bordered="false" class="maintain">
           <div class="card-header">
-            <div class="title">站点运维方案</div>
+            <div class="title">站点运维计划</div>
             <div class="extra">
               <div class="extra">
                 <a-form layout="inline">
@@ -82,7 +83,7 @@
               <a-badge status="success" text="已关闭" v-if="row.status == 5" />
             </template>
             <span slot="check" slot-scope="row">
-              <a @click="onEditPlan(row)">编辑</a>
+              <a @click="onAddClick(row)">编辑</a>
               <a-divider type="vertical" />
               <a @click="onDeletePlan(row)">删除</a>
             </span>
@@ -104,27 +105,21 @@
       :visible.sync="visible"
       :station-id="currentStation[0]"
       :station-type="currentType"
-    />
-    <edit-plan
-      :visible.sync="editModal"
       :plan-detail="selectedPlan"
-      @close="editModal = false"
+      @check="updateTable"
     />
   </div>
 </template>
 
 <script>
 import planAllocation from "@/components/maintain/plan/plan-allocation";
-import editPlan from "@/components/maintain/plan/edit-plan";
 export default {
   components: {
-    planAllocation,
-    editPlan
+    planAllocation
   },
   data() {
     return {
       visible: false,
-      editModal: false,
       tabList: [
         { tab: "未配置站点", key: 1 },
         { tab: "已配置站点", key: 2 }
@@ -150,7 +145,7 @@ export default {
         },
         {
           title: "运维小组",
-          dataIndex: "group"
+          dataIndex: "groupName"
         },
         {
           title: "计划状态",
@@ -168,26 +163,29 @@ export default {
       currentType: 31,
       currentStation: [],
       stationList: [],
-      selectedPlan: {}
+      selectedPlan: {},
+      changedStation: ""
     };
   },
   watch: {
-    currentTab() {
-      this.getPlanStation();
-    },
     currentType() {
       this.getPlanStation();
     },
     currentStation() {
       this.getTableData();
-    },
-    visible(newVal) {
-      if (!newVal) {
-        this.getTableData();
-      }
     }
   },
   methods: {
+    updateTable(stationId) {
+      if (this.currentTab == 1) {
+        this.currentTab = 2;
+        this.changedStation = stationId;
+        this.getPlanStation();
+      } else {
+        this.changedStation = "";
+        this.getTableData();
+      }
+    },
     getTableData() {
       this.tableData = [];
       let data = {
@@ -213,10 +211,6 @@ export default {
           });
       }
     },
-    onEditPlan(row) {
-      this.selectedPlan = row;
-      this.editModal = true;
-    },
     onDeletePlan(row) {
       let that = this;
 
@@ -241,11 +235,17 @@ export default {
         onCancel() {}
       });
     },
-    onAddClick() {
-      if (this.currentStation.length > 0) {
+    onAddClick(row) {
+      if (row) {
         this.visible = true;
+        this.selectedPlan = row;
       } else {
-        this.$message.warning("请选择站点");
+        if (this.currentStation.length > 0) {
+          this.visible = true;
+          this.selectedPlan = {};
+        } else {
+          this.$message.warning("请选择站点");
+        }
       }
     },
     getPlanStation() {
@@ -258,9 +258,12 @@ export default {
         this.currentStation = [];
 
         if (this.stationList.length > 0) {
-          this.currentStation.push(this.stationList[0].id);
+          if (this.changedStation === "") {
+            this.currentStation.push(this.stationList[0].id);
+          } else {
+            this.currentStation.push(this.changedStation);
+          }
         }
-        console.log(this.currentStation);
       });
     }
   },

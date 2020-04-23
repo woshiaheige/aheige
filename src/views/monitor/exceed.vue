@@ -34,6 +34,10 @@
         v-margin:top="16"
         :pagination="false"
       >
+        <template slot="dataType" slot-scope="dataType">
+          <a-tag color="green" v-if="dataType == '2051'">分钟数据</a-tag>
+          <a-tag color="blue" v-if="dataType == '2061'">小时数据</a-tag>
+        </template>
       </a-table>
       <a-pagination
         size="small"
@@ -91,6 +95,13 @@ export default {
           dataIndex: "ceilval",
           key: "ceilval",
           customRender: (text, row) => Number(row.ceilval).toFixed(4)
+        },
+        {
+          title: "数据类型",
+          dataIndex: "dataType",
+          align: "center",
+          width: 100,
+          scopedSlots: { customRender: "dataType" }
         },
         {
           title: "超标时间",
