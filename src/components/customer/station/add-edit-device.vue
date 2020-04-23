@@ -14,8 +14,15 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="设备" prop="name">
-        <a-input placeholder="设备名称" v-model="formData.name" />
+      <a-form-model-item label="设备" prop="pointId">
+        <a-select v-model="formData.pointId" placeholder="设备">
+          <a-select-option
+            v-for="(item, index) in deviceOptions"
+            :key="index"
+            :value="item.id"
+            >{{ item.name }}</a-select-option
+          >
+        </a-select>
       </a-form-model-item>
       <a-form-model-item label="验收时间" prop="gmtReceptionTime">
         <a-date-picker v-width="350" v-model="formData.gmtReceptionTime" />
@@ -42,10 +49,11 @@ export default {
   },
   data() {
     return {
-      title: "新建",
+      title: "添加",
       stationOptions: [],
       pointOptions: [],
       factorOptions: [],
+      deviceOptions: [],
       fileList: [],
       formData: {},
       rules: {
@@ -84,7 +92,7 @@ export default {
           fileId: this.formData.fileId,
           gmtReceptionTime: this.formData.gmtReceptionTime,
           manufacturer: this.formData.manufacturer,
-          name: this.formData.name,
+          pointId: this.formData.pointId,
           number: this.formData.number,
           type: this.formData.type
         };
@@ -183,20 +191,29 @@ export default {
           this.factorOptions = res.data.data;
         }
       });
+    },
+    //设备下拉
+    getDevice() {
+      this.$api.common.selectDevice().then(res => {
+        if (res.data.state == 0) {
+          this.deviceOptions = res.data.data;
+        }
+      });
     }
   },
   watch: {
     "value.show"() {
       if (this.value.show == true) {
-        this.getStation();
-        this.getPointSelect();
-        this.getFactor();
+        this.getDevice();
+        // this.getStation();
+        // this.getPointSelect();
+        // this.getFactor();
         this.fileList = [];
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();
         } else {
-          this.title = "新建";
+          this.title = "添加";
         }
       }
     }

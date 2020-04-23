@@ -1,7 +1,7 @@
 <template>
   <a-card :bordered="false" class="standing">
     <div class="card-header">
-      <div class="title">试剂列表</div>
+      <div class="title">物资列表</div>
       <div class="extra">
         <a-form layout="inline">
           <a-form-item>
@@ -21,7 +21,7 @@
           </a-form-item>
           <a-form-item>
             <a-input-search
-              placeholder="输入试剂名称"
+              placeholder="输入物资名称"
               style="width: 200px"
               v-model="name"
               @search="onSubmit"
@@ -89,7 +89,7 @@ export default {
       loading: false,
       columns: [
         {
-          title: "试剂名称",
+          title: "物资名称",
           dataIndex: "name"
         },
         {

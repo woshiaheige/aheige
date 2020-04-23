@@ -48,6 +48,18 @@ export default {
       title: "",
       columns: [
         {
+          title: "企业",
+          dataIndex: "enterpriseName"
+        },
+        {
+          title: "监控点",
+          dataIndex: "pointName"
+        },
+        {
+          title: "设备",
+          dataIndex: "devName"
+        },
+        {
           title: "数量",
           dataIndex: "stockCount",
           align: "center"
@@ -104,7 +116,7 @@ export default {
         this.current = 1;
         this.pageSize = 10;
         this.getTableData();
-        this.title = this.modelData.row.name + "库存详情";
+        this.title = this.modelData.row.name + "出库详情";
       }
     }
   }

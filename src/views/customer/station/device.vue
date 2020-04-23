@@ -23,7 +23,7 @@
         <div class="title">设备列表</div>
         <div class="extra">
           <a-button type="primary" @click="onEdit('add')">
-            <a-icon type="plus" />新建
+            <a-icon type="plus" />添加
           </a-button>
         </div>
       </div>
