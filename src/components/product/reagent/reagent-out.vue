@@ -1,5 +1,10 @@
 <template>
-  <a-modal :title="title" :visible="modelData.show" @cancel="handleCancel">
+  <a-modal
+    :title="title"
+    :visible="modelData.show"
+    @cancel="handleCancel"
+    :width="800"
+  >
     <div v-margin:bottom="25">
       <a-table
         rowKey="id"
@@ -62,17 +67,20 @@ export default {
         {
           title: "数量",
           dataIndex: "stockCount",
-          align: "center"
+          align: "center",
+          width: 100
         },
         {
           title: "时间",
           dataIndex: "gmtCreate",
-          align: "center"
+          align: "center",
+          width: 150
         },
         {
           title: "操作人",
           dataIndex: "username",
-          align: "center"
+          align: "center",
+          width: 100
         }
       ],
       tableData: []
