@@ -9,6 +9,7 @@
       <a-form-item label="姓名">
         <a-input
           placeholder="请输入"
+          :disabled="memberId == 1"
           v-decorator="[
             'name',
             { rules: [{ required: true, message: '请输入姓名' }] }
@@ -18,6 +19,7 @@
       <a-form-item label="账号">
         <a-input
           placeholder="请输入"
+          :disabled="memberId == 1"
           v-decorator="[
             'username',
             { rules: [{ required: true, message: '请输入账号' }] }
@@ -28,20 +30,34 @@
         <a-input
           placeholder="请输入"
           type="password"
-          @blur="validatePassword"
           v-decorator="[
             'password',
-            { rules: [{ required: true, message: '请输入密码' }] }
+            {
+              rules: [
+                {
+                  message: '请输入数字，字母或特殊字符的组合,6位以上',
+                  required: true,
+                  pattern: validatePassword
+                }
+              ]
+            }
           ]"
         />
       </a-form-item>
       <a-form-item label="手机号码">
         <a-input
-          @blur="validatePhone"
           placeholder="请输入"
           v-decorator="[
             'phone',
-            { rules: [{ required: true, message: '请输入手机号码' }] }
+            {
+              rules: [
+                {
+                  required: true,
+                  pattern: validatePhone,
+                  message: '请输入正确的手机号码'
+                }
+              ]
+            }
           ]"
         />
       </a-form-item>
@@ -51,6 +67,7 @@
       <a-form-item label="选择权限">
         <a-select
           placeholder="请选择"
+          :disabled="memberId == 1"
           v-decorator="[
             'roleId',
             { rules: [{ required: true, message: '请选择权限' }] }
@@ -112,36 +129,12 @@ export default {
     }
   },
   data() {
-    const validatePhone = e => {
-      const validatePhoneReg = /^1\d{10}$/;
-      if (e.target.value && !validatePhoneReg.test(e.target.value)) {
-        const arr = [
-          {
-            message: "您输入的手机格式不正确!",
-            field: "phone"
-          }
-        ];
-        this.form.setFields({ phone: { value: e.target.value, errors: arr } });
-      }
-    };
-    const validatePassword = e => {
-      let regPass = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
-      if (e.target.value && !regPass.test(e.target.value)) {
-        const arr = [
-          {
-            message: "请输入数字，字母或特殊字符",
-            field: "phone"
-          }
-        ];
-        this.form.setFields({
-          password: { value: e.target.value, errors: arr }
-        });
-      }
-    };
+    const validatePhone = /^1\d{10}$/;
+    const validatePassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
     return {
+      initPassword: "", //编辑的密码
       validatePassword,
       validatePhone,
-      title: "新建",
       memberId: "",
       roleId: "",
       roleList: [],
@@ -152,6 +145,10 @@ export default {
     };
   },
   computed: {
+    title() {
+      let title = this.memberId ? "编辑用户" : "新增用户";
+      return title;
+    },
     status: {
       get() {
         return this.obj.show;
@@ -170,10 +167,11 @@ export default {
           this.gellAllSysGroup(); //获取小组
         }
         setTimeout(() => {
+          this.initPassword = nval.password;
           this.form.setFieldsValue({
             name: nval.name,
             username: nval.username,
-            password: this.$md5(nval.password),
+            password: nval.password,
             phone: nval.phone,
             wechatId: nval.wechatId,
             roleId: nval.roleId
@@ -225,6 +223,7 @@ export default {
       });
     },
     reset() {
+      this.initPassword = "";
       this.memberId = "";
       this.roleId = "";
       this.form.resetFields();
@@ -243,6 +242,11 @@ export default {
     editMember(values) {
       let params = values;
       params.id = this.memberId;
+      if (this.initPassword != params.password) {
+        //避免重复加密
+        params.password = this.$md5(params.password);
+      }
+
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
@@ -259,6 +263,7 @@ export default {
     },
     addMember(values) {
       let params = values;
+      params.password = this.$md5(params.password);
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
