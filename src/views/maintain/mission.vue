@@ -243,7 +243,7 @@ export default {
       };
       this.loading = true;
       this.$api.maintain
-        .managePointTask(params)
+        .getManageTaskList(params)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;

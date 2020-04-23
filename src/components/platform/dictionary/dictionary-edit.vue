@@ -112,8 +112,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -125,8 +123,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     }

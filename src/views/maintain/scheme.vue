@@ -72,7 +72,7 @@
     <add-scheme
       :visible="addSchemeModal"
       :scheme-detail="selectedScheme"
-      :maintain-type="type"
+      :maintain-type="currentType"
       @close="addSchemeModal = false"
     ></add-scheme>
 
@@ -228,17 +228,27 @@ export default {
       this.selectedSchemeList = row;
     },
     getTableData() {
+      this.loading = true;
       let data = {
         page: this.current,
         size: this.pageSize,
         programmeId: this.currentScheme[0]
       };
 
-      this.$api.maintain.getSchemeList(data).then(res => {
-        if (res.data.state == 0) {
-          this.tableData = res.data.data.records;
-        }
-      });
+      this.$api.maintain
+        .getSchemeList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = parseInt(res.data.data.total);
+          } else {
+            this.loading = false;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     }
   }
 };

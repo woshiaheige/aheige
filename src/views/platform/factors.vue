@@ -205,8 +205,6 @@ export default {
             if (res.data.state == 0) {
               _this.$message.success("删除成功");
               _this.getTableData();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },

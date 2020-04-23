@@ -44,7 +44,8 @@
         />
       </a-form-item>
       <a-form-item label="手机号码">
-        <a-input
+        <a-input-number
+          style="width:100%"
           placeholder="请输入"
           v-decorator="[
             'phone',
@@ -180,7 +181,7 @@ export default {
             this.form.setFieldsValue({ groupId: nval.groupId });
           } else if (nval.roleId == 2) {
             //审核权限
-            this.form.setFieldsValue({ approvalIds: nval.approvalIds });
+            this.form.setFieldsValue({ approvalIds: nval.approvalIds[0] });
           }
         }, 50);
       }
@@ -255,8 +256,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -272,8 +271,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     }
