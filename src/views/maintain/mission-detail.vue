@@ -60,12 +60,12 @@
         :loading="loading"
         v-margin:top="16"
       >
-        <template slot="taskStatus" slot-scope="taskStatus">
-          <a-badge color="cyan" text="已创建" v-show="taskStatus == 1" />
-          <a-badge status="processing" text="处理中" v-show="taskStatus == 2" />
-          <a-badge status="success" text="已完成" v-show="taskStatus == 3" />
-          <a-badge status="warning" text="已延期" v-show="taskStatus == 4" />
-          <a-badge status="default" text="已关闭" v-show="taskStatus == 5" />
+        <template slot="status" slot-scope="status">
+          <a-badge color="cyan" text="已创建" v-show="status == 1" />
+          <a-badge status="processing" text="处理中" v-show="status == 2" />
+          <a-badge status="success" text="已完成" v-show="status == 3" />
+          <a-badge status="warning" text="已延期" v-show="status == 4" />
+          <a-badge status="default" text="已关闭" v-show="status == 5" />
         </template>
         <span slot="action" slot-scope="row">
           <!-- <a @click="delayShow = true">申请延期</a>
@@ -109,7 +109,7 @@ export default {
         },
         {
           title: "运维小组",
-          dataIndex: "team"
+          dataIndex: "groupName"
         },
         {
           title: "运维人员",
@@ -121,8 +121,8 @@ export default {
         },
         {
           title: "运维状态",
-          dataIndex: "taskStatus",
-          scopedSlots: { customRender: "taskStatus" },
+          dataIndex: "status",
+          scopedSlots: { customRender: "status" },
           align: "center",
           width: 150
         },
@@ -139,7 +139,7 @@ export default {
           id: "1",
           name: "方案1",
           team: "A小组",
-          taskStatus: 1,
+          status: 1,
           handleName: "张三",
           gmtCreate: "2020-04-22"
         }
@@ -169,14 +169,12 @@ export default {
         });
     },
     goDetail(row) {
-      this.missionDetail = row;
-      this.visible = true;
-      // this.$api.maintain.getManageTaskById({ id: row.id }).then(res => {
-      //   if (res.data.state == 0) {
-      //     this.missionDetail = res.data.data;
-      //     this.visible = true;
-      //   }
-      // });
+      this.$api.maintain.getManageTaskById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.missionDetail = res.data.data;
+          this.visible = true;
+        }
+      });
     }
   },
   mounted() {

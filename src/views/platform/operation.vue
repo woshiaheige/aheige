@@ -252,8 +252,6 @@ export default {
       this.$api.platform.updateBatchById(params).then(res => {
         if (res.data.state == 0) {
           this.$message.success("修改成功");
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     }

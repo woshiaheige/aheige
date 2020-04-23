@@ -1,14 +1,10 @@
 <template>
   <div class="counter">
-    <a-input
-      style="width:200px"
-      type="number"
-      :value="value"
-      @change="change($event)"
-    >
-      <a-icon type="minus" slot="prefix" class="add" @click="subtract"/>
+    <a-input-number style="width:200px" :value="value" @change="change">
+      <!-- <a-icon type="minus" slot="prefix" class="add" @click="subtract"/>
       <a-tooltip slot="suffix"> <a-icon type="plus" @click="add"/></a-tooltip
-    ></a-input>
+    > -->
+    </a-input-number>
     <span v-margin:left="10">
       <slot name="uni"> </slot>
     </span>
@@ -41,8 +37,9 @@ export default {
       ++val;
       this.$emit("input", val);
     },
-    change($event) {
-      this.$emit("input", $event.target.value);
+    change(e) {
+      console.log(e);
+      this.$emit("input", e);
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :bordered="false">
-      <a-calendar>
+      <a-calendar @select="selectCalendar">
         <ul class="events" slot="dateCellRender" slot-scope="value">
           <li v-for="item in getListData(value)" :key="item.content">
             <a-popover>
@@ -36,6 +36,9 @@ export default {
     };
   },
   methods: {
+    selectCalendar(e) {
+      console.log(e);
+    },
     getListData(value) {
       let listData;
       switch (value.date()) {
