@@ -261,15 +261,30 @@ export default {
     },
     searchGroup(value) {
       //搜索小组
-      this.$api.customer.getGroupList({ groupName: value }).then(res => {
-        this.groupList = res.data.data.records;
+      let params = {
+        size: 999,
+        page: 1,
+        name: value
+      };
+      this.$api.organization.sysGroup(params).then(res => {
+        if (res.data.state == 0) {
+          this.groupList = res.data.data.records;
+        }
+      });
+    },
+    searchMember(id) {
+      //获取小组成员
+      this.$api.organization.getUserByGroupId({ groupId: id }).then(res => {
+        if (res.data.state == 0) {
+          this.memberList = res.data.data;
+        }
       });
     },
     slectGroup(value) {
       this.$set(this.formData, "groupId", value.id);
       this.$set(this.formData, "groupName", value.name);
+      this.searchMember(value.id);
     },
-
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
@@ -278,12 +293,14 @@ export default {
         }
 
         let data = JSON.parse(JSON.stringify(this.formData));
+
+        data.type = 2; //突发任务
+        data.handleId = data.memberId;
         delete data.enterpriseName;
         delete data.pointName;
         delete data.groupName;
         delete data.memberName;
-        data.type = 2; //突发任务
-        data.flag = true;
+        delete data.memberId;
         data.gmtCreate = this.$moment(data.gmtCreate).format(
           "YYYY-MM-DD HH:mm:ss"
         );
@@ -301,8 +318,7 @@ export default {
       this.$refs.ruleForm.clearValidate();
       this.$emit("cancel", false);
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 <style lang="less" scoped></style>

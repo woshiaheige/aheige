@@ -158,10 +158,12 @@ const maintain = {
       data
     );
   },
+
   //任务管理列表
   managePointTask(data) {
     return axios.get(base.api + "managePointTask/", { params: data });
   },
+
   //任务项详情
   getManageTaskById(data) {
     return axios.get(base.api + "manageTask/getManageTaskById", {
@@ -201,7 +203,14 @@ const maintain = {
     });
   },
   editPlan(data) {
-    return axios.get(base.api + "maintainPlan/editMaintainPlan", data);
+    return axios.get(base.api + "maintainPlan/editMaintainPlan", {
+      params: data
+    });
+  },
+  getMonthPlanBoard(data) {
+    return axios.get(base.api + "plan/board/getMonthPlanBoard", {
+      params: data
+    });
   }
 };
 

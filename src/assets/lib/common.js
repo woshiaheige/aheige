@@ -15,6 +15,14 @@ const event = {
       this.current = 1;
       this.size = size;
       this.getTableData();
+    },
+    debounce(func, wait = 500) {
+      //节流
+      let timer;
+      return () => {
+        clearTimeout(timer);
+        timer = setTimeout(func, wait);
+      };
     }
   }
 };

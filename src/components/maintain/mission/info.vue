@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="方案详情" :visible="visible" @cancel="closeModal">
+  <a-modal title="任务详情" :visible="visible" @cancel="closeModal">
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="运维小组">{{
         detail.groupName
@@ -10,7 +10,7 @@
       <a-descriptions-item label="运维时间">{{
         detail.gmtCreate
       }}</a-descriptions-item>
-      <a-descriptions-item label="方案项">
+      <a-descriptions-item label="任务项目">
         <template v-if="detail.taskItemVos">
           <div
             v-for="(item, index) of detail.taskItemVos"
@@ -22,9 +22,10 @@
         </template>
       </a-descriptions-item>
       <a-descriptions-item label="附件">
-        <div v-for="(item, index) of detail.file" :key="index">
+        <!-- <div v-for="(item, index) of detail.fileId" :key="index">
           {{ item.name }}
-        </div>
+        </div> -->
+        <!-- <a :href="fileDownload + detail.fileId">{{ detail.fileName }}</a> -->
       </a-descriptions-item>
     </a-descriptions>
     <template slot="footer">
@@ -44,7 +45,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      fileDownload: this.$api.common.fileDownload
+    };
   },
   methods: {
     closeModal() {
@@ -53,6 +56,9 @@ export default {
     handleOk() {
       this.$emit("update:visible", false);
     }
+  },
+  mounted() {
+    console.log(888);
   }
 };
 </script>
