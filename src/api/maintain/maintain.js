@@ -195,11 +195,13 @@ const maintain = {
   getPlan(data) {
     return axios.get(base.api + "maintainPlan/", { params: data });
   },
+  //删除计划
   deletePlan(data) {
     return axios.get(base.api + "maintainPlan/deleteMaintainPlan", {
       params: data
     });
   },
+  //编辑计划
   editPlan(data) {
     return axios.post(base.api + "maintainPlan/editMaintainPlan", data);
   }
