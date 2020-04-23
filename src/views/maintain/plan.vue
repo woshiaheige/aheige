@@ -16,6 +16,7 @@
             tabPosition="left"
             size="small"
             v-model="currentTab"
+            @change="getPlanStation"
           >
             <a-tab-pane v-for="item in tabList" :key="item.key" :tab="item.tab">
               <a-radio-group
@@ -40,7 +41,7 @@
       <a-col :span="16">
         <a-card :bordered="false" class="maintain">
           <div class="card-header">
-            <div class="title">站点运维方案</div>
+            <div class="title">站点运维计划</div>
             <div class="extra">
               <div class="extra">
                 <a-form layout="inline">
@@ -105,6 +106,7 @@
       :station-id="currentStation[0]"
       :station-type="currentType"
       :plan-detail="selectedPlan"
+      @check="updateTable"
     />
   </div>
 </template>
@@ -161,27 +163,29 @@ export default {
       currentType: 31,
       currentStation: [],
       stationList: [],
-      selectedPlan: {}
+      selectedPlan: {},
+      changedStation: ""
     };
   },
   watch: {
-    currentTab() {
-      this.getPlanStation();
-    },
     currentType() {
       this.getPlanStation();
     },
     currentStation() {
       this.getTableData();
-    },
-    async visible(newVal) {
-      if (!newVal) {
-        await this.getPlanStation();
-        this.getTableData();
-      }
     }
   },
   methods: {
+    updateTable(stationId) {
+      if (this.currentTab == 1) {
+        this.currentTab = 2;
+        this.changedStation = stationId;
+        this.getPlanStation();
+      } else {
+        this.changedStation = "";
+        this.getTableData();
+      }
+    },
     getTableData() {
       this.tableData = [];
       let data = {
@@ -254,9 +258,12 @@ export default {
         this.currentStation = [];
 
         if (this.stationList.length > 0) {
-          this.currentStation.push(this.stationList[0].id);
+          if (this.changedStation === "") {
+            this.currentStation.push(this.stationList[0].id);
+          } else {
+            this.currentStation.push(this.changedStation);
+          }
         }
-        console.log(this.currentStation);
       });
     }
   },

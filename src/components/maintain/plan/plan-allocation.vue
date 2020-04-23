@@ -11,7 +11,7 @@
       <a-card :bordered="false">
         <a-form-model ref="form" :model="form" :rules="rules" layout="inline">
           <a-form-model-item label="计划类别" prop="type">
-            <a-select v-model="form.type">
+            <a-select v-model="form.type" @change="handleChangeType">
               <a-select-option :value="1">周计划</a-select-option>
               <a-select-option :value="2">月计划</a-select-option>
             </a-select>
@@ -103,20 +103,13 @@ export default {
         this.getScheme();
       }
     },
-    "form.type"(newVal) {
-      this.getScheme();
-      if (newVal == 1) {
-        this.form.date = 0;
-      } else if (newVal == 2) {
-        this.form.date = 1;
-      }
-    },
     planDetail(newVal) {
       if (newVal.id) {
         this.form = {
           name: newVal.name,
           range: [this.$moment(newVal.gmtBegin), this.$moment(newVal.gmtEnd)],
-          type: newVal.type
+          type: newVal.type,
+          date: newVal.programmes[0].planDay
         };
       }
     }
@@ -162,40 +155,46 @@ export default {
   methods: {
     onClose() {
       this.$emit("update:visible", false);
+      this.$refs.form.resetFields();
     },
     handleOk() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          let planArr = [];
+      if (this.targetKeys.length <= 0) {
+        this.$message.warning("请选择方案");
+      } else {
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            let planArr = [];
 
-          this.targetKeys.forEach(item => {
-            planArr.push({
-              planDay: this.form.date,
-              programmeId: item
+            this.targetKeys.forEach(item => {
+              planArr.push({
+                planDay: this.form.date,
+                programmeId: item
+              });
             });
-          });
 
-          let data = {
-            gmtBegin: this.$moment(this.form.range[0]).format(
-              "YYYY-MM-DD HH:mm:ss"
-            ),
-            gmtEnd: this.$moment(this.form.range[1]).format(
-              "YYYY-MM-DD HH:mm:ss"
-            ),
-            name: this.form.name,
-            pointId: this.stationId,
-            planPoints: planArr,
-            type: this.form.type
-          };
+            let data = {
+              gmtBegin: this.$moment(this.form.range[0]).format(
+                "YYYY-MM-DD HH:mm:ss"
+              ),
+              gmtEnd: this.$moment(this.form.range[1]).format(
+                "YYYY-MM-DD HH:mm:ss"
+              ),
+              name: this.form.name,
+              pointId: this.stationId,
+              planPoints: planArr,
+              type: this.form.type
+            };
 
-          this.$api.maintain.addPlan(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("配置成功");
-              this.onClose();
-            }
-          });
-        }
-      });
+            this.$api.maintain.addPlan(data).then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("配置成功");
+                this.$emit("check", this.stationId);
+                this.onClose();
+              }
+            });
+          }
+        });
+      }
     },
     getScheme() {
       let data = {
@@ -212,8 +211,6 @@ export default {
             });
           }
         });
-
-        console.log(this.schemeList);
       });
     },
     handleChange(nextTargetKeys) {
@@ -221,6 +218,15 @@ export default {
     },
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
+    },
+    handleChangeType(value) {
+      this.selectedKeys = [];
+      this.getScheme();
+      if (value == 1) {
+        this.form.date = 0;
+      } else if (value == 2) {
+        this.form.date = 1;
+      }
     }
   }
 };
