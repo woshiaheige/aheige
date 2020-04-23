@@ -24,7 +24,7 @@
     </a-row>
     <a-row v-margin:bottom="10">
       <a-col :span="12"
-        ><span class="descriptions">创建时间：</span>2020.02.02</a-col
+        ><span class="descriptions">创建时间：</span>{{ gmtCreate }}</a-col
       >
       <a-col :span="12"
         ><span class="descriptions">类型：</span>
