@@ -23,42 +23,60 @@
         <div class="alarm-list" v-if="active == 1">
           <div class="header">
             <div class="title">预警监控点</div>
-            <div class="value">26</div>
+            <div class="value">{{ pointList.length }}</div>
           </div>
           <a-radio-group
             defaultValue="a"
             buttonStyle="solid"
             class="check-type"
+            @change="changStatus"
+            v-model="value"
           >
             <a-radio-button value="a">全部</a-radio-button>
             <a-radio-button value="b">断线</a-radio-button>
             <a-radio-button value="c">超标</a-radio-button>
             <a-radio-button value="d">异常</a-radio-button>
           </a-radio-group>
-          <a-list>
-            <a-list-item slot="renderItem">
-              XX企业监控点
+          <a-list itemLayout="horizontal" :dataSource="pointList">
+            <a-list-item slot="renderItem" slot-scope="item">
+              <a-list-item-meta
+                :description="item.name"
+                @click="goMarker(item.longitude, item.latitude)"
+              >
+              </a-list-item-meta>
             </a-list-item>
           </a-list>
         </div>
         <div class="alarm-list" v-if="active == 2">
           <div class="header">
             <div class="title">运维车辆</div>
-            <div class="value">5</div>
+            <div class="value">{{ carList.length }}</div>
           </div>
           <a-date-picker @change="onChange" class="select-time" />
-          <a-list>
-            <a-list-item slot="renderItem"> 粤A45221 </a-list-item>
+          <a-list itemLayout="horizontal" :dataSource="carList">
+            <a-list-item slot="renderItem" slot-scope="item">
+              <a-list-item-meta
+                :description="item.number"
+                @click="goMarker(item.lng, item.lat)"
+              >
+              </a-list-item-meta>
+            </a-list-item>
           </a-list>
         </div>
         <div class="alarm-list" v-if="active == 3">
           <div class="header">
             <div class="title">运维人员</div>
-            <div class="value">6</div>
+            <div class="value">{{ userList.length }}</div>
           </div>
           <a-date-picker @change="onChange" class="select-time" />
-          <a-list>
-            <a-list-item slot="renderItem"> 粤A45221 </a-list-item>
+          <a-list itemLayout="horizontal" :dataSource="userList">
+            <a-list-item slot="renderItem" slot-scope="item">
+              <a-list-item-meta
+                :description="item.username"
+                @click="goMarker(item.lng, item.lat)"
+              >
+              </a-list-item-meta>
+            </a-list-item>
           </a-list>
         </div>
       </div>
@@ -73,7 +91,11 @@ export default {
     return {
       map: null,
       markers: [],
-      active: 1
+      active: 1,
+      pointList: [],
+      carList: [],
+      userList: [],
+      value: "a"
     };
   },
   mounted() {
@@ -87,9 +109,92 @@ export default {
         zoom: 12,
         mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18"
       });
+      this.callback(1);
     },
-    callback(key) {
+    async callback(key, value) {
       this.active = key;
+      this.map.remove(this.markers);
+      this.markers = [];
+      if (key == 1) {
+        await this.getPointData(value);
+      } else if (key == 2) {
+        await this.getCarData(value);
+      } else if (key == 3) {
+        await this.getUserData(value);
+      }
+      console.log(this.markers);
+      this.map.add(this.markers);
+      this.map.setFitView();
+    },
+    //获取监测点地标
+    async getPointData(num) {
+      this.pointList = [];
+      await this.$api.index.getWarnData({ type: num }).then(res => {
+        if (res.data.state == 0) {
+          let result = res.data.data;
+          for (var i in result) {
+            let marker;
+            marker = new AMap.Marker({
+              position: new AMap.LngLat(
+                result[i].longitude,
+                result[i].latitude
+              ),
+              title: result[i].name
+            });
+            this.pointList.push(result[i]);
+            this.markers.push(marker);
+          }
+        }
+      });
+    },
+    //获取运维车辆地标
+    async getCarData(time) {
+      this.carList = [];
+      await this.$api.index.getCarData({ dateTime: time }).then(res => {
+        if (res.data.state == 0) {
+          let result = res.data.data;
+          for (var i in result) {
+            let marker;
+            marker = new AMap.Marker({
+              position: new AMap.LngLat(result[i].lng, result[i].lat),
+              title: result[i].number
+            });
+            this.carList.push(result[i]);
+            this.markers.push(marker);
+          }
+        }
+      });
+    },
+    //获取运维人员地标
+    async getUserData(time) {
+      this.userList = [];
+      await this.$api.index.getUserData({ dateTime: time }).then(res => {
+        if (res.data.state == 0) {
+          let result = res.data.data;
+          for (var i in result) {
+            let marker;
+            marker = new AMap.Marker({
+              position: new AMap.LngLat(result[i].lng, result[i].lat),
+              title: result[i].username
+            });
+            this.userList.push(result[i]);
+            this.markers.push(marker);
+          }
+        }
+      });
+    },
+    goMarker(lng, lat) {
+      this.map.setCenter([lng, lat]); //设置地图中心点
+    },
+    changStatus(e) {
+      console.log(e.target.value);
+      //1： 离线，2：超标 3：异常
+      let value = e.target.value;
+      let num = value == "b" ? 1 : value == "c" ? 2 : value == "d" ? 3 : "";
+      this.callback(this.active, num);
+    },
+    onChange(_, dateString) {
+      this.callback(this.active, dateString);
     }
   }
 };

@@ -53,6 +53,24 @@ const index = {
   //关闭报警
   closeMsg(data) {
     return axios.post(base.api + "sysMsg/editSysMsg", data);
+  },
+  //预警监测点
+  getWarnData(data) {
+    return axios.get(base.api + "operation/monitor/earlyWarning", {
+      params: data
+    });
+  },
+  //运维车辆位置定位
+  getCarData(data) {
+    return axios.get(base.api + "operation/monitor/vehicleLocation", {
+      params: data
+    });
+  },
+  //运维人员位置定位
+  getUserData(data) {
+    return axios.get(base.api + "operation/monitor/maintainLocation", {
+      params: data
+    });
   }
 };
 
