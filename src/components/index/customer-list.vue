@@ -8,8 +8,8 @@
           <a-avatar slot="avatar" :src="require('@/assets/img/complain.png')" />
         </a-list-item-meta>
         <div>
-          <p>已持续</p>
-          <p>3天</p>
+          <p>提醒时间</p>
+          <p>{{ item.dataTime }}</p>
         </div>
       </a-list-item>
     </a-list>
@@ -50,7 +50,7 @@ export default {
         .reminds(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.total = res.data.data.total;
+            this.total = Number(res.data.data.total);
             this.warnList = res.data.data.records;
           }
         })

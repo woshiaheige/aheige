@@ -7,10 +7,10 @@
           <a slot="title">{{ item.enterpriseName }}</a>
           <a-avatar slot="avatar" :src="require('@/assets/img/contract.png')" />
         </a-list-item-meta>
-        <!-- <div>
-          <p>剩余天数</p>
-          <p>4天</p>
-        </div> -->
+        <div>
+          <p>提醒时间</p>
+          <p>{{ item.dataTime }}</p>
+        </div>
       </a-list-item>
     </a-list>
     <a-pagination
@@ -49,7 +49,7 @@ export default {
         .reminds(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.total = res.data.data.total;
+            this.total = Number(res.data.data.total);
             this.warnList = res.data.data.records;
           }
         })

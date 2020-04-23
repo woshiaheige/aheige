@@ -39,10 +39,12 @@ export default {
       warnList: [],
       total: 0,
       pagesize: 10,
-      current: 1
+      current: 1,
+      item: {}
     };
   },
   methods: {
+    //获取列表数据
     getTableData() {
       this.loading = true;
       let data = {
@@ -54,7 +56,7 @@ export default {
         .reminds(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.total = res.data.data.total;
+            this.total = Number(res.data.data.total);
             this.warnList = res.data.data.records;
           }
         })

@@ -123,8 +123,6 @@ export default {
   components: { pointList, contractList, customerList },
   data() {
     return {
-      current: 1,
-      total: 0,
       map: null,
       place: null,
       colors: ["#1890ff", "orange", "#cf1322"],
@@ -170,8 +168,7 @@ export default {
       ],
       rankingList: [],
       completionList: [],
-      countList: {},
-      warnList: []
+      countList: {}
     };
   },
   mounted() {
@@ -179,7 +176,6 @@ export default {
     this.getTaskData();
     this.getStatisticsData();
     this.getCompletionData();
-    this.getRemindsData(1);
   },
   methods: {
     //运维统计
@@ -226,11 +222,18 @@ export default {
       });
     },
     //消息提醒列表
-
     changeTabs(key) {
-      this.current = 1;
-      console.log(key);
-      // this.getRemindsData(key);
+      switch (key) {
+        case "1":
+          this.$refs.pointList.getTableData();
+          break;
+        case "2":
+          this.$refs.contractList.getTableData();
+          break;
+        case "3":
+          this.$refs.customerList.getTableData();
+          break;
+      }
     }
   }
 };
