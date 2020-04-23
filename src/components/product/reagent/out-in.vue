@@ -149,7 +149,7 @@ export default {
             trigger: "change"
           }
         ],
-        deviceId: [
+        devId: [
           {
             required: true,
             message: "请选择设备",
