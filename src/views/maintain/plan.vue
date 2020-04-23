@@ -82,7 +82,7 @@
               <a-badge status="success" text="已关闭" v-if="row.status == 5" />
             </template>
             <span slot="check" slot-scope="row">
-              <a @click="onEditPlan(row)">编辑</a>
+              <a @click="onAddClick(row)">编辑</a>
               <a-divider type="vertical" />
               <a @click="onDeletePlan(row)">删除</a>
             </span>
@@ -104,27 +104,20 @@
       :visible.sync="visible"
       :station-id="currentStation[0]"
       :station-type="currentType"
-    />
-    <edit-plan
-      :visible.sync="editModal"
       :plan-detail="selectedPlan"
-      @close="editModal = false"
     />
   </div>
 </template>
 
 <script>
 import planAllocation from "@/components/maintain/plan/plan-allocation";
-import editPlan from "@/components/maintain/plan/edit-plan";
 export default {
   components: {
-    planAllocation,
-    editPlan
+    planAllocation
   },
   data() {
     return {
       visible: false,
-      editModal: false,
       tabList: [
         { tab: "未配置站点", key: 1 },
         { tab: "已配置站点", key: 2 }
@@ -181,8 +174,9 @@ export default {
     currentStation() {
       this.getTableData();
     },
-    visible(newVal) {
+    async visible(newVal) {
       if (!newVal) {
+        await this.getPlanStation();
         this.getTableData();
       }
     }
@@ -213,10 +207,6 @@ export default {
           });
       }
     },
-    onEditPlan(row) {
-      this.selectedPlan = row;
-      this.editModal = true;
-    },
     onDeletePlan(row) {
       let that = this;
 
@@ -241,11 +231,17 @@ export default {
         onCancel() {}
       });
     },
-    onAddClick() {
-      if (this.currentStation.length > 0) {
+    onAddClick(row) {
+      if (row) {
         this.visible = true;
+        this.selectedPlan = row;
       } else {
-        this.$message.warning("请选择站点");
+        if (this.currentStation.length > 0) {
+          this.visible = true;
+          this.selectedPlan = {};
+        } else {
+          this.$message.warning("请选择站点");
+        }
       }
     },
     getPlanStation() {

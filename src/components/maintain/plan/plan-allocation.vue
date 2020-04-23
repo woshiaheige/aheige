@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-drawer
-      title="配置站点运维方案"
+      :title="title"
       :placement="placement"
       :closable="false"
       @close="onClose"
@@ -45,7 +45,7 @@
           @selectChange="handleSelectChange"
         />
         <a-divider></a-divider>
-        <a-button type="primary" @click="handleOk">配置方案</a-button>
+        <a-button type="primary" @click="handleOk">{{ okText }}</a-button>
       </a-card>
     </a-drawer>
   </div>
@@ -62,6 +62,9 @@ export default {
     },
     stationType: {
       required: true
+    },
+    planDetail: {
+      required: false
     }
   },
   data() {
@@ -107,6 +110,15 @@ export default {
       } else if (newVal == 2) {
         this.form.date = 1;
       }
+    },
+    planDetail(newVal) {
+      if (newVal.id) {
+        this.form = {
+          name: newVal.name,
+          range: [this.$moment(newVal.gmtBegin), this.$moment(newVal.gmtEnd)],
+          type: newVal.type
+        };
+      }
     }
   },
   computed: {
@@ -130,6 +142,20 @@ export default {
           });
         }
         return arr;
+      }
+    },
+    title() {
+      if (this.planDetail.id) {
+        return "修改站点运维方案";
+      } else {
+        return "配置站点运维方案";
+      }
+    },
+    okText() {
+      if (this.planDetail.id) {
+        return "修改方案";
+      } else {
+        return "配置方案";
       }
     }
   },
