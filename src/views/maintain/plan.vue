@@ -27,11 +27,7 @@
                 <a-radio-button :value="32">气类站点</a-radio-button>
                 <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
-              <a-menu
-                v-model="currentStation"
-                mode="vertical"
-                @click="selectStation"
-              >
+              <a-menu v-model="currentStation" mode="vertical">
                 <a-menu-item v-for="item in stationList" :key="item.id">
                   {{ item.name }}
                 </a-menu-item>
@@ -53,14 +49,6 @@
                       <a-icon type="plus" />新建
                     </a-button>
                   </a-form-item>
-                  <!-- <a-form-item>
-              <a-input-search
-                placeholder="请输入运维方案"
-                style="width: 200px"
-                v-model="formInline.name"
-                @search="onSubmit"
-              />
-            </a-form-item> -->
                 </a-form>
               </div>
             </div>
@@ -75,11 +63,29 @@
             align="center"
             v-margin:top="16"
           >
-            <a slot="check" slot-scope="row">
-              <a @click="onAddClick(row)">编辑</a>
+            <template slot="type" slot-scope="type, row">
+              {{ row.type == 1 ? "周计划" : "月计划" }}
+            </template>
+            <template slot="range" slot-scope="range, row">
+              {{ $moment(row.gmtBegin).format("YYYY-MM-DD") }} -
+              {{ $moment(row.gmtEnd).format("YYYY-MM-DD") }}
+            </template>
+            <template slot="status" slot-scope="status, row">
+              <a-badge status="default" text="已创建" v-if="row.status == 1" />
+              <a-badge
+                status="processing"
+                text="处理中"
+                v-if="row.status == 2"
+              />
+              <a-badge status="success" text="已完成" v-if="row.status == 3" />
+              <a-badge status="error" text="已延期" v-if="row.status == 4" />
+              <a-badge status="success" text="已关闭" v-if="row.status == 5" />
+            </template>
+            <span slot="check" slot-scope="row">
+              <a @click="onEditPlan(row)">编辑</a>
               <a-divider type="vertical" />
-              <a @click="goDetail(row)">删除</a>
-            </a>
+              <a @click="onDeletePlan(row)">删除</a>
+            </span>
           </a-table>
           <a-pagination
             size="small"
@@ -99,18 +105,26 @@
       :station-id="currentStation[0]"
       :station-type="currentType"
     />
+    <edit-plan
+      :visible.sync="editModal"
+      :plan-detail="selectedPlan"
+      @close="editModal = false"
+    />
   </div>
 </template>
 
 <script>
-import planAllocation from "@/components/organization/plan/plan-allocation";
+import planAllocation from "@/components/maintain/plan/plan-allocation";
+import editPlan from "@/components/maintain/plan/edit-plan";
 export default {
   components: {
-    planAllocation
+    planAllocation,
+    editPlan
   },
   data() {
     return {
       visible: false,
+      editModal: false,
       tabList: [
         { tab: "未配置站点", key: 1 },
         { tab: "已配置站点", key: 2 }
@@ -122,23 +136,26 @@ export default {
       columns: [
         {
           title: "计划名称",
-          dataIndex: "number"
+          dataIndex: "name"
         },
         {
           title: "方案周期",
-          dataIndex: "number"
+          dataIndex: "type",
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "运维期限",
-          dataIndex: "number"
+          dataIndex: "range",
+          scopedSlots: { customRender: "range" }
         },
         {
           title: "运维小组",
-          dataIndex: "number"
+          dataIndex: "group"
         },
         {
           title: "计划状态",
-          dataIndex: "number"
+          dataIndex: "status",
+          scopedSlots: { customRender: "status" }
         },
         {
           title: "操作",
@@ -150,8 +167,8 @@ export default {
       currentTab: 1,
       currentType: 31,
       currentStation: [],
-      selectedStationDetail: {},
-      stationList: []
+      stationList: [],
+      selectedPlan: {}
     };
   },
   watch: {
@@ -160,33 +177,76 @@ export default {
     },
     currentType() {
       this.getPlanStation();
+    },
+    currentStation() {
+      this.getTableData();
+    },
+    visible(newVal) {
+      if (!newVal) {
+        this.getTableData();
+      }
     }
   },
   methods: {
     getTableData() {
-      this.loading = true;
-      let params = {
+      this.tableData = [];
+      let data = {
+        page: this.current,
         size: this.size,
-        page: this.current
+        pointId: this.currentStation[0]
       };
-      this.$api.car
-        .manageVehicleUse(params)
-        .then(res => {
-          if (res.data.state == 0) {
+      if (this.currentStation.length > 0) {
+        this.loading = true;
+        this.$api.maintain
+          .getPlan(data)
+          .then(res => {
+            if (res.data.state == 0) {
+              this.loading = false;
+              this.tableData = res.data.data.records;
+              this.total = parseInt(res.data.data.total);
+            } else {
+              this.loading = false;
+            }
+          })
+          .catch(() => {
             this.loading = false;
-            this.tableData = res.data.data.records;
-            this.total = +res.data.data.total;
-          }
-        })
-        .catch(() => {
-          this.loading = false;
-        });
+          });
+      }
     },
-    goDetail(row) {
-      console.log(row);
+    onEditPlan(row) {
+      this.selectedPlan = row;
+      this.editModal = true;
+    },
+    onDeletePlan(row) {
+      let that = this;
+
+      that.$confirm({
+        title: "删除计划",
+        content: "确定删除计划" + row.name + "？",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          let data = {
+            id: row.id
+          };
+
+          that.$api.maintain.deletePlan(data).then(res => {
+            if (res.data.state == 0) {
+              that.$message.success("删除成功");
+              that.getTableData();
+            }
+          });
+        },
+        onCancel() {}
+      });
     },
     onAddClick() {
-      this.visible = true;
+      if (this.currentStation.length > 0) {
+        this.visible = true;
+      } else {
+        this.$message.warning("请选择站点");
+      }
     },
     getPlanStation() {
       let data = {
@@ -195,16 +255,13 @@ export default {
       };
       this.$api.maintain.getPlanStation(data).then(res => {
         this.stationList = res.data.data;
+        this.currentStation = [];
+
         if (this.stationList.length > 0) {
           this.currentStation.push(this.stationList[0].id);
-        } else {
-          this.currentStation = [];
         }
+        console.log(this.currentStation);
       });
-    },
-    selectStation(object) {
-      this.selectedStationDetail = object.item;
-      console.log(object);
     }
   },
   mounted() {

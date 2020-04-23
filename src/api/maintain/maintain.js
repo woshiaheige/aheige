@@ -186,6 +186,19 @@ const maintain = {
     return axios.get(base.api + "maintainPlanPoint/query", {
       params: data
     });
+  },
+  //配置方案
+  addPlan(data) {
+    return axios.post(base.api + "maintainPlan/addMaintainPlan", data);
+  },
+  //获取计划
+  getPlan(data) {
+    return axios.get(base.api + "maintainPlan/", { params: data });
+  },
+  deletePlan(data) {
+    return axios.get(base.api + "maintainPlan/deleteMaintainPlan", {
+      params: data
+    });
   }
 };
 

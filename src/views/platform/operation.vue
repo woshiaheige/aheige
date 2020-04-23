@@ -145,7 +145,6 @@
 import counter from "@/components/platform/operation/counter";
 export default {
   components: { counter },
-
   data() {
     let monthList = [];
     for (let i = 1; i < 32; i++) {

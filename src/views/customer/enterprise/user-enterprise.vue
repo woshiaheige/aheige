@@ -1,49 +1,53 @@
 <template>
-  <a-card :bordered="false" class="organization">
-    <span slot="title">
-      企业用户
-    </span>
-    <a-form layout="inline">
-      <a-form-item>
-        <a-input placeholder="姓名"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input placeholder="手机号"></a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">
-          查询
-        </a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="success" html-type="submit" @click="onEdit()">
-          新建
-        </a-button>
-      </a-form-item>
-    </a-form>
-    <a-table
-      size="middle"
-      :columns="columns"
-      :dataSource="tableData"
-      :pagination="false"
-      v-margin:top="16"
-    >
-      <span slot="action" slot-scope="row">
-        <a @click="onEdit(row)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="onDelete(row)">删除</a>
-      </span>
-    </a-table>
-    <a-pagination
-      size="small"
-      v-margin:top="16"
-      showQuickJumper
-      showSizeChanger
-      :defaultCurrent="current"
-      :total="total"
-    />
-    <add-edit :obj="obj" @cancel="cancel"></add-edit>
-  </a-card>
+  <div>
+    <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input placeholder="姓名"></a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-input placeholder="手机号"></a-input>
+        </a-form-item>
+        <a-form-item style="float: right">
+          <a-button type="primary" html-type="submit">
+            查询
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card :bordered="false" class="organization" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">用户列表</div>
+        <div class="extra">
+          <a-button type="primary" @click="onEdit('add')">
+            <a-icon type="plus" />新建
+          </a-button>
+        </div>
+      </div>
+      <a-table
+        size="middle"
+        :columns="columns"
+        :dataSource="tableData"
+        :pagination="false"
+        v-margin:top="16"
+      >
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
+      </a-table>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showQuickJumper
+        showSizeChanger
+        :defaultCurrent="current"
+        :total="total"
+      />
+      <add-edit :obj="obj" @cancel="cancel"></add-edit>
+    </a-card>
+  </div>
 </template>
 <script>
 import addEdit from "@/components/customer/enterprise/add-edit-user";

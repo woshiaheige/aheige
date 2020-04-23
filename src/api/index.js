@@ -7,10 +7,8 @@ import base from "./base";
 import common from "./common";
 import approval from "./approval/approval";
 import maintain from "./maintain/maintain";
-import iMaintain from "./i-maintain/i-maintain";
 import standing from "./standing/standing";
 import customer from "./customer/customer";
-import report from "./report/report";
 import platform from "./platform/platform";
 import login from "./login/login";
 import car from "./car/car";
@@ -25,10 +23,8 @@ export default {
   common,
   approval,
   maintain,
-  iMaintain,
   standing,
   customer,
-  report,
   platform,
   login,
   car,

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import modal from "@/components/standing/car-modal";
+import modal from "@/components/car/car-modal";
 export default {
   components: { modal },
   data() {

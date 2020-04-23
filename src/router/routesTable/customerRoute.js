@@ -10,7 +10,7 @@ const customer = [
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
-        "@/views/customer/enterprise.vue"
+        "@/views/customer/enterprise/enterprise.vue"
       )
   },
   {
@@ -24,7 +24,7 @@ const customer = [
     component: () =>
       import(
         /* webpackChunkName: "view-customer" */
-        "@/views/customer/station.vue"
+        "@/views/customer/station/station.vue"
       )
   },
   {
@@ -95,6 +95,20 @@ const customer = [
       import(
         /* webpackChunkName: "view-customer" */
         "@/views/customer/enterprise/factor.vue"
+      )
+  },
+  {
+    path: "/customer/station/device",
+    name: "customer-station-device",
+    key: "customer-station-device",
+    meta: {
+      title: "监测设备",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/station/device.vue"
       )
   }
 ];

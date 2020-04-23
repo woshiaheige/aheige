@@ -80,7 +80,7 @@
       <a-form-model-item label="运维人员" prop="memberId">
         <a-select
           v-model="formData.memberId"
-          placeholder="请输入"
+          placeholder="请选择"
           style="width: 200px"
         >
           <a-select-option
@@ -150,7 +150,7 @@ export default {
         enterpriseId: "",
         pointId: "",
         groupId: "",
-        memberId: ""
+        memberId: undefined
       },
       rules: {
         enterpriseId: [
@@ -221,7 +221,7 @@ export default {
           enterpriseId: "",
           pointId: "",
           groupId: "",
-          memberId: ""
+          memberId: undefined
         };
       }
     },
@@ -280,6 +280,8 @@ export default {
         let data = JSON.parse(JSON.stringify(this.formData));
         delete data.enterpriseName;
         delete data.pointName;
+        delete data.groupName;
+        delete data.memberName;
         data.type = 2; //突发任务
         data.flag = true;
         data.gmtCreate = this.$moment(data.gmtCreate).format(

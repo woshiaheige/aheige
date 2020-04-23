@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import modal from "@/components/approval/start-modal";
+import modal from "@/components/approval/check-modal";
 export default {
   components: { modal },
   data() {

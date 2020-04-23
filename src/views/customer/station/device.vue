@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import addEdit from "@/components/platform/device/add-edit-device";
+import addEdit from "@/components/customer/station/add-edit-device";
 export default {
   components: { addEdit },
   data() {
