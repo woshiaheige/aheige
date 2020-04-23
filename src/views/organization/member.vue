@@ -186,8 +186,6 @@ export default {
             if (res.data.state == 0) {
               _this.$message.success("删除成功");
               _this.getTableData();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },
@@ -200,16 +198,14 @@ export default {
       console.log(row);
       let _this = this;
       this.$confirm({
-        title: "锁定",
-        content: `是否锁定用户${row.name}`,
+        title: "激活",
+        content: `是否激活用户${row.name}`,
         onOk() {
           console.log("OK");
           _this.$api.organization.lockedUser({ id: row.id }).then(res => {
             if (res.data.state == 0) {
-              _this.$message.success("锁定成功");
+              _this.$message.success("激活成功");
               _this.getTableData();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },
@@ -222,16 +218,14 @@ export default {
       console.log(row);
       let _this = this;
       this.$confirm({
-        title: "激活",
-        content: `是否激活用户${row.name}`,
+        title: "锁定",
+        content: `是否锁定用户${row.name}`,
         onOk() {
           console.log("OK");
           _this.$api.organization.unlockedUser({ id: row.id }).then(res => {
             if (res.data.state == 0) {
-              _this.$message.success("激活成功");
+              _this.$message.success("锁定成功");
               _this.getTableData();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },

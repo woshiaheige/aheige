@@ -105,8 +105,6 @@ export default {
           this.$message.success("修改成功");
           this.carModal.show = false;
           this.$emit("refresh");
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -117,8 +115,6 @@ export default {
           this.$message.success("添加成功");
           this.carModal.show = false;
           this.$emit("refresh");
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },

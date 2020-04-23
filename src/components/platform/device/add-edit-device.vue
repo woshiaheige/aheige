@@ -133,27 +133,7 @@ export default {
     handleCancel() {
       this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
-      this.$refs.ruleForm.resetFields();
-    },
-    handleChange(info) {
-      let fileList = [...info.fileList];
-
-      fileList = fileList.slice(-1);
-
-      fileList = fileList.map(file => {
-        if (file.response) {
-          file.url = file.response.url;
-        }
-        return file;
-      });
-
-      this.fileList = fileList;
-      if (info.file.status === "done") {
-        this.formData.fileId = info.file.response.data;
-        this.$message.success("上传成功");
-      } else if (info.file.status === "error") {
-        this.$message.error("上传失败");
-      }
+      this.formData = this.$options.data().formData;
     },
     getEditData() {
       this.$api.customer
@@ -204,17 +184,34 @@ export default {
     }
   },
   watch: {
-    "value.show"() {
-      if (this.value.show == true) {
-        this.getStation();
-        this.getPointSelect();
-        this.getFactor();
-        this.fileList = [];
-        if (this.value.type == "edit") {
-          this.title = "编辑";
-          this.getEditData();
-        } else {
-          this.title = "新建";
+    // "value.show"() {
+    //   if (this.value.show == true) {
+    //     this.getStation();
+    //     this.getPointSelect();
+    //     this.getFactor();
+    //     this.fileList = [];
+    //     if (this.value.type == "edit") {
+    //       this.title = "编辑";
+    //       this.getEditData();
+    //     } else {
+    //       this.title = "新建";
+    //     }
+    //   }
+    // }
+    value: {
+      deep: true,
+      handler: function(nval) {
+        if (nval.show == true) {
+          this.getStation();
+          this.getPointSelect();
+          this.getFactor();
+          this.fileList = [];
+          if (nval.type == "edit") {
+            this.title = "编辑";
+            this.getEditData();
+          } else {
+            this.title = "新建";
+          }
         }
       }
     }

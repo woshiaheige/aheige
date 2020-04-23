@@ -212,8 +212,6 @@ export default {
           this.$emit("confirm");
           this.reset();
           this.$message.success("新建因子成功");
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -225,8 +223,6 @@ export default {
           this.$emit("confirm");
           this.reset();
           this.$message.success("修改因子成功");
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },

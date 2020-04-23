@@ -215,8 +215,6 @@ export default {
         if (res.data.state == 0) {
           this.knowledgeTypeDetail = res.data.data;
           this.knowledgeTypeVisible = true;
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -231,8 +229,6 @@ export default {
             if (res.data.state == 0) {
               _this.$message.success("删除成功");
               _this.knowledgeClass();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },
@@ -252,8 +248,6 @@ export default {
         if (res.data.state == 0) {
           this.articleVisible = true;
           this.articleDetail = res.data.data;
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -263,8 +257,6 @@ export default {
         if (res.data.state == 0) {
           this.articleDetailVisible = true;
           this.articleModalDetail = res.data.data;
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -282,8 +274,6 @@ export default {
               if (res.data.state == 0) {
                 _this.$message.success("删除成功");
                 _this.getTableData();
-              } else {
-                _this.$message.error(res.data.msg);
               }
             });
         },

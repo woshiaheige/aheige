@@ -35,14 +35,16 @@
                 >删除</span
               >
             </template>
-            <a-tag
-              v-for="(member, key) of item.users"
-              :key="key"
-              color="blue"
-              style="margin:5px"
-            >
-              {{ member.name }}
-            </a-tag>
+
+            <a-tooltip v-for="(member, key) of item.users" :key="key">
+              <template slot="title">
+                {{ member.name }}
+              </template>
+              <a-tag class="tag-ellipsis" color="blue" style="margin:5px">
+                {{ member.name }}
+              </a-tag>
+            </a-tooltip>
+
             <a-empty v-if="item.users.length == 0" style="width:100%" />
           </a-card>
         </a-list-item>
@@ -131,8 +133,6 @@ export default {
             if (res.data.state == 0) {
               _this.$message.success("删除成功");
               _this.getTableData();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },

@@ -108,8 +108,6 @@ export default {
           this.$message.success("修改权限成功");
           this.$emit("confirm");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     },
@@ -120,8 +118,6 @@ export default {
           this.$message.success("新建权限成功");
           this.$emit("confirm");
           this.reset();
-        } else {
-          this.$message.error(res.data.msg);
         }
       });
     }
