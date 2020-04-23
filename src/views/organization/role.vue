@@ -40,7 +40,7 @@
               color="blue"
               v-for="(role, key) of item.resourceNames"
               :key="key"
-              v-margin="10"
+              v-margin="5"
               >{{ role }}</a-tag
             >
             <a slot="title">{{ item.name }}</a>
@@ -69,7 +69,7 @@
 </template>
 <script>
 // import addEdit from "@/components/organization/role/add-edit";
-import roleTree from "@/components/organization/role-tree";
+import roleTree from "@/components/organization/role/role-tree";
 export default {
   components: { roleTree },
   data() {

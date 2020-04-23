@@ -14,40 +14,22 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="设备名称" prop="name">
+      <a-form-model-item label="设备" prop="name">
         <a-input placeholder="设备名称" v-model="formData.name" />
       </a-form-model-item>
-      <a-form-model-item label="生产厂家" prop="manufacturer">
-        <a-input placeholder="生产厂家" v-model="formData.manufacturer" />
+      <a-form-model-item label="验收时间" prop="gmtReceptionTime">
+        <a-date-picker v-width="350" v-model="formData.gmtReceptionTime" />
       </a-form-model-item>
-      <a-form-model-item label="设备型号" prop="number">
-        <a-input placeholder="设备型号" v-model="formData.number" />
-      </a-form-model-item>
-      <a-form-model-item label="设备类型" prop="type">
-        <a-select placeholder="设备类型" v-model="formData.type">
-          <a-select-option
-            v-for="item in pointOptions"
-            :key="item.value"
-            :value="Number(item.value)"
-          >
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
-      </a-form-model-item>
-      <a-form-model-item label="监测因子" prop="divisorIds">
-        <a-select
-          placeholder="监测因子"
-          mode="multiple"
-          v-model="formData.divisorIds"
+      <a-form-model-item label="验收材料">
+        <a-upload
+          name="file"
+          :multiple="true"
+          :action="$base.api + 'files/uploadFile'"
+          :fileList="fileList"
+          @change="handleChange"
         >
-          <a-select-option
-            v-for="item in factorOptions"
-            :key="item.id"
-            :value="item.id"
-          >
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
+          <a-button> <a-icon type="upload" /> 上传材料</a-button>
+        </a-upload>
       </a-form-model-item>
     </a-form-model>
   </a-modal>

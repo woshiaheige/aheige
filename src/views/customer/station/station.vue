@@ -55,6 +55,8 @@
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
           <a-divider type="vertical" />
+          <a @click="goDevice(row)">添加设备</a>
+          <a-divider type="vertical" />
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
           <a @click="onDelete(row)">删除</a>
@@ -173,6 +175,12 @@ export default {
     goFactor(row) {
       this.$router.push({
         path: "/customer/station/factor",
+        query: { id: row.id }
+      });
+    },
+    goDevice(row) {
+      this.$router.push({
+        path: "/customer/station/device",
         query: { id: row.id }
       });
     },

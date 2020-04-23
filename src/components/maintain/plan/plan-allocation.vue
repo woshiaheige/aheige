@@ -5,17 +5,11 @@
       :placement="placement"
       :closable="false"
       @close="onClose"
-      :width="1100"
+      :width="1150"
       :visible="visible"
     >
       <a-card :bordered="false">
         <a-form-model ref="form" :model="form" :rules="rules" layout="inline">
-          <a-form-model-item label="计划名称" prop="name">
-            <a-input v-model="form.name" placeholder="请输入"></a-input>
-          </a-form-model-item>
-          <a-form-model-item label="运维期限" prop="range">
-            <a-range-picker v-model="form.range"></a-range-picker>
-          </a-form-model-item>
           <a-form-model-item label="计划类别" prop="type">
             <a-select v-model="form.type">
               <a-select-option :value="1">周计划</a-select-option>
@@ -23,11 +17,17 @@
             </a-select>
           </a-form-model-item>
           <a-form-model-item label="计划日期">
-            <a-select v-model="form.date">
+            <a-select v-model="form.date" v-width="80">
               <a-select-option v-for="item in dateList" :key="item.value">{{
                 item.name
               }}</a-select-option>
             </a-select>
+          </a-form-model-item>
+          <a-form-model-item label="计划名称" prop="name">
+            <a-input v-model="form.name" placeholder="请输入"></a-input>
+          </a-form-model-item>
+          <a-form-model-item label="运维期限" prop="range">
+            <a-range-picker v-model="form.range"></a-range-picker>
           </a-form-model-item>
         </a-form-model>
         <a-divider></a-divider>
@@ -100,8 +100,13 @@ export default {
         this.getScheme();
       }
     },
-    "form.type"() {
+    "form.type"(newVal) {
       this.getScheme();
+      if (newVal == 1) {
+        this.form.date = 0;
+      } else if (newVal == 2) {
+        this.form.date = 1;
+      }
     }
   },
   computed: {

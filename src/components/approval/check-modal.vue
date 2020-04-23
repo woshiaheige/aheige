@@ -34,8 +34,7 @@
     <div slot="footer">
       <a-button @click="cancel">取消</a-button>
       <a-button type="primary">通过</a-button>
-      <a-button type="primary">拒绝</a-button>
-      <a-button type="primary">转交</a-button>
+      <a-button type="danger">拒绝</a-button>
     </div>
   </a-modal>
 </template>

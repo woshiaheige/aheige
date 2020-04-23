@@ -14,9 +14,9 @@ const maintainRoutes = [
       )
   },
   {
-    path: "/approval/approval-start",
-    name: "approval-start",
-    key: "approval-start",
+    path: "/approval/my-approval",
+    name: "my-approval",
+    key: "my-approval",
     meta: {
       title: "我的审批",
       back: false
@@ -24,7 +24,7 @@ const maintainRoutes = [
     component: () =>
       import(
         /* webpackChunkName: "view-approval" */
-        "@/views/approval/approval-start.vue"
+        "@/views/approval/my-approval.vue"
       )
   }
 ];
