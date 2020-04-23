@@ -27,7 +27,7 @@
         :loading="loading"
       >
         <a-list-item slot="renderItem" slot-scope="item">
-          <a slot="actions" @click="onRole(item)">编辑</a>
+          <a slot="actions" @click="onRole(item)" v-if="item.id != 1">编辑</a>
           <a
             slot="actions"
             @click="onDelete(item)"
@@ -139,8 +139,6 @@ export default {
             if (res.data.state == 0) {
               _this.$message.success("删除成功");
               _this.getTableData();
-            } else {
-              _this.$message.error(res.data.msg);
             }
           });
         },

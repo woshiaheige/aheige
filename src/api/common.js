@@ -100,7 +100,8 @@ const common = {
       }
     });
   },
-  uploadFileApi: base.api + "files/upload"
+  uploadFileApi: base.api + "files/upload",
+  fileViewOnline: base.api + "files/view/" //在线显示文件
 };
 
 export default common;
