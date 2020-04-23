@@ -84,6 +84,20 @@ const customer = [
       )
   },
   {
+    path: "/customer/enterprise/device",
+    name: "customer-enterprise-device",
+    key: "customer-enterprise-device",
+    meta: {
+      title: "监测设备",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-customer" */
+        "@/views/customer/station/device.vue"
+      )
+  },
+  {
     path: "/customer/station/factor",
     name: "customer-station-factor",
     key: "customer-station-factor",
