@@ -55,6 +55,7 @@
           <a-icon
             type="logout"
             :style="{ fontSize: '24px', marginLeft: '16px' }"
+            @click="signOut"
           />
         </div>
       </a-layout-header>
@@ -329,6 +330,19 @@ export default {
     }
   },
   methods: {
+    //退出
+    signOut() {
+      let that = this;
+      this.$confirm({
+        title: "退出",
+        content: "是否退出？",
+        onOk() {
+          sessionStorage.removeItem("token");
+          that.$router.push("/login");
+        },
+        onCancel() {}
+      });
+    },
     changeMenu(object) {
       for (let i in routeTable[1].children) {
         if (routeTable[1].children[i].key === object.key) {
