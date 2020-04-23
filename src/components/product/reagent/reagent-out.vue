@@ -1,5 +1,10 @@
 <template>
-  <a-modal :title="title" :visible="modelData.show" @cancel="handleCancel">
+  <a-modal
+    :title="title"
+    :visible="modelData.show"
+    @cancel="handleCancel"
+    :width="800"
+  >
     <div v-margin:bottom="25">
       <a-table
         rowKey="id"
@@ -48,19 +53,34 @@ export default {
       title: "",
       columns: [
         {
+          title: "企业",
+          dataIndex: "enterpriseName"
+        },
+        {
+          title: "监控点",
+          dataIndex: "pointName"
+        },
+        {
+          title: "设备",
+          dataIndex: "devName"
+        },
+        {
           title: "数量",
           dataIndex: "stockCount",
-          align: "center"
+          align: "center",
+          width: 100
         },
         {
           title: "时间",
           dataIndex: "gmtCreate",
-          align: "center"
+          align: "center",
+          width: 150
         },
         {
           title: "操作人",
           dataIndex: "username",
-          align: "center"
+          align: "center",
+          width: 100
         }
       ],
       tableData: []
@@ -104,7 +124,7 @@ export default {
         this.current = 1;
         this.pageSize = 10;
         this.getTableData();
-        this.title = this.modelData.row.name + "库存详情";
+        this.title = this.modelData.row.name + "出库详情";
       }
     }
   }

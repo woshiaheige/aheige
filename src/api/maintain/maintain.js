@@ -199,6 +199,9 @@ const maintain = {
     return axios.get(base.api + "maintainPlan/deleteMaintainPlan", {
       params: data
     });
+  },
+  editPlan(data) {
+    return axios.get(base.api + "maintainPlan/editMaintainPlan", data);
   }
 };
 

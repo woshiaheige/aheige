@@ -71,6 +71,12 @@ const common = {
       params: data
     });
   },
+  //所有设备下拉
+  selectDevice(data) {
+    return axios.get(base.api + "sysInstrument/query", {
+      params: data
+    });
+  },
   //区域树
   getTreeByName(data) {
     return axios.get(base.api + "sysRegion/getTreeByName", {

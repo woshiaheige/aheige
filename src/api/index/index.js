@@ -31,6 +31,28 @@ const index = {
     return axios.get(base.api + "operation/monitor/reminds", {
       params: data
     });
+  },
+  //客户投诉详情
+  getComplaintById(data) {
+    return axios.get(base.api + "manageComplaint/getManageComplaintById", {
+      params: data
+    });
+  },
+  //合同提醒详情
+  getContractById(data) {
+    return axios.get(base.api + "contract/getCusContractById", {
+      params: data
+    });
+  },
+  //站点报警详情
+  getPointById(data) {
+    return axios.get(base.api + "divisor/warns/", {
+      params: data
+    });
+  },
+  //关闭报警
+  closeMsg(data) {
+    return axios.post(base.api + "sysMsg/editSysMsg", data);
   }
 };
 
