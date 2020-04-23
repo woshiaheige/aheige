@@ -41,9 +41,7 @@
       > -->
     </a-row>
     <div slot="footer">
-      <a-button @click="cancel">取消</a-button>
-      <a-button type="primary" @click="approvalClick(true)">通过</a-button>
-      <a-button type="danger" @click="approvalClick(false)">拒绝</a-button>
+      <a-button @click="cancel">关闭</a-button>
     </div>
   </a-modal>
 </template>
@@ -87,26 +85,6 @@ export default {
     }
   },
   methods: {
-    approvalClick(state) {
-      let data = {
-        taskId: this.obj.info.taskId,
-        pass: state,
-        approvalId: this.id
-      };
-      this.$api.approval
-        .getApprovalTask(data)
-        .then(res => {
-          console.log(res);
-          if (res.data.state == 0) {
-            this.$message.success("审核成功");
-            this.$emit("cancel");
-            this.$emit("getTableData");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     getTaskInfo() {
       let data = {
         id: this.id
