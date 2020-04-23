@@ -78,8 +78,10 @@
           <a-tag color="blue" v-if="type == 2">转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
-          <a-badge status="success" text="通过" v-if="state == 1" />
-          <a-badge status="success" text="驳回" v-if="state == 2" />
+          <a-tag v-if="state == 1" color="green">未处理</a-tag>
+          <a-tag v-if="state == 2" color="cyan">处理中</a-tag>
+          <a-tag v-if="state == 3" color="blue">通过</a-tag>
+          <a-tag v-if="state == 4" color="red">未通过</a-tag>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="check(row)">查看</a>
@@ -97,24 +99,25 @@
         @showSizeChange="sizechange"
         :total="total"
       />
-      <modal v-model="modalInfo"> </modal>
+      <modal :obj="modalInfo" :visible="visible" @cancel="onCancel"> </modal>
     </a-card>
   </div>
 </template>
 
 <script>
-import modal from "@/components/approval/check-modal";
+import modal from "@/components/approval/show-modal";
 export default {
   components: { modal },
   data() {
     return {
+      visible: false,
       countData: {
         waitCount: 0,
         rejectCount: 0,
         approvalCount: 0,
         complateCount: 0
       },
-      modalInfo: { show: false },
+      modalInfo: {},
       current: 1,
       total: 0,
       pagesize: 10,
@@ -175,6 +178,9 @@ export default {
     this.getApprovalCount();
   },
   methods: {
+    onCancel() {
+      this.visible = false;
+    },
     callback(key) {
       console.log(key);
     },
@@ -183,6 +189,7 @@ export default {
       this.selectedRowKeys = selectedRowKeys;
     },
     check(row) {
+      this.visible = true;
       this.modalInfo = {
         show: true,
         info: row
