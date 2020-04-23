@@ -27,7 +27,7 @@
         />
       </a-form-item>
       <a-form-item label="密码">
-        <a-input
+        <a-input-password
           placeholder="请输入"
           type="password"
           v-decorator="[
