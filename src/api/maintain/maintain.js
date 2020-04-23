@@ -201,7 +201,7 @@ const maintain = {
     });
   },
   editPlan(data) {
-    return axios.get(base.api + "maintainPlan/editMaintainPlan", data);
+    return axios.post(base.api + "maintainPlan/editMaintainPlan", data);
   }
 };
 
