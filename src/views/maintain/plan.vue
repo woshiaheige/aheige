@@ -24,8 +24,8 @@
                 buttonStyle="solid"
                 v-model="currentType"
               >
-                <a-radio-button :value="31">水类站点</a-radio-button>
-                <a-radio-button :value="32">气类站点</a-radio-button>
+                <a-radio-button :value="31">气类站点</a-radio-button>
+                <a-radio-button :value="32">水类站点</a-radio-button>
                 <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
               <a-menu v-model="currentStation" mode="vertical">

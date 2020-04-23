@@ -109,7 +109,6 @@ export default {
       this.$api.maintain.editScheme(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("编辑成功");
-          this.reset();
           this.closeModal();
         }
       });
@@ -124,7 +123,6 @@ export default {
       this.$api.maintain.addScheme(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("添加成功");
-          this.reset();
           this.closeModal();
         }
       });
