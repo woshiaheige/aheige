@@ -55,7 +55,7 @@
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
           <a-divider type="vertical" />
-          <a @click="goDevice(row)">添加设备</a>
+          <a @click="goDevice(row)">监测设备</a>
           <a-divider type="vertical" />
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />

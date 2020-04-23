@@ -150,7 +150,7 @@ export default {
         },
         {
           title: "运维小组",
-          dataIndex: "group"
+          dataIndex: "groupName"
         },
         {
           title: "计划状态",
