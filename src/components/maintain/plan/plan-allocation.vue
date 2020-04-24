@@ -2,7 +2,7 @@
   <div>
     <a-drawer
       :title="title"
-      :placement="placement"
+      placement="right"
       @close="onClose"
       :width="1150"
       :visible="visible"
@@ -10,13 +10,23 @@
       <a-card :bordered="false">
         <a-form-model ref="form" :model="form" :rules="rules" layout="inline">
           <a-form-model-item label="计划类别" prop="type">
-            <a-select v-model="form.type" @change="handleChangeType">
+            <a-select
+              v-model="form.type"
+              @change="handleChangeType"
+              showSearch
+              :filterOption="filterOption"
+            >
               <a-select-option :value="1">周计划</a-select-option>
               <a-select-option :value="2">月计划</a-select-option>
             </a-select>
           </a-form-model-item>
           <a-form-model-item label="计划日期">
-            <a-select v-model="form.date" v-width="80">
+            <a-select
+              v-model="form.date"
+              v-width="80"
+              showSearch
+              :filterOption="filterOption"
+            >
               <a-select-option v-for="item in dateList" :key="item.value">{{
                 item.name
               }}</a-select-option>
@@ -68,7 +78,6 @@ export default {
   },
   data() {
     return {
-      placement: "right",
       form: {
         name: "",
         range: [],

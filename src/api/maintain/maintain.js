@@ -209,15 +209,21 @@ const maintain = {
       params: data
     });
   },
-  //获取计划看板
+  //获取日计划看板
   getMonthPlanBoard(data) {
     return axios.get(base.api + "plan/board/getMonthPlanBoard", {
       params: data
     });
   },
-  //获取计划详情
+  //获取日计划详情
   getMonthPlanBoardData(data) {
     return axios.get(base.api + "plan/board/getMonthPlanBoardData", {
+      params: data
+    });
+  },
+  //获取月份计划详情
+  getCountPlanTask(data) {
+    return axios.get(base.api + "plan/board/getCountPlanTask", {
       params: data
     });
   }

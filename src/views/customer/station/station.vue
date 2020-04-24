@@ -3,16 +3,34 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-input placeholder="请输入" v-model="list.name"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.name"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="监控点名称">
-          <a-input placeholder="请输入" v-model="list.pointName"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.pointName"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="MN号码">
-          <a-input placeholder="请输入" v-model="list.mn"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.mn"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="监控点类型">
-          <a-select placeholder="请选择" v-width="150" v-model="list.type">
+          <a-select
+            placeholder="请选择"
+            v-width="150"
+            v-model="list.type"
+            showSearch
+            :filterOption="filterOption"
+          >
             <a-select-option
               v-for="item in pointOptions"
               :key="item.value"

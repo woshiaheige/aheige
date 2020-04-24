@@ -19,6 +19,8 @@
           placeholder="所属企业"
           v-model="formData.enterpriseId"
           :disabled="isDisabled"
+          showSearch
+          :filterOption="filterOption"
         >
           <a-select-option
             v-for="item in enterpriseList"
@@ -36,7 +38,12 @@
         <a-input v-model="formData.mn" placeholder="MN号码" />
       </a-form-model-item>
       <a-form-model-item label="所属小组" prop="groupId">
-        <a-select placeholder="所属小组" v-model="formData.groupId">
+        <a-select
+          placeholder="所属小组"
+          v-model="formData.groupId"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in groupOptions"
             :key="item.id"
@@ -56,7 +63,12 @@
         </div>
       </a-form-model-item>
       <a-form-model-item label="监测点类型" prop="type">
-        <a-select placeholder="监测点类型" v-model="formData.type">
+        <a-select
+          placeholder="监测点类型"
+          v-model="formData.type"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in pointOptions"
             :key="item.value"
@@ -67,7 +79,12 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="传输类型" prop="transferType">
-        <a-select v-model="formData.transferType" placeholder="传输类型">
+        <a-select
+          v-model="formData.transferType"
+          placeholder="传输类型"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in transferList"
             :key="item.id"
@@ -78,7 +95,12 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="传输协议" prop="protocolType">
-        <a-select v-model="formData.protocolType" placeholder="传输协议">
+        <a-select
+          v-model="formData.protocolType"
+          placeholder="传输协议"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in protocolList"
             :key="item.id"

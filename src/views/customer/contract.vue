@@ -3,13 +3,27 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-input placeholder="请输入" v-model="list.name"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.name"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="合同编号">
-          <a-input placeholder="请输入" v-model="list.number"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.number"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="合同状态">
-          <a-select placeholder="请选择" v-width="150" v-model="list.state">
+          <a-select
+            placeholder="请选择"
+            v-width="150"
+            v-model="list.state"
+            showSearch
+            :filterOption="filterOption"
+          >
             <a-select-option
               v-for="item in statusOption"
               :key="item.value"

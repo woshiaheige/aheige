@@ -15,7 +15,12 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="设备" prop="pointId">
-        <a-select v-model="formData.pointId" placeholder="设备">
+        <a-select
+          v-model="formData.pointId"
+          placeholder="设备"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="(item, index) in deviceOptions"
             :key="index"

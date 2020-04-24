@@ -3,7 +3,11 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-input placeholder="请输入" v-model="list.name"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.name"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="控制级别">
           <a-select
@@ -11,6 +15,8 @@
             allowClear
             v-width="150"
             v-model="list.level"
+            showSearch
+            :filterOption="filterOption"
           >
             <a-select-option
               v-for="item in controlOptions"
