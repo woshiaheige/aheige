@@ -15,12 +15,16 @@ const event = {
       this.pageSize = pageSize;
       this.getTableData();
     },
-    debounceFn(func, wait = 500) {
+    debounceFn(fn, delay = 500) {
       //节流
-      let timer;
-      return () => {
+      var timer = null;
+      return function() {
+        var context = this;
+        var args = arguments;
         clearTimeout(timer);
-        timer = setTimeout(func, wait);
+        timer = setTimeout(function() {
+          fn.apply(context, args);
+        }, delay);
       };
     },
     //下拉框过滤

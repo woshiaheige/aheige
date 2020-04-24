@@ -45,12 +45,14 @@
           placeholder="请选择"
           mode="multiple"
           v-model="formData.divisorIds"
-          showSearch
-          :filterOption="filterOptions"
+          :filterOption="false"
+          @search="searchDivisor"
+          :notFoundContent="fetching ? undefined : null"
         >
+          <a-spin v-if="fetching" slot="notFoundContent" size="small" />
           <a-select-option
-            v-for="item in factorOptions"
-            :key="item.id"
+            v-for="(item, index) in factorOptions"
+            :key="index"
             :value="item.id"
           >
             {{ item.name }}
@@ -62,12 +64,16 @@
 </template>
 <script>
 import base from "@/api/base";
+
+// import debounce from "lodash/debounce";
 export default {
   props: {
     value: Object
   },
   data() {
     return {
+      fetching: false, //搜索中
+      lastFetchId: 0,
       title: "新建",
       stationOptions: [],
       pointOptions: [],
@@ -104,6 +110,28 @@ export default {
     console.log(base.api);
   },
   methods: {
+    //因子下拉
+    searchDivisor(value) {
+      console.log(111);
+      const fetchId = this.lastFetchId;
+      this.data = [];
+      this.fetching = true;
+      let params = {
+        size: 20,
+        page: 1,
+        name: value
+      };
+      this.$api.platform.sysDivisor(params).then(res => {
+        if (res.data.state == 0) {
+          if (fetchId !== this.lastFetchId) {
+            // for fetch callback order
+            return;
+          }
+          this.factorOptions = res.data.data.records;
+          this.fetching = false;
+        }
+      });
+    },
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
@@ -171,6 +199,7 @@ export default {
               );
             }
             this.formData = res.data.data;
+            this.getDivisorList();
           }
         });
     },
@@ -189,37 +218,23 @@ export default {
         this.pointOptions = res.data;
       });
     },
-    //因子下拉
-    getFactor() {
-      this.$api.common.selectFactor().then(res => {
+    getDivisorList() {
+      let params = { divisorIds: this.formData.divisorIds };
+      this.$api.common.listByIds(params).then(res => {
         if (res.data.state == 0) {
           this.factorOptions = res.data.data;
+          console.log(this.factorOptions, 5555);
         }
       });
     }
   },
   watch: {
-    // "value.show"() {
-    //   if (this.value.show == true) {
-    //     this.getStation();
-    //     this.getPointSelect();
-    //     this.getFactor();
-    //     this.fileList = [];
-    //     if (this.value.type == "edit") {
-    //       this.title = "编辑";
-    //       this.getEditData();
-    //     } else {
-    //       this.title = "新建";
-    //     }
-    //   }
-    // }
     value: {
       deep: true,
       handler: function(nval) {
         if (nval.show == true) {
           this.getStation();
           this.getPointSelect();
-          this.getFactor();
           this.fileList = [];
           if (nval.type == "edit") {
             this.title = "编辑";

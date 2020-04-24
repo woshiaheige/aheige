@@ -88,8 +88,8 @@
                 v-for="(item, index) of monthList"
                 :key="index"
                 >{{ item.label }}</a-select-option
-              >
-            </a-select>
+              > </a-select
+            ><span v-margin:left="10">号</span>
           </a-form-item>
         </a-col>
       </a-row>
