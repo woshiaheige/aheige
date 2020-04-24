@@ -217,8 +217,7 @@ export default {
             let result = res.data.data;
             this.formData = result;
             if (result.longitude != null && result.latitude != null)
-              this.formData.lngandlat =
-                result.longitude + "," + result.latitude;
+              this.lngandlat = result.longitude + "," + result.latitude;
           }
         });
     },
@@ -237,6 +236,8 @@ export default {
     },
     getModal(data) {
       this.formData.address = data.address;
+      this.formData.longitude = data.lnglat[0];
+      this.formData.latitude = data.lnglat[1];
       this.lngandlat = data.lnglat.join();
     },
     getGroup() {
