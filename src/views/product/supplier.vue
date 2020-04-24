@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     getTableData() {
-      this.loading = false;
+      this.loading = true;
       let data = {
         page: this.current,
         size: this.pagesize,
@@ -122,12 +122,15 @@ export default {
           if (res.data.state == 0) {
             this.tableData = res.data.data.records || [];
             this.total = Number(res.data.data.total);
+            this.loading = false;
           }
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
+          this.loading = false;
         })
-        .finally(() => {});
+        .finally(() => {
+          this.loading = false;
+        });
     },
     onEdit(row) {
       this.modalInfo.show = true;

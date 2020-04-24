@@ -46,7 +46,10 @@
                   :spinning="spinning"
                   style="margin-top: 50%; margin-left: 50%; transform: translateY(-50%)"
                 />
-                <a-empty v-margin:top="16" v-if="stationList.length <= 0" />
+                <a-empty
+                  v-margin:top="16"
+                  v-if="stationList.length <= 0 && spinning == false"
+                />
               </a-menu>
             </a-tab-pane>
           </a-tabs>
