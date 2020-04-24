@@ -133,13 +133,15 @@ export default {
           dataIndex: "state",
           key: "state",
           align: "center",
-          scopedSlots: { customRender: "state" }
+          scopedSlots: { customRender: "state" },
+          width: 110
         },
         {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          width: 110
         }
       ],
       tableData: []

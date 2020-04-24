@@ -5,6 +5,7 @@
     :width="800"
     @ok="define"
     @cancel="cancel"
+    :maskClosable="false"
   >
     <a-row v-if="monitor.isShow">
       <!-- 超时时间与重发次数 -->

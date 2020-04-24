@@ -70,6 +70,37 @@ const customer = {
       params: data
     });
   },
+  //根据监测点获取设备列表
+  getDeviceListByPointId(data) {
+    return axios.get(base.api + "sysInstrument/pageByPointId", {
+      params: data
+    });
+  },
+  addDeviceByPointId(data) {
+    return axios.post(
+      base.api + "cusPointInstrument/addCusPointInstrument",
+      data
+    );
+  },
+  editDeviceByPointId(data) {
+    return axios.post(
+      base.api + "cusPointInstrument/editCusPointInstrument",
+      data
+    );
+  },
+  delDeviceByPointId(data) {
+    return axios.get(base.api + "cusPointInstrument/deleteCusPointInstrument", {
+      params: data
+    });
+  },
+  getDeviceByPointId(data) {
+    return axios.get(
+      base.api + "cusPointInstrument/getCusPointInstrumentById",
+      {
+        params: data
+      }
+    );
+  },
   //获取设备列表
   getDeviceList(data) {
     return axios.get(base.api + "sysInstrument/", {
@@ -111,6 +142,34 @@ const customer = {
   },
   getContractById(data) {
     return axios.get(base.api + "contract/getCusContractById", {
+      params: data
+    });
+  },
+  //获取企业用户列表
+  getEnterpriseList(data) {
+    return axios.get(base.api + "sysEnterpriseUser/", {
+      params: data
+    });
+  },
+  addEnterprise(data) {
+    return axios.post(
+      base.api + "sysEnterpriseUser/addSysEnterpriseUser",
+      data
+    );
+  },
+  editEnterprise(data) {
+    return axios.post(
+      base.api + "sysEnterpriseUser/editSysEnterpriseUser",
+      data
+    );
+  },
+  delEnterprise(data) {
+    return axios.get(base.api + "sysEnterpriseUser/deleteSysEnterpriseUser", {
+      params: data
+    });
+  },
+  getEnterpriseById(data) {
+    return axios.get(base.api + "sysEnterpriseUser/getSysEnterpriseUserById", {
       params: data
     });
   },
