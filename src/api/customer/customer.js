@@ -70,14 +70,40 @@ const customer = {
       params: data
     });
   },
-  //获取设备列表
-  getDeviceList(data) {
-    return axios.get(base.api + "sysInstrument/", {
+  //根据监测点获取设备列表
+  getDeviceListByPointId(data) {
+    return axios.get(base.api + "sysInstrument/pageByPointId", {
       params: data
     });
   },
-  getDeviceListByPointId(data) {
-    return axios.get(base.api + "sysInstrument/pageByPointId", {
+  addDeviceByPointId(data) {
+    return axios.post(
+      base.api + "cusPointInstrument/addCusPointInstrument",
+      data
+    );
+  },
+  editDeviceByPointId(data) {
+    return axios.post(
+      base.api + "cusPointInstrument/editCusPointInstrument",
+      data
+    );
+  },
+  delDeviceByPointId(data) {
+    return axios.get(base.api + "cusPointInstrument/deleteCusPointInstrument", {
+      params: data
+    });
+  },
+  getDeviceByPointId(data) {
+    return axios.get(
+      base.api + "cusPointInstrument/getCusPointInstrumentById",
+      {
+        params: data
+      }
+    );
+  },
+  //获取设备列表
+  getDeviceList(data) {
+    return axios.get(base.api + "sysInstrument/", {
       params: data
     });
   },

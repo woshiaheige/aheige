@@ -132,13 +132,15 @@ export default {
           key: "transferType",
           dataIndex: "transferType",
           align: "center",
-          scopedSlots: { customRender: "transferType" }
+          scopedSlots: { customRender: "transferType" },
+          width: 110
         },
         {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          width: 255
         }
       ],
       tableData: [],

@@ -115,7 +115,8 @@ export default {
           dataIndex: "type",
           key: "type",
           align: "center",
-          scopedSlots: { customRender: "type" }
+          scopedSlots: { customRender: "type" },
+          width: 110
         },
         {
           title: "验收时间",
@@ -125,13 +126,16 @@ export default {
         {
           title: "验收材料",
           key: "downLoad",
-          scopedSlots: { customRender: "downLoad" }
+          scopedSlots: { customRender: "downLoad" },
+          align: "center",
+          width: 110
         },
         {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          width: 110
         }
       ],
       tableData: [],

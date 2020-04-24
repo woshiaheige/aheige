@@ -143,13 +143,13 @@ export default {
           key: "controlLevel",
           scopedSlots: { customRender: "controlLevel" },
           align: "center",
-          width: 150
+          width: 120
         },
         {
           title: "行业类型",
           dataIndex: "industryName",
           key: "industryName",
-          width: 150
+          width: 120
         },
         {
           title: "环保负责人",

@@ -2,14 +2,14 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item>
-          <a-input placeholder="姓名"></a-input>
+        <a-form-item label="姓名">
+          <a-input placeholder="请输入" v-model="list.name"></a-input>
         </a-form-item>
-        <a-form-item>
-          <a-input placeholder="手机号"></a-input>
+        <a-form-item label="手机号">
+          <a-input placeholder="请输入" v-model="list.phone"></a-input>
         </a-form-item>
         <a-form-item style="float: right">
-          <a-button type="primary" html-type="submit">
+          <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
         </a-form-item>
@@ -25,14 +25,16 @@
         </div>
       </div>
       <a-table
+        rowKey="id"
         size="middle"
         :columns="columns"
         :dataSource="tableData"
         :pagination="false"
         v-margin:top="16"
+        :loading="loading"
       >
         <span slot="action" slot-scope="row">
-          <a @click="onEdit(row)">编辑</a>
+          <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
           <a @click="onDelete(row)">删除</a>
         </span>
@@ -40,12 +42,15 @@
       <a-pagination
         size="small"
         v-margin:top="16"
-        showQuickJumper
         showSizeChanger
         :defaultCurrent="current"
+        :pageSize.sync="pageSize"
         :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        @change="pagechange"
+        @showSizeChange="sizechange"
       />
-      <add-edit :obj="obj" @cancel="cancel"></add-edit>
+      <add-edit v-model="obj" @refresh="getTableData"></add-edit>
     </a-card>
   </div>
 </template>
@@ -56,15 +61,17 @@ export default {
   data() {
     return {
       current: 1,
-      total: 0,
+      pageSize: 10,
+      total: 1,
+      loading: false,
       columns: [
-        {
-          title: "序号",
-          customRender: (text, row, index) => `${index + 1}`
-        },
+        // {
+        //   title: "序号",
+        //   customRender: (text, row, index) => `${index + 1}`
+        // },
         {
           title: "企业名称",
-          dataIndex: "department"
+          dataIndex: "enterpriseName"
         },
         {
           title: "姓名",
@@ -72,62 +79,81 @@ export default {
         },
         {
           title: "账号",
-          dataIndex: "tel"
+          dataIndex: "username"
         },
         {
           title: "手机",
-          dataIndex: "tel"
+          dataIndex: "phone"
+        },
+        {
+          title: "是否绑定微信",
+          dataIndex: "isBinding"
         },
         {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
-          align: "center"
+          align: "center",
+          width: 150
         }
       ],
-      tableData: [
-        {
-          department: "化一环境有限公司",
-          name: "张三",
-          tel: "13888888888"
-        }
-      ],
+      tableData: [],
       obj: {
         show: false
       },
-      checkObj: {
-        show: false
-      }
+      list: {}
     };
   },
   methods: {
     getTableData() {
-      // this.$api.maintain.getMemberList().then(res => {
-      //   this.tableData = res.data.data;
-      //   this.total = res.data.total;
-      // });
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        enterpriseId: this.$route.query.id,
+        name: this.list.name,
+        phone: this.list.phone
+      };
+      this.loading = true;
+      this.$api.customer
+        .getEnterpriseList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
-    onEdit(row) {
-      console.log(row);
+    onEdit(type, row) {
       this.obj.show = true;
+      this.obj.type = type;
       this.obj.row = row;
     },
     onDelete(row) {
-      console.log(row);
+      let that = this;
       this.$confirm({
         title: "删除",
         content: "是否删除",
         onOk() {
-          console.log("OK");
+          that.$api.customer
+            .delEnterprise({
+              id: row.id
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("删除成功");
+                that.getTableData();
+              }
+            });
         },
         onCancel() {
           console.log("Cancel");
         }
       });
-    },
-    cancel(value) {
-      this.obj.show = value;
-      this.checkObj.show = value;
     }
   },
   mounted() {
