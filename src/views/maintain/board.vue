@@ -1,7 +1,11 @@
 <template>
   <div>
     <a-card :bordered="false">
-      <a-calendar @select="selectCalendar" v-model="nowDay">
+      <a-calendar
+        @select="selectCalendar"
+        v-model="nowDay"
+        @panelChange="panelChange"
+      >
         <ul
           class="events"
           slot="dateCellRender"
@@ -17,21 +21,40 @@
               <template slot="content">
                 <P v-for="(value, key) of taskList" :key="key"
                   >{{ value.enterpriseName }}-{{ value.pointName }}
-                  {{ value.groupName }}-{{ value.userName }}
+                  {{ value.groupName }}-{{ value.userName }} 运维任务-{{
+                    value.task
+                  }}
                 </P>
               </template>
               <a-badge
-                :status="'default'"
+                v-show="item.status == 1"
+                status="default"
+                :text="item.name"
+                :title="item.name"
+              />
+              <a-badge
+                v-show="item.status == 2"
+                status="success"
+                :text="item.name"
+                :title="item.name"
+              />
+              <a-badge
+                v-show="item.status == 3"
+                status="warning"
                 :text="item.name"
                 :title="item.name"
               />
             </a-popover>
           </li>
         </ul>
-        <template slot="monthCellRender" slot-scope="value">
-          <div v-if="getMonthData(value)" class="notes-month">
-            <section>{{ getMonthData(value) }}</section>
-            <span>Backlog number</span>
+        <!-- 月看板 -->
+        <template
+          slot="monthCellRender"
+          slot-scope="value"
+          v-if="monthList.length != 0"
+        >
+          <div class="notes-month">
+            {{ getMonthData(value).count }}
           </div>
         </template>
       </a-calendar>
@@ -46,7 +69,8 @@ export default {
     return {
       nowDay: this.$moment(),
       planList: [], //计划
-      taskList: [] //任务
+      taskList: [], //任务
+      monthList: [] //月数量统计
     };
   },
   watch: {
@@ -59,10 +83,25 @@ export default {
     selectCalendar(e) {
       console.log(e);
     },
+    panelChange(time) {
+      //面板改变
+      let params = {
+        year: time.format("YYYY")
+      };
+      this.$api.maintain.getCountPlanTask(params).then(res => {
+        if (res.data.state == 0) {
+          this.monthList = res.data.data;
+        }
+      });
+    },
     getListData(value) {
       let listData = [];
       this.planList.forEach(item => {
-        if (this.$moment(item.gmtExecution).format("DD") == value.date()) {
+        if (
+          this.$moment(item.gmtExecution).format("YYYY") == value.year() &&
+          this.$moment(item.gmtExecution).format("DD") == value.date() &&
+          this.$moment(item.gmtExecution).format("M") == value.month() + 1
+        ) {
           listData.push(item);
         }
       });
@@ -77,12 +116,11 @@ export default {
       this.$api.maintain.getMonthPlanBoard(params).then(res => {
         if (res.data.state == 0) {
           this.planList = res.data.data;
-          console.log(res.data.data);
         }
       });
     },
     getDetail(item) {
-      //获取计划详情
+      //获取日计划详情
       let params = {
         planId: item.id,
         time: this.$moment(item.gmtExecution).format("YYYY-MM-DD")
@@ -93,16 +131,26 @@ export default {
         }
       });
     },
-
     getMonthData(value) {
-      if (value.month() === 8) {
-        return 1394;
-      }
+      let count;
+      this.monthList.forEach(item => {
+        if (
+          this.$moment(item.gmtExecution1).format("YYYY") == value.year() &&
+          this.$moment(item.gmtExecution1).format("MM") == value.month() + 1
+        ) {
+          count = item;
+        }
+      });
+      return count || {};
+    },
+    // getMonthData(value) {
+    //   if (value.month() === 8) {
+    //     return 1394;
+    //   }
+    // },
+    getCountPlanTask() {
+      this.$api.getCountPlanTask();
     }
-  },
-  mounted() {
-    // console.log(this.nowDay.format("YYYY"), this.nowDay.format("MM"));
-    // this.getMonthPlanBoard();
   }
 };
 </script>
