@@ -1,17 +1,29 @@
 <template>
   <div>
     <a-card :bordered="false">
-      <a-calendar @select="selectCalendar">
-        <ul class="events" slot="dateCellRender" slot-scope="value">
-          <li v-for="item in getListData(value)" :key="item.content">
-            <a-popover>
+      <a-calendar @select="selectCalendar" v-model="nowDay">
+        <ul
+          class="events"
+          slot="dateCellRender"
+          slot-scope="value"
+          v-if="planList.length != 0"
+        >
+          <li v-for="(item, index) in getListData(value)" :key="index">
+            <a-popover
+              @click="getDetail(item)"
+              trigger="click"
+              placement="leftTop"
+            >
               <template slot="content">
-                <P>{{ item.content }}</P>
+                <P v-for="(value, key) of taskList" :key="key"
+                  >{{ value.enterpriseName }}-{{ value.pointName }}
+                  {{ value.groupName }}-{{ value.userName }}
+                </P>
               </template>
               <a-badge
-                :status="item.type"
-                :text="item.plan"
-                :title="item.plan"
+                :status="'default'"
+                :text="item.name"
+                :title="item.name"
               />
             </a-popover>
           </li>
@@ -32,65 +44,54 @@ export default {
   name: "",
   data() {
     return {
-      listDetail: ""
+      nowDay: this.$moment(),
+      planList: [], //计划
+      taskList: [] //任务
     };
+  },
+  watch: {
+    nowDay: {
+      handler: "getMonthPlanBoard",
+      immediate: true
+    }
   },
   methods: {
     selectCalendar(e) {
       console.log(e);
     },
     getListData(value) {
-      let listData;
-      switch (value.date()) {
-        case 8:
-          listData = [
-            {
-              plan: "计划A",
-              type: "default",
-              content:
-                "广州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
-            },
-            {
-              type: "success",
-              plan: "计划B",
-              content:
-                "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
-            }
-          ];
-          break;
-        case 10:
-          listData = [
-            {
-              type: "default",
-              plan: "计划C",
-              content:
-                "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
-            },
-            {
-              type: "success",
-              plan: "计划D",
-              content:
-                "惠州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
-            }
-          ];
-          break;
-        case 15:
-          listData = [
-            {
-              type: "default",
-              content:
-                "佛山市污水处理厂-废水排口 运维2组-陈森 运维任务：日常巡检"
-            },
-            {
-              type: "success",
-              content:
-                "广州市污水处理厂-废水排口 运维1组-张天志 运维任务：日常巡检"
-            }
-          ];
-          break;
-        default:
-      }
+      let listData = [];
+      this.planList.forEach(item => {
+        if (this.$moment(item.gmtExecution).format("DD") == value.date()) {
+          listData.push(item);
+        }
+      });
       return listData || [];
+    },
+    getMonthPlanBoard(time) {
+      //获取当月计划
+      let params = {
+        year: time.format("YYYY"),
+        month: time.format("MM")
+      };
+      this.$api.maintain.getMonthPlanBoard(params).then(res => {
+        if (res.data.state == 0) {
+          this.planList = res.data.data;
+          console.log(res.data.data);
+        }
+      });
+    },
+    getDetail(item) {
+      //获取计划详情
+      let params = {
+        planId: item.id,
+        time: this.$moment(item.gmtExecution).format("YYYY-MM-DD")
+      };
+      this.$api.maintain.getMonthPlanBoardData(params).then(res => {
+        if (res.data.state == 0) {
+          this.taskList = res.data.data;
+        }
+      });
     },
 
     getMonthData(value) {
@@ -98,6 +99,10 @@ export default {
         return 1394;
       }
     }
+  },
+  mounted() {
+    // console.log(this.nowDay.format("YYYY"), this.nowDay.format("MM"));
+    // this.getMonthPlanBoard();
   }
 };
 </script>

@@ -190,14 +190,14 @@ export default {
         }
       ],
       tableData: [
-        {
-          id: 1,
-          enterpriseName: "环保有限公司",
-          pointName: "站点1",
-          pointTypeName: "类别A",
-          taskStatus: 2,
-          taskCount: 10
-        }
+        // {
+        //   id: 1,
+        //   enterpriseName: "环保有限公司",
+        //   pointName: "站点1",
+        //   pointTypeName: "类别A",
+        //   taskStatus: 2,
+        //   taskCount: 10
+        // }
       ],
       enterpriseList: [],
       pointList: [],
@@ -243,7 +243,7 @@ export default {
       };
       this.loading = true;
       this.$api.maintain
-        .getManageTaskList(params)
+        .managePointTask(params)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
@@ -263,23 +263,9 @@ export default {
       this.detailShow = value;
       this.getTableData();
     },
-    getStation() {
-      this.$api.common.selectStation().then(res => {
-        if (res.data.state == 0) {
-          this.stationList = res.data.data;
-        }
-      });
-    },
     resetFormInLine() {
       this.formInline = this.$options.data().formInline;
     },
-    // getPlan() {
-    //   this.$api.common.selectPlan().then(res => {
-    //     if (res.data.state == 0) {
-    //       this.planList = res.data.data;
-    //     }
-    //   });
-    // },
     goDetail(row) {
       this.$router.push({
         path: "/maintain/mission/detail",
@@ -288,8 +274,6 @@ export default {
     }
   },
   mounted() {
-    this.getStation();
-    // this.getPlan();
     this.getTableData();
   }
 };

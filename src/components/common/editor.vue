@@ -251,4 +251,7 @@ export default {
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
   content: "等宽字体";
 }
+.ql-editing {
+  left: 0 !important;
+}
 </style>
