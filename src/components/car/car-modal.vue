@@ -3,6 +3,7 @@
     :title="carModal.type == 'add' ? '新建车辆信息' : '编辑车辆信息'"
     v-model="carModal.show"
     @cancel="handleCancel"
+    :maskClosable="false"
   >
     <a-form
       :form="form"

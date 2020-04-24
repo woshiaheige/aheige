@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="企业名称">

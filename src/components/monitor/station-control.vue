@@ -6,6 +6,7 @@
       :visible="visible"
       @ok="handleOk"
       @cancel="handleCancel"
+      :maskClosable="false"
     >
       <a-card title="远程反控" v-margin:bottom="10">
         <a-row>
