@@ -2,11 +2,15 @@
   <div class="dispatch">
     <a-card v-margin:top="16">
       <div class="card-header">
-        <div class="title">本周任务</div>
+        <div class="title">任务列表</div>
         <div class="extra">
           <span>本日任务数：5</span>
         </div>
       </div>
+      <a-radio-group v-model="week" v-margin:bottom="16">
+        <a-radio-button value="this">本周任务</a-radio-button>
+        <a-radio-button value="next">下周任务</a-radio-button>
+      </a-radio-group>
       <a-tabs defaultActiveKey="1" tabPosition="left">
         <a-tab-pane tab="星期一" key="1">
           <a-list
@@ -184,7 +188,8 @@ export default {
   data() {
     return {
       data,
-      editModal: false
+      editModal: false,
+      week: "this"
     };
   },
   mounted() {},

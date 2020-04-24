@@ -42,6 +42,10 @@
                 <a-menu-item v-for="item in stationList" :key="item.id">
                   {{ item.name }}
                 </a-menu-item>
+                <a-spin
+                  :spinning="spinning"
+                  style="margin-top: 50%; margin-left: 50%; transform: translateY(-50%)"
+                />
                 <a-empty v-margin:top="16" v-if="stationList.length <= 0" />
               </a-menu>
             </a-tab-pane>
@@ -124,6 +128,7 @@ export default {
   data() {
     return {
       visible: false,
+      spinning: false,
       tabList: [
         { tab: "未配置站点", key: 1 },
         { tab: "已配置站点", key: 2 }
@@ -254,6 +259,7 @@ export default {
       }
     },
     async getPlanStation() {
+      this.spinning = true;
       let data = {
         flag: this.currentTab,
         type: this.currentType
@@ -261,6 +267,7 @@ export default {
       await this.$api.maintain.getPlanStation(data).then(res => {
         this.stationList = res.data.data;
         this.currentStation = [];
+        this.spinning = false;
 
         if (this.stationList.length > 0) {
           if (this.changedStation === "") {

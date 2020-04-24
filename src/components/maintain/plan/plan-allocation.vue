@@ -36,7 +36,11 @@
             <a-input v-model="form.name" placeholder="请输入"></a-input>
           </a-form-model-item>
           <a-form-model-item label="运维期限" prop="range">
-            <a-range-picker v-model="form.range"></a-range-picker>
+            <a-range-picker
+              v-model="form.range"
+              :disabledDate="disabledDate"
+              :showTime="false"
+            ></a-range-picker>
           </a-form-model-item>
         </a-form-model>
         <a-divider></a-divider>
@@ -174,6 +178,9 @@ export default {
     onClose() {
       this.$emit("update:visible", false);
       this.$refs.form.resetFields();
+    },
+    disabledDate(current) {
+      return current && current < this.$moment().endOf("day");
     },
     handleOk() {
       if (this.targetKeys.length <= 0) {
