@@ -8,7 +8,8 @@
         <div slot="tabBarExtraContent">
           <template class="extra">
             <a-statistic-countdown
-              :value="Date.now() + 1000 * 60"
+              :value="deadline"
+              @finish="onFinish"
               format="s 秒后自动更新"
             />
           </template>
@@ -95,7 +96,8 @@ export default {
       pointList: [],
       carList: [],
       userList: [],
-      value: "a"
+      value: "a",
+      deadline: Date.now() + 1000 * 60
     };
   },
   mounted() {
@@ -111,6 +113,7 @@ export default {
       });
       this.callback(1);
     },
+    //切换tabs
     async callback(key, value) {
       this.active = key;
       this.map.remove(this.markers);
@@ -195,6 +198,9 @@ export default {
     },
     onChange(_, dateString) {
       this.callback(this.active, dateString);
+    },
+    onFinish() {
+      console.log("finished!");
     }
   }
 };
