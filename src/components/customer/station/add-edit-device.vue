@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form-model
       ref="ruleForm"
@@ -19,7 +20,7 @@
           v-model="formData.cusPointId"
           placeholder="设备"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in deviceOptions"

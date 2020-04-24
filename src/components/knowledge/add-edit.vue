@@ -5,6 +5,7 @@
     @cancel="closeModal"
     @ok="handleOk"
     :width="600"
+    :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="文章标题">
@@ -24,7 +25,7 @@
             { rules: [{ required: true, message: '请选择知识库分类' }] }
           ]"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             :value="item.id"

@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form-model
       ref="ruleForm"
@@ -19,7 +20,7 @@
           placeholder="所属企业"
           v-model="formData.enterpriseId"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in enterpriseList"
@@ -68,7 +69,7 @@
           placeholder="合同状态"
           v-model="formData.state"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in statusOption"

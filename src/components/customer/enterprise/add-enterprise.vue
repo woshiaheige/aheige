@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form-model
       ref="ruleForm"
@@ -29,7 +30,7 @@
           v-model="formData.regionId"
           placeholder="所属区域"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in areaOptions"
@@ -60,7 +61,7 @@
           placeholder="控制级别"
           v-model="formData.controlLevel"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in controlOptions"
@@ -76,7 +77,7 @@
           v-model="formData.industryId"
           placeholder="行业类型"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in typeList"

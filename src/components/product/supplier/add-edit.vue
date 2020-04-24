@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form-model :model="formInline" :rules="rules" ref="ruleForm">
       <a-form-model-item label="供应商名称" prop="name">
@@ -31,7 +32,7 @@
           placeholder="请选择"
           v-model="formInline.level"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option :value="1">1</a-select-option>
           <a-select-option :value="2">2</a-select-option>

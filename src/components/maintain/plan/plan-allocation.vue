@@ -14,7 +14,7 @@
               v-model="form.type"
               @change="handleChangeType"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option :value="1">周计划</a-select-option>
               <a-select-option :value="2">月计划</a-select-option>
@@ -25,7 +25,7 @@
               v-model="form.date"
               v-width="80"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option v-for="item in dateList" :key="item.value">{{
                 item.name
@@ -192,7 +192,7 @@ export default {
     },
     async getScheme() {
       let data = {
-        type: this.stationType
+        maintainType: this.stationType
       };
       this.schemeList = [];
       await this.$api.maintain.getScheme(data).then(res => {

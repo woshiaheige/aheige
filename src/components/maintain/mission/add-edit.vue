@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form-model
       ref="ruleForm"
@@ -83,7 +84,7 @@
           placeholder="请选择"
           style="width: 200px"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in memberList"

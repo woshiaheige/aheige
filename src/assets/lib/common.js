@@ -24,7 +24,7 @@ const event = {
       };
     },
     //下拉框过滤
-    filterOption(input, option) {
+    filterOptions(input, option) {
       return (
         option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=
         0

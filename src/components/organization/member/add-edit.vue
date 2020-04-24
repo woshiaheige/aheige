@@ -4,6 +4,7 @@
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
+    :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="姓名">
@@ -74,7 +75,7 @@
           ]"
           @select="roleSelect"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             :value="item.id"
@@ -92,7 +93,7 @@
             { rules: [{ required: true, message: '请选择运维小组' }] }
           ]"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             :value="item.id"
@@ -110,7 +111,7 @@
             { rules: [{ required: true, message: '请选择审核权限' }] }
           ]"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             :value="item.id"
