@@ -36,9 +36,6 @@
       <a-col :span="12"
         ><span class="descriptions">审批内容：</span>{{ content }}</a-col
       >
-      <!-- <a-col :span="12"
-        ><span class="descriptions">附件：</span><a>下载附件</a></a-col
-      > -->
     </a-row>
     <div slot="footer">
       <a-button @click="cancel">取消</a-button>
@@ -87,6 +84,7 @@ export default {
     }
   },
   methods: {
+    //审核按钮点击事件
     approvalClick(state) {
       let data = {
         taskId: this.obj.info.taskId,
@@ -107,6 +105,7 @@ export default {
           console.log(err);
         });
     },
+    //获取任务详情
     getTaskInfo() {
       let data = {
         id: this.id
@@ -114,7 +113,6 @@ export default {
       this.$api.approval
         .getTaskInfo(data)
         .then(res => {
-          console.log(res);
           this.title = res.data.data.title;
           this.content = res.data.data.content;
           this.state = res.data.data.state;
@@ -126,6 +124,7 @@ export default {
           console.log(err);
         });
     },
+    //关闭事件
     cancel() {
       this.$emit("cancel");
     }

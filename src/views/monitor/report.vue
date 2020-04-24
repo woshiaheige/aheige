@@ -23,6 +23,9 @@
             @pressEnter="getTableData"
           />
         </a-form-model-item>
+        <a-form-model-item label="数据时间">
+          <a-range-picker format="YYYY-MM-DD" v-model="formInline.range" />
+        </a-form-model-item>
         <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
@@ -160,12 +163,22 @@ export default {
               align: "center"
             }
           ]
+        },
+        {
+          title: "数据时间",
+          dataIndex: "dataTime",
+          align: "center",
+          width: 200
         }
       ],
       formInline: {
         enterpriseName: "",
         pointName: "",
-        mn: ""
+        mn: "",
+        range: [
+          this.$moment(this.$moment().format("YYYY-MM-DD") + " 00:00:00"),
+          this.$moment(this.$moment().format("YYYY-MM-DD") + " 23:59:59")
+        ]
       }
     };
   },
@@ -181,7 +194,9 @@ export default {
         size: this.pagesize,
         enterpriseName: this.formInline.enterpriseName,
         mn: this.formInline.mn,
-        pointName: this.formInline.pointName
+        pointName: this.formInline.pointName,
+        startTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
+        endTime: this.formInline.range[1].format("YYYY-MM-DD HH:mm:ss")
       };
       this.$api.monitor
         .getReportData(data)

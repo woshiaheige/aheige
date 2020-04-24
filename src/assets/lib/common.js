@@ -15,7 +15,7 @@ const event = {
       this.pageSize = pageSize;
       this.getTableData();
     },
-    debounces(func, wait = 500) {
+    debounceFn(func, wait = 500) {
       //节流
       let timer;
       return () => {
@@ -23,6 +23,7 @@ const event = {
         timer = setTimeout(func, wait);
       };
     },
+    //下拉框过滤
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=

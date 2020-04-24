@@ -80,10 +80,10 @@
           <a-tag color="blue" v-if="type == 2">转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
-          <a-tag v-if="state == 1" color="green">未处理</a-tag>
-          <a-tag v-if="state == 2" color="cyan">处理中</a-tag>
-          <a-tag v-if="state == 3" color="blue">通过</a-tag>
-          <a-tag v-if="state == 4" color="red">未通过</a-tag>
+          <a-badge color="green" text="未处理" v-if="state == 1" />
+          <a-badge color="cyan" text="处理中" v-if="state == 2" />
+          <a-badge color="blue" text="通过" v-if="state == 3" />
+          <a-badge color="red" text="未通过" v-if="state == 4" />
         </template>
         <span slot="action" slot-scope="row">
           <a @click="check(row)">查看</a>
@@ -101,6 +101,7 @@
         @showSizeChange="sizechange"
         :total="total"
       />
+      <!-- 查看弹窗 -->
       <modal
         :obj="modalInfo"
         :visible="visible"
@@ -149,7 +150,6 @@ export default {
         {
           title: "状态",
           dataIndex: "state",
-          align: "center",
           scopedSlots: { customRender: "state" }
         },
         {
@@ -186,9 +186,11 @@ export default {
     this.getApprovalCount();
   },
   methods: {
+    //关闭弹窗事件
     onCancel() {
       this.visible = false;
     },
+    //查看事件
     check(row) {
       this.visible = true;
       this.modalInfo = {
@@ -196,6 +198,7 @@ export default {
         info: row
       };
     },
+    //获取表格数据
     getTableData() {
       let data = {
         index: this.current,
@@ -208,6 +211,7 @@ export default {
         this.total = res.data.data.total;
       });
     },
+    //获取统计数据
     getApprovalCount() {
       let data = {};
       this.$api.approval
