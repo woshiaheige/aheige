@@ -21,6 +21,8 @@
               filterable
               v-model="formValidate1.overTim"
               placeholder="超时时间"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option :value="1">1秒</a-select-option>
               <a-select-option :value="2">2秒</a-select-option>
@@ -32,7 +34,12 @@
         </a-col>
         <a-col span="24" class="col-input-wrap">
           <a-form-model-item label="重发次数" prop="reCount">
-            <a-select v-model="formValidate1.reCount" placeholder="重发次数">
+            <a-select
+              v-model="formValidate1.reCount"
+              placeholder="重发次数"
+              showSearch
+              :filterOption="filterOption"
+            >
               <a-select-option :value="0">不重发</a-select-option>
               <a-select-option :value="1">1次</a-select-option>
               <a-select-option :value="2">2次</a-select-option>
@@ -56,6 +63,8 @@
               filterable
               v-model="formValidate2.pollCode"
               placeholder="污染物编码"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option :value="'数采仪'">数采仪</a-select-option>
               <a-select-option
@@ -95,6 +104,8 @@
             <a-select
               v-model="formValidate3.interval"
               placeholder="时间范围间隔"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option :value="0">30秒</a-select-option>
               <a-select-option :value="1">1分钟</a-select-option>
@@ -117,7 +128,12 @@
       >
         <a-col span="24" class="col-input-wrap">
           <a-form-model-item label="间隔时间" prop="time">
-            <a-select v-model="formValidate4.time" placeholder="间隔时间">
+            <a-select
+              v-model="formValidate4.time"
+              placeholder="间隔时间"
+              showSearch
+              :filterOption="filterOption"
+            >
               <a-select-option :value="1">1分钟</a-select-option>
               <a-select-option :value="2">2分钟</a-select-option>
               <a-select-option :value="3">3分钟</a-select-option>
@@ -186,7 +202,12 @@
       >
         <a-col span="24" class="col-input-wrap">
           <a-form-model-item label="数据类型" prop="timetype">
-            <a-select v-model="formValidate9.timetype" placeholder="数据类型">
+            <a-select
+              v-model="formValidate9.timetype"
+              placeholder="数据类型"
+              showSearch
+              :filterOption="filterOption"
+            >
               <a-select-option :value="0">分钟数据</a-select-option>
               <a-select-option :value="1">小时数据</a-select-option>
               <a-select-option :value="2">日数据</a-select-option>
@@ -234,6 +255,8 @@
             <a-select
               v-model="formValidate10.pollCode"
               placeholder="污染物编码"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option value="数采仪">数采仪</a-select-option>
             </a-select>
@@ -253,6 +276,8 @@
             <a-select
               v-model="formValidate15.pollCode"
               placeholder="污染物编码"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option value="数采仪">数采仪</a-select-option>
             </a-select>
@@ -300,6 +325,8 @@
             <a-select
               v-model="formValidate18.pollCode"
               placeholder="污染物编码"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option value="数采仪">数采仪</a-select-option>
             </a-select>
@@ -307,7 +334,12 @@
         </a-col>
         <a-col span="24" class="col-input-wrap">
           <a-form-model-item label="类型" prop="type">
-            <a-select v-model="formValidate18.type" placeholder="类型">
+            <a-select
+              v-model="formValidate18.type"
+              placeholder="类型"
+              showSearch
+              :filterOption="filterOption"
+            >
               <a-select-option :value="0"
                 >提取现场机信息（状态）</a-select-option
               >
@@ -322,6 +354,8 @@
             <a-select
               v-model="formValidate18.infoid"
               placeholder="信息因子编码"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option
                 :value="item.id"

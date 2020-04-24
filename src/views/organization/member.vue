@@ -3,10 +3,18 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="用户姓名">
-          <a-input placeholder="请输入" v-model="formInline.name"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="formInline.name"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="用户账号">
-          <a-input placeholder="请输入" v-model="formInline.username"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="formInline.username"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item style="float:right">
           <a-button type="primary" @click="onSubmit">
@@ -26,6 +34,8 @@
             defaultValue="all"
             v-model="formInline.isLocked"
             style="width:100px"
+            showSearch
+            :filterOption="filterOption"
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="0">正常</a-select-option>

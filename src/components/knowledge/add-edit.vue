@@ -23,6 +23,8 @@
             'classId',
             { rules: [{ required: true, message: '请选择知识库分类' }] }
           ]"
+          showSearch
+          :filterOption="filterOption"
         >
           <a-select-option
             :value="item.id"

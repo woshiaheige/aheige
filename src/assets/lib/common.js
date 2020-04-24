@@ -1,7 +1,6 @@
 const event = {
   methods: {
     onSubmit() {
-      this.size = 10; //每页数量
       this.current = 1; //页码
       this.getTableData();
     },
@@ -10,10 +9,10 @@ const event = {
       this.current = page;
       this.getTableData();
     },
-    sizechange(_, size) {
+    sizechange(_, pageSize) {
       //页数
       this.current = 1;
-      this.size = size;
+      this.pageSize = pageSize;
       this.getTableData();
     },
     debounceFn(func, wait = 500) {
@@ -23,6 +22,13 @@ const event = {
         clearTimeout(timer);
         timer = setTimeout(func, wait);
       };
+    },
+    //下拉框过滤
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=
+        0
+      );
     }
   }
 };

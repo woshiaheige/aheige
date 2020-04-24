@@ -3,13 +3,25 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="设备名称">
-          <a-input placeholder="请输入" v-model="list.name"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.name"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="生产厂家">
-          <a-input placeholder="请输入" v-model="list.manufacturer"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.manufacturer"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="设备型号">
-          <a-input placeholder="请输入" v-model="list.number"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.number"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
@@ -72,7 +84,7 @@ export default {
     return {
       current: 1,
       pageSize: 10,
-      total: 1,
+      total: 0,
       loading: false,
       list: {
         manufacturer: "",
@@ -143,8 +155,8 @@ export default {
     onDelete(row) {
       let that = this;
       this.$confirm({
-        title: "删除",
-        content: "是否删除",
+        title: "删除设备",
+        content: "是否删除" + row.name,
         onOk() {
           that.$api.customer
             .delDevice({

@@ -6,7 +6,15 @@
       </div>
     </div>
     <div class="login-box">
-      <div class="login-title">{{ forgetFlag ? "找回密码" : "登录" }}</div>
+      <div class="login-title">
+        <a-icon
+          type="arrow-left"
+          id="toLogin"
+          style="cursor: pointer"
+          v-if="forgetFlag"
+          v-margin:right="5"
+        />{{ forgetFlag ? "找回密码" : "登录" }}
+      </div>
       <div class="title-line"></div>
       <a-form-model
         ref="login"
@@ -34,7 +42,6 @@
         </a-form-model-item>
         <div class="link">
           <span id="forgetPass">忘记密码？</span>
-          <router-link to="/signup">注册</router-link>
         </div>
         <a-form-model-item>
           <a-button
@@ -89,9 +96,6 @@
           >
         </a-form-model-item>
       </a-form-model>
-      <div class="to-login-block">
-        <span id="toLogin" class="to-login" v-if="forgetFlag">返回登录</span>
-      </div>
     </div>
   </div>
 </template>
@@ -228,7 +232,6 @@ export default {
       document
         .getElementById("forgetPass")
         .addEventListener("click", function() {
-          console.log("click");
           that.forgetFlag = true;
         });
     },

@@ -33,6 +33,8 @@
               v-model="formValue.missionWeekCreate.value"
               placeholder="请选择"
               style="width:200px"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option
                 :value="item.value"
@@ -50,6 +52,8 @@
               v-model="formValue.missionMonthCreate.value"
               placeholder="请选择"
               style="width:200px"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option
                 :value="item.value"
@@ -69,6 +73,8 @@
               v-model="formValue.missionWeekPush.value"
               placeholder="请选择"
               style="width:200px"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option
                 :value="item.value"
@@ -86,6 +92,8 @@
               v-model="formValue.missionMonthPush.value"
               placeholder="请选择"
               style="width:200px"
+              showSearch
+              :filterOption="filterOption"
             >
               <a-select-option
                 :value="item.value"

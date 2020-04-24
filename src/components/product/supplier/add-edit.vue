@@ -27,7 +27,12 @@
         <a-input placeholder="请输入" v-model="formInline.telephone" />
       </a-form-model-item>
       <a-form-model-item label="评级" prop="level">
-        <a-select placeholder="请选择" v-model="formInline.level">
+        <a-select
+          placeholder="请选择"
+          v-model="formInline.level"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option :value="1">1</a-select-option>
           <a-select-option :value="2">2</a-select-option>
           <a-select-option :value="3">3</a-select-option>

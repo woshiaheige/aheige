@@ -7,7 +7,7 @@
             <div class="title">配置站点</div>
             <div class="extra">
               <div class="extra">
-                <span>{{ stationList.length }}</span>
+                <span>站点数：{{ stationList.length }}</span>
               </div>
             </div>
           </div>
@@ -28,7 +28,17 @@
                 <a-radio-button :value="32">水类站点</a-radio-button>
                 <a-radio-button :value="0">其他站点</a-radio-button>
               </a-radio-group>
-              <a-menu v-model="currentStation" mode="vertical">
+              <a-input-search
+                placeholder="请输入站点名称"
+                style="width: 100%"
+                v-margin:top="16"
+                @search="getPlanStation"
+              />
+              <a-menu
+                v-model="currentStation"
+                mode="vertical"
+                v-margin:top="16"
+              >
                 <a-menu-item v-for="item in stationList" :key="item.id">
                   {{ item.name }}
                 </a-menu-item>
@@ -47,7 +57,7 @@
                 <a-form layout="inline">
                   <a-form-item>
                     <a-button type="primary" @click="onAddClick">
-                      <a-icon type="plus" />新建
+                      <a-icon type="plus" />新建计划
                     </a-button>
                   </a-form-item>
                 </a-form>
@@ -72,8 +82,9 @@
               {{ $moment(row.gmtEnd).format("YYYY-MM-DD") }}
             </template>
             <template slot="status" slot-scope="status, row">
-              <a-badge status="default" text="未执行" v-if="row.status == 0" />
-              <a-badge status="success" text="已执行" v-if="row.status == 1" />
+              <a-badge status="default" text="未执行" v-if="row.status == 1" />
+              <a-badge status="success" text="执行中" v-if="row.status == 2" />
+              <a-badge status="warning" text="已延期" v-if="row.status == 3" />
             </template>
             <span slot="check" slot-scope="row">
               <a @click="onAddClick(row)">编辑</a>
@@ -218,9 +229,10 @@ export default {
             id: row.id
           };
 
-          that.$api.maintain.deletePlan(data).then(res => {
+          that.$api.maintain.deletePlan(data).then(async res => {
             if (res.data.state == 0) {
               that.$message.success("删除成功");
+              await that.getPlanStation();
               that.getTableData();
             }
           });
@@ -241,12 +253,12 @@ export default {
         }
       }
     },
-    getPlanStation() {
+    async getPlanStation() {
       let data = {
         flag: this.currentTab,
         type: this.currentType
       };
-      this.$api.maintain.getPlanStation(data).then(res => {
+      await this.$api.maintain.getPlanStation(data).then(res => {
         this.stationList = res.data.data;
         this.currentStation = [];
 

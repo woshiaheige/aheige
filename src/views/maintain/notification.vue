@@ -5,6 +5,9 @@
         <a-form-model-item label="企业名称">
           <a-input v-model="formInline.enterpriseName" placeholder="请输入" />
         </a-form-model-item>
+        <a-form-model-item label="监控点名称">
+          <a-input v-model="formInline.pointName" placeholder="请输入" />
+        </a-form-model-item>
         <a-form-item label="报表类型">
           <a-select
             placeholder="请选择"

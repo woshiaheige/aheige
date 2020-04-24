@@ -14,7 +14,12 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="因子" prop="divisorId">
-        <a-select v-model="formData.divisorId" placeholder="因子">
+        <a-select
+          v-model="formData.divisorId"
+          placeholder="因子"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in factorOptions"
             :key="item.id"
