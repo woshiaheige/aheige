@@ -25,7 +25,12 @@
           placeholder="所属区域"
           allowClear
         /> -->
-        <a-select v-model="formData.regionId" placeholder="所属区域">
+        <a-select
+          v-model="formData.regionId"
+          placeholder="所属区域"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in areaOptions"
             :key="item.id"
@@ -51,7 +56,12 @@
         <a-input v-model="formData.phone" placeholder="联系电话" />
       </a-form-model-item>
       <a-form-model-item label="控制级别" prop="controlLevel">
-        <a-select placeholder="控制级别" v-model="formData.controlLevel">
+        <a-select
+          placeholder="控制级别"
+          v-model="formData.controlLevel"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in controlOptions"
             :key="item.value"
@@ -62,7 +72,12 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="行业类型" prop="industryId">
-        <a-select v-model="formData.industryId" placeholder="行业类型">
+        <a-select
+          v-model="formData.industryId"
+          placeholder="行业类型"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in typeList"
             :key="item.id"

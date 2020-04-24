@@ -15,7 +15,12 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="所属企业" prop="enterpriseId">
-        <a-select placeholder="所属企业" v-model="formData.enterpriseId">
+        <a-select
+          placeholder="所属企业"
+          v-model="formData.enterpriseId"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in enterpriseList"
             :key="item.id"
@@ -59,7 +64,12 @@
         />
       </a-form-model-item>
       <a-form-model-item label="合同状态" prop="state">
-        <a-select placeholder="合同状态" v-model="formData.state">
+        <a-select
+          placeholder="合同状态"
+          v-model="formData.state"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in statusOption"
             :key="item.value"

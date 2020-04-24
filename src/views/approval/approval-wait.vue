@@ -45,6 +45,8 @@
                 style="width: 120px"
                 v-model="formInline.type"
                 @change="getTableData"
+                showSearch
+                :filterOption="filterOption"
               >
                 <a-select-option value="">全部审批</a-select-option>
                 <a-select-option value="1">任务延期</a-select-option>

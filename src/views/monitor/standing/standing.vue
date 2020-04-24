@@ -5,11 +5,16 @@
         <a-form-model-item label="企业名称">
           <a-input
             v-model.trim="formInline.enterpriseName"
+            @pressEnter="getTableData"
             placeholder="请输入"
           />
         </a-form-model-item>
         <a-form-model-item label="监控点名称">
-          <a-input v-model="formInline.pointName" placeholder="请输入" />
+          <a-input
+            v-model="formInline.pointName"
+            placeholder="请输入"
+            @pressEnter="getTableData"
+          />
         </a-form-model-item>
         <a-form-item label="控制级别">
           <a-select
@@ -17,6 +22,8 @@
             allowClear
             v-width="150"
             v-model="formInline.level"
+            showSearch
+            :filterOption="filterOption"
           >
             <a-select-option
               v-for="item in controlOptions"

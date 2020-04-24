@@ -1,7 +1,6 @@
 const event = {
   methods: {
     onSubmit() {
-      this.size = 10; //每页数量
       this.current = 1; //页码
       this.getTableData();
     },
@@ -10,19 +9,25 @@ const event = {
       this.current = page;
       this.getTableData();
     },
-    sizechange(_, size) {
+    sizechange(_, pageSize) {
       //页数
       this.current = 1;
-      this.size = size;
+      this.pageSize = pageSize;
       this.getTableData();
     },
-    debounce(func, wait = 500) {
+    debounces(func, wait = 500) {
       //节流
       let timer;
       return () => {
         clearTimeout(timer);
         timer = setTimeout(func, wait);
       };
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=
+        0
+      );
     }
   }
 };

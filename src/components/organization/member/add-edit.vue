@@ -73,6 +73,8 @@
             { rules: [{ required: true, message: '请选择权限' }] }
           ]"
           @select="roleSelect"
+          showSearch
+          :filterOption="filterOption"
         >
           <a-select-option
             :value="item.id"
@@ -89,6 +91,8 @@
             'groupId',
             { rules: [{ required: true, message: '请选择运维小组' }] }
           ]"
+          showSearch
+          :filterOption="filterOption"
         >
           <a-select-option
             :value="item.id"
@@ -105,6 +109,8 @@
             'approvalIds',
             { rules: [{ required: true, message: '请选择审核权限' }] }
           ]"
+          showSearch
+          :filterOption="filterOption"
         >
           <a-select-option
             :value="item.id"

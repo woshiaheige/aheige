@@ -109,7 +109,7 @@ export default {
       factorsDetail: "", //因子详情
       current: 1,
       total: 0,
-      size: 10,
+      pageSize: 10,
       loading: false,
       formInline: {
         name: "",
@@ -215,7 +215,7 @@ export default {
     },
     getTableData() {
       let params = {
-        size: this.size,
+        size: this.pageSize,
         page: this.current,
         name: this.formInline.name,
         code: this.formInline.code,

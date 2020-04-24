@@ -24,7 +24,12 @@
         <a-input placeholder="设备型号" v-model="formData.number" />
       </a-form-model-item>
       <a-form-model-item label="设备类型" prop="type">
-        <a-select placeholder="设备类型" v-model="formData.type">
+        <a-select
+          placeholder="设备类型"
+          v-model="formData.type"
+          showSearch
+          :filterOption="filterOption"
+        >
           <a-select-option
             v-for="item in pointOptions"
             :key="item.value"
@@ -39,6 +44,8 @@
           placeholder="监测因子"
           mode="multiple"
           v-model="formData.divisorIds"
+          showSearch
+          :filterOption="filterOption"
         >
           <a-select-option
             v-for="item in factorOptions"

@@ -16,7 +16,12 @@
         <a-input v-model="form.name" placeholder="请输入"></a-input>
       </a-form-model-item>
       <a-form-model-item label="计划类别" prop="type">
-        <a-select showSearch v-model="form.type" placeholder="请选择">
+        <a-select
+          showSearch
+          v-model="form.type"
+          placeholder="请选择"
+          :filterOption="filterOption"
+        >
           <a-select-option :value="1">周计划</a-select-option>
           <a-select-option :value="2">月计划</a-select-option>
         </a-select>
