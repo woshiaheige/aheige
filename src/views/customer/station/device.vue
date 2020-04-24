@@ -156,11 +156,18 @@ export default {
       };
       this.loading = true;
       this.$api.customer
-        .getDeviceList(data)
+        .getDeviceListByPointId(data)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
-            this.tableData = res.data.data.records;
+            let result = res.data.data.records;
+            result.forEach(item => {
+              item.type = item.sysInstrument.type;
+              item.name = item.sysInstrument.name;
+              item.manufacturer = item.sysInstrument.manufacturer;
+              item.number = item.sysInstrument.number;
+            });
+            this.tableData = result;
             this.total = Number(res.data.data.total);
           }
         })
@@ -176,7 +183,7 @@ export default {
         content: "是否删除",
         onOk() {
           that.$api.customer
-            .delDevice({
+            .delDeviceByPointId({
               id: row.id
             })
             .then(res => {

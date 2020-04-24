@@ -60,6 +60,10 @@
         :loading="loading"
         v-margin:top="16"
       >
+        <template slot="type" slot-scope="type">
+          <a-tag color="#2db7f5" v-show="type == 1">例行任务</a-tag>
+          <a-tag color="#f50" v-show="type == 2">突发任务</a-tag>
+        </template>
         <template slot="status" slot-scope="status">
           <a-badge color="cyan" text="已创建" v-show="status == 1" />
           <a-badge status="processing" text="处理中" v-show="status == 2" />
@@ -104,8 +108,13 @@ export default {
       visible: false,
       columns: [
         {
-          title: "任务方案",
+          title: "任务类型",
           dataIndex: "name"
+        },
+        {
+          title: "任务方案",
+          dataIndex: "type",
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "运维小组",
@@ -117,7 +126,8 @@ export default {
         },
         {
           title: "运维时间",
-          dataIndex: "gmtCreate"
+          dataIndex: "gmtCreate",
+          customRender: text => `${this.$moment(text).format("YYYY-MM-DD")}`
         },
         {
           title: "运维状态",
