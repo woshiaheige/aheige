@@ -76,6 +76,11 @@ const customer = {
       params: data
     });
   },
+  getDeviceListByPointId(data) {
+    return axios.get(base.api + "sysInstrument/pageByPointId", {
+      params: data
+    });
+  },
   addDevice(data) {
     return axios.post(base.api + "sysInstrument/addSysInstrument", data);
   },
@@ -111,6 +116,34 @@ const customer = {
   },
   getContractById(data) {
     return axios.get(base.api + "contract/getCusContractById", {
+      params: data
+    });
+  },
+  //获取企业用户列表
+  getEnterpriseList(data) {
+    return axios.get(base.api + "sysEnterpriseUser/", {
+      params: data
+    });
+  },
+  addEnterprise(data) {
+    return axios.post(
+      base.api + "sysEnterpriseUser/addSysEnterpriseUser",
+      data
+    );
+  },
+  editEnterprise(data) {
+    return axios.post(
+      base.api + "sysEnterpriseUser/editSysEnterpriseUser",
+      data
+    );
+  },
+  delEnterprise(data) {
+    return axios.get(base.api + "sysEnterpriseUser/deleteSysEnterpriseUser", {
+      params: data
+    });
+  },
+  getEnterpriseById(data) {
+    return axios.get(base.api + "sysEnterpriseUser/getSysEnterpriseUserById", {
       params: data
     });
   },

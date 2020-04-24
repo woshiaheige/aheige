@@ -62,11 +62,11 @@ export default {
       fileList: [],
       formData: {},
       rules: {
-        name: [
+        pointId: [
           {
             required: true,
-            message: "请输入设备名称",
-            trigger: "blur"
+            message: "请选择设备名称",
+            trigger: "change"
           }
         ]
       }
@@ -152,7 +152,7 @@ export default {
     },
     getEditData() {
       this.$api.customer
-        .getDeviceById({ id: this.modelData.row.id })
+        .getDeviceByPointId({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
             if (res.data.data.fileName) {
