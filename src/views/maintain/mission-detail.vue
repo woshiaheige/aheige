@@ -126,7 +126,8 @@ export default {
         },
         {
           title: "运维时间",
-          dataIndex: "gmtCreate"
+          dataIndex: "gmtCreate",
+          customRender: text => `${this.$moment(text).format("YYYY-MM-DD")}`
         },
         {
           title: "运维状态",

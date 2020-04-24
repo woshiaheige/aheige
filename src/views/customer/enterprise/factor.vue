@@ -17,7 +17,7 @@
                 v-model="list.divisorId"
                 v-width="150"
                 allowClear
-                :filterOption="filterOption"
+                :filterOption="filterOptions"
               >
                 <a-select-option
                   v-for="item in factorOptions"

@@ -27,14 +27,14 @@
       <!-- <a-form-item label="警报设置"> </a-form-item> -->
       <a-row>
         <a-col :span="12">
-          <a-form-item label="周任务生成时间">
+          <a-form-item label="任务生成时间">
             <a-select
               defaultValue="defaultWeek"
               v-model="formValue.missionWeekCreate.value"
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"
@@ -46,35 +46,23 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="月任务生成时间">
-            <a-select
-              defaultValue="defaultMonth"
-              v-model="formValue.missionMonthCreate.value"
-              placeholder="请选择"
-              style="width:200px"
-              showSearch
-              :filterOption="filterOption"
-            >
-              <a-select-option
-                :value="item.value"
-                v-for="(item, index) of monthList"
-                :key="index"
-                >{{ item.label }}</a-select-option
-              >
-            </a-select>
+          <a-form-item label="任务完成时限">
+            <counter v-model="formValue.mission.value">
+              <span slot="uni">分钟</span>
+            </counter>
           </a-form-item>
         </a-col>
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-form-item label="周任务推送时间">
+          <a-form-item label="周报表推送时间">
             <a-select
               defaultValue="defaultWeek"
               v-model="formValue.missionWeekPush.value"
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"
@@ -86,14 +74,14 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="月任务推送时间">
+          <a-form-item label="月报表推送时间">
             <a-select
               defaultValue="defaultMonth"
               v-model="formValue.missionMonthPush.value"
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"
@@ -122,15 +110,6 @@
         </a-col>
       </a-row>
 
-      <a-row>
-        <a-col :span="12">
-          <a-form-item label="任务完成时限">
-            <counter v-model="formValue.mission.value">
-              <span slot="uni">分钟</span>
-            </counter>
-          </a-form-item>
-        </a-col>
-      </a-row>
       <a-row type="flex" justify="center">
         <a-col :span="6">
           <a-form-item>
@@ -163,8 +142,7 @@ export default {
       formValue: {
         // verify: 0,
         // distance: 0, //验证距离
-        missionWeekCreate: { id: "", value: "1" }, //周任务生成时间
-        missionMonthCreate: { id: "", value: "1" }, //月任务生成时间
+        missionWeekCreate: { id: "", value: "1" }, //任务生成时间
         missionWeekPush: { id: "", value: "1" }, //周任务推送时间
         missionMonthPush: { id: "", value: "1" }, //月任务推送时间
         spaceMin: { id: "", value: "" }, //最小间隔时间
@@ -206,7 +184,6 @@ export default {
     geDictByParam() {
       let params = [
         "SYS_PARAMETER_WEEK_TASK_GENERATE",
-        "SYS_PARAMETER_MONTH_TASK_GENERATE",
         "SYS_PARAMETER_WEEK_TASK_PUSH",
         "SYS_PARAMETER_MONTH_TASK_PUSH",
         "SYS_PARAMETER_WARN_INTERVAL",
@@ -219,12 +196,6 @@ export default {
           switch (item.code) {
             case "SYS_PARAMETER_WEEK_TASK_GENERATE":
               this.formValue.missionWeekCreate = {
-                id: item.id,
-                value: item.value
-              };
-              break;
-            case "SYS_PARAMETER_MONTH_TASK_GENERATE":
-              this.formValue.missionMonthCreate = {
                 id: item.id,
                 value: item.value
               };

@@ -56,7 +56,7 @@
                 v-model="form.type"
                 placeholder="请选择"
                 showSearch
-                :filterOption="filterOption"
+                :filterOption="filterOptions"
               >
                 <a-select-option value="32">废水</a-select-option>
                 <a-select-option value="31">废气</a-select-option>
@@ -70,7 +70,7 @@
                 v-model="form.protocolType"
                 placeholder="请选择"
                 showSearch
-                :filterOption="filterOption"
+                :filterOption="filterOptions"
               >
                 <a-select-option value="05">05协议</a-select-option>
                 <a-select-option value="17">17协议</a-select-option>

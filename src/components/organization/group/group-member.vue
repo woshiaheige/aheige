@@ -3,7 +3,7 @@
     <a-transfer
       :dataSource="mockData"
       showSearch
-      :filterOption="filterOption"
+      :filterOption="filterOptions"
       :targetKeys="targetKeys"
       @change="handleChange"
       @search="handleSearch"

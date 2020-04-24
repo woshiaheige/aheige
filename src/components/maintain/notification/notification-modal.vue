@@ -3,12 +3,21 @@
     <a-modal
       :bodyStyle="{ maxHeight: '700px', overflow: 'auto' }"
       :visible="visible"
-      title="查看报表"
+      :title="notification.title"
       @ok="handleOk"
       @cancel="handleCancel"
       :width="900"
     >
       <a-card v-margin:bottom="16">
+        <a-row
+          type="flex"
+          justify="center"
+          :gutter="16"
+          class="notification-tit"
+        >
+          <a-col>开始时间：{{ notification.beginTime }}</a-col>
+          <a-col>结束时间：{{ notification.endTime }}</a-col>
+        </a-row>
         <a-table
           :loading="loading"
           size="middle"
@@ -20,30 +29,33 @@
         >
         </a-table>
       </a-card>
-      <a-descriptions title="排水口" layout="vertical" bordered size="small">
+      <a-empty v-if="notificationData.length == 0" />
+      <a-descriptions layout="vertical" bordered size="small" v-else>
         <a-descriptions-item
           :span="3"
           v-for="item in notificationData"
           :key="item.dateTime"
         >
-          <span slot="label">{{ item.dateLabel }}</span>
-          <a-list
-            itemLayout="horizontal"
-            :dataSource="item.taskList"
-            class="dispatch-list"
-          >
-            <a-list-item slot="renderItem" slot-scope="item">
-              <a-list-item-meta>
-                <span slot="title"
-                  >{{ item.personnel }}（{{ item.group }}）</span
-                >
-                <div slot="description">
-                  <p>运维任务：{{ item.content }}</p>
-                </div>
-              </a-list-item-meta>
-              <div>{{ item.dateTime }}</div>
-            </a-list-item>
-          </a-list>
+          <template>
+            <span slot="label">{{ item.dateLabel }}</span>
+            <a-list
+              itemLayout="horizontal"
+              :dataSource="item.taskList"
+              class="dispatch-list"
+            >
+              <a-list-item slot="renderItem" slot-scope="item">
+                <a-list-item-meta>
+                  <span slot="title"
+                    >{{ item.handleName }}（{{ item.groupName }}）</span
+                  >
+                  <div slot="description">
+                    <p>运维任务：{{ item.taskName }}</p>
+                  </div>
+                </a-list-item-meta>
+                <div>{{ item.gmtEnd }}</div>
+              </a-list-item>
+            </a-list>
+          </template>
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
@@ -69,7 +81,9 @@ export default {
     obj(nval) {
       if (nval.show) {
         this.notification = nval;
+        console.log(nval);
         this.getReportPushDetails();
+        this.getReportPushDataRateDetails();
       }
     }
   },
@@ -77,9 +91,10 @@ export default {
     return {
       loading: false,
       notification: {
-        id: "",
+        pointId: "",
         beginTime: "",
-        endTime: ""
+        endTime: "",
+        title: ""
       },
       columns: [
         {
@@ -143,116 +158,8 @@ export default {
           ]
         }
       ],
-      tableData: [
-        {
-          poiName: "756877X5555553",
-          mn: "756877X5555553",
-          enterpriseName: "东莞利来远东针织有限公司",
-          dayRealCount: "0",
-          dayOughtCount: "1",
-          dayPro: "0.00%",
-          hourRealCount: "0",
-          hourOughtCount: "17",
-          hourPro: "0.00%",
-          minRealCount: "0",
-          minOughtCount: "102",
-          minPro: "0.00%",
-          dataTime: "2020-04-22~2020-04-23"
-        }
-      ],
-      notificationData: [
-        {
-          dateLabel: "星期一",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            },
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        },
-        {
-          dateLabel: "星期二",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        },
-        {
-          dateLabel: "星期三",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        },
-        {
-          dateLabel: "星期四",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        },
-        {
-          dateLabel: "星期五",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        },
-        {
-          dateLabel: "星期六",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        },
-        {
-          dateLabel: "星期日",
-          taskList: [
-            {
-              personnel: "张天志",
-              group: "运维一组",
-              content: "日常巡检",
-              pointName: "废水排口",
-              dateTime: "2020-04-21 10:00:00"
-            }
-          ]
-        }
-      ]
+      tableData: [],
+      notificationData: []
     };
   },
   methods: {
@@ -268,26 +175,39 @@ export default {
         .getReportPushDetails({ reportPushId: this.notification.id })
         .then(res => {
           if (res.data.state == 0) {
-            this.reportDetail = this.detailFilter(res.data.data);
+            this.notificationData = this.detailFilter(res.data.data);
+            console.log(this.notificationData, 22222);
           }
         });
     },
     detailFilter(data) {
-      let list = [];
-      list = data.map(item => {
-        return {
-          dateLabel: item.gmtEnd
-            ? this.$moment(item.gmtEnd).format("dddd")
-            : "",
-          taskList: { ...item }
-        };
+      //过滤和整理日期
+      let list = [
+        { dateLabel: "星期一", week: 1, taskList: [] },
+        { dateLabel: "星期二", week: 2, taskList: [] },
+        { dateLabel: "星期三", week: 3, taskList: [] },
+        { dateLabel: "星期四", week: 4, taskList: [] },
+        { dateLabel: "星期五", week: 5, taskList: [] },
+        { dateLabel: "星期六", week: 6, taskList: [] },
+        { dateLabel: "星期天", week: 0, taskList: [] }
+      ];
+      data.forEach(item => {
+        list.forEach(list => {
+          if (this.$moment(item.gmtEnd).day() == list.week) {
+            list.taskList.push(item);
+          }
+        });
+      });
+      list = list.filter(item => {
+        return item.taskList.length != 0;
       });
       return list;
     },
     getReportPushDataRateDetails() {
       let params = {
         beginTime: this.notification.beginTime,
-        endTime: this.notification.endTime
+        endTime: this.notification.endTime,
+        pointId: this.notification.pointId
       };
       this.$api.maintain.getReportPushDataRateDetails(params).then(res => {
         if (res.data.state == 0) {
@@ -295,7 +215,8 @@ export default {
         }
       });
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 

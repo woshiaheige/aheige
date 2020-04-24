@@ -22,14 +22,14 @@ const event = {
         clearTimeout(timer);
         timer = setTimeout(func, wait);
       };
-    }
+    },
     //下拉框过滤
-    // filterOption(input, option) {
-    //   return (
-    //     option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=
-    //     0
-    //   );
-    // }
+    filterOptions(input, option) {
+      return (
+        option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=
+        0
+      );
+    }
   }
 };
 export default event;

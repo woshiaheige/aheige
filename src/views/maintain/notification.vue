@@ -13,7 +13,9 @@
             placeholder="请选择"
             allowClear
             v-width="150"
-            v-model="formInline.type"
+            v-model="formInline.reportType"
+            showSearch
+            :filterOption="filterOptions"
           >
             <a-select-option
               v-for="item in rportTypeList"
@@ -127,7 +129,7 @@ export default {
       formInline: {
         enterpriseName: "",
         beginTime: "",
-        type: "all",
+        reportType: "all",
         endTime: ""
       }
     };
@@ -143,8 +145,10 @@ export default {
       this.modal = {
         show: true,
         id: row.id,
-        beginTime: row.gmtCreate,
-        endTime: row.gmtEnd
+        pointId: row.pointId,
+        beginTime: row.gmtBeginTime,
+        endTime: row.gmtEndTime,
+        title: row.pointName
       };
     },
     getTableData() {
@@ -160,7 +164,8 @@ export default {
           ? this.$moment(this.formInline.endTime).format("YYYY-MM-DD HH:mm:ss")
           : "",
         enterpriseName: this.formInline.enterpriseName,
-        type: this.formInline.type != "all" ? this.formInline.type : ""
+        type:
+          this.formInline.reportType != "all" ? this.formInline.reportType : ""
       };
       this.loading = true;
       this.$api.maintain

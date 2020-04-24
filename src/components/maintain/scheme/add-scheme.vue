@@ -20,7 +20,7 @@
           showSearch
           v-model="form.type"
           placeholder="请选择"
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option :value="1">周计划</a-select-option>
           <a-select-option :value="2">月计划</a-select-option>

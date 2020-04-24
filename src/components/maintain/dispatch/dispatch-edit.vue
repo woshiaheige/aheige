@@ -7,7 +7,7 @@
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="调度日期">
-        <a-select placeholder="请选择" showSearch :filterOption="filterOption">
+        <a-select placeholder="请选择" showSearch :filterOption="filterOptions">
           <a-select-option key="1" value="1">星期一</a-select-option>
           <a-select-option key="2" value="2">星期二</a-select-option>
           <a-select-option key="3" value="3">星期三</a-select-option>
@@ -18,7 +18,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="转交人员">
-        <a-select placeholder="请选择" showSearch :filterOption="filterOption">
+        <a-select placeholder="请选择" showSearch :filterOption="filterOptions">
           <a-select-option key="1" value="1">张三</a-select-option>
           <a-select-option key="2" value="2">李四</a-select-option>
         </a-select>

@@ -22,7 +22,7 @@
             v-width="150"
             v-model="list.type"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterOptions"
           >
             <a-select-option
               v-for="item in pointOptions"

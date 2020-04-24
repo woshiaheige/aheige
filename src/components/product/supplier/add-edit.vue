@@ -31,7 +31,7 @@
           placeholder="请选择"
           v-model="formInline.level"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option :value="1">1</a-select-option>
           <a-select-option :value="2">2</a-select-option>

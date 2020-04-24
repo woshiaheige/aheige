@@ -21,9 +21,7 @@
               <template slot="content">
                 <P v-for="(value, key) of taskList" :key="key"
                   >{{ value.enterpriseName }}-{{ value.pointName }}
-                  {{ value.groupName }}-{{ value.userName }} 运维任务-{{
-                    value.task
-                  }}
+                  {{ value.groupName }} 运维方案-{{ value.task }}
                 </P>
               </template>
               <a-badge

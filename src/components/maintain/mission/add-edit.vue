@@ -83,7 +83,7 @@
           placeholder="请选择"
           style="width: 200px"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in memberList"
@@ -101,7 +101,7 @@
           v-model="formData.gmtCreate"
           show-time
           type="date"
-          format="YYYY-MM-DD HH:mm:ss"
+          format="YYYY-MM-DD"
           placeholder="开始时间"
           style="width: 100%;"
         />
@@ -111,7 +111,7 @@
           v-model="formData.gmtEnd"
           show-time
           type="date"
-          format="YYYY-MM-DD HH:mm:ss"
+          format="YYYY-MM-DD"
           placeholder="结束时间"
           style="width: 100%;"
         />
