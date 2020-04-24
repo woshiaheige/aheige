@@ -53,14 +53,34 @@
 <script>
 export default {
   props: {
-    visible: {
-      type: Boolean,
-      default: false
+    obj: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    }
+  },
+  computed: {
+    visible() {
+      return this.obj.show;
+    }
+  },
+  watch: {
+    obj(nval) {
+      if (nval.show) {
+        this.notification = nval;
+        this.getReportPushDetails();
+      }
     }
   },
   data() {
     return {
       loading: false,
+      notification: {
+        id: "",
+        beginTime: "",
+        endTime: ""
+      },
       columns: [
         {
           title: "分钟数据数",
@@ -68,20 +88,17 @@ export default {
             {
               title: "应收条数",
               dataIndex: "minOughtCount",
-              key: "minOughtCount",
-              align: "center"
+              key: "minOughtCount"
             },
             {
               title: "实收条数",
               dataIndex: "minRealCount",
-              key: "minRealCount",
-              align: "center"
+              key: "minRealCount"
             },
             {
               title: "数据完整率",
               dataIndex: "minPro",
-              key: "minPro",
-              align: "center"
+              key: "minPro"
             }
           ]
         },
@@ -91,20 +108,17 @@ export default {
             {
               title: "应收条数",
               dataIndex: "hourOughtCount",
-              key: "hourOughtCount",
-              align: "center"
+              key: "hourOughtCount"
             },
             {
               title: "实收条数",
               dataIndex: "hourRealCount",
-              key: "hourRealCount",
-              align: "center"
+              key: "hourRealCount"
             },
             {
               title: "数据完整率",
               dataIndex: "hourPro",
-              key: "hourPro",
-              align: "center"
+              key: "hourPro"
             }
           ]
         },
@@ -114,20 +128,17 @@ export default {
             {
               title: "应收条数",
               dataIndex: "dayOughtCount",
-              key: "dayOughtCount",
-              align: "center"
+              key: "dayOughtCount"
             },
             {
               title: "实收条数",
               dataIndex: "dayRealCount",
-              key: "dayRealCount",
-              align: "center"
+              key: "dayRealCount"
             },
             {
               title: "数据完整率",
               dataIndex: "dayPro",
-              key: "dayPro",
-              align: "center"
+              key: "dayPro"
             }
           ]
         }
@@ -250,6 +261,39 @@ export default {
     },
     handleCancel() {
       this.$emit("cancel");
+    },
+    getReportPushDetails() {
+      //报表详情
+      this.$api.maintain
+        .getReportPushDetails({ reportPushId: this.notification.id })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.reportDetail = this.detailFilter(res.data.data);
+          }
+        });
+    },
+    detailFilter(data) {
+      let list = [];
+      list = data.map(item => {
+        return {
+          dateLabel: item.gmtEnd
+            ? this.$moment(item.gmtEnd).format("dddd")
+            : "",
+          taskList: { ...item }
+        };
+      });
+      return list;
+    },
+    getReportPushDataRateDetails() {
+      let params = {
+        beginTime: this.notification.beginTime,
+        endTime: this.notification.endTime
+      };
+      this.$api.maintain.getReportPushDataRateDetails(params).then(res => {
+        if (res.data.state == 0) {
+          this.tableData = res.data.data;
+        }
+      });
     }
   }
 };

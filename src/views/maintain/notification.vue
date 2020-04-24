@@ -68,10 +68,7 @@
         :total="total"
       />
     </a-card>
-    <notification-modal
-      :visible="modal.show"
-      @cancel="onCancel"
-    ></notification-modal>
+    <notification-modal :obj="modal" @cancel="onCancel"></notification-modal>
   </div>
 </template>
 
@@ -82,7 +79,8 @@ export default {
   data() {
     return {
       modal: {
-        show: false
+        show: false,
+        id: ""
       },
       rportTypeList: [
         { name: "全部", value: "all" },
@@ -115,10 +113,9 @@ export default {
         },
         {
           title: "推送时间",
-          dataIndex: "dateTime",
-          key: "dateTime",
-          width: 200,
-          align: "center"
+          dataIndex: "gmtCreate",
+          key: "gmtCreate",
+          width: 200
         },
         {
           title: "操作",
@@ -142,8 +139,13 @@ export default {
     onCancel() {
       this.modal.show = false;
     },
-    toReportModal() {
-      this.modal.show = true;
+    toReportModal(row) {
+      this.modal = {
+        show: true,
+        id: row.id,
+        beginTime: row.gmtCreate,
+        endTime: row.gmtEnd
+      };
     },
     getTableData() {
       let params = {
@@ -174,43 +176,6 @@ export default {
           this.loading = false;
         });
     },
-    // getTableData() {
-    //   this.loading = true;
-    //   this.tableData = [
-    //     {
-    //       enterpriseName: "广州鸿政企业有限公司",
-    //       dateTime: "2019-08-26 16:00:00",
-    //       type: 1,
-    //       pointName: "排水口"
-    //     },
-    //     {
-    //       enterpriseName: "北京永瑞恒信有限公司",
-    //       dateTime: "2019-08-26 16:00:00",
-    //       type: 2,
-    //       pointName: "排水口"
-    //     },
-    //     {
-    //       enterpriseName: "北京永瑞恒信有限公司",
-    //       dateTime: "2019-08-26 16:00:00",
-    //       type: 1,
-    //       pointName: "排水口"
-    //     },
-    //     {
-    //       enterpriseName: "广东蓝祺有限公司",
-    //       dateTime: "2019-08-26 16:00:00",
-    //       type: 3,
-    //       pointName: "排水口"
-    //     },
-    //     {
-    //       enterpriseName: "福建驰骤有限公司",
-    //       dateTime: "2019-08-26 16:00:00",
-    //       type: 1,
-    //       pointName: "排水口"
-    //     }
-    //   ];
-    //   this.total = 5;
-    //   this.loading = false;
-    // },
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";

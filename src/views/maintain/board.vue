@@ -135,8 +135,8 @@ export default {
       let count;
       this.monthList.forEach(item => {
         if (
-          this.$moment(item.gmtExecution).format("YYYY") == value.year() &&
-          this.$moment(item.gmtExecution).format("MM") == value.month() + 1
+          this.$moment(item.gmtExecution1).format("YYYY") == value.year() &&
+          this.$moment(item.gmtExecution1).format("MM") == value.month() + 1
         ) {
           count = item;
         }

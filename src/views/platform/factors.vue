@@ -214,6 +214,7 @@ export default {
       });
     },
     getTableData() {
+      this.countDivisor();
       let params = {
         size: this.pageSize,
         page: this.current,
@@ -236,6 +237,7 @@ export default {
         });
     },
     countDivisor() {
+      //获取统计数
       this.$api.platform.countDivisor().then(res => {
         if (res.data.state == 0) {
           this.divisorCount = res.data.data;
@@ -245,7 +247,6 @@ export default {
   },
   mounted() {
     this.getTableData();
-    this.countDivisor();
   }
 };
 </script>
