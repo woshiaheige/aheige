@@ -53,7 +53,7 @@
             <div class="title">运维车辆</div>
             <div class="value">{{ carList.length }}</div>
           </div>
-          <a-date-picker @change="onChange" class="select-time" />
+          <!-- <a-date-picker @change="onChange" class="select-time" /> -->
           <a-list itemLayout="horizontal" :dataSource="carList">
             <a-list-item slot="renderItem" slot-scope="item">
               <a-list-item-meta
@@ -69,7 +69,7 @@
             <div class="title">运维人员</div>
             <div class="value">{{ userList.length }}</div>
           </div>
-          <a-date-picker @change="onChange" class="select-time" />
+          <!-- <a-date-picker @change="onChange" class="select-time" /> -->
           <a-list itemLayout="horizontal" :dataSource="userList">
             <a-list-item slot="renderItem" slot-scope="item">
               <a-list-item-meta
@@ -121,9 +121,9 @@ export default {
       if (key == 1) {
         await this.getPointData(value);
       } else if (key == 2) {
-        await this.getCarData(value);
+        await this.getCarData();
       } else if (key == 3) {
-        await this.getUserData(value);
+        await this.getUserData();
       }
       console.log(this.markers);
       this.map.add(this.markers);
@@ -151,9 +151,9 @@ export default {
       });
     },
     //获取运维车辆地标
-    async getCarData(time) {
+    async getCarData() {
       this.carList = [];
-      await this.$api.index.getCarData({ dateTime: time }).then(res => {
+      await this.$api.index.getCarData().then(res => {
         if (res.data.state == 0) {
           let result = res.data.data;
           for (var i in result) {
@@ -169,9 +169,9 @@ export default {
       });
     },
     //获取运维人员地标
-    async getUserData(time) {
+    async getUserData() {
       this.userList = [];
-      await this.$api.index.getUserData({ dateTime: time }).then(res => {
+      await this.$api.index.getUserData().then(res => {
         if (res.data.state == 0) {
           let result = res.data.data;
           for (var i in result) {
@@ -192,15 +192,23 @@ export default {
     changStatus(e) {
       console.log(e.target.value);
       //1： 离线，2：超标 3：异常
-      let value = e.target.value;
-      let num = value == "b" ? 1 : value == "c" ? 2 : value == "d" ? 3 : "";
+      this.value = e.target.value;
+      let num =
+        this.value == "b"
+          ? 1
+          : this.value == "c"
+          ? 2
+          : this.value == "d"
+          ? 3
+          : "";
       this.callback(this.active, num);
     },
-    onChange(_, dateString) {
-      this.callback(this.active, dateString);
-    },
+    // onChange(_, dateString) {
+    //   this.callback(this.active, dateString);
+    // },
     onFinish() {
       console.log("finished!");
+      this.deadline = Date.now() + 1000 * 60;
     }
   }
 };
