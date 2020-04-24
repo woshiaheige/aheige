@@ -30,15 +30,15 @@
       <a-form-model-item label="手机" prop="phone">
         <a-input placeholder="手机" v-model="formData.phone" />
       </a-form-model-item>
-      <a-form-model-item label="微信ID" prop="wxId">
-        <a-input placeholder="微信ID" v-model="formData.wxId" />
-      </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
         <a-input
           placeholder="密码"
           type="password"
           v-model="formData.password"
         />
+      </a-form-model-item>
+      <a-form-model-item label="微信ID" prop="wxId">
+        <a-input placeholder="微信ID" v-model="formData.wxId" />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
