@@ -33,6 +33,10 @@
         v-margin:top="16"
         :loading="loading"
       >
+        <template slot="isBinding" slot-scope="isBinding">
+          <a-badge color="green" text="是" v-if="isBinding == 1" />
+          <a-badge color="red" text="否" v-if="isBinding == 0" />
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -87,7 +91,10 @@ export default {
         },
         {
           title: "是否绑定微信",
-          dataIndex: "isBinding"
+          dataIndex: "isBinding",
+          scopedSlots: { customRender: "isBinding" },
+          align: "center",
+          width: 150
         },
         {
           title: "操作",

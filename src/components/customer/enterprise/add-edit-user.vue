@@ -103,6 +103,7 @@ export default {
           });
         } else {
           this.formData.enterpriseId = this.$route.query.id;
+          this.formData.isBinding = 0;
           this.formData.password = this.$md5(this.formData.password);
           this.$api.customer.addEnterprise(this.formData).then(res => {
             if (res.data.state == 0) {
