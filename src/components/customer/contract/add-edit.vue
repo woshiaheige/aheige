@@ -86,6 +86,7 @@
           :action="$base.api + 'files/uploadFile'"
           :fileList="fileList"
           @change="handleChange"
+          :remove="handleRemove"
         >
           <a-button> <a-icon type="upload" /> 选择文件 </a-button>
         </a-upload>
@@ -252,6 +253,10 @@ export default {
       } else if (info.file.status === "error") {
         this.$message.error("上传失败");
       }
+    },
+    //删除文件
+    handleRemove() {
+      this.formData.fileId = "";
     },
     enterpriseOptions() {
       this.$api.common.selectEnterprise().then(res => {
