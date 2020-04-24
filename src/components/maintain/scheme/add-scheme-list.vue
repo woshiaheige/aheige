@@ -13,16 +13,16 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="项目名称" prop="name">
+      <a-form-model-item label="运维项目" prop="name">
         <a-input v-model="form.name" placeholder="请输入"></a-input>
       </a-form-model-item>
-      <a-form-model-item label="备注" prop="remark">
+      <!-- <a-form-model-item label="备注" prop="remark">
         <a-input
           v-model="form.remark"
           type="textarea"
           placeholder="请输入"
         ></a-input>
-      </a-form-model-item>
+      </a-form-model-item> -->
     </a-form-model>
   </a-modal>
 </template>
@@ -54,11 +54,6 @@ export default {
             message: "请输入项目名称",
             trigger: "blur"
           }
-        ],
-        remark: [
-          {
-            required: false
-          }
         ]
       }
     };
@@ -76,7 +71,6 @@ export default {
     schemeListDetail(newVal) {
       if (newVal.id) {
         this.form.name = newVal.name;
-        this.form.remark = newVal.remark;
       }
     }
   },
@@ -100,7 +94,6 @@ export default {
       let data = {
         id: this.schemeListDetail.id,
         name: this.form.name,
-        remark: this.form.remark,
         programmeId: this.schemeId
       };
 
@@ -115,7 +108,6 @@ export default {
     addSchemeList() {
       let data = {
         name: this.form.name,
-        remark: this.form.remark,
         programmeId: this.schemeId
       };
 
