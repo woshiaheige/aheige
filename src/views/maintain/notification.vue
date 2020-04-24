@@ -49,10 +49,10 @@
         v-margin:top="16"
         :pagination="false"
       >
-        <template slot="reportType" slot-scope="reportType">
-          <a-tag color="green" v-if="reportType == 1">季报表</a-tag>
-          <a-tag color="cyan" v-if="reportType == 2">月报表</a-tag>
-          <a-tag color="blue" v-if="reportType == 3">周报表</a-tag>
+        <template slot="type" slot-scope="type">
+          <a-tag color="green" v-if="type == 1">季报表</a-tag>
+          <a-tag color="cyan" v-if="type == 2">月报表</a-tag>
+          <a-tag color="blue" v-if="type == 3">周报表</a-tag>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="toReportModal(row)">查看</a>
@@ -70,10 +70,7 @@
         :total="total"
       />
     </a-card>
-    <notification-modal
-      :visible="modal.show"
-      @cancel="onCancel"
-    ></notification-modal>
+    <notification-modal :obj="modal" @cancel="onCancel"></notification-modal>
   </div>
 </template>
 
@@ -84,9 +81,11 @@ export default {
   data() {
     return {
       modal: {
-        show: false
+        show: false,
+        id: ""
       },
       rportTypeList: [
+        { name: "全部", value: "all" },
         { name: "季报表", value: 1 },
         { name: "月报表", value: 2 },
         { name: "周报表", value: 3 }
@@ -109,17 +108,16 @@ export default {
         },
         {
           title: "报表类型",
-          dataIndex: "reportType",
+          dataIndex: "type",
           width: 200,
           align: "center",
-          scopedSlots: { customRender: "reportType" }
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "推送时间",
-          dataIndex: "dateTime",
-          key: "dateTime",
-          width: 200,
-          align: "center"
+          dataIndex: "gmtCreate",
+          key: "gmtCreate",
+          width: 200
         },
         {
           title: "操作",
@@ -131,7 +129,7 @@ export default {
       formInline: {
         enterpriseName: "",
         beginTime: "",
-        reportType: undefined,
+        reportType: "all",
         endTime: ""
       }
     };
@@ -143,45 +141,45 @@ export default {
     onCancel() {
       this.modal.show = false;
     },
-    toReportModal() {
-      this.modal.show = true;
+    toReportModal(row) {
+      this.modal = {
+        show: true,
+        id: row.id,
+        pointId: row.pointId,
+        beginTime: row.gmtBeginTime,
+        endTime: row.gmtEndTime,
+        title: row.pointName
+      };
     },
     getTableData() {
+      let params = {
+        size: this.size,
+        page: this.current,
+        beginTime: this.formInline.beginTime
+          ? this.$moment(this.formInline.beginTime).format(
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : "",
+        endTime: this.formInline.endTime
+          ? this.$moment(this.formInline.endTime).format("YYYY-MM-DD HH:mm:ss")
+          : "",
+        enterpriseName: this.formInline.enterpriseName,
+        type:
+          this.formInline.reportType != "all" ? this.formInline.reportType : ""
+      };
       this.loading = true;
-      this.tableData = [
-        {
-          enterpriseName: "广州鸿政企业有限公司",
-          dateTime: "2019-08-26 16:00:00",
-          reportType: 1,
-          pointName: "排水口"
-        },
-        {
-          enterpriseName: "北京永瑞恒信有限公司",
-          dateTime: "2019-08-26 16:00:00",
-          reportType: 2,
-          pointName: "排水口"
-        },
-        {
-          enterpriseName: "北京永瑞恒信有限公司",
-          dateTime: "2019-08-26 16:00:00",
-          reportType: 1,
-          pointName: "排水口"
-        },
-        {
-          enterpriseName: "广东蓝祺有限公司",
-          dateTime: "2019-08-26 16:00:00",
-          reportType: 3,
-          pointName: "排水口"
-        },
-        {
-          enterpriseName: "福建驰骤有限公司",
-          dateTime: "2019-08-26 16:00:00",
-          reportType: 1,
-          pointName: "排水口"
-        }
-      ];
-      this.total = 5;
-      this.loading = false;
+      this.$api.maintain
+        .reportPush(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = +res.data.data.total;
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     onChange(date, dateString) {
       this.formInline.beginTime = dateString[0] + " 00:00:00";

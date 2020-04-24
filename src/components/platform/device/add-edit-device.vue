@@ -16,17 +16,17 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="设备名称" prop="name">
-        <a-input placeholder="设备名称" v-model="formData.name" />
+        <a-input placeholder="请输入" v-model="formData.name" />
       </a-form-model-item>
       <a-form-model-item label="生产厂家" prop="manufacturer">
-        <a-input placeholder="生产厂家" v-model="formData.manufacturer" />
+        <a-input placeholder="请输入" v-model="formData.manufacturer" />
       </a-form-model-item>
       <a-form-model-item label="设备型号" prop="number">
-        <a-input placeholder="设备型号" v-model="formData.number" />
+        <a-input placeholder="请输入" v-model="formData.number" />
       </a-form-model-item>
       <a-form-model-item label="设备类型" prop="type">
         <a-select
-          placeholder="设备类型"
+          placeholder="请选择"
           v-model="formData.type"
           showSearch
           :filterOption="filterOptions"
@@ -42,7 +42,7 @@
       </a-form-model-item>
       <a-form-model-item label="监测因子" prop="divisorIds">
         <a-select
-          placeholder="监测因子"
+          placeholder="请选择"
           mode="multiple"
           v-model="formData.divisorIds"
           showSearch
@@ -79,6 +79,13 @@ export default {
           {
             required: true,
             message: "请输入设备名称",
+            trigger: "blur"
+          }
+        ],
+        manufacturer: [
+          {
+            required: true,
+            message: "请输入厂家",
             trigger: "blur"
           }
         ]
