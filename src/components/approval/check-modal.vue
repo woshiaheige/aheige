@@ -91,7 +91,7 @@ export default {
       let data = {
         taskId: this.obj.info.taskId,
         pass: state,
-        approvalId: this.id
+        approvalId: Number(this.id)
       };
       this.$api.approval
         .getApprovalTask(data)
