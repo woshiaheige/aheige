@@ -37,6 +37,10 @@ const monitor = {
     return axios.get(base.api + "monitor/exData/", {
       params: data
     });
+  },
+  //获取污染物编码列表
+  getPollCodeList(data) {
+    return axios.get(base.api + "divisor/listByPointId?pointId=" + data);
   }
 };
 

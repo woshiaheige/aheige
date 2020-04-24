@@ -1,13 +1,12 @@
 <template>
   <a-modal
-    :visible="monitor.isShow"
+    :visible="visible"
     :title="monitor.poiName + '-' + monitor.operate + '-' + monitor.title"
     :width="800"
     @ok="define"
-    @cancel="cancel"
-    :maskClosable="false"
+    @cancel="onCancel"
   >
-    <a-row v-if="monitor.isShow">
+    <a-row>
       <!-- 超时时间与重发次数 -->
       <a-form-model
         ref="formValidate1"
@@ -67,7 +66,6 @@
               showSearch
               :filterOption="filterOptions"
             >
-              <a-select-option :value="'数采仪'">数采仪</a-select-option>
               <a-select-option
                 v-for="item in divisorList"
                 :key="item.id"
@@ -259,7 +257,12 @@
               showSearch
               :filterOption="filterOptions"
             >
-              <a-select-option value="数采仪">数采仪</a-select-option>
+              <a-select-option
+                v-for="item in divisorList"
+                :key="item.id"
+                :value="item.code"
+                >{{ item.name }}</a-select-option
+              >
             </a-select>
           </a-form-model-item>
         </a-col>
@@ -280,7 +283,12 @@
               showSearch
               :filterOption="filterOptions"
             >
-              <a-select-option value="数采仪">数采仪</a-select-option>
+              <a-select-option
+                v-for="item in divisorList"
+                :key="item.id"
+                :value="item.code"
+                >{{ item.name }}</a-select-option
+              >
             </a-select>
           </a-form-model-item>
         </a-col>
@@ -329,7 +337,12 @@
               showSearch
               :filterOption="filterOptions"
             >
-              <a-select-option value="数采仪">数采仪</a-select-option>
+              <a-select-option
+                v-for="item in divisorList"
+                :key="item.id"
+                :value="item.code"
+                >{{ item.name }}</a-select-option
+              >
             </a-select>
           </a-form-model-item>
         </a-col>
@@ -387,7 +400,11 @@
 <script>
 export default {
   props: {
-    value: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    modalObj: {
       type: Object,
       default: function() {
         return {};
@@ -617,10 +634,23 @@ export default {
     };
   },
   mounted() {},
+  watch: {
+    visible() {
+      if (this.visible) {
+        this.getPollCodeList();
+      }
+    }
+  },
   methods: {
+    getPollCodeList() {
+      let data = this.monitor.pointId;
+      this.$api.monitor.getPollCodeList(data).then(res => {
+        this.divisorList = res.data.data;
+      });
+    },
     // 弹窗取消
-    cancel() {
-      this.monitor.isShow = false;
+    onCancel() {
+      this.$emit("cancel");
     },
     // 弹窗确认
     define() {
@@ -651,7 +681,7 @@ export default {
   },
   computed: {
     monitor() {
-      return this.value;
+      return this.modalObj;
     }
   }
 };
