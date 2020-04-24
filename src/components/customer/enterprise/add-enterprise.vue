@@ -5,6 +5,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
+    :maskClosable="false"
   >
     <a-form-model
       ref="ruleForm"
@@ -122,17 +123,7 @@ export default {
     return {
       title: "",
       options: [],
-      formData: {
-        // name: "",
-        // regionId: "",
-        // address: "",
-        // code: "",
-        // environmentPrincipal: "",
-        // phone: "",
-        // controlLevel: "",
-        // industryId: "",
-        // introduction: ""
-      },
+      formData: {},
       rules: {
         name: [
           {

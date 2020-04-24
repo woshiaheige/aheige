@@ -4,6 +4,7 @@
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
+    :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="小组名称">

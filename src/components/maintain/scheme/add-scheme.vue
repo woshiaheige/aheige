@@ -4,6 +4,7 @@
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
+    :maskClosable="false"
   >
     <a-form-model
       ref="form"

@@ -7,6 +7,7 @@
       @ok="handleOk"
       okText="确定"
       @cancel="handleCancel"
+      :maskClosable="false"
     >
       <a-form-model
         ref="form"

@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- 图片上传组件辅助-->
-
     <a-upload
       name="file"
       class="accessories"
