@@ -77,6 +77,7 @@
               </a-progress>
             </div>
           </div>
+          <a-empty v-if="!completionList.length" :image="simpleImage" />
         </a-card>
         <a-card :bordered="false">
           <a-tabs defaultActiveKey="1" @change="changeTabs">
@@ -95,6 +96,7 @@
       <a-col :span="6">
         <a-card :bordered="false" title="今日任务完成情况">
           <ve-ring :data="chartData"></ve-ring>
+          <a-empty v-if="isEmpty" :image="simpleImage" />
         </a-card>
         <a-card :bordered="false" title="本周运维人员TOP10">
           <a-list itemLayout="horizontal" :dataSource="rankingList">
@@ -116,6 +118,7 @@
 </template>
 
 <script>
+import { Empty } from "ant-design-vue";
 import pointList from "@/components/index/point-list.vue";
 import contractList from "@/components/index/contract-list.vue";
 import customerList from "@/components/index/customer-list.vue";
@@ -136,8 +139,12 @@ export default {
       },
       rankingList: [],
       completionList: [],
-      countList: {}
+      countList: {},
+      isEmpty: true
     };
+  },
+  beforeCreate() {
+    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   },
   mounted() {
     this.getRankingData();
@@ -186,6 +193,9 @@ export default {
               { name: "未完成", value: result.count - result.completeCount }
             ]
           };
+          if (result) {
+            this.isEmpty = false;
+          }
         }
       });
     },

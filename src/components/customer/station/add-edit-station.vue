@@ -46,9 +46,9 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="经维度">
+      <a-form-model-item label="经纬度">
         <div @click="onLnglat()">
-          <a-input placeholder="请选择经维度" v-model="lngandlat">
+          <a-input placeholder="请选择经纬度" v-model="lngandlat">
             <a-tooltip slot="suffix">
               <a-icon type="environment" style="color: rgba(0,0,0,.45)" />
             </a-tooltip>
@@ -162,7 +162,21 @@ export default {
             message: "请选择所属小组",
             trigger: "change"
           }
+        ],
+        protocolType: [
+          {
+            required: true,
+            message: "请选择传输协议",
+            trigger: "change"
+          }
         ]
+        // lngandlat: [
+        //   {
+        //     required: true,
+        //     message: "请选择经纬度",
+        //     trigger: "blur"
+        //   }
+        // ]
       },
       isDisabled: false,
       groupOptions: [],
@@ -185,6 +199,18 @@ export default {
           return false;
         }
         //验证通过
+        // let data = {
+        //   enterpriseId: this.formData.enterpriseId,
+        //   name: this.formData.name,
+        //   mn: this.formData.mn,
+        //   groupId: this.formData.groupId,
+        //   latitude: this.formData.latitude,
+        //   longitude: this.formData.longitude,
+        //   type: this.formData.type,
+        //   transferType: this.formData.transferType,
+        //   protocolType: this.formData.protocolType,
+        //   address: this.formData.address
+        // };
         if (this.modelData.type == "edit") {
           this.$api.customer.editStation(this.formData).then(res => {
             if (res.data.state == 0) {
