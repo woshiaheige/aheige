@@ -5,7 +5,7 @@
       title="设备反控"
       :visible="visible"
       @ok="handleOk"
-      @cancel="handleCancel"
+      @cancel="onCancel"
       :maskClosable="false"
     >
       <a-card title="远程反控" v-margin:bottom="10">
@@ -178,9 +178,10 @@
         </a-row>
       </a-card>
       <monitor-modal
-        v-model="modalInfo"
+        :modalObj="controlObj"
+        :visible="subVisible"
         @addSuccessful="returnMsg"
-        @cancel="cancelModal"
+        @cancel="onCancelSub"
       ></monitor-modal>
     </a-modal>
   </div>
@@ -195,12 +196,19 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    modalObj: {
+      type: Object,
+      default: function() {
+        return {};
+      }
     }
   },
   data() {
     return {
+      subVisible: false,
       controlImg,
-      modalInfo: {},
+      controlObj: {},
       data1: [],
       dataType: "监测数据",
       timeType: "小时",
@@ -228,28 +236,35 @@ export default {
     };
   },
   methods: {
-    cancelModal() {
-      this.modalInfo.show = false;
+    postCommonSend() {
+      this.$message.success("设置成功");
+    },
+    //关闭子级事件
+    onCancelSub() {
+      this.subVisible = false;
+    },
+    //关闭事件
+    onCancel() {
+      this.$emit("cancel");
     },
     returnMsg(e) {
       console.log(e);
     },
     showModal(obj) {
       const _obj = {};
-      _obj.isShow = true;
+      this.subVisible = true;
       _obj.title = obj.title;
       _obj.command = obj.command;
       _obj.operate = obj.operate;
-      _obj.poiName = "广东厦门市海沧垃圾焚烧厂科技有限公司";
-      _obj.pointId = "1";
+      _obj.poiName = this.modalObj.name;
+      _obj.pointId = this.modalObj.pointId;
       _obj.formIndex = obj.formIndex;
-      this.modalInfo = _obj;
+      this.controlObj = _obj;
     },
     handleOk() {
       console.log("ok");
     },
     handleCancel() {
-      // console.log("handleCancel");
       this.$emit("cancel");
     }
   }

@@ -15,9 +15,9 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="设备" prop="cusPointId">
+      <a-form-model-item label="设备" prop="sysInstrumentId">
         <a-select
-          v-model="formData.cusPointId"
+          v-model="formData.sysInstrumentId"
           placeholder="设备"
           showSearch
           :filterOption="filterOptions"
@@ -26,7 +26,7 @@
             v-for="(item, index) in deviceOptions"
             :key="index"
             :value="item.id"
-            >{{ item.name }}</a-select-option
+            >{{ item.manufacturer }} | {{ item.name }}</a-select-option
           >
         </a-select>
       </a-form-model-item>
@@ -40,6 +40,7 @@
           :action="$base.api + 'files/uploadFile'"
           :fileList="fileList"
           @change="handleChange"
+          :remove="handleRemove"
         >
           <a-button> <a-icon type="upload" /> 上传材料</a-button>
         </a-upload>
@@ -63,7 +64,7 @@ export default {
       fileList: [],
       formData: {},
       rules: {
-        cusPointId: [
+        sysInstrumentId: [
           {
             required: true,
             message: "请选择设备名称",
@@ -94,13 +95,10 @@ export default {
         //验证通过
         let data = {
           id: this.formData.id,
-          divisorIds: this.formData.divisorIds,
+          cusPointId: this.$route.query.id,
+          sysInstrumentId: this.formData.sysInstrumentId,
           fileId: this.formData.fileId,
-          gmtReceptionTime: this.formData.gmtReceptionTime,
-          manufacturer: this.formData.manufacturer,
-          cusPointId: this.formData.cusPointId,
-          number: this.formData.number,
-          type: this.formData.type
+          gmtReceptionTime: this.formData.gmtReceptionTime
         };
         if (data.gmtReceptionTime) {
           data.gmtReceptionTime = this.$moment(data.gmtReceptionTime).format(
@@ -150,6 +148,10 @@ export default {
       } else if (info.file.status === "error") {
         this.$message.error("上传失败");
       }
+    },
+    //删除文件
+    handleRemove() {
+      this.formData.fileId = "";
     },
     getEditData() {
       this.$api.customer

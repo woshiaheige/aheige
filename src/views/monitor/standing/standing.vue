@@ -87,7 +87,11 @@
         :total="total"
       />
     </a-card>
-    <station-control :visible="visible" @cancel="onCancel"></station-control>
+    <station-control
+      :visible="visible"
+      :modalObj="controlObj"
+      @cancel="onCancel"
+    ></station-control>
   </div>
 </template>
 
@@ -97,6 +101,7 @@ export default {
   components: { stationControl },
   data() {
     return {
+      controlObj: {},
       visible: false,
       controlOptions: [
         { name: "国控", value: 1 },
@@ -180,6 +185,7 @@ export default {
     stationControl(row) {
       console.log(row);
       this.visible = true;
+      this.controlObj = row;
     },
     filterOption(input, option) {
       return (
