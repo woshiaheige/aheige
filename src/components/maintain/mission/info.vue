@@ -1,5 +1,12 @@
 <template>
   <a-modal title="任务详情" :visible="visible" @cancel="closeModal">
+    <a-steps :current="missionStatus" size="small" v-margin:bottom="40">
+      <a-step title="已创建" />
+      <a-step title="处理中" />
+      <a-step title="已完成" />
+      <a-step title="已延期" v-if="missionStatus == 4" />
+      <a-step title="已关闭" />
+    </a-steps>
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="运维小组">{{
         detail.groupName
@@ -8,7 +15,7 @@
         detail.handleName
       }}</a-descriptions-item>
       <a-descriptions-item label="运维时间">{{
-        detail.gmtCreate
+        this.$moment(detail.gmtCreate).format("YYYY-MM-DD")
       }}</a-descriptions-item>
       <a-descriptions-item label="任务项目">
         <template v-if="detail.taskItemVos">
@@ -42,6 +49,11 @@ export default {
     },
     detail: {
       required: false
+    }
+  },
+  computed: {
+    missionStatus() {
+      return this.detail.status;
     }
   },
   data() {

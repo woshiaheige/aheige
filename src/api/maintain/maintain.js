@@ -226,6 +226,27 @@ const maintain = {
     return axios.get(base.api + "plan/board/getCountPlanTask", {
       params: data
     });
+  },
+  //报表推送列表
+  reportPush(data) {
+    return axios.get(base.api + "reportPush/", {
+      params: data
+    });
+  },
+  //获取报表详情
+  getReportPushDetails(data) {
+    return axios.get(base.api + "reportPushDetails/getReportPushDetails", {
+      params: data
+    });
+  },
+  //查询数据率统计详情
+  getReportPushDataRateDetails(data) {
+    return axios.get(
+      base.api + "reportPushDetails/getReportPushDataRateDetails",
+      {
+        params: data
+      }
+    );
   }
 };
 

@@ -123,17 +123,7 @@ export default {
     return {
       title: "",
       options: [],
-      formData: {
-        // name: "",
-        // regionId: "",
-        // address: "",
-        // code: "",
-        // environmentPrincipal: "",
-        // phone: "",
-        // controlLevel: "",
-        // industryId: "",
-        // introduction: ""
-      },
+      formData: {},
       rules: {
         name: [
           {

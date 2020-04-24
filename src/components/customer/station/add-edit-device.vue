@@ -15,9 +15,9 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="设备" prop="pointId">
+      <a-form-model-item label="设备" prop="cusPointId">
         <a-select
-          v-model="formData.pointId"
+          v-model="formData.cusPointId"
           placeholder="设备"
           showSearch
           :filterOption="filterOptions"
@@ -63,11 +63,11 @@ export default {
       fileList: [],
       formData: {},
       rules: {
-        name: [
+        cusPointId: [
           {
             required: true,
-            message: "请输入设备名称",
-            trigger: "blur"
+            message: "请选择设备名称",
+            trigger: "change"
           }
         ]
       }
@@ -98,7 +98,7 @@ export default {
           fileId: this.formData.fileId,
           gmtReceptionTime: this.formData.gmtReceptionTime,
           manufacturer: this.formData.manufacturer,
-          pointId: this.formData.pointId,
+          cusPointId: this.formData.cusPointId,
           number: this.formData.number,
           type: this.formData.type
         };
@@ -108,7 +108,7 @@ export default {
           );
         }
         if (this.modelData.type == "edit") {
-          this.$api.customer.editDevice(data).then(res => {
+          this.$api.customer.editDeviceByPointId(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
               this.$emit("refresh");
@@ -116,7 +116,7 @@ export default {
             }
           });
         } else {
-          this.$api.customer.addDevice(data).then(res => {
+          this.$api.customer.addDeviceByPointId(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("新建成功");
               this.$emit("refresh");
@@ -153,7 +153,7 @@ export default {
     },
     getEditData() {
       this.$api.customer
-        .getDeviceById({ id: this.modelData.row.id })
+        .getDeviceByPointId({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
             if (res.data.data.fileName) {

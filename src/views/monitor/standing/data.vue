@@ -11,18 +11,18 @@
         </a-form-model-item>
         <a-form-model-item label="数据类型">
           <a-radio-group v-model="formInline.type">
-            <a-radio-button value="1">实时数据</a-radio-button>
-            <a-radio-button value="2">分钟数据</a-radio-button>
-            <a-radio-button value="3">小时数据</a-radio-button>
-            <a-radio-button value="4">日数据</a-radio-button>
+            <a-radio-button :value="1">实时数据</a-radio-button>
+            <a-radio-button :value="2">分钟数据</a-radio-button>
+            <a-radio-button :value="3">小时数据</a-radio-button>
+            <a-radio-button :value="4">日数据</a-radio-button>
           </a-radio-group>
         </a-form-model-item>
-        <!-- <a-form-model-item style="float:right"
+        <a-form-model-item style="float:right"
           ><a-select v-model="formInline.showType" @change="getTableData">
             <a-select-option value="data">数据</a-select-option>
             <a-select-option value="chart">图表</a-select-option>
           </a-select></a-form-model-item
-        > -->
+        >
         <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
@@ -74,11 +74,9 @@
     >
       <div class="card-header">
         <div class="title">数据图表</div>
+        <!-- 因子列表下拉框 -->
         <div class="extra">
-          <a-select
-            :defaultValue="columnsList[0].name"
-            @change="onColumnsChange"
-          >
+          <a-select :defaultValue="columnsValue" @change="onColumnsChange">
             <a-select-option
               v-for="item in columnsList"
               :value="item.value"
@@ -88,7 +86,11 @@
           </a-select>
         </div>
       </div>
-      <ve-line :data="chartData" :legend-visible="false"></ve-line>
+      <ve-line
+        :data="chartData"
+        :legend-visible="false"
+        :settings="settings"
+      ></ve-line>
     </a-card>
   </div>
 </template>
@@ -97,6 +99,8 @@
 export default {
   data() {
     return {
+      allTableData: [],
+      columnsValue: "",
       dateFormat: "",
       columnsList: [],
       loading: false,
@@ -112,11 +116,11 @@ export default {
           this.$moment(this.$moment().format("YYYY-MM-DD") + " 23:59:59")
         ],
         pointId: "",
-        type: "1",
+        type: 1,
         showType: "data"
       },
       chartData: {
-        columns: ["时间", "一氧化碳"],
+        columns: ["dateTime", "value"],
         rows: [
           {
             时间: "2020-04-03 14:24:09",
@@ -162,14 +166,43 @@ export default {
       }
     };
   },
+  computed: {
+    settings() {
+      return {
+        labelMap: {
+          value: this.columnsValue
+        }
+      };
+    }
+  },
   mounted() {
     this.setPointId();
     this.getRealDataTitle();
-    // this.getTableData();
   },
   methods: {
+    setCharData() {
+      let tempData = [];
+      let columnsValue = this.columnsValue;
+      debugger;
+      this.allTableData.forEach(element => {
+        if (this.formInline.type == 1) {
+          tempData.push({
+            dateTime: element["dataTime"],
+            value: element[columnsValue]["rtd"]
+          });
+        } else {
+          tempData.push({
+            dateTime: element["dataTime"],
+            value: Number(element[columnsValue]["avg"])
+          });
+        }
+      });
+      console.log(tempData);
+      this.chartData.rows = tempData;
+    },
     onColumnsChange(value) {
-      console.log(value);
+      this.columnsValue = value;
+      this.setCharData();
     },
     //时间改变事件
     onChange(date, dateString) {
@@ -244,8 +277,14 @@ export default {
       this.$api.monitor
         .getRealData(data)
         .then(res => {
-          this.total = res.data.data.total;
-          this.tableData = res.data.data.list;
+          if (this.formInline.showType == "data") {
+            this.total = res.data.data.total;
+            this.tableData = res.data.data.list;
+          } else {
+            let _data = res.data.data.list || [];
+            this.allTableData = _data;
+            this.setCharData();
+          }
         })
         .catch(err => {
           console.log(err);
@@ -257,7 +296,7 @@ export default {
     //获取实时数据表头
     getRealDataTitle() {
       let data = {
-        cn: 1
+        cn: this.formInline.type
       };
       let path = this.formInline.pointId;
       this.$api.monitor
@@ -290,20 +329,34 @@ export default {
                   align: "center"
                 });
               } else {
-                temp.push({
-                  title: element.title,
-                  dataIndex: element.field,
-                  key: element.field,
-                  customRender: (text, row) => `${row[element.field].rtd}`
-                });
-                tempColumns.push({
-                  name: element.title,
-                  value: element.field
-                });
+                if (this.formInline.type == 1) {
+                  temp.push({
+                    title: element.title,
+                    dataIndex: element.field,
+                    key: element.field,
+                    customRender: (text, row) => `${row[element.field].rtd}`
+                  });
+                  tempColumns.push({
+                    name: element.title,
+                    value: element.field
+                  });
+                } else {
+                  temp.push({
+                    title: element.title,
+                    dataIndex: element.field,
+                    key: element.field,
+                    customRender: (text, row) => `${row[element.field].avg}`
+                  });
+                  tempColumns.push({
+                    name: element.title,
+                    value: element.field
+                  });
+                }
               }
             });
             this.columns = temp;
             this.columnsList = tempColumns;
+            this.columnsValue = tempColumns[0].value || "";
           }
         })
         .then(() => {
