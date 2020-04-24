@@ -135,14 +135,14 @@ export default {
         }
       ],
       tableData: [
-        {
-          id: "1",
-          name: "方案1",
-          team: "A小组",
-          status: 1,
-          handleName: "张三",
-          gmtCreate: "2020-04-22"
-        }
+        // {
+        //   id: "1",
+        //   name: "方案1",
+        //   team: "A小组",
+        //   status: 1,
+        //   handleName: "张三",
+        //   gmtCreate: "2020-04-22"
+        // }
       ]
     };
   },

@@ -101,7 +101,8 @@ const common = {
     });
   },
   uploadFileApi: base.api + "files/upload",
-  fileViewOnline: base.api + "files/view/" //在线显示文件
+  fileViewOnline: base.api + "files/view/", //在线显示文件
+  fileDownload: base.api + "files/download/file/" //文件下载
 };
 
 export default common;

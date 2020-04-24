@@ -32,7 +32,7 @@
           >
         </a-select>
       </a-form-item>
-      <editor v-model="content" v-if="showEditor" />
+      <editor v-model="content" v-if="showEditor" style="width:100%" />
     </a-form>
   </a-modal>
 </template>
