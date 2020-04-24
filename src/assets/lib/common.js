@@ -16,7 +16,7 @@ const event = {
       this.size = size;
       this.getTableData();
     },
-    debounce(func, wait = 500) {
+    debounceFn(func, wait = 500) {
       //节流
       let timer;
       return () => {
