@@ -138,6 +138,9 @@ export default {
         callback();
       }
     };
+    // let validateCode=(rule,value,callback)=>{
+    //   if(!)
+    // }
     return {
       form: {
         name: "",
@@ -151,17 +154,17 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: "污染物名称不能为空" },
+          { required: true, message: "因子物名称不能为空" },
           {
             min: 1,
             max: 15,
-            message: "污染物名称长度应在1-15个字符之间",
+            message: "因子物名称长度应在1-15个字符之间",
             trigger: "blur"
           }
         ],
         code: [
-          { required: true, message: "污染物编码不能为空" },
-          { min: 1, max: 6, message: "污染编码长度应在1-6个字符之间" }
+          { required: true, message: "因子物编码不能为空" },
+          { min: 1, max: 7, message: "因子编码长度应在1-7个字符之间" }
         ],
         avgUnit: [{ max: 10, message: "均值单位长度应在1-10个字符之间" }],
         sumUnit: [{ max: 10, message: "总量单位长度应在1-10个字符之间" }],

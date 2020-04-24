@@ -17,14 +17,17 @@
       <a-descriptions-item label="运维时间">{{
         this.$moment(detail.gmtCreate).format("YYYY-MM-DD")
       }}</a-descriptions-item>
-      <a-descriptions-item label="任务项目">
+      <a-descriptions-item label="运维项目">
         <template v-if="detail.taskItemVos">
           <div
             v-for="(item, index) of detail.taskItemVos"
             :key="index"
             v-margin.bottom="5"
           >
-            {{ item.name }}
+            <span
+              >{{ item.name }}
+              <a-icon type="check" style="color:green" v-if="item.isState == 1"
+            /></span>
           </div>
         </template>
       </a-descriptions-item>
@@ -32,7 +35,7 @@
         <!-- <div v-for="(item, index) of detail.fileId" :key="index">
           {{ item.name }}
         </div> -->
-        <!-- <a :href="fileDownload + detail.fileId">{{ detail.fileName }}</a> -->
+        <a :href="fileDownload + detail.fileId">{{ detail.fileName }}</a>
       </a-descriptions-item>
     </a-descriptions>
     <template slot="footer">
@@ -68,9 +71,6 @@ export default {
     handleOk() {
       this.$emit("update:visible", false);
     }
-  },
-  mounted() {
-    console.log(888);
   }
 };
 </script>

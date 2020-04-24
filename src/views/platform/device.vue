@@ -132,7 +132,6 @@ export default {
       let data = {
         page: this.current,
         size: this.pageSize,
-        // pointId: this.$route.query.id,
         manufacturer: this.list.manufacturer,
         name: this.list.name,
         number: this.list.number
