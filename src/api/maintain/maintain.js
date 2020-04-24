@@ -226,6 +226,12 @@ const maintain = {
     return axios.get(base.api + "plan/board/getCountPlanTask", {
       params: data
     });
+  },
+  //报表推送列表
+  reportPush(data) {
+    return axios.get(base.api + "reportPush/", {
+      params: data
+    });
   }
 };
 
