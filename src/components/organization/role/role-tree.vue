@@ -23,7 +23,7 @@
             { rules: [{ required: true, message: '请选择权限类型' }] }
           ]"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             :value="item.id"

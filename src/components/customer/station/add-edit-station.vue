@@ -20,7 +20,7 @@
           v-model="formData.enterpriseId"
           :disabled="isDisabled"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in enterpriseList"
@@ -42,7 +42,7 @@
           placeholder="所属小组"
           v-model="formData.groupId"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in groupOptions"
@@ -67,7 +67,7 @@
           placeholder="监测点类型"
           v-model="formData.type"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in pointOptions"
@@ -83,7 +83,7 @@
           v-model="formData.transferType"
           placeholder="传输类型"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in transferList"
@@ -99,7 +99,7 @@
           v-model="formData.protocolType"
           placeholder="传输协议"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in protocolList"

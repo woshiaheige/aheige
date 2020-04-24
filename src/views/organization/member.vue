@@ -35,7 +35,7 @@
             v-model="formInline.isLocked"
             style="width:100px"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterOptions"
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="0">正常</a-select-option>

@@ -23,7 +23,7 @@
             v-width="150"
             v-model="formInline.level"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterOptions"
           >
             <a-select-option
               v-for="item in controlOptions"

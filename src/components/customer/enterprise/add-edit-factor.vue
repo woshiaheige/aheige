@@ -18,13 +18,13 @@
           v-model="formData.divisorId"
           placeholder="因子"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in factorOptions"
             :key="item.id"
             :value="item.id"
-            :filterOption="filterOption"
+            :filterOption="filterOptions"
           >
             {{ item.name }}
           </a-select-option>

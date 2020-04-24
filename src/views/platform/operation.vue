@@ -34,7 +34,7 @@
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"
@@ -53,7 +53,7 @@
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"
@@ -74,7 +74,7 @@
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"
@@ -93,7 +93,7 @@
               placeholder="请选择"
               style="width:200px"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterOptions"
             >
               <a-select-option
                 :value="item.value"

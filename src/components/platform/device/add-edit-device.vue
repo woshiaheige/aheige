@@ -28,7 +28,7 @@
           placeholder="设备类型"
           v-model="formData.type"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in pointOptions"
@@ -45,7 +45,7 @@
           mode="multiple"
           v-model="formData.divisorIds"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in factorOptions"

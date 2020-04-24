@@ -20,7 +20,7 @@
           @change="changeName"
           v-model="formData.goodsId"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in nameOptions"
@@ -40,7 +40,7 @@
           v-model="formData.enterpriseId"
           placeholder="企业"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in companyOptions"
@@ -59,7 +59,7 @@
           v-model="formData.pointId"
           placeholder="监测点"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in stationOptions"
@@ -78,7 +78,7 @@
           v-model="formData.devId"
           placeholder="设备"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in deviceOptions"

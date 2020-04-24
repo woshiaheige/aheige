@@ -15,7 +15,7 @@
             v-width="150"
             v-model="formInline.reportType"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterOptions"
           >
             <a-select-option
               v-for="item in rportTypeList"

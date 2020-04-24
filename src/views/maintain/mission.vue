@@ -49,6 +49,8 @@
             defaultValue="all"
             style="width: 120px"
             v-model="formInline.taskStatus"
+            showSearch
+            :filterOption="filterOptions"
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="1">已完成</a-select-option>

@@ -19,7 +19,7 @@
           v-model="formData.pointId"
           placeholder="设备"
           showSearch
-          :filterOption="filterOption"
+          :filterOption="filterOptions"
         >
           <a-select-option
             v-for="(item, index) in deviceOptions"
