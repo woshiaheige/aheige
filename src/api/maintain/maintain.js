@@ -158,7 +158,6 @@ const maintain = {
       data
     );
   },
-
   //任务管理列表
   managePointTask(data) {
     return axios.get(base.api + "managePointTask/", { params: data });
@@ -191,11 +190,13 @@ const maintain = {
   },
   //配置方案
   addPlan(data) {
-    return axios.post(base.api + "maintainPlan/addMaintainPlan", data);
+    return axios.post(base.api + "maintainPlanPoint/addPlanPoints", data);
   },
   //获取计划
   getPlan(data) {
-    return axios.get(base.api + "maintainPlan/", { params: data });
+    return axios.get(base.api + "maintainPlanPoint/getPlanPointPage/", {
+      params: data
+    });
   },
   //删除计划
   deletePlan(data) {
@@ -247,6 +248,16 @@ const maintain = {
         params: data
       }
     );
+  },
+  //本周任务
+  getMissionThisWeek(data) {
+    return axios.get(base.api + "dispatch/getList", { params: data });
+  },
+  //下周任务
+  getMissionNextWeek(data) {
+    return axios.get(base.api + "dispatch/getNextWeekTask", {
+      params: data
+    });
   }
 };
 

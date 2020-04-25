@@ -32,9 +32,6 @@
               }}</a-select-option>
             </a-select>
           </a-form-model-item>
-          <a-form-model-item label="计划名称" prop="name">
-            <a-input v-model="form.name" placeholder="请输入"></a-input>
-          </a-form-model-item>
           <a-form-model-item label="运维期限" prop="range">
             <a-range-picker
               v-model="form.range"
@@ -89,13 +86,6 @@ export default {
         date: 0
       },
       rules: {
-        name: [
-          {
-            required: true,
-            message: "请输入计划名称",
-            trigger: "blur"
-          }
-        ],
         range: [
           {
             required: true,
@@ -230,25 +220,22 @@ export default {
       }
     },
     addPlan() {
-      let planArr = [];
+      let data = [];
 
       this.targetKeys.forEach(item => {
-        planArr.push({
-          planDay: this.form.date,
-          programmeId: item
+        data.push({
+          programmeId: item,
+          gmtBegin: this.$moment(this.form.range[0]).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          gmtEnd: this.$moment(this.form.range[1]).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          pointId: this.stationId,
+          type: this.form.type,
+          planDay: this.form.date
         });
       });
-
-      let data = {
-        gmtBegin: this.$moment(this.form.range[0]).format(
-          "YYYY-MM-DD HH:mm:ss"
-        ),
-        gmtEnd: this.$moment(this.form.range[1]).format("YYYY-MM-DD HH:mm:ss"),
-        name: this.form.name,
-        pointId: this.stationId,
-        planPoints: planArr,
-        type: this.form.type
-      };
 
       this.$api.maintain.addPlan(data).then(res => {
         if (res.data.state == 0) {
@@ -275,7 +262,6 @@ export default {
         ),
         planPointId: this.planDetail.planPointId,
         gmtEnd: this.$moment(this.form.range[1]).format("YYYY-MM-DD HH:mm:ss"),
-        name: this.form.name,
         pointId: this.stationId,
         planPoints: planArr,
         type: this.form.type

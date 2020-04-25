@@ -53,6 +53,12 @@ export default {
       title: "",
       columns: [
         {
+          title: "时间",
+          dataIndex: "gmtCreate",
+          align: "center",
+          width: 150
+        },
+        {
           title: "企业",
           dataIndex: "enterpriseName"
         },
@@ -67,20 +73,17 @@ export default {
         {
           title: "数量",
           dataIndex: "stockCount",
-          align: "center",
-          width: 100
-        },
-        {
-          title: "时间",
-          dataIndex: "gmtCreate",
-          align: "center",
-          width: 150
+          align: "center"
         },
         {
           title: "操作人",
           dataIndex: "username",
-          align: "center",
-          width: 100
+          align: "center"
+        },
+        {
+          title: "领用人",
+          dataIndex: "receiverUserName",
+          align: "center"
         }
       ],
       tableData: []
@@ -97,7 +100,7 @@ export default {
         size: this.pageSize,
         page: this.current,
         goodId: this.modelData.row.id,
-        tyle: 1 //1 出库 2 入库
+        type: 1 //1 出库 2 入库
       };
       this.loading = true;
       this.$api.product

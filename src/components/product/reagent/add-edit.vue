@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="modelData.type == 'add' ? '新建物品' : '编辑物品信息'"
+    :title="modelData.type == 'add' ? '新建物资' : '编辑物资信息'"
     :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
@@ -27,15 +27,23 @@
       <a-form-model-item label="型号" prop="model">
         <a-input placeholder="输入型号" v-model.trim="formData.model" />
       </a-form-model-item>
-      
+
       <a-form-model-item label="库存单位" prop="unit">
         <a-input placeholder="输入库存单位" v-model.trim="formData.unit" />
       </a-form-model-item>
       <a-form-model-item label="库存警戒线" prop="cordon">
-        <a-input placeholder="输入库存警戒线" v-model.trim="formData.cordon" />
+        <a-input
+          placeholder="输入库存警戒线"
+          v-model.trim="formData.cordon"
+          type="number"
+        />
       </a-form-model-item>
       <a-form-model-item label="参考价格" prop="price">
-        <a-input placeholder="输入参考价格" v-model.trim="formData.price" />
+        <a-input
+          placeholder="输入参考价格"
+          v-model.trim="formData.price"
+          type="number"
+        />
       </a-form-model-item>
       <a-form-model-item label="说明" prop="remark">
         <a-input
@@ -97,11 +105,8 @@ export default {
     };
   },
   computed: {
-    modelData: {
-      get() {
-        return this.value;
-      },
-      set() {}
+    modelData() {
+      return this.value;
     }
   },
   methods: {
@@ -111,24 +116,25 @@ export default {
           console.log("error submit!!");
           return false;
         }
+
+        if (this.modelData.type == "edit") {
+          this.$api.product.editGoods(this.formData).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("编辑成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          });
+        } else {
+          this.$api.product.addGoods(this.formData).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("新建成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          });
+        }
       });
-      if (this.modelData.type == "edit") {
-        this.$api.product.editGoods(this.formData).then(res => {
-          if (res.data.state == 0) {
-            this.$message.success("编辑成功");
-            this.$emit("refresh");
-            this.handleCancel();
-          }
-        });
-      } else {
-        this.$api.product.addGoods(this.formData).then(res => {
-          if (res.data.state == 0) {
-            this.$message.success("新建成功");
-            this.$emit("refresh");
-            this.handleCancel();
-          }
-        });
-      }
     },
     handleCancel() {
       this.modelData.show = false;

@@ -16,13 +16,25 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="设备名称" prop="name">
-        <a-input placeholder="请输入" v-model.trim="formData.name" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.name"
+          @change="formDataName"
+        />
       </a-form-model-item>
       <a-form-model-item label="生产厂家" prop="manufacturer">
-        <a-input placeholder="请输入" v-model.trim="formData.manufacturer" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.manufacturer"
+          @change="formDataManufacturer"
+        />
       </a-form-model-item>
       <a-form-model-item label="设备型号" prop="number">
-        <a-input placeholder="请输入" v-model.trim="formData.number" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.number"
+          @change="formDataNumber"
+        />
       </a-form-model-item>
       <a-form-model-item label="设备类型" prop="type">
         <a-select
@@ -30,6 +42,7 @@
           v-model="formData.type"
           showSearch
           :filterOption="filterOptions"
+          @change="searchDivisor"
         >
           <a-select-option
             v-for="item in pointOptions"
@@ -46,7 +59,7 @@
           mode="multiple"
           v-model="formData.divisorIds"
           :filterOption="false"
-          @search="searchDivisor"
+          @search="searchDivisorName"
           :notFoundContent="fetching ? undefined : null"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
@@ -55,7 +68,9 @@
             :key="index"
             :value="item.id"
           >
-            {{ item.name + ' / '+ item.code + ' / ' + item.protocolType + '协议'}}
+            {{
+              item.name + " / " + item.code + " / " + item.protocolType + "协议"
+            }}
           </a-select-option>
         </a-select>
       </a-form-model-item>
@@ -129,12 +144,10 @@ export default {
   },
   mounted() {
     console.log(base.api);
-    this.searchDivisor();//丢wacth会导致出现变慢丢mounted生命周期好些
   },
   methods: {
-    //因子下拉
-    searchDivisor(value) {
-      console.log(111);
+    //因子名称搜索
+    searchDivisorName(value) {
       const fetchId = this.lastFetchId;
       this.data = [];
       this.fetching = true;
@@ -144,7 +157,7 @@ export default {
         name: value
       };
       this.$api.platform.sysDivisor(params).then(res => {
-        console.log(res)
+        console.log(res);
         if (res.data.state == 0) {
           if (fetchId !== this.lastFetchId) {
             // for fetch callback order
@@ -154,6 +167,48 @@ export default {
           this.fetching = false;
         }
       });
+    },
+    //因子下拉
+    searchDivisor(value) {
+      console.log(value);
+      const fetchId = this.lastFetchId;
+      this.data = [];
+      this.fetching = true;
+      let params = {
+        size: 20,
+        page: 1,
+        type: value
+      };
+      this.$api.platform.sysDivisor(params).then(res => {
+        console.log(res);
+        if (res.data.state == 0) {
+          if (fetchId !== this.lastFetchId) {
+            // for fetch callback order
+            return;
+          }
+          this.factorOptions = res.data.data.records;
+          this.fetching = false;
+        }
+      });
+    },
+    //限制长度  自带的限制用户体验极差
+    formDataName() {
+      if (this.formData.name.length > 30) {
+        this.formData.name = this.formData.name.substring(0, 29);
+      }
+    },
+    formDataNumber() {
+      if (this.formData.number.length > 30) {
+        this.formData.number = this.formData.number.substring(0, 29);
+      }
+    },
+    formDataManufacturer() {
+      if (this.formData.manufacturer.length > 30) {
+        this.formData.manufacturer = this.formData.manufacturer.substring(
+          0,
+          29
+        );
+      }
     },
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -197,6 +252,7 @@ export default {
       });
     },
     handleCancel() {
+      this.factorOptions = [];
       this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
@@ -246,7 +302,6 @@ export default {
       this.$api.common.listByIds(params).then(res => {
         if (res.data.state == 0) {
           this.factorOptions = res.data.data;
-          console.log(this.factorOptions, 5555);
         }
       });
     }
@@ -258,7 +313,7 @@ export default {
         if (nval.show == true) {
           this.getStation();
           this.getPointSelect();
-          
+
           this.fileList = [];
           if (nval.type == "edit") {
             this.title = "编辑";

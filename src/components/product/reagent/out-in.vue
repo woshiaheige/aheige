@@ -8,7 +8,7 @@
     :maskClosable="false"
   >
     <a-form-model
-      ref="ruleForm"
+      ref="formData"
       :validateOnRuleChange="true"
       :model="formData"
       :rules="rules"
@@ -24,7 +24,7 @@
           :filterOption="filterOptions"
         >
           <a-select-option
-            v-for="item in nameOptions"
+            v-for="item in goodsOptions"
             :key="item.id"
             :value="item.id"
           >
@@ -42,6 +42,7 @@
           placeholder="企业"
           showSearch
           :filterOption="filterOptions"
+          @change="changeEnterprise"
         >
           <a-select-option
             v-for="(item, index) in companyOptions"
@@ -61,6 +62,7 @@
           placeholder="监测点"
           showSearch
           :filterOption="filterOptions"
+          @change="changeStation"
         >
           <a-select-option
             v-for="(item, index) in stationOptions"
@@ -86,6 +88,25 @@
             :key="index"
             :value="item.id"
             >{{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item
+        v-if="modelData.type == 'out'"
+        label="领用人"
+        prop="receiverUserId"
+      >
+        <a-select
+          v-model="formData.receiverUserId"
+          placeholder="领用人"
+          showSearch
+          :filterOption="filterOptions"
+        >
+          <a-select-option
+            v-for="(item, index) in userOptions"
+            :key="index"
+            :value="item.id"
+            >{{ item.groupName }} | {{ item.name }}</a-select-option
           >
         </a-select>
       </a-form-model-item>
@@ -134,8 +155,17 @@ export default {
       companyOptions: [],
       deviceOptions: [],
       stationOptions: [],
-      nameOptions: [],
-      formData: {},
+      goodsOptions: [],
+      userOptions: [],
+      formData: {
+        goodsId: undefined,
+        enterpriseId: undefined,
+        pointId: undefined,
+        devId: undefined,
+        receiverUserId: undefined,
+        stockCount: "",
+        remark: ""
+      },
       list: {},
       rules: {
         goodsId: [
@@ -167,10 +197,10 @@ export default {
             trigger: "change"
           }
         ],
-        devId: [
+        receiverUserId: [
           {
             required: true,
-            message: "请选择设备",
+            message: "请选择领用人",
             trigger: "change"
           }
         ]
@@ -185,7 +215,7 @@ export default {
   mounted() {},
   methods: {
     handleOk() {
-      this.$refs.ruleForm.validate(valid => {
+      this.$refs.formData.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
@@ -205,27 +235,18 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
-      this.$refs.ruleForm.resetFields();
+      this.$refs.formData.resetFields();
     },
     getSelect() {
       this.$api.product.getGoodsSelect().then(res => {
-        this.nameOptions = res.data.data;
+        this.goodsOptions = res.data.data;
       });
     },
     changeName(value) {
       console.log(value);
-      this.nameOptions.forEach(item => {
+      this.goodsOptions.forEach(item => {
         if (item.id == value) {
           this.list = item;
-        }
-      });
-    },
-    //监测点下拉
-    getStation() {
-      this.$api.common.selectStation().then(res => {
-        if (res.data.state == 0) {
-          this.stationOptions = res.data.data;
         }
       });
     },
@@ -237,6 +258,22 @@ export default {
         }
       });
     },
+    changeEnterprise(value) {
+      this.getStation(value);
+    },
+    //监测点下拉
+    getStation(value) {
+      this.$api.common
+        .selectStationByEnterpriseId({ enterpriseId: value })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.stationOptions = res.data.data;
+          }
+        });
+    },
+    changeStation(value) {
+      this.getDevice(value);
+    },
     //设备下拉
     getDevice() {
       this.$api.common.selectDevice().then(res => {
@@ -244,16 +281,27 @@ export default {
           this.deviceOptions = res.data.data;
         }
       });
+    },
+    //领用人下拉
+    getUser() {
+      this.$api.common.selectUser().then(res => {
+        if (res.data.state == 0) {
+          this.userOptions = res.data.data;
+        }
+      });
     }
   },
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.list = {
+          goodsCount: "",
+          unit: ""
+        };
         this.getSelect();
         if (this.value.type == "out") {
-          this.getStation();
           this.getCompany();
-          this.getDevice();
+          this.getUser();
         }
       }
     }

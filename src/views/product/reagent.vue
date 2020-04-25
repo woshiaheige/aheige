@@ -54,8 +54,7 @@
       size="small"
       v-margin:top="16"
       showSizeChanger
-      :defaultCurrent="current"
-      :pageSize.sync="pageSize"
+      :current="current"
       :total="total"
       :showTotal="total => `共 ${total} 条`"
       @change="pagechange"
@@ -161,6 +160,9 @@ export default {
             .then(res => {
               if (res.data.state == 0) {
                 that.$message.success("删除成功");
+                if (that.tableData.length == 1) {
+                  if (that.current > 1) that.current--;
+                }
                 that.getTableData();
               }
             });
