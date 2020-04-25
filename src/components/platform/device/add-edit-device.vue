@@ -302,7 +302,6 @@ export default {
       this.$api.common.listByIds(params).then(res => {
         if (res.data.state == 0) {
           this.factorOptions = res.data.data;
-          console.log(this.factorOptions, 5555);
         }
       });
     }
