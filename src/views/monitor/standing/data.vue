@@ -10,7 +10,7 @@
           />
         </a-form-model-item>
         <a-form-model-item label="数据类型">
-          <a-radio-group v-model="formInline.type">
+          <a-radio-group v-model="formInline.type" @change="getRealDataTitle">
             <a-radio-button :value="1">实时数据</a-radio-button>
             <a-radio-button :value="2">分钟数据</a-radio-button>
             <a-radio-button :value="3">小时数据</a-radio-button>
@@ -56,7 +56,7 @@
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pagesize"
+        :pageSize.sync="pageSize"
         :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
         @change="pagechange"
@@ -105,7 +105,7 @@ export default {
       columnsList: [],
       loading: false,
       pointId: "",
-      pagesize: 10,
+      pageSize: 10,
       current: 1,
       total: 0,
       tableData: [],
@@ -183,7 +183,6 @@ export default {
     setCharData() {
       let tempData = [];
       let columnsValue = this.columnsValue;
-      debugger;
       this.allTableData.forEach(element => {
         if (this.formInline.type == 1) {
           tempData.push({
@@ -267,8 +266,8 @@ export default {
     getTableData() {
       this.loading = true;
       let data = {
-        index: this.current,
-        size: this.formInline.showType == "data" ? this.pagesize : 10000,
+        page: this.current,
+        size: this.formInline.showType == "data" ? this.pageSize : 10000,
         pointId: this.formInline.pointId,
         beginTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
         endTime: this.formInline.range[1].format("YYYY-MM-DD HH:mm:ss"),
@@ -295,6 +294,7 @@ export default {
     },
     //获取实时数据表头
     getRealDataTitle() {
+      this.pageSize = 1;
       let data = {
         cn: this.formInline.type
       };
@@ -313,7 +313,7 @@ export default {
                 customRender: (_, __, index) => {
                   return (
                     <span>
-                      {index + (this.current - 1) * this.pagesize + 1}
+                      {index + (this.current - 1) * this.pageSize + 1}
                     </span>
                   );
                 }
@@ -356,6 +356,12 @@ export default {
             });
             this.columns = temp;
             this.columnsList = tempColumns;
+            console.log("-------temp------");
+            console.log(temp);
+            console.log("-------temp------");
+            console.log("-------tempColumns------");
+            console.log(tempColumns);
+            console.log("-------tempColumns------");
             this.columnsValue = tempColumns[0].value || "";
           }
         })

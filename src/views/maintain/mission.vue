@@ -61,7 +61,7 @@
           <a-range-picker @change="onChange" />
         </a-form-item> -->
         <a-form-item style="float: right">
-          <a-button type="primary" @click="resetFormInLine">
+          <a-button @click="resetFormInLine">
             重置
           </a-button>
         </a-form-item>
@@ -97,10 +97,14 @@
             :text="taskStatus == 1 ? '已完成' : '处理中'"
           />
         </template>
-        <template slot="type" slot-scope="type">
-          <a-tag color="blue" v-if="type == 32">水类</a-tag>
-          <a-tag color="red" v-if="type == 31">气类</a-tag>
-          <a-tag color="green" v-if="type != 31 && type != 32">其他</a-tag>
+        <template slot="pointTypeName" slot-scope="pointTypeName">
+          <a-tag color="blue" v-if="pointTypeName == '废气'">废气</a-tag>
+          <a-tag color="green" v-if="pointTypeName == '废水'">废水</a-tag>
+          <a-tag
+            color="green"
+            v-if="pointTypeName != '废气' && pointTypeName != '废水'"
+            >{{ pointTypeName }}</a-tag
+          >
         </template>
         <span slot="action" slot-scope="row">
           <!-- <a @click="delayShow = true">申请延期</a>
@@ -157,7 +161,8 @@ export default {
         },
         {
           title: "站点类别",
-          dataIndex: "pointTypeName"
+          dataIndex: "pointTypeName",
+          scopedSlots: { customRender: "pointTypeName" }
         },
         {
           title: "任务状态",
@@ -228,6 +233,7 @@ export default {
     slectEnterprise(value) {
       this.formInline.enterpriseId = value.id;
       this.formInline.enterpriseName = value.name;
+      this.searchPoint("");
     },
     searchPoint(value) {
       //搜索站点
@@ -278,6 +284,7 @@ export default {
     },
     resetFormInLine() {
       this.formInline = this.$options.data().formInline;
+      this.getTableData();
     },
     goDetail(row) {
       this.$router.push({

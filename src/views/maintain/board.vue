@@ -20,28 +20,31 @@
             >
               <template slot="content">
                 <P v-for="(value, key) of taskList" :key="key"
-                  >{{ value.enterpriseName }}-{{ value.pointName }}
-                  {{ value.groupName }} 运维方案-{{ value.task }}
+                  >站点名称：{{ value.pointName }}&nbsp;&nbsp; 运维小组：{{
+                    value.groupName
+                  }}&nbsp;&nbsp; 运维方案：{{ value.programmeName }}
                 </P>
               </template>
-              <a-badge
-                v-show="item.status == 1"
+              <a-tag color="#2db7f5" v-margin="5">{{
+                item.enterpriseName
+              }}</a-tag>
+              <!-- <a-badge
                 status="default"
-                :text="item.name"
-                :title="item.name"
-              />
-              <a-badge
+                :text="item.enterpriseName"
+                :title="item.enterpriseName"
+              /> -->
+              <!-- <a-badge
                 v-show="item.status == 2"
                 status="success"
-                :text="item.name"
-                :title="item.name"
+                :text="item.enterpriseName"
+                :title="item.enterpriseName"
               />
               <a-badge
                 v-show="item.status == 3"
                 status="warning"
-                :text="item.name"
-                :title="item.name"
-              />
+                :text="item.enterpriseName"
+                :title="item.enterpriseName"
+              /> -->
             </a-popover>
           </li>
         </ul>
@@ -114,7 +117,7 @@ export default {
       //获取当月计划
       let params = {
         year: time.format("YYYY"),
-        month: time.format("MM")
+        month: time.format("M")
       };
       this.$api.maintain.getMonthPlanBoard(params).then(res => {
         if (res.data.state == 0) {
@@ -125,8 +128,8 @@ export default {
     getDetail(item) {
       //获取日计划详情
       let params = {
-        planId: item.id,
-        time: this.$moment(item.gmtExecution).format("YYYY-MM-DD")
+        enterpriseId: item.enterpriseId,
+        beginTime: this.$moment(item.gmtExecution).format("YYYY-MM-DD")
       };
       this.$api.maintain.getMonthPlanBoardData(params).then(res => {
         if (res.data.state == 0) {

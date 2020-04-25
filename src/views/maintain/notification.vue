@@ -82,7 +82,9 @@ export default {
     return {
       modal: {
         show: false,
-        id: ""
+        id: "",
+        beginTime: "",
+        endTime: ""
       },
       rportTypeList: [
         { name: "全部", value: "all" },
@@ -148,7 +150,8 @@ export default {
         pointId: row.pointId,
         beginTime: row.gmtBeginTime,
         endTime: row.gmtEndTime,
-        title: row.pointName
+        title: row.pointName,
+        mn: row.mn
       };
     },
     getTableData() {
