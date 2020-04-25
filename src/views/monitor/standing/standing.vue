@@ -80,7 +80,7 @@
         :showTotal="total => `共 ${total} 条`"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pagesize"
+        :pageSize.sync="pageSize"
         :defaultCurrent="current"
         @change="pagechange"
         @showSizeChange="sizechange"
@@ -110,7 +110,7 @@ export default {
         { name: "县控", value: 4 }
       ],
       loading: false,
-      pagesize: 10,
+      pageSize: 10,
       current: 1,
       total: 0,
       tableData: [],
@@ -198,8 +198,8 @@ export default {
       let data = {
         enterpriseName: this.formInline.enterpriseName,
         pointName: this.formInline.pointName,
-        index: this.current,
-        pageSize: this.pagesize,
+        page: this.current,
+        pageSize: this.pageSize,
         level: this.formInline.level || ""
       };
       this.loading = true;
