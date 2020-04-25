@@ -65,15 +65,14 @@
           <a @click="onDelete(row)">删除</a>
         </span>
       </a-table>
-
+      <!-- 文档的defaultCurrent是有bug的，用current -->
       <a-pagination
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :defaultCurrent="current"
-        :pageSize.sync="pageSize"
         :total="total"
         :showTotal="total => `共 ${total} 条`"
+        :current="current"
         @change="pagechange"
         @showSizeChange="sizechange"
       />

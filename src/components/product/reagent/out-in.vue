@@ -8,7 +8,7 @@
     :maskClosable="false"
   >
     <a-form-model
-      ref="ruleForm"
+      ref="formData"
       :validateOnRuleChange="true"
       :model="formData"
       :rules="rules"
@@ -42,6 +42,7 @@
           placeholder="企业"
           showSearch
           :filterOption="filterOptions"
+          @change="changeEnterprise"
         >
           <a-select-option
             v-for="(item, index) in companyOptions"
@@ -61,6 +62,7 @@
           placeholder="监测点"
           showSearch
           :filterOption="filterOptions"
+          @change="changeStation"
         >
           <a-select-option
             v-for="(item, index) in stationOptions"
@@ -155,7 +157,15 @@ export default {
       stationOptions: [],
       goodsOptions: [],
       userOptions: [],
-      formData: {},
+      formData: {
+        goodsId: undefined,
+        enterpriseId: undefined,
+        pointId: undefined,
+        devId: undefined,
+        receiverUserId: undefined,
+        stockCount: "",
+        remark: ""
+      },
       list: {},
       rules: {
         goodsId: [
@@ -205,7 +215,7 @@ export default {
   mounted() {},
   methods: {
     handleOk() {
-      this.$refs.ruleForm.validate(valid => {
+      this.$refs.formData.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
@@ -225,8 +235,7 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
-      this.$refs.ruleForm.resetFields();
+      this.$refs.formData.resetFields();
     },
     getSelect() {
       this.$api.product.getGoodsSelect().then(res => {
@@ -241,14 +250,6 @@ export default {
         }
       });
     },
-    //监测点下拉
-    getStation() {
-      this.$api.common.selectStation().then(res => {
-        if (res.data.state == 0) {
-          this.stationOptions = res.data.data;
-        }
-      });
-    },
     //企业下拉
     getCompany() {
       this.$api.common.selectEnterprise().then(res => {
@@ -256,6 +257,22 @@ export default {
           this.companyOptions = res.data.data;
         }
       });
+    },
+    changeEnterprise(value) {
+      this.getStation(value);
+    },
+    //监测点下拉
+    getStation(value) {
+      this.$api.common
+        .selectStationByEnterpriseId({ enterpriseId: value })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.stationOptions = res.data.data;
+          }
+        });
+    },
+    changeStation(value) {
+      this.getDevice(value);
     },
     //设备下拉
     getDevice() {
@@ -277,11 +294,13 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.list = {
+          goodsCount: "",
+          unit: ""
+        };
         this.getSelect();
         if (this.value.type == "out") {
-          this.getStation();
           this.getCompany();
-          this.getDevice();
           this.getUser();
         }
       }

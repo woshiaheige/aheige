@@ -257,6 +257,7 @@ export default {
       });
     },
     handleCancel() {
+      this.factorOptions = [];
       this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;

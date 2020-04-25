@@ -32,10 +32,18 @@
         <a-input placeholder="输入库存单位" v-model.trim="formData.unit" />
       </a-form-model-item>
       <a-form-model-item label="库存警戒线" prop="cordon">
-        <a-input placeholder="输入库存警戒线" v-model.trim="formData.cordon" />
+        <a-input
+          placeholder="输入库存警戒线"
+          v-model.trim="formData.cordon"
+          type="number"
+        />
       </a-form-model-item>
       <a-form-model-item label="参考价格" prop="price">
-        <a-input placeholder="输入参考价格" v-model.trim="formData.price" />
+        <a-input
+          placeholder="输入参考价格"
+          v-model.trim="formData.price"
+          type="number"
+        />
       </a-form-model-item>
       <a-form-model-item label="说明" prop="remark">
         <a-input
