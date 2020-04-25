@@ -91,7 +91,28 @@ export default {
         manufacturer: [
           {
             required: true,
-            message: "请输入厂家",
+            message: "请输入生产厂家",
+            trigger: "blur"
+          }
+        ],
+        number: [
+          {
+            required: true,
+            message: "请输入设备型号",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择设备类型",
+            trigger: "blur"
+          }
+        ],
+        divisorIds: [
+          {
+            required: true,
+            message: "请输入监测因子",
             trigger: "blur"
           }
         ]
