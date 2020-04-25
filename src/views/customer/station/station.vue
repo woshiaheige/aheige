@@ -203,6 +203,7 @@ export default {
       let params = ["SYS_POINT_TYPE"];
       this.$api.common.geDictByParam(params).then(res => {
         this.pointOptions = res.data;
+        console.log(this.pointOptions);
       });
     },
     goFactor(row) {

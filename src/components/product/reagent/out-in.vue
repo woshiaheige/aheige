@@ -122,6 +122,7 @@
       >
         <a-input-number
           :min="1"
+          :max="99999999"
           placeholder="数量"
           v-model="formData.stockCount"
           v-width="350"
@@ -129,8 +130,9 @@
       </a-form-model-item>
       <a-form-model-item label="备注" prop="remark">
         <a-input
-          placeholder="输入备注"
+          placeholder="备注"
           type="textarea"
+          :maxLength="300"
           v-model="formData.remark"
         />
       </a-form-model-item>
