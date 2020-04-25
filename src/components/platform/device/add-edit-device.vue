@@ -195,7 +195,7 @@ export default {
         }
       });
     },
-    //限制长度  自带的限制用户体验极差
+    //限制长度
     formDataName() {
       if (this.formData.name.length > 30) {
         this.formData.name = this.formData.name.substring(0, 29);
