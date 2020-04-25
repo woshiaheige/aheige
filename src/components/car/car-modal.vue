@@ -16,6 +16,7 @@
       <a-form-item label="车牌">
         <a-input
           placeholder="请输入"
+          :maxLength="30"
           v-decorator="[
             'number',
             { rules: [{ required: true, message: '请输入车牌' }] }
@@ -23,19 +24,31 @@
         />
       </a-form-item>
       <a-form-item label="车辆品牌">
-        <a-input placeholder="请输入" v-decorator="['model']" />
+        <a-input :maxLength="30" placeholder="请输入" v-decorator="['model']" />
       </a-form-item>
       <a-form-item label="车架号">
-        <a-input placeholder="请输入" v-decorator="['frameNumber']" />
+        <a-input
+          :maxLength="30"
+          placeholder="请输入"
+          v-decorator="['frameNumber']"
+        />
       </a-form-item>
       <a-form-item label="购置时间">
-        <a-date-picker placeholder="请选择" v-decorator="['gmtPurchase']" />
+        <a-date-picker
+          v-width="350"
+          placeholder="请选择"
+          v-decorator="['gmtPurchase']"
+        />
       </a-form-item>
       <a-form-item label="上次年检时间">
-        <a-date-picker placeholder="请选择" v-decorator="['gmtInspection']" />
+        <a-date-picker
+          v-width="350"
+          placeholder="请选择"
+          v-decorator="['gmtInspection']"
+        />
       </a-form-item>
       <a-form-item label="GPS设备号">
-        <a-input placeholder="请输入" v-decorator="['gps']" />
+        <a-input :maxLength="30" placeholder="请输入" v-decorator="['gps']" />
       </a-form-item>
     </a-form>
     <template slot="footer">
