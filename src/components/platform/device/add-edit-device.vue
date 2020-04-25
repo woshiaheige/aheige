@@ -55,7 +55,7 @@
             :key="index"
             :value="item.id"
           >
-            {{ item.name }}
+            {{ item.name + ' / '+ item.code + ' / ' + item.protocolType + '协议'}}
           </a-select-option>
         </a-select>
       </a-form-model-item>
@@ -112,7 +112,7 @@ export default {
         divisorIds: [
           {
             required: true,
-            message: "请输入监测因子",
+            message: "请添加监测因子",
             trigger: "blur"
           }
         ]
@@ -129,6 +129,7 @@ export default {
   },
   mounted() {
     console.log(base.api);
+    this.searchDivisor();//丢wacth会导致出现变慢丢mounted生命周期好些
   },
   methods: {
     //因子下拉
@@ -143,6 +144,7 @@ export default {
         name: value
       };
       this.$api.platform.sysDivisor(params).then(res => {
+        console.log(res)
         if (res.data.state == 0) {
           if (fetchId !== this.lastFetchId) {
             // for fetch callback order
@@ -256,6 +258,7 @@ export default {
         if (nval.show == true) {
           this.getStation();
           this.getPointSelect();
+          
           this.fileList = [];
           if (nval.type == "edit") {
             this.title = "编辑";
