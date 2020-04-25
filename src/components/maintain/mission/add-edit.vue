@@ -18,18 +18,12 @@
       <a-form-model-item label="选择企业" prop="enterpriseId">
         <a-select
           showSearch
-          v-model="formData.enterpriseName"
+          v-model="formData.enterpriseId"
           placeholder="请输入"
           style="width: 200px"
-          :defaultActiveFirstOption="false"
-          :showArrow="false"
-          :filterOption="false"
-          @search="searchEnterprise"
-          :notFoundContent="null"
         >
           <a-select-option
             v-for="(item, index) in enterpriseList"
-            @click="slectEnterprise(item)"
             :key="index"
             :value="item.id"
             >{{ item.name }}</a-select-option
@@ -38,40 +32,15 @@
       </a-form-model-item>
       <a-form-model-item label="选择站点" prop="pointId">
         <a-select
+          :disabled="formData.enterpriseId == ''"
           showSearch
-          v-model="formData.pointName"
+          :value="formData.pointId"
           placeholder="请输入"
           style="width: 200px"
-          :defaultActiveFirstOption="false"
-          :showArrow="false"
-          :filterOption="false"
-          @search="searchPoint"
-          :notFoundContent="null"
         >
           <a-select-option
+            @click="selectStation(item)"
             v-for="(item, index) in pointList"
-            @click="slectPoint(item)"
-            :key="index"
-            :value="item.id"
-            >{{ item.name }}</a-select-option
-          >
-        </a-select>
-      </a-form-model-item>
-      <a-form-model-item label="运维小组" prop="groupId">
-        <a-select
-          showSearch
-          v-model="formData.groupName"
-          placeholder="请输入"
-          style="width: 200px"
-          :defaultActiveFirstOption="false"
-          :showArrow="false"
-          :filterOption="false"
-          @search="searchGroup"
-          :notFoundContent="null"
-        >
-          <a-select-option
-            v-for="(item, index) in groupList"
-            @click="slectGroup(item)"
             :key="index"
             :value="item.id"
             >{{ item.name }}</a-select-option
@@ -80,6 +49,7 @@
       </a-form-model-item>
       <a-form-model-item label="运维人员" prop="memberId">
         <a-select
+          :disabled="formData.pointId == ''"
           v-model="formData.memberId"
           placeholder="请选择"
           style="width: 200px"
@@ -97,23 +67,13 @@
       <a-form-model-item label="任务名称" prop="name">
         <a-input placeholder="任务名称" v-model="formData.name" />
       </a-form-model-item>
-      <a-form-model-item label="开始时间" prop="gmtCreate">
+      <a-form-model-item label="执行时间" prop="gmtExecution">
         <a-date-picker
-          v-model="formData.gmtCreate"
+          v-model="formData.gmtExecution"
           show-time
           type="date"
-          format="YYYY-MM-DD"
+          format="YYYY-MM-DD HH:mm:ss"
           placeholder="开始时间"
-          style="width: 100%;"
-        />
-      </a-form-model-item>
-      <a-form-model-item label="结束时间" prop="gmtEnd">
-        <a-date-picker
-          v-model="formData.gmtEnd"
-          show-time
-          type="date"
-          format="YYYY-MM-DD"
-          placeholder="结束时间"
           style="width: 100%;"
         />
       </a-form-model-item>
@@ -144,16 +104,10 @@ export default {
       formData: {
         name: "",
         content: "",
-        gmtCreate: undefined,
-        gmtEnd: undefined,
-        enterpriseName: undefined,
-        pointName: undefined,
-        groupName: undefined,
-        memberName: undefined,
+        gmtExecution: undefined,
         enterpriseId: "",
         pointId: "",
-        groupId: "",
-        memberId: undefined
+        memberId: ""
       },
       rules: {
         enterpriseId: [
@@ -167,13 +121,6 @@ export default {
           {
             required: true,
             message: "请选择站点",
-            trigger: "change"
-          }
-        ],
-        groupId: [
-          {
-            required: true,
-            message: "请选择运维小组",
             trigger: "change"
           }
         ],
@@ -215,27 +162,25 @@ export default {
         this.formData = {
           name: "",
           content: "",
-          gmtCreate: undefined,
-          gmtEnd: undefined,
-          enterpriseName: undefined,
-          pointName: undefined,
-          groupName: undefined,
-          memberName: undefined,
+          gmtExecution: undefined,
           enterpriseId: "",
           pointId: "",
-          groupId: "",
-          memberId: undefined
+          memberId: ""
         };
       }
     },
     "formData.enterpriseId"() {
       this.$set(this.formData, "pointId", "");
-      this.$set(this.formData, "pointName", "");
+      this.getStationList();
+    },
+    "formData.pointId"() {
+      this.$set(this.formData, "memberId", "");
+      this.getMemberList();
     }
   },
   methods: {
-    searchEnterprise(value) {
-      //搜索企业
+    getEnterprise(value) {
+      //企业下拉
       // this.formData.enterpriseName = value;
       this.$api.customer
         .getEnterPriseList({ enterpriseName: value })
@@ -243,50 +188,31 @@ export default {
           this.enterpriseList = res.data.data.records;
         });
     },
-    slectEnterprise(value) {
-      this.$set(this.formData, "enterpriseId", value.id);
-      this.$set(this.formData, "enterpriseName", value.name);
-    },
-    searchPoint(value) {
-      //搜索站点
-      // this.formData.pointName = value;
+    getStationList(value) {
+      //获取站点
       let params = {
         pointName: value,
-        enterpriseId: this.formData.enterpriseId
+        enterpriseId: this.formData.enterpriseId,
+        page: 1,
+        size: 999
       };
       this.$api.customer.getStationList(params).then(res => {
         this.pointList = res.data.data.records;
       });
     },
-    slectPoint(value) {
-      this.$set(this.formData, "pointId", value.id);
-      this.$set(this.formData, "pointName", value.name);
+    selectStation(item) {
+      this.formData.pointId = item.id;
+      this.getMemberList(item.groupId);
     },
-    searchGroup(value) {
-      //搜索小组
-      let params = {
-        size: 999,
-        page: 1,
-        name: value
-      };
-      this.$api.organization.sysGroup(params).then(res => {
-        if (res.data.state == 0) {
-          this.groupList = res.data.data.records;
-        }
-      });
-    },
-    searchMember(id) {
+    getMemberList(groupId) {
       //获取小组成员
-      this.$api.organization.getUserByGroupId({ groupId: id }).then(res => {
-        if (res.data.state == 0) {
-          this.memberList = res.data.data;
-        }
-      });
-    },
-    slectGroup(value) {
-      this.$set(this.formData, "groupId", value.id);
-      this.$set(this.formData, "groupName", value.name);
-      this.searchMember(value.id);
+      this.$api.organization
+        .getUserByGroupId({ groupId: groupId })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.memberList = res.data.data;
+          }
+        });
     },
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -299,15 +225,10 @@ export default {
 
         data.type = 2; //突发任务
         data.handleId = data.memberId;
-        delete data.enterpriseName;
-        delete data.pointName;
-        delete data.groupName;
-        delete data.memberName;
         delete data.memberId;
-        data.gmtCreate = this.$moment(data.gmtCreate).format(
+        data.gmtExecution = this.$moment(data.gmtExecution).format(
           "YYYY-MM-DD HH:mm:ss"
         );
-        data.gmtEnd = this.$moment(data.gmtEnd).format("YYYY-MM-DD HH:mm:ss");
 
         this.$api.maintain.addManageTask(data).then(res => {
           if (res.data.state == 0) {
@@ -321,6 +242,9 @@ export default {
       this.$refs.ruleForm.clearValidate();
       this.$emit("cancel", false);
     }
+  },
+  mounted() {
+    this.getEnterprise();
   }
 };
 </script>

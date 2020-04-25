@@ -52,8 +52,12 @@
           v-if="monthList.length != 0"
         >
           <div class="notes-month">
-            <span v-if="monthList.length != 0">计划数：</span
-            >{{ getMonthData(value).count }}
+            <span></span
+            >{{
+              getMonthData(value).count
+                ? `计划数：${getMonthData(value).count}`
+                : ""
+            }}
           </div>
         </template>
       </a-calendar>
