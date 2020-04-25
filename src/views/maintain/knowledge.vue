@@ -23,8 +23,8 @@
       </div>
       <a-row :gutter="16">
         <a-col :span="4">
-          <a-button type="dashed" block @click="knowledgeTypeVisible = true"
-            >新建分类</a-button
+          <a-button type="primary" block @click="knowledgeTypeVisible = true"
+            ><a-icon type="plus" />新建分类</a-button
           >
           <a-menu v-model="menu" mode="vertical">
             <a-menu-item :key="item.id" v-for="item of menuList">

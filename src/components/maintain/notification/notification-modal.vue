@@ -4,9 +4,8 @@
       :bodyStyle="{ maxHeight: '700px', overflow: 'auto' }"
       :visible="visible"
       :title="notification.title"
-      @ok="handleOk"
-      @cancel="handleCancel"
       :width="900"
+      @cancel="handleCancel"
     >
       <a-card v-margin:bottom="16">
         <a-row
@@ -28,6 +27,8 @@
           :pagination="false"
         >
         </a-table>
+        <notification-exceed v-margin:top="40" />
+        <notification-unusual v-margin:top="40" />
       </a-card>
       <a-empty v-if="notificationData.length == 0" />
       <a-descriptions layout="vertical" bordered size="small" v-else>
@@ -58,12 +59,18 @@
           </template>
         </a-descriptions-item>
       </a-descriptions>
+      <template slot="footer">
+        <a-button key="back" @click="handleCancel">关闭</a-button>
+      </template>
     </a-modal>
   </div>
 </template>
 
 <script>
+import notificationExceed from "./notification-exceed";
+import notificationUnusual from "./notification-unusual";
 export default {
+  components: { notificationExceed, notificationUnusual },
   props: {
     obj: {
       type: Object,

@@ -47,7 +47,12 @@ export default {
       type: Boolean
     },
     missionDetail: {
-      required: false
+      required: true,
+      type: Object
+    },
+    week: {
+      required: true,
+      type: String
     }
   },
   data() {
