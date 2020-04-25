@@ -27,7 +27,7 @@
       <a-form-model-item label="型号" prop="model">
         <a-input placeholder="输入型号" v-model.trim="formData.model" />
       </a-form-model-item>
-      
+
       <a-form-model-item label="库存单位" prop="unit">
         <a-input placeholder="输入库存单位" v-model.trim="formData.unit" />
       </a-form-model-item>
