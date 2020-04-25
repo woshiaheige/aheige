@@ -19,7 +19,12 @@
             class="dispatch-list"
           >
             <a-list-item slot="renderItem" slot-scope="item">
-              <a slot="actions" @click="toDispatch(item)">调度</a>
+              <a
+                slot="actions"
+                @click="toDispatch(item)"
+                v-if="item.status == 1"
+                >调度</a
+              >
               <a-list-item-meta>
                 <span slot="title"
                   >{{ item.enterpriseName }} {{ item.pointName }}</span
