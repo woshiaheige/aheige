@@ -120,7 +120,12 @@
         :label="modelData.type == 'in' ? '入库数量' : '出库数量'"
         prop="stockCount"
       >
-        <a-input placeholder="数量" v-model="formData.stockCount" />
+        <a-input-number
+          :min="1"
+          placeholder="数量"
+          v-model="formData.stockCount"
+          v-width="350"
+        />
       </a-form-model-item>
       <a-form-model-item label="备注" prop="remark">
         <a-input
@@ -259,6 +264,7 @@ export default {
       });
     },
     changeEnterprise(value) {
+      this.formData.pointId = undefined;
       this.getStation(value);
     },
     //监测点下拉
@@ -272,15 +278,20 @@ export default {
         });
     },
     changeStation(value) {
+      this.formData.devId = undefined;
       this.getDevice(value);
     },
     //设备下拉
-    getDevice() {
-      this.$api.common.selectDevice().then(res => {
-        if (res.data.state == 0) {
-          this.deviceOptions = res.data.data;
-        }
-      });
+    getDevice(value) {
+      this.$api.common
+        .selectStationByStationId({
+          cusPointId: value
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.deviceOptions = res.data.data;
+          }
+        });
     },
     //领用人下拉
     getUser() {
@@ -298,6 +309,7 @@ export default {
           goodsCount: "",
           unit: ""
         };
+        this.stationOptions = [];
         this.getSelect();
         if (this.value.type == "out") {
           this.getCompany();
