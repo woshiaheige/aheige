@@ -84,8 +84,10 @@
           :fileList="fileList"
           @change="handleChange"
           :remove="handleRemove"
+          :beforeUpload="beforeUpload"
         >
           <a-button> <a-icon type="upload" /> 选择文件 </a-button>
+          <span v-margin:left="10">上传文件大小不能超过10MB</span>
         </a-upload>
       </a-form-model-item>
     </a-form-model>
@@ -144,7 +146,8 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      isError: false
     };
   },
   computed: {
@@ -233,8 +236,16 @@ export default {
           }
         });
     },
+    beforeUpload(file) {
+      this.isError = false;
+      const isLt10M = file.size / 1024 / 1024 < 0.1;
+      if (!isLt10M) {
+        this.$message.error("上传文件大小不能超过 10MB!");
+        this.isError = true;
+      }
+      return isLt10M;
+    },
     handleChange(info) {
-      console.log(info);
       let fileList = [...info.fileList];
 
       fileList = fileList.slice(-1);
@@ -245,6 +256,9 @@ export default {
         }
         return file;
       });
+      if (this.isError) {
+        return;
+      }
 
       this.fileList = fileList;
       if (info.file.status === "done") {
