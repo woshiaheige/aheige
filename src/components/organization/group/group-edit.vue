@@ -81,10 +81,8 @@ export default {
           }
           if (this.groupId) {
             this.editGroup(values);
-            this.state = false
           } else {
             this.addGroup(values);
-            this.state = false
           }
         }
       });
@@ -98,6 +96,7 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+          this.state = false
         }
       });
     },
@@ -109,6 +108,7 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+          this.state = false
         }
       });
     }

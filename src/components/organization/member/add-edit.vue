@@ -250,10 +250,10 @@ export default {
           }
           if (this.memberId) {
             this.editMember(values);
-            this.state = false
+            
           } else {
             this.addMember(values);
-            this.state = false
+            
           }
         }
       });
@@ -265,7 +265,6 @@ export default {
         //避免重复加密
         params.password = this.$md5(params.password);
       }
-
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
@@ -275,6 +274,7 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+          this.state = false
         }
       });
     },
@@ -290,6 +290,7 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+          this.state = false
         }
       });
     }
