@@ -453,6 +453,7 @@ export default {
         pollCode: "",
         time: ""
       },
+      //现场机时间
       ruleValidate2: {
         pollCode: [
           {
@@ -642,6 +643,23 @@ export default {
     }
   },
   methods: {
+    //现场机时间提取
+    getSend1011() {
+      let data = {
+        pointId: this.monitor.pointId,
+        divisorId: this.formValidate2.pollCode
+      };
+      this.$api.monitor
+        .getSend1011(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("提取成功!");
+          }
+        })
+        .finally(() => {
+          this.$emit("cancel");
+        });
+    },
     getPollCodeList() {
       let data = this.monitor.pointId;
       this.$api.monitor.getPollCodeList(data).then(res => {
@@ -654,6 +672,7 @@ export default {
     },
     // 弹窗确认
     define() {
+      // debugger;
       var _formIndex = this.monitor.formIndex;
       console.log(_formIndex);
       if (
@@ -667,14 +686,22 @@ export default {
       }
       this.$refs["formValidate" + _formIndex].validate(valid => {
         if (valid) {
-          if (this.monitor.operate == "设置") {
-            this.$Message.success("设置成功！");
-          } else {
-            this.$Message.success("提取成功!");
+          // debugger;
+          // if (this.monitor.operate == "设置") {
+          //   this.$message.success("设置成功！");
+          // } else {
+          //   this.$message.success("提取成功!");
+          // }
+          // this.$emit("cancel");
+
+          //现场机时间提取
+          if (_formIndex == 2 && this.monitor.command == "1011") {
+            this.getSend1011();
           }
-          this.$emit("cancel");
         } else {
-          return;
+          // debugger;
+          this.$message.error("失败");
+          return false;
         }
       });
     }
