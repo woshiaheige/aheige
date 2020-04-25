@@ -154,21 +154,21 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: "因子物名称不能为空" },
+          { required: true, message: "因子名称不能为空" },
           {
             min: 1,
             max: 15,
-            message: "因子物名称长度应在1-15个字符之间",
+            message: "因子名称长度应在1-15个字符之间",
             trigger: "blur"
           }
         ],
         code: [
-          { required: true, message: "因子物编码不能为空" },
+          { required: true, message: "因子编码不能为空" },
           { min: 1, max: 7, message: "因子编码长度应在1-7个字符之间" }
         ],
         avgUnit: [{ max: 10, message: "均值单位长度应在1-10个字符之间" }],
         sumUnit: [{ max: 10, message: "总量单位长度应在1-10个字符之间" }],
-        type: [{ required: true, message: "类型不能为空" }],
+        type: [{ required: true, message: "因子类型不能为空" }],
         protocolType: [{ required: true, message: "协议类型不能为空" }],
         ceilval: [{ validator: validateC }],
         floorval: [{ validator: validateF }]
@@ -237,7 +237,8 @@ export default {
     handleCancel() {
       console.log("handleCancel");
       this.reset();
-      this.$emit("cancel");
+      this.$emit("cancel", false);
+      this.$refs.form.clearValidate();
     },
     reset() {
       this.form = this.$options.data().form;

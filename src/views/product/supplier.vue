@@ -44,7 +44,7 @@
         :showTotal="total => `共 ${total} 条`"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pagesize"
+        :pageSize.sync="pageSize"
         :defaultCurrent="current"
         @change="pagechange"
         @showSizeChange="sizechange"
@@ -63,7 +63,7 @@ export default {
   components: { addEdit },
   data() {
     return {
-      pagesize: 10,
+      pageSize: 10,
       current: 1,
       total: 0,
       loading: false,
@@ -73,6 +73,16 @@ export default {
       },
       modalInfo: { show: false },
       columns: [
+        {
+          align: "center",
+          title: "序号",
+          width: 100,
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
+            );
+          }
+        },
         {
           title: "供应商名称",
           dataIndex: "name"
@@ -112,7 +122,7 @@ export default {
       this.loading = true;
       let data = {
         page: this.current,
-        size: this.pagesize,
+        size: this.pageSize,
         contact: this.formInline.contact,
         name: this.formInline.name
       };

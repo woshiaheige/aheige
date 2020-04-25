@@ -75,7 +75,9 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           let data = {
-            planDay: this.form.date
+            planDay: this.form.date,
+            type: this.planDetail.type,
+            programmeId: this.planDetail.programmeId
           };
 
           this.$api.maintain.editPlan(data).then(res => {

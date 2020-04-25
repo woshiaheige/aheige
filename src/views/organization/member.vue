@@ -22,7 +22,7 @@
           </a-button>
         </a-form-item>
         <a-form-item style="float:right">
-          <a-button type="primary" @click="reset">
+          <a-button @click="reset">
             重置
           </a-button>
         </a-form-item>
