@@ -19,13 +19,16 @@
             class="dispatch-list"
           >
             <a-list-item slot="renderItem" slot-scope="item">
-              <a slot="actions" @click="toDispatch">调度</a>
+              <a slot="actions" @click="toDispatch(item)">调度</a>
               <a-list-item-meta>
-                <span slot="title">{{ item.enterpriseName }}</span>
+                <span slot="title"
+                  >{{ item.enterpriseName }} {{ item.pointName }}</span
+                >
                 <div slot="description">
                   <p>
-                    {{ item.groupName }}-{{ item.handleName }}
-                    运维任务：日常巡检
+                    {{ item.groupName }}-{{ item.handleName }} 运维任务：{{
+                      item.name
+                    }}
                     <a-badge
                       v-margin:left="5"
                       status="default"
@@ -34,26 +37,26 @@
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="default"
-                      text="已创建"
+                      status="processing"
+                      text="处理中"
                       v-if="item.status == 2"
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="default"
-                      text="已创建"
+                      status="success"
+                      text="已完成"
                       v-if="item.status == 3"
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="default"
-                      text="已创建"
+                      status="warning"
+                      text="已延期"
                       v-if="item.status == 4"
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="default"
-                      text="已创建"
+                      status="success"
+                      text="已关闭"
                       v-if="item.status == 5"
                     />
                   </p>
@@ -67,6 +70,7 @@
 
     <dispatch-edit
       :visible="editModal"
+      :mission-detail="selectedMission"
       @close="editModal = false"
     ></dispatch-edit>
   </div>
@@ -92,7 +96,8 @@ export default {
         { tab: "星期五", key: 5 },
         { tab: "星期六", key: 6 }
       ],
-      selectedDay: Number(this.$moment().format("d"))
+      selectedDay: Number(this.$moment().format("d")),
+      selectedMission: {}
     };
   },
   computed: {
@@ -113,8 +118,9 @@ export default {
     this.getMissionThisWeek();
   },
   methods: {
-    toDispatch() {
+    toDispatch(item) {
       this.editModal = true;
+      this.selectedMission = item;
     },
     changeWeek() {
       if (this.week == "this") {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-drawer
-      :title="title"
+      title="配置站点运维计划"
       placement="right"
       @close="onClose"
       :width="1150"
@@ -55,7 +55,7 @@
           @selectChange="handleSelectChange"
         />
         <a-divider></a-divider>
-        <a-button type="primary" @click="handleOk">{{ okText }}</a-button>
+        <a-button type="primary" @click="handleOk">配置计划</a-button>
       </a-card>
     </a-drawer>
   </div>
@@ -148,20 +148,6 @@ export default {
         }
         return arr;
       }
-    },
-    title() {
-      if (this.planDetail.id) {
-        return "修改站点运维计划";
-      } else {
-        return "配置站点运维计划";
-      }
-    },
-    okText() {
-      if (this.planDetail.id) {
-        return "修改计划";
-      } else {
-        return "配置计划";
-      }
     }
   },
   methods: {
@@ -178,11 +164,7 @@ export default {
       } else {
         this.$refs.form.validate(valid => {
           if (valid) {
-            if (this.planDetail.id) {
-              this.editPlan();
-            } else {
-              this.addPlan();
-            }
+            this.addPlan();
           }
         });
       }
@@ -240,36 +222,6 @@ export default {
       this.$api.maintain.addPlan(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("配置成功");
-          this.$emit("check", this.stationId);
-          this.onClose();
-        }
-      });
-    },
-    editPlan() {
-      let planArr = [];
-
-      this.targetKeys.forEach(item => {
-        planArr.push({
-          planDay: this.form.date,
-          programmeId: item
-        });
-      });
-
-      let data = {
-        id: this.planDetail.id,
-        gmtBegin: this.$moment(this.form.range[0]).format(
-          "YYYY-MM-DD HH:mm:ss"
-        ),
-        planPointId: this.planDetail.planPointId,
-        gmtEnd: this.$moment(this.form.range[1]).format("YYYY-MM-DD HH:mm:ss"),
-        pointId: this.stationId,
-        planPoints: planArr,
-        type: this.form.type
-      };
-
-      this.$api.maintain.addPlan(data).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("修改成功");
           this.$emit("check", this.stationId);
           this.onClose();
         }
