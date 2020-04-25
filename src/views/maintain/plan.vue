@@ -84,6 +84,20 @@
             <template slot="type" slot-scope="type, row">
               {{ row.type == 1 ? "周计划" : "月计划" }}
             </template>
+            <template slot="planDay" slot-scope="planDay, row">
+              <span v-if="row.type == 1">
+                <span v-if="row.planDay == 0">星期日</span>
+                <span v-if="row.planDay == 1">星期一</span>
+                <span v-if="row.planDay == 2">星期二</span>
+                <span v-if="row.planDay == 3">星期三</span>
+                <span v-if="row.planDay == 4">星期四</span>
+                <span v-if="row.planDay == 5">星期五</span>
+                <span v-if="row.planDay == 6">星期六</span>
+              </span>
+              <span v-if="row.type == 2">
+                <span>{{ row.planDay }}号</span>
+              </span>
+            </template>
             <template slot="range" slot-scope="range, row">
               {{ $moment(row.gmtBegin).format("YYYY-MM-DD") }} -
               {{ $moment(row.gmtEnd).format("YYYY-MM-DD") }}
@@ -143,7 +157,7 @@ export default {
       columns: [
         {
           title: "方案名称",
-          dataIndex: "name"
+          dataIndex: "programmeName"
         },
         {
           title: "方案周期",
@@ -152,8 +166,8 @@ export default {
         },
         {
           title: "执行日期",
-          dataIndex: "type",
-          scopedSlots: { customRender: "type" }
+          dataIndex: "planDay",
+          scopedSlots: { customRender: "planDay" }
         },
         {
           title: "运维期限",
@@ -253,17 +267,12 @@ export default {
         onCancel() {}
       });
     },
-    onAddClick(row) {
-      if (row) {
+    onAddClick() {
+      if (this.currentStation.length > 0) {
         this.visible = true;
-        this.selectedPlan = row;
+        this.selectedPlan = {};
       } else {
-        if (this.currentStation.length > 0) {
-          this.visible = true;
-          this.selectedPlan = {};
-        } else {
-          this.$message.warning("请选择站点");
-        }
+        this.$message.warning("请选择站点");
       }
     },
     async getPlanStation() {

@@ -21,11 +21,41 @@
             <a-list-item slot="renderItem" slot-scope="item">
               <a slot="actions" @click="toDispatch">调度</a>
               <a-list-item-meta>
-                <span slot="title">{{ item.title }}</span>
+                <span slot="title">{{ item.enterpriseName }}</span>
                 <div slot="description">
                   <p>
-                    运维1组-张天志 运维任务：日常巡检
-                    <a-badge v-margin:left="5" status="default" text="已创建" />
+                    {{ item.groupName }}-{{ item.handleName }}
+                    运维任务：日常巡检
+                    <a-badge
+                      v-margin:left="5"
+                      status="default"
+                      text="已创建"
+                      v-if="item.status == 1"
+                    />
+                    <a-badge
+                      v-margin:left="5"
+                      status="default"
+                      text="已创建"
+                      v-if="item.status == 2"
+                    />
+                    <a-badge
+                      v-margin:left="5"
+                      status="default"
+                      text="已创建"
+                      v-if="item.status == 3"
+                    />
+                    <a-badge
+                      v-margin:left="5"
+                      status="default"
+                      text="已创建"
+                      v-if="item.status == 4"
+                    />
+                    <a-badge
+                      v-margin:left="5"
+                      status="default"
+                      text="已创建"
+                      v-if="item.status == 5"
+                    />
                   </p>
                 </div>
               </a-list-item-meta>
@@ -104,7 +134,7 @@ export default {
             this.$moment()
               .add(this.selectedDay - this.today, "d")
               .format("YYYY-MM-DD") + " 00:00:00",
-          endTIme:
+          endTime:
             this.$moment()
               .add(this.selectedDay - this.today, "d")
               .format("YYYY-MM-DD") + " 23:59:59"
@@ -115,7 +145,7 @@ export default {
             this.$moment()
               .subtract(this.today - this.selectedDay, "d")
               .format("YYYY-MM-DD") + " 00:00:00",
-          endTIme:
+          endTime:
             this.$moment()
               .subtract(this.today - this.selectedDay, "d")
               .format("YYYY-MM-DD") + " 23:59:59"
@@ -135,7 +165,7 @@ export default {
               .add(this.selectedDay - this.today, "d")
               .add(7, "d")
               .format("YYYY-MM-DD") + " 00:00:00",
-          endTIme:
+          endTime:
             this.$moment()
               .add(this.selectedDay - this.today, "d")
               .add(7, "d")
@@ -148,7 +178,7 @@ export default {
               .subtract(this.today - this.selectedDay, "d")
               .add(7, "d")
               .format("YYYY-MM-DD") + " 00:00:00",
-          endTIme:
+          endTime:
             this.$moment()
               .subtract(this.today - this.selectedDay, "d")
               .add(7, "d")

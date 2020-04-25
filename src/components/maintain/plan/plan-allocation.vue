@@ -220,24 +220,22 @@ export default {
       }
     },
     addPlan() {
-      let planArr = [];
+      let data = [];
 
       this.targetKeys.forEach(item => {
-        planArr.push({
-          planDay: this.form.date,
-          programmeId: item
+        data.push({
+          programmeId: item,
+          gmtBegin: this.$moment(this.form.range[0]).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          gmtEnd: this.$moment(this.form.range[1]).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          pointId: this.stationId,
+          type: this.form.type,
+          planDay: this.form.date
         });
       });
-
-      let data = {
-        gmtBegin: this.$moment(this.form.range[0]).format(
-          "YYYY-MM-DD HH:mm:ss"
-        ),
-        gmtEnd: this.$moment(this.form.range[1]).format("YYYY-MM-DD HH:mm:ss"),
-        pointId: this.stationId,
-        planPoints: planArr,
-        type: this.form.type
-      };
 
       this.$api.maintain.addPlan(data).then(res => {
         if (res.data.state == 0) {
