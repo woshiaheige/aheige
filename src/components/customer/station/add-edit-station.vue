@@ -163,7 +163,7 @@ export default {
         name: "",
         mn: "",
         groupId: undefined,
-        lngandlat: "",
+        lngandlat: undefined,
         type: undefined,
         transferType: undefined,
         protocolType: undefined
@@ -208,7 +208,7 @@ export default {
           {
             required: true,
             message: "请选择经纬度",
-            trigger: "blur"
+            trigger: "change"
           }
         ]
       },
@@ -234,7 +234,6 @@ export default {
         }
         //验证通过
         let data = {
-          id: this.formData.id,
           enterpriseId: this.formData.enterpriseId,
           name: this.formData.name,
           mn: this.formData.mn,
@@ -247,6 +246,7 @@ export default {
           address: this.formData.address
         };
         if (this.modelData.type == "edit") {
+          data.id = this.formData.id;
           this.$api.customer.editStation(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
