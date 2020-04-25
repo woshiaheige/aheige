@@ -167,7 +167,14 @@ export default {
           title: "审核时间",
           align: "center",
           width: 200,
-          dataIndex: "approvalTime"
+          dataIndex: "approvalTime",
+          customRender: text => {
+            if (!text) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         },
         {
           title: "操作",
@@ -213,7 +220,9 @@ export default {
     },
     //获取统计数据
     getApprovalCount() {
-      let data = {};
+      let data = {
+        userId: ""
+      };
       this.$api.approval
         .getApprovalCount(data)
         .then(res => {
