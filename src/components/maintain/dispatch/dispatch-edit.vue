@@ -8,7 +8,12 @@
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="调度日期">
-        <a-select placeholder="请选择" showSearch :filterOption="filterOptions">
+        <a-select
+          v-model="form.date"
+          placeholder="请选择"
+          showSearch
+          :filterOption="filterOptions"
+        >
           <a-select-option key="1" value="1">星期一</a-select-option>
           <a-select-option key="2" value="2">星期二</a-select-option>
           <a-select-option key="3" value="3">星期三</a-select-option>
@@ -18,10 +23,16 @@
           <a-select-option key="7" value="7">星期日</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="转交人员">
-        <a-select placeholder="请选择" showSearch :filterOption="filterOptions">
-          <a-select-option key="1" value="1">张三</a-select-option>
-          <a-select-option key="2" value="2">李四</a-select-option>
+      <a-form-item label="调度人员">
+        <a-select
+          v-model="form.member"
+          placeholder="请选择"
+          showSearch
+          :filterOption="filterOptions"
+        >
+          <a-select-option v-for="item in memberList" :key="item.id">{{
+            item.name
+          }}</a-select-option>
         </a-select>
       </a-form-item>
     </a-form>
@@ -35,34 +46,22 @@ export default {
       required: true,
       type: Boolean
     },
-    groupDetail: {
+    missionDetail: {
       required: false
     }
   },
   data() {
     return {
       form: this.$form.createForm(this),
-      groupId: ""
+      groupId: "",
+      memberList: []
     };
   },
-  computed: {
-    title() {
-      if (this.groupName) {
-        return "编辑小组";
-      } else {
-        return "新建小组";
-      }
-    }
-  },
+  computed: {},
   watch: {
-    groupDetail(nval) {
-      if (nval) {
-        this.groupId = nval.id;
-        setTimeout(() => {
-          this.form.setFieldsValue({
-            name: nval.name
-          });
-        }, 50);
+    visible(newVal) {
+      if (newVal) {
+        this.getMemberByGroup();
       }
     }
   },
@@ -74,38 +73,21 @@ export default {
       this.groupId = "";
       this.form.resetFields();
     },
+    getMemberByGroup() {
+      let data = {
+        groupId: this.missionDetail.groupId
+      };
+      this.$api.organization.getUserByGroupId(data).then(res => {
+        this.memberList = res.data.data;
+      });
+    },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.groupId) {
-            this.editGroup(values);
-          } else {
-            this.addGroup(values);
-          }
-        }
-      });
-    },
-    editGroup(values) {
-      let params = values;
-      params.id = this.groupId;
-      this.$api.organization.editSysGroup(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("修改小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
-    },
-    addGroup(values) {
-      let params = values;
-      this.$api.organization.addSysGroup(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("新建小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
+      let data = {
+        id: this.missionDetail.id
+      };
+
+      this.$api.maintain.missionDispatch(data).then(res => {
+        console.log(res);
       });
     }
   }
