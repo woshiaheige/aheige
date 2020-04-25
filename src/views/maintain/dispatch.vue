@@ -76,6 +76,7 @@
     <dispatch-edit
       :visible="editModal"
       :mission-detail="selectedMission"
+      :week="week"
       @close="editModal = false"
     ></dispatch-edit>
   </div>

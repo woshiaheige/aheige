@@ -76,6 +76,7 @@ export default {
         if (valid) {
           let data = {
             planDay: this.form.date,
+            type: this.planDetail.type,
             programmeId: this.planDetail.programmeId
           };
 
