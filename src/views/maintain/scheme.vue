@@ -38,7 +38,14 @@
                 @click="onDeleteScheme(item)"
               />
             </a-menu-item>
-            <a-empty v-margin:top="16" v-if="schemeList.length <= 0" />
+            <a-spin
+              :spinning="spinning"
+              style="margin-top: 50%; margin-left: 50%; transform: translateY(-50%)"
+            />
+            <a-empty
+              v-margin:top="16"
+              v-if="schemeList.length <= 0 && spinning == false"
+            />
           </a-menu>
         </a-col>
         <a-col :span="18">
@@ -96,6 +103,7 @@ export default {
   data() {
     return {
       currentScheme: [],
+      spinning: false,
       columns: [
         {
           title: "运维项目",
@@ -164,12 +172,14 @@ export default {
       this.selectedScheme = item;
     },
     getScheme() {
+      this.spinning = true;
       let data = {
-        type: this.currentType
+        maintainType: this.currentType
       };
       this.$api.maintain.getScheme(data).then(res => {
         this.schemeList = res.data.data;
         this.currentScheme = [];
+        this.spinning = false;
         if (this.schemeList.length > 0) {
           this.currentScheme.push(this.schemeList[0].id);
         }

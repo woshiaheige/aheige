@@ -1,5 +1,10 @@
 <template>
-  <a-modal :title="title" :visible="visible" @cancel="closeModal">
+  <a-modal
+    :title="title"
+    width="1000px"
+    :visible="visible"
+    @cancel="closeModal"
+  >
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="标题">{{ detail.title }}</a-descriptions-item>
       <a-descriptions-item label="知识库分类">{{

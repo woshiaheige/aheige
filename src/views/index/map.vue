@@ -41,7 +41,7 @@
           <a-list itemLayout="horizontal" :dataSource="pointList">
             <a-list-item slot="renderItem" slot-scope="item">
               <a-list-item-meta
-                :description="item.name"
+                :description="item.enterpriseName + '  |  ' + item.name"
                 @click="goMarker(item.longitude, item.latitude)"
               >
               </a-list-item-meta>
@@ -73,7 +73,7 @@
           <a-list itemLayout="horizontal" :dataSource="userList">
             <a-list-item slot="renderItem" slot-scope="item">
               <a-list-item-meta
-                :description="item.username"
+                :description="item.groupName + '  |  ' + item.username"
                 @click="goMarker(item.lng, item.lat)"
               >
               </a-list-item-meta>
@@ -87,6 +87,7 @@
 
 <script>
 import AMap from "AMap";
+import AMapUI from "AMapUI";
 export default {
   data() {
     return {
@@ -97,6 +98,7 @@ export default {
       carList: [],
       userList: [],
       value: "a",
+      radioNum: "",
       deadline: Date.now() + 1000 * 60
     };
   },
@@ -111,7 +113,7 @@ export default {
         zoom: 12,
         mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18"
       });
-      this.callback(1);
+      this.callback(1, "");
     },
     //切换tabs
     async callback(key, value) {
@@ -137,13 +139,22 @@ export default {
           let result = res.data.data;
           for (var i in result) {
             let marker;
+            let green = '<div class="marker-green"></div>';
+            let red = '<div class="marker-red"></div>';
             marker = new AMap.Marker({
               position: new AMap.LngLat(
                 result[i].longitude,
                 result[i].latitude
               ),
-              title: result[i].name
+              title: result[i].name,
+              content: result[i].errorType == "4" ? green : red,
+              anchor: "center"
             });
+            if (result[i].errorType != "4") {
+              marker.on("click", e => {
+                this.showInfo(marker, e, result[i]);
+              });
+            }
             this.pointList.push(result[i]);
             this.markers.push(marker);
           }
@@ -158,9 +169,15 @@ export default {
           let result = res.data.data;
           for (var i in result) {
             let marker;
+            let content =
+              '<div class="marker-label-car"><a-icon type="car" />' +
+              result[i].number +
+              "</div>";
             marker = new AMap.Marker({
               position: new AMap.LngLat(result[i].lng, result[i].lat),
-              title: result[i].number
+              // title: result[i].number,
+              content: content,
+              anchor: "center"
             });
             this.carList.push(result[i]);
             this.markers.push(marker);
@@ -193,7 +210,7 @@ export default {
       console.log(e.target.value);
       //1： 离线，2：超标 3：异常
       this.value = e.target.value;
-      let num =
+      this.radioNum =
         this.value == "b"
           ? 1
           : this.value == "c"
@@ -201,7 +218,8 @@ export default {
           : this.value == "d"
           ? 3
           : "";
-      this.callback(this.active, num);
+      console.log(this.radioNum);
+      this.callback(this.active, this.radioNum);
     },
     // onChange(_, dateString) {
     //   this.callback(this.active, dateString);
@@ -209,6 +227,28 @@ export default {
     onFinish() {
       console.log("finished!");
       this.deadline = Date.now() + 1000 * 60;
+      this.callback(this.active, this.radioNum);
+    },
+    //自定义窗体
+    showInfo(marker, e, data) {
+      let that = this;
+      let typeName = data.type == 32 ? "有线传输" : "无线传输";
+      AMapUI.loadUI(["overlay/SimpleInfoWindow"], function(SimpleInfoWindow) {
+        var infoWindow = new SimpleInfoWindow({
+          infoTitle: data.name,
+          infoBody: [
+            '<div class="content-window">',
+            "<p><span>监控点名称：</span>" + data.name + "</p>",
+            "<p><span>所属企业：</span>" + data.enterpriseName + "</p>",
+            "<p><span>MN号码：</span>" + data.mn + "</p>",
+            "<p><span>传输类型：</span>" + typeName + "</p>",
+            "</div>"
+          ].join(""),
+          // 基点指向marker的头部位置（信息窗体的具体位置）
+          offset: new AMap.Pixel(-10, -30)
+        });
+        infoWindow.open(that.map, e.target.getPosition());
+      });
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="maintain">
     <a-card :bordered="false">
       <div class="card-header">
         <div class="title">知识库设置</div>
@@ -44,22 +44,32 @@
           </a-menu>
         </a-col>
         <a-col :span="20">
-          <a-table
+          <a-list
+            itemLayout="vertical"
+            size="large"
+            :dataSource="listData"
             :loading="loading"
-            size="middle"
-            rowKey="id"
-            :columns="columns"
-            :dataSource="tableData"
-            :pagination="false"
           >
-            <span slot="action" slot-scope="row">
-              <a @click="onDetail(row)">查看</a>
-              <a-divider type="vertical" />
-              <a @click="onEdit(row)">编辑</a>
-              <a-divider type="vertical" />
-              <a @click="onDelete(row)">删除</a>
-            </span>
-          </a-table>
+            <a-list-item slot="renderItem" slot-scope="item" key="item.id">
+              <template slot="actions">
+                <a @click="onDetail(item)">查看</a>
+              </template>
+              <template slot="actions">
+                <a @click="onEdit(item)">编辑</a>
+              </template>
+              <template slot="actions">
+                <a @click="onDelete(item)">删除</a>
+              </template>
+              <img slot="extra" width="220" alt="logo" :src="item.img" />
+              <a-list-item-meta>
+                <a slot="title">{{ item.title }}</a>
+                <div slot="description">
+                  <a-tag color="blue">{{ item.type }}</a-tag>
+                </div>
+              </a-list-item-meta>
+              <div v-html="item.content" class="article-content"></div>
+            </a-list-item>
+          </a-list>
           <a-pagination
             size="small"
             v-margin:top="16"
@@ -102,6 +112,7 @@ export default {
   components: { addEdit, typeEdit, articleModal },
   data() {
     return {
+      listData: [],
       formInline: { title: "" },
       loading: false,
       knowledgeTypeVisible: false, //分类
@@ -115,31 +126,6 @@ export default {
       current: 1,
       total: 0,
       size: 10,
-      columns: [
-        {
-          title: "标题",
-          dataIndex: "title"
-        },
-        {
-          title: "知识库分类",
-          dataIndex: "className"
-        },
-        {
-          title: "创建人",
-          dataIndex: "userName"
-        },
-        {
-          title: "创建时间",
-          dataIndex: "gmtCreate"
-        },
-        {
-          title: "操作",
-          key: "action",
-          width: 200,
-          align: "center",
-          scopedSlots: { customRender: "action" }
-        }
-      ],
       tableData: [],
       obj: {
         show: false
@@ -197,12 +183,23 @@ export default {
         title: this.formInline.title
       };
       this.loading = true;
+      this.listData = [];
       this.$api.maintain
         .article(params)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
             this.tableData = res.data.data.records;
+            this.tableData.forEach(item => {
+              this.listData.push({
+                id: item.id,
+                title: `${item.title}`,
+                type: `${item.className}`,
+                content: `${item.content}`,
+                img:
+                  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+              });
+            });
             this.total = +res.data.data.total;
           }
         })
