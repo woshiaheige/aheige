@@ -91,13 +91,15 @@ const common = {
   },
   //根据企业id查询监控点下拉
   selectStationByEnterpriseId(data) {
+    //传参名:enterpriseId
     return axios.get(base.api + "cusPoint/listByEnterpriseId", {
       params: data
     });
   },
   //根据监控点id查询设备下拉
   selectStationByStationId(data) {
-    return axios.get(base.api + "cusPoint/listByEnterpriseId", {
+    //传参名:cusPointId
+    return axios.get(base.api + "cusPointInstrument/listByPointId", {
       params: data
     });
   },

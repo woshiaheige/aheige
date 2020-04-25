@@ -248,6 +248,7 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.formData = {};
         this.options = cityList;
         this.getArea();
         if (this.value.type == "edit") {

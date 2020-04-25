@@ -46,6 +46,8 @@
       :total="total"
       :showTotal="total => `共 ${total} 条`"
       :current="current"
+      :defaultPageSize="size"
+      :pageSizeOptions="pageSizeOptions"
       @change="pagechange"
       @showSizeChange="sizechange"
     />
@@ -65,8 +67,9 @@ export default {
       },
       current: 1,
       loading: false,
-      size: 10,
+      size: 8,
       total: 0,
+      pageSizeOptions: ["8", "16", "24", "32", "40"],
       columns: [
         {
           title: "序号",
@@ -109,6 +112,11 @@ export default {
     this.getTableData();
   },
   methods: {
+    sizechange(current, size) {
+      this.current = 1;
+      this.size = size;
+      this.getTableData();
+    },
     getTableData() {
       let params = {
         size: this.size,

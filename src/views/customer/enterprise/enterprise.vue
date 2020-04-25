@@ -7,6 +7,7 @@
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="控制级别">
@@ -18,6 +19,9 @@
             showSearch
             :filterOption="filterOptions"
           >
+            <a-select-option value="">
+              全部
+            </a-select-option>
             <a-select-option
               v-for="item in controlOptions"
               :key="item.value"
@@ -34,6 +38,9 @@
             v-width="150"
             v-model="list.type"
           >
+            <a-select-option value="">
+              全部
+            </a-select-option>
             <a-select-option
               v-for="item in typeList"
               :key="item.id"
@@ -44,6 +51,9 @@
           </a-select>
         </a-form-item>
         <a-form-item style="float: right">
+          <a-button type="primary" @click="reset()" style="margin-right:15px">
+            重置
+          </a-button>
           <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
@@ -72,8 +82,8 @@
         <template slot="controlLevel" slot-scope="controlLevel">
           <a-tag color="red" v-if="controlLevel == 1">国控</a-tag>
           <a-tag color="pink" v-if="controlLevel == 2">省控</a-tag>
-          <a-tag color="purple" v-if="controlLevel == 3">市控</a-tag>
-          <a-tag color="orange" v-if="controlLevel == 4">县控</a-tag>
+          <a-tag color="orange" v-if="controlLevel == 3">市控</a-tag>
+          <a-tag color="purple" v-if="controlLevel == 4">县控</a-tag>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="goPoint(row)">监控点管理</a>
@@ -166,7 +176,9 @@ export default {
       ],
       tableData: [],
       list: {
-        name: ""
+        name: "",
+        level: "",
+        type: ""
       },
       typeList: []
     };
@@ -176,6 +188,9 @@ export default {
     this.getIndustrySelect();
   },
   methods: {
+    reset() {
+      this.list = { name: "", level: "", type: "" };
+    },
     getTableData() {
       let data = {
         page: this.current,
@@ -244,7 +259,7 @@ export default {
     goPoint(row) {
       this.$router.push({
         path: "/customer/enterprise/station",
-        query: { id: row.id }
+        query: { id: row.id, enterpriseName: row.name }
       });
     },
     onEdit(type, row) {

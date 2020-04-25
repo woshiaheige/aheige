@@ -119,7 +119,6 @@ const organization = {
       params: data
     });
   },
-
   //新建小组
   addSysGroup(data) {
     return axios.post(base.api + "sysGroup/addSysGroup", data);

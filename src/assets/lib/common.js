@@ -29,10 +29,7 @@ const event = {
     },
     //下拉框过滤
     filterOptions(input, option) {
-      return (
-        option.componentOptions.children[0].text.indexOf(input.toLowerCase()) >=
-        0
-      );
+      return option.componentOptions.children[0].text.indexOf(input) >= 0;
     }
   }
 };
