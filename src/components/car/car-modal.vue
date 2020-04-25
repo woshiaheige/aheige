@@ -22,7 +22,7 @@
           ]"
         />
       </a-form-item>
-      <a-form-item label="品牌型号">
+      <a-form-item label="车辆品牌">
         <a-input placeholder="请输入" v-decorator="['model']" />
       </a-form-item>
       <a-form-item label="车架号">
@@ -34,7 +34,7 @@
       <a-form-item label="上次年检时间">
         <a-date-picker placeholder="请选择" v-decorator="['gmtInspection']" />
       </a-form-item>
-      <a-form-item label="GPS">
+      <a-form-item label="GPS设备号">
         <a-input placeholder="请输入" v-decorator="['gps']" />
       </a-form-item>
     </a-form>
@@ -72,8 +72,12 @@ export default {
           number: detail.number,
           model: detail.model,
           frameNumber: detail.frameNumber,
-          gmtPurchase: this.$moment(detail.gmtPurchase, "YYYY-MM-DD"),
-          gmtInspection: this.$moment(detail.gmtInspection, "YYYY-MM-DD"),
+          gmtPurchase: detail.gmtPurchase
+            ? this.$moment(detail.gmtPurchase, "YYYY-MM-DD")
+            : "",
+          gmtInspection: detail.gmtInspection
+            ? this.$moment(detail.gmtInspection, "YYYY-MM-DD")
+            : "",
           gps: detail.gps
         });
       }
@@ -82,12 +86,12 @@ export default {
   methods: {
     handleOk() {
       this.form.validateFields((err, values) => {
-        values.gmtPurchase = this.$moment(values.gmtPurchase).format(
-          "YYYY-MM-DD hh:mm:ss"
-        );
-        values.gmtInspection = this.$moment(values.gmtInspection).format(
-          "YYYY-MM-DD hh:mm:ss"
-        );
+        values.gmtPurchase = values.gmtPurchase
+          ? this.$moment(values.gmtPurchase).format("YYYY-MM-DD hh:mm:ss")
+          : "";
+        values.gmtInspection = values.gmtInspection
+          ? this.$moment(values.gmtInspection).format("YYYY-MM-DD hh:mm:ss")
+          : "";
 
         if (!err) {
           if (this.carId) {
