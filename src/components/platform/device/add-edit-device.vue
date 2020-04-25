@@ -59,6 +59,7 @@
           mode="multiple"
           v-model="formData.divisorIds"
           :filterOption="false"
+          @search="searchDivisorName"
           :notFoundContent="fetching ? undefined : null"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
@@ -145,6 +146,28 @@ export default {
     console.log(base.api);
   },
   methods: {
+    //因子名称搜索
+    searchDivisorName(value) {
+      const fetchId = this.lastFetchId;
+      this.data = [];
+      this.fetching = true;
+      let params = {
+        size: 20,
+        page: 1,
+        name: value
+      };
+      this.$api.platform.sysDivisor(params).then(res => {
+        console.log(res);
+        if (res.data.state == 0) {
+          if (fetchId !== this.lastFetchId) {
+            // for fetch callback order
+            return;
+          }
+          this.factorOptions = res.data.data.records;
+          this.fetching = false;
+        }
+      });
+    },
     //因子下拉
     searchDivisor(value) {
       console.log(value);
@@ -229,6 +252,7 @@ export default {
       });
     },
     handleCancel() {
+      this.factorOptions = [];
       this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
@@ -278,7 +302,6 @@ export default {
       this.$api.common.listByIds(params).then(res => {
         if (res.data.state == 0) {
           this.factorOptions = res.data.data;
-          console.log(this.factorOptions, 5555);
         }
       });
     }
