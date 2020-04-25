@@ -82,9 +82,10 @@
         >
           <a-form-model-item label="时间" prop="time">
             <a-date-picker
-              type="datetime"
+              showTime
               placeholder="时间范围"
               style="width: 200px"
+              format="YYYY-MM-DD HH:mm:ss"
               v-model="formValidate2.time"
             ></a-date-picker>
           </a-form-model-item>
@@ -207,30 +208,19 @@
               showSearch
               :filterOption="filterOptions"
             >
-              <a-select-option :value="0">分钟数据</a-select-option>
-              <a-select-option :value="1">小时数据</a-select-option>
-              <a-select-option :value="2">日数据</a-select-option>
+              <a-select-option :value="2051">分钟数据</a-select-option>
+              <a-select-option :value="2061">小时数据</a-select-option>
+              <a-select-option :value="2031">日数据</a-select-option>
             </a-select>
           </a-form-model-item>
         </a-col>
         <a-col span="24" class="col-input-wrap">
-          <a-form-model-item label="开始时间" prop="beginTime">
-            <a-date-picker
-              type="datetime"
-              placeholder="开始时间"
-              style="width: 200px"
-              v-model="formValidate9.beginTime"
-            ></a-date-picker>
-          </a-form-model-item>
-        </a-col>
-        <a-col span="24" class="col-input-wrap">
-          <a-form-model-item label="结束时间" prop="endTime">
-            <a-date-picker
-              type="datetime"
-              placeholder="结束时间"
-              style="width: 200px"
-              v-model="formValidate9.endTime"
-            ></a-date-picker>
+          <a-form-model-item label="时间范围" prop="time">
+            <a-range-picker
+              format="YYYY-MM-DD HH:mm:ss"
+              showTime
+              v-model="formValidate9.time"
+            ></a-range-picker>
           </a-form-model-item>
         </a-col>
       </a-form-model>
@@ -299,12 +289,11 @@
         >
           <div class="required">
             <a-form-model-item label="起始时间" prop="beginTime">
-              <TimePicker
-                type="time"
-                placeholder="起始时间"
-                style="width: 168px"
+              <a-date-picker
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
                 v-model="formValidate15.beginTime"
-              ></TimePicker>
+              />
             </a-form-model-item>
           </div>
         </a-col>
@@ -314,10 +303,12 @@
           v-if="monitor.command == '3016'"
         >
           <a-form-model-item label="时间间隔（小时）" prop="time">
-            <a-input
-              placeholder="时间间隔（小时）"
-              v-model.trim="formValidate15.time"
-            ></a-input>
+            <a-input-number
+              v-model="formValidate15.time"
+              :min="1"
+              :max="24"
+              :step="1"
+            />
           </a-form-model-item>
         </a-col>
       </a-form-model>
@@ -412,14 +403,6 @@ export default {
     }
   },
   data() {
-    let _this = this;
-    const timeRule = function(rule, value, callback) {
-      if (!_this.formValidate15.beginTime) {
-        return callback(new Error("选择起始时间"));
-      } else {
-        callback();
-      }
-    };
     return {
       devList: [], //获取所有参数列表
       divisorList: [], //监测站房信息因子
@@ -451,7 +434,7 @@ export default {
       },
       formValidate2: {
         pollCode: "",
-        time: ""
+        time: this.$moment()
       },
       //现场机时间
       ruleValidate2: {
@@ -463,14 +446,7 @@ export default {
             type: "string"
           }
         ],
-        time: [
-          {
-            required: true,
-            message: "选择时间",
-            trigger: "change",
-            type: "date"
-          }
-        ]
+        time: [{ required: true, message: "选择时间" }]
       },
       formValidate3: {
         interval: ""
@@ -535,8 +511,7 @@ export default {
       },
       formValidate9: {
         timetype: "",
-        beginTime: "",
-        endTime: ""
+        time: [this.$moment(), this.$moment()]
       },
       ruleValidate9: {
         timetype: [
@@ -547,22 +522,7 @@ export default {
             type: "number"
           }
         ],
-        beginTime: [
-          {
-            required: true,
-            message: "选择开始时间",
-            trigger: "change",
-            type: "date"
-          }
-        ],
-        endTime: [
-          {
-            required: true,
-            message: "选择结束时间",
-            trigger: "change",
-            type: "date"
-          }
-        ]
+        time: [{ required: true, message: "选择时间" }]
       },
       formValidate10: {
         pollCode: ""
@@ -579,25 +539,26 @@ export default {
       },
       formValidate15: {
         pollCode: "",
-        beginTime: "",
-        time: ""
+        beginTime: this.$moment(),
+        time: 1
       },
       ruleValidate15: {
         pollCode: [
           {
             required: true,
             message: "选择污染物编码",
-            trigger: "change",
             type: "string"
           }
         ],
-        beginTime: [{ validator: timeRule, trigger: "change" }],
+        beginTime: [{ required: true, message: "选择起始时间" }],
         time: [
           {
             required: true,
-            message: "输入时间间隔（小时）",
-            trigger: "change",
-            type: "string"
+            message: "输入时间间隔（小时）"
+          },
+          {
+            type: "integer",
+            message: "间隔时间必须为整数（小时）"
           }
         ]
       },
@@ -643,7 +604,120 @@ export default {
     }
   },
   methods: {
-    //现场机时间提取
+    //提取采样时间周期 3017
+    getSend3017() {
+      let data = {
+        divisorId: this.formValidate15.pollCode,
+        pointId: this.monitor.pointId
+      };
+      this.$api.monitor
+        .getSend3017(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("设置成功");
+          }
+        })
+        .finally(() => {
+          this.$refs["formValidate15"].resetFields();
+          this.$emit("cancel");
+        });
+    },
+    //设置采样时间周期 3016
+    getSend3016() {
+      let data = {
+        hour: this.formValidate15.time,
+        divisorId: this.formValidate15.pollCode,
+        pointId: this.monitor.pointId,
+        beginTime: this.formValidate15.beginTime.format("YYYY-MM-DD HH:mm:ss")
+      };
+      this.$api.monitor
+        .getSend3016(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("设置成功");
+          }
+        })
+        .finally(() => {
+          this.$refs["formValidate15"].resetFields();
+          this.$emit("cancel");
+        });
+    },
+    //设置启动清洗 3013
+    getSend3013() {
+      let data = {
+        pointId: this.monitor.pointId,
+        divisorId: this.formValidate10.pollCode
+      };
+      this.$api.monitor
+        .getSend3013(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("设置成功");
+          }
+        })
+        .finally(() => {
+          this.$refs["formValidate10"].resetFields();
+          this.$emit("cancel");
+        });
+    },
+    //设置即时采样 3012
+    getSend3012() {
+      let data = {
+        pointId: this.monitor.pointId,
+        divisorId: this.formValidate10.pollCode
+      };
+      this.$api.monitor
+        .getSend3012(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("设置成功");
+          }
+        })
+        .finally(() => {
+          this.$refs["formValidate10"].resetFields();
+          this.$emit("cancel");
+        });
+    },
+    //提取污染物历史数据 2051
+    getReissue() {
+      let data = {
+        beginTime: this.formValidate9.time[0].format("YYYY-MM-DD HH:mm:ss"),
+        cn: this.formValidate9.timetype,
+        endTime: this.formValidate9.time[0].format("YYYY-MM-DD HH:mm:ss"),
+        pointId: this.monitor.pointId
+      };
+      this.$api.monitor
+        .getReissue(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("提取成功");
+          }
+        })
+        .finally(() => {
+          this.$refs["formValidate9"].resetFields();
+          this.$emit("cancel");
+        });
+    },
+    //设置现场机时间 1012
+    getSend1012() {
+      let data = {
+        pointId: this.monitor.pointId,
+        divisorId: this.formValidate2.pollCode,
+        time: this.formValidate2.time.format("YYYY-MM-DD HH:mm:ss")
+      };
+      this.$api.monitor
+        .getSend1012(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("设置成功");
+          }
+        })
+        .finally(() => {
+          this.$refs["formValidate2"].resetFields();
+          this.$emit("cancel");
+        });
+    },
+    //现场机时间提取 1011
     getSend1011() {
       let data = {
         pointId: this.monitor.pointId,
@@ -653,10 +727,11 @@ export default {
         .getSend1011(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("提取成功!");
+            this.$message.success("提取成功");
           }
         })
         .finally(() => {
+          this.$refs["formValidate2"].resetFields();
           this.$emit("cancel");
         });
     },
@@ -672,7 +747,6 @@ export default {
     },
     // 弹窗确认
     define() {
-      // debugger;
       var _formIndex = this.monitor.formIndex;
       console.log(_formIndex);
       if (
@@ -686,21 +760,28 @@ export default {
       }
       this.$refs["formValidate" + _formIndex].validate(valid => {
         if (valid) {
-          // debugger;
-          // if (this.monitor.operate == "设置") {
-          //   this.$message.success("设置成功！");
-          // } else {
-          //   this.$message.success("提取成功!");
-          // }
-          // this.$emit("cancel");
-
-          //现场机时间提取
-          if (_formIndex == 2 && this.monitor.command == "1011") {
-            this.getSend1011();
+          if (_formIndex == 2) {
+            if (this.monitor.command == "1011") {
+              this.getSend1011();
+            } else if (this.monitor.command == "1012") {
+              this.getSend1012();
+            }
+          } else if (_formIndex == 9) {
+            this.getReissue();
+          } else if (_formIndex == 10) {
+            if (this.monitor.command == "3012") {
+              this.getSend3012();
+            } else if (this.monitor.command == "3013") {
+              this.getSend3013();
+            }
+          } else if (_formIndex == 15) {
+            if (this.monitor.command == "3016") {
+              this.getSend3016();
+            } else if (this.monitor.command == "3017") {
+              this.getSend3017();
+            }
           }
         } else {
-          // debugger;
-          this.$message.error("失败");
           return false;
         }
       });
