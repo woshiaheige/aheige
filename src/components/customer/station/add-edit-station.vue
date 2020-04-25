@@ -54,14 +54,16 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="经纬度">
-        <div @click="onLnglat()">
-          <a-input placeholder="请选择经纬度" v-model="lngandlat">
-            <a-tooltip slot="suffix">
-              <a-icon type="environment" style="color: rgba(0,0,0,.45)" />
-            </a-tooltip>
-          </a-input>
-        </div>
+      <a-form-model-item label="经纬度" prop="lngandlat">
+        <a-input
+          placeholder="请选择经纬度"
+          @click="onLnglat()"
+          v-model="formData.lngandlat"
+        >
+          <a-tooltip slot="suffix">
+            <a-icon type="environment" style="color: rgba(0,0,0,.45)" />
+          </a-tooltip>
+        </a-input>
       </a-form-model-item>
       <a-form-model-item label="监测点类型" prop="type">
         <a-select
@@ -155,8 +157,17 @@ export default {
           id: "17"
         }
       ],
-      lngandlat: "",
-      formData: {},
+      formData: {
+        id: "",
+        enterpriseId: undefined,
+        name: "",
+        mn: "",
+        groupId: undefined,
+        lngandlat: "",
+        type: undefined,
+        transferType: undefined,
+        protocolType: undefined
+      },
       rules: {
         enterpriseId: [
           {
@@ -192,14 +203,14 @@ export default {
             message: "请选择传输协议",
             trigger: "change"
           }
+        ],
+        lngandlat: [
+          {
+            required: true,
+            message: "请选择经纬度",
+            trigger: "blur"
+          }
         ]
-        // lngandlat: [
-        //   {
-        //     required: true,
-        //     message: "请选择经纬度",
-        //     trigger: "blur"
-        //   }
-        // ]
       },
       isDisabled: false,
       groupOptions: [],
@@ -222,20 +233,21 @@ export default {
           return false;
         }
         //验证通过
-        // let data = {
-        //   enterpriseId: this.formData.enterpriseId,
-        //   name: this.formData.name,
-        //   mn: this.formData.mn,
-        //   groupId: this.formData.groupId,
-        //   latitude: this.formData.latitude,
-        //   longitude: this.formData.longitude,
-        //   type: this.formData.type,
-        //   transferType: this.formData.transferType,
-        //   protocolType: this.formData.protocolType,
-        //   address: this.formData.address
-        // };
+        let data = {
+          id: this.formData.id,
+          enterpriseId: this.formData.enterpriseId,
+          name: this.formData.name,
+          mn: this.formData.mn,
+          groupId: this.formData.groupId,
+          latitude: this.formData.latitude,
+          longitude: this.formData.longitude,
+          type: this.formData.type,
+          transferType: this.formData.transferType,
+          protocolType: this.formData.protocolType,
+          address: this.formData.address
+        };
         if (this.modelData.type == "edit") {
-          this.$api.customer.editStation(this.formData).then(res => {
+          this.$api.customer.editStation(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
               this.$emit("refresh");
@@ -243,7 +255,7 @@ export default {
             }
           });
         } else {
-          this.$api.customer.addStation(this.formData).then(res => {
+          this.$api.customer.addStation(data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("新建成功");
               this.$emit("refresh");
@@ -255,7 +267,6 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
     getEditData() {
@@ -266,7 +277,8 @@ export default {
             let result = res.data.data;
             this.formData = result;
             if (result.longitude != null && result.latitude != null)
-              this.lngandlat = result.longitude + "," + result.latitude;
+              this.formData.lngandlat =
+                result.longitude + "," + result.latitude;
           }
         });
     },
@@ -279,15 +291,15 @@ export default {
     onLnglat() {
       this.mapModel.show = true;
       this.mapModel.address = this.formData.address;
-      if (this.lngandlat) {
-        this.mapModel.lnglat = this.lngandlat.split(",");
+      if (this.formData.lngandlat) {
+        this.mapModel.lnglat = this.formData.lngandlat.split(",");
       }
     },
     getModal(data) {
       this.formData.address = data.address;
       this.formData.longitude = data.lnglat[0];
       this.formData.latitude = data.lnglat[1];
-      this.lngandlat = data.lnglat.join();
+      this.formData.lngandlat = data.lnglat.join(",");
     },
     getGroup() {
       this.$api.common.selectGroup().then(res => {
@@ -307,7 +319,6 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
-        this.lngandlat = "";
         this.enterpriseOptions();
         this.getGroup();
         if (this.value.type == "edit") {
