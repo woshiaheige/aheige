@@ -31,11 +31,7 @@
         <a-input placeholder="手机" v-model="formData.phone" />
       </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
-        <a-input
-          placeholder="密码"
-          type="password"
-          v-model="formData.password"
-        />
+        <a-input placeholder="密码" v-model="formData.password" />
       </a-form-model-item>
       <a-form-model-item label="微信ID" prop="wxId">
         <a-input placeholder="微信ID" v-model="formData.wxId" />
@@ -135,6 +131,7 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.formData = {};
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

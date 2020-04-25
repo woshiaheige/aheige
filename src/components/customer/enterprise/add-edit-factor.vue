@@ -47,21 +47,21 @@ export default {
     value: Object
   },
   data() {
-    let that = this;
-    const validateNum = (rule, value, callback) => {
-      console.log(value, that.formData.floorval);
-      if (
-        value &&
-        that.formData.floorval &&
-        Number(value) < Number(that.formData.floorval)
-      ) {
-        callback("上限值必须大于下限值");
-      } else {
-        callback();
-      }
-    };
+    // let that = this;
+    // const validateNum = (rule, value, callback) => {
+    //   console.log(value, that.formData.floorval);
+    //   if (
+    //     value &&
+    //     that.formData.floorval &&
+    //     Number(value) < Number(that.formData.floorval)
+    //   ) {
+    //     callback("上限值必须大于下限值");
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
-      title: "新建",
+      title: "添加",
       formData: {
         pointId: this.$route.query.id
       },
@@ -73,7 +73,20 @@ export default {
             trigger: "change"
           }
         ],
-        ceilval: [{ validator: validateNum, trigger: "blur" }]
+        floorval: [
+          {
+            required: true,
+            message: "请添加下限",
+            trigger: "change"
+          }
+        ],
+        ceilval: [
+          {
+            required: true,
+            message: "请添加上限",
+            trigger: "change"
+          }
+        ]
       },
       filterOption(input, option) {
         return (
@@ -94,6 +107,10 @@ export default {
   },
   methods: {
     handleOk() {
+      if (this.formData.floorval > this.formData.ceilval) {
+        that.$message.error("上限必须小于下限值！");
+        return;
+      }
       let that = this;
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
@@ -139,11 +156,14 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.formData = {
+          pointId: this.$route.query.id
+        };
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();
         } else {
-          this.title = "新建";
+          this.title = "添加";
         }
       }
     }

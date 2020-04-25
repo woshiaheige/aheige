@@ -108,7 +108,7 @@
               <a-badge status="warning" text="已延期" v-if="row.status == 3" />
             </template>
             <span slot="check" slot-scope="row">
-              <a @click="onAddClick(row)">编辑</a>
+              <a @click="onEditPlan(row)">编辑</a>
               <a-divider type="vertical" />
               <a @click="onDeletePlan(row)">删除</a>
             </span>
@@ -133,18 +133,27 @@
       :plan-detail="selectedPlan"
       @check="updateTable"
     />
+
+    <edit-plan
+      :visible="editModal"
+      :plan-detail="selectedPlan"
+      @close="editModal = false"
+    ></edit-plan>
   </div>
 </template>
 
 <script>
 import planAllocation from "@/components/maintain/plan/plan-allocation";
+import editPlan from "@/components/maintain/plan/edit-plan";
 export default {
   components: {
-    planAllocation
+    planAllocation,
+    editPlan
   },
   data() {
     return {
       visible: false,
+      editModal: false,
       spinning: false,
       tabList: [
         { tab: "未配置站点", key: 1 },
@@ -204,6 +213,11 @@ export default {
     },
     currentStation() {
       this.getTableData();
+    },
+    editModal(newVal) {
+      if (!newVal) {
+        this.getTableData();
+      }
     }
   },
   methods: {
@@ -247,13 +261,13 @@ export default {
 
       that.$confirm({
         title: "删除计划",
-        content: "确定删除计划" + row.name + "？",
+        content: "确定删除计划方案" + row.programmeName + "？",
         okText: "确定",
         okType: "danger",
         cancelText: "取消",
         onOk() {
           let data = {
-            id: row.id
+            programmeId: row.programmeId
           };
 
           that.$api.maintain.deletePlan(data).then(async res => {
@@ -294,6 +308,10 @@ export default {
           }
         }
       });
+    },
+    onEditPlan(row) {
+      this.editModal = true;
+      this.selectedPlan = row;
     }
   },
   mounted() {

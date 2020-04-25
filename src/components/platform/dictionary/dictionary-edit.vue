@@ -14,12 +14,14 @@
             'name',
             { rules: [{ required: true, message: '输入字典名称' }] }
           ]"
+          :maxLength="30"
         />
       </a-form-item>
       <a-form-item label="字典编号">
         <a-input
           placeholder="字典编号"
           :disabled="dictionaryId != ''"
+          :maxLength="30"
           v-decorator="[
             'code',
             { rules: [{ required: true, message: '输入字典编号' }] }
@@ -29,6 +31,7 @@
       <a-form-item label="字典值">
         <a-input
           placeholder="字典值"
+          :maxLength="30"
           v-decorator="[
             'value',
             { rules: [{ required: true, message: '输入字典值' }] }
@@ -38,6 +41,7 @@
       <a-form-item label="字典说明">
         <a-input
           type="textarea"
+          :maxLength="300"
           placeholder="字典说明"
           v-decorator="['remark']"
         />
@@ -60,7 +64,8 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      dictionaryId: ""
+      dictionaryId: "",
+      name: ""
     };
   },
   computed: {
@@ -95,6 +100,7 @@ export default {
     },
     handleOk() {
       this.form.validateFields((err, values) => {
+        console.log(values);
         if (!err) {
           if (this.dictionaryId) {
             this.editdictionary(values);

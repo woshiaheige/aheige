@@ -2,9 +2,7 @@
   <a-modal
     :title="title + '企业'"
     :visible="modelData.show"
-    @ok="handleOk"
     @cancel="handleCancel"
-    okText="保存"
     :maskClosable="false"
   >
     <a-form-model
@@ -96,6 +94,12 @@
         />
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button key="back" @click="handleCancel">取消</a-button>
+      <a-button key="submit" type="primary" @click="handleOk">
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 
@@ -248,6 +252,7 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.formData = {};
         this.options = cityList;
         this.getArea();
         if (this.value.type == "edit") {

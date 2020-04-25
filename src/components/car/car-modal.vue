@@ -110,6 +110,7 @@ export default {
           this.$message.success("修改成功");
           this.carModal.show = false;
           this.$emit("refresh");
+          this.carId = undefined;
         }
       });
     },
@@ -120,11 +121,13 @@ export default {
           this.$message.success("添加成功");
           this.carModal.show = false;
           this.$emit("refresh");
+          this.carId = undefined;
         }
       });
     },
     handleCancel() {
       this.carModal.show = false;
+      this.carId = undefined;
     }
   },
   mounted() {}

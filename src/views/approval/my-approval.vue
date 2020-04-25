@@ -74,9 +74,9 @@
           <a-tag color="blue" v-if="type == 2">转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
-          <a-badge color="green" text="未处理" v-if="state == 1" />
-          <a-badge color="cyan" text="处理中" v-if="state == 2" />
-          <a-badge color="blue" text="通过" v-if="state == 3" />
+          <a-badge color="orange" text="未处理" v-if="state == 1" />
+          <a-badge color="blue" text="处理中" v-if="state == 2" />
+          <a-badge color="green" text="通过" v-if="state == 3" />
           <a-badge color="red" text="未通过" v-if="state == 4" />
         </template>
         <span slot="action" slot-scope="row">
@@ -143,7 +143,14 @@ export default {
         {
           title: "审批人",
           dataIndex: "approvalName",
-          ellipsis: true
+          ellipsis: true,
+          customRender: text => {
+            if (!text) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         },
         {
           title: "申请时间",

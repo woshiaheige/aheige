@@ -7,13 +7,15 @@
             placeholder="请输入"
             v-model="list.pointName"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
-        <a-form-item label="MN号码">
+        <a-form-item label="MN号">
           <a-input
             placeholder="请输入"
             v-model="list.mn"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="监控点类型">
@@ -24,6 +26,9 @@
             showSearch
             :filterOption="filterOptions"
           >
+            <a-select-option value="">
+              全部
+            </a-select-option>
             <a-select-option
               v-for="item in pointOptions"
               :key="item.value"
@@ -35,6 +40,9 @@
         </a-form-item>
 
         <a-form-item style="float: right">
+          <a-button type="primary" @click="reset()" style="margin-right:15px">
+            重置
+          </a-button>
           <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
@@ -116,7 +124,7 @@ export default {
           key: "enterpriseName"
         },
         {
-          title: "MN号码",
+          title: "MN号",
           dataIndex: "mn",
           key: "mn"
         },
@@ -143,7 +151,8 @@ export default {
       list: {
         name: "",
         pointName: "",
-        mn: ""
+        mn: "",
+        type: ""
       },
       loading: false,
       pointOptions: []
@@ -154,6 +163,9 @@ export default {
     this.getPointSelect();
   },
   methods: {
+    reset() {
+      this.list = { name: "", pointName: "", mn: "", type: "" };
+    },
     getTableData() {
       let data = {
         page: this.current,
@@ -188,13 +200,21 @@ export default {
     goFactor(row) {
       this.$router.push({
         path: "/customer/enterprise/factor",
-        query: { id: row.id }
+        query: {
+          id: row.id,
+          enterpriseName: this.$route.query.enterpriseName,
+          pointName: row.name
+        }
       });
     },
     goDevice(row) {
       this.$router.push({
         path: "/customer/enterprise/device",
-        query: { id: row.id }
+        query: {
+          id: row.id,
+          enterpriseName: row.enterpriseName,
+          pointName: row.name
+        }
       });
     },
     onDelete(row) {
