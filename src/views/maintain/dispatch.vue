@@ -77,6 +77,7 @@
       :visible="editModal"
       :mission-detail="selectedMission"
       :week="week"
+      :day="selectedDay"
       @close="editModal = false"
     ></dispatch-edit>
   </div>
@@ -117,6 +118,15 @@ export default {
         this.getMissionThisWeek();
       } else {
         this.getMissionNextWeek();
+      }
+    },
+    editModal(newVal) {
+      if (!newVal) {
+        if (this.week === "this") {
+          this.getMissionThisWeek();
+        } else {
+          this.getMissionNextWeek();
+        }
       }
     }
   },
