@@ -16,28 +16,11 @@
         <a-input v-model="formData.name" placeholder="企业名称" />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
-        <!-- <a-cascader
-          :fieldNames="{ label: 'name', value: 'code', children: 'city' }"
-          :options="options"
+        <a-cascader
+          :options="cityList"
           v-model="formData.regionId"
-          expandTrigger="hover"
-          placeholder="所属区域"
-          allowClear
-        /> -->
-        <a-select
-          v-model="formData.regionId"
-          placeholder="所属区域"
-          showSearch
-          :filterOption="filterOptions"
-        >
-          <a-select-option
-            v-for="item in areaOptions"
-            :key="item.id"
-            :value="item.id"
-          >
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
+          placeholder="请选择"
+        />
       </a-form-model-item>
       <a-form-model-item label="企业地址" prop="address">
         <a-input v-model="formData.address" placeholder="企业地址" />
@@ -96,7 +79,12 @@
     </a-form-model>
     <template slot="footer">
       <a-button key="back" @click="handleCancel">取消</a-button>
-      <a-button key="submit" type="primary" @click="handleOk">
+      <a-button
+        key="submit"
+        type="primary"
+        @click="handleOk"
+        :disabled="isClick"
+      >
         保存
       </a-button>
     </template>
@@ -104,7 +92,7 @@
 </template>
 
 <script>
-import cityList from "@/assets/geojson/city_code.json";
+import cityList from "@/assets/json/city_code.json";
 export default {
   props: {
     controlOptions: Array,
@@ -125,6 +113,8 @@ export default {
       }
     };
     return {
+      cityList,
+      isClick: false,
       title: "",
       options: [],
       formData: {},
@@ -199,33 +189,47 @@ export default {
     }
   },
   methods: {
+    //通过区域id，设置省id和市id
+    setRegionId(id) {
+      if (id) {
+        let temp1 = id.substring(0, 2) + "0000";
+        let temp2 = id.substring(0, 4) + "00";
+        this.formData.regionId = [temp1, temp2, id];
+      }
+    },
     handleCancel() {
       this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
     handleOk() {
-      console.log(this.formData.regionId);
+      this.isClick = true;
+      // console.log(this.formData.regionId);
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
+          this.isClick = false;
           return false;
         }
         //验证通过
+        let _data = JSON.parse(JSON.stringify(this.formData));
+        _data.regionId = _data.regionId[_data.regionId.length - 1];
         if (this.modelData.type == "edit") {
-          this.$api.customer.editEnterPrise(this.formData).then(res => {
+          this.$api.customer.editEnterPrise(_data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("编辑成功");
               this.$emit("refresh");
               this.handleCancel();
+              this.isClick = false;
             }
           });
         } else {
-          this.$api.customer.addEnterPrise(this.formData).then(res => {
+          this.$api.customer.addEnterPrise(_data).then(res => {
             if (res.data.state == 0) {
               this.$message.success("新建成功");
               this.$emit("refresh");
               this.handleCancel();
+              this.isClick = false;
             }
           });
         }
@@ -237,16 +241,17 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.formData = res.data.data;
+            this.setRegionId(res.data.data.regionId);
           }
         });
-    },
-    getArea() {
-      this.$api.common.getArea().then(res => {
-        if (res.data.state == 0) {
-          this.areaOptions = res.data.data;
-        }
-      });
     }
+    // getArea() {
+    //   this.$api.common.getArea().then(res => {
+    //     if (res.data.state == 0) {
+    //       this.areaOptions = res.data.data;
+    //     }
+    //   });
+    // }
   },
   mounted() {},
   watch: {
@@ -254,7 +259,7 @@ export default {
       if (this.value.show == true) {
         this.formData = {};
         this.options = cityList;
-        this.getArea();
+        // this.getArea();
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

@@ -89,7 +89,7 @@
         :showTotal="total => `共 ${total} 条`"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pagesize"
+        :pageSize.sync="pageSize"
         :defaultCurrent="current"
         @change="pagechange"
         @showSizeChange="sizechange"
@@ -123,12 +123,22 @@ export default {
       modalInfo: {},
       current: 1,
       total: 0,
-      pagesize: 10,
+      pageSize: 10,
       formInline: {
         state: "",
         type: ""
       },
       columns: [
+        {
+          align: "center",
+          title: "序号",
+          width: 100,
+          customRender: (_, __, index) => {
+            return (
+              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
+            );
+          }
+        },
         {
           title: "标题",
           dataIndex: "title",
@@ -220,8 +230,8 @@ export default {
     //获取表格数据
     getTableData() {
       let data = {
-        index: this.current,
-        size: this.pagesize,
+        page: this.current,
+        size: this.pageSize,
         state: this.formInline.state,
         type: this.formInline.type
       };
