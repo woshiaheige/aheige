@@ -4,7 +4,9 @@
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
-    :width="600"
+    width="100%"
+    style="top: 0;"
+    wrapClassName="edit-article"
     :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">

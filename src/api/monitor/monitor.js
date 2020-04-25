@@ -41,6 +41,54 @@ const monitor = {
   //获取污染物编码列表
   getPollCodeList(data) {
     return axios.get(base.api + "divisor/listByPointId?pointId=" + data);
+  },
+  //提取现场机
+  getSend1011(data) {
+    return axios.get(base.api + "monitor/send17/send1011", {
+      params: data
+    });
+  },
+  //设置现场机时间 1012
+  getSend1012(data) {
+    return axios.get(base.api + "monitor/send17/send1011", {
+      params: data
+    });
+  },
+  //提取污染物历史数据 2051
+  getReissue(data) {
+    return axios.get(base.api + "monitor/send17/reissue", {
+      params: data
+    });
+  },
+  //设置即时采样 3012
+  getSend3012(data) {
+    return axios.get(base.api + "monitor/send17/send3012", {
+      params: data
+    });
+  },
+  //设置启动清洗 3013
+  getSend3013(data) {
+    return axios.get(base.api + "monitor/send17/send3013", {
+      params: data
+    });
+  },
+  //设置超标留样 3015
+  getSend3015(data) {
+    return axios.get(base.api + "monitor/send17/send3015", {
+      params: data
+    });
+  },
+  //设置采样时间周期 3016
+  getSend3016(data) {
+    return axios.get(base.api + "monitor/send17/send3016", {
+      params: data
+    });
+  },
+  //提取采样时间周期 3017
+  getSend3017(data) {
+    return axios.get(base.api + "monitor/send17/send3017", {
+      params: data
+    });
   }
 };
 

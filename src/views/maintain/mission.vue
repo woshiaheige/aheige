@@ -4,12 +4,12 @@
       <a-form layout="inline">
         <a-form-item label="企业名称">
           <a-select
+            @focus="onFocusEnterprise"
             showSearch
             v-model="formInline.enterpriseName"
             placeholder="请输入"
             style="width: 200px"
             :defaultActiveFirstOption="false"
-            :showArrow="false"
             :filterOption="false"
             @search="searchEnterprise"
             :notFoundContent="null"
@@ -25,12 +25,12 @@
         </a-form-item>
         <a-form-item label="监控点名称">
           <a-select
+            @focus="onFocusPoint"
             showSearch
             v-model="formInline.pointName"
             placeholder="请输入"
             style="width: 200px"
             :defaultActiveFirstOption="false"
-            :showArrow="false"
             :filterOption="false"
             @search="searchPoint"
             :notFoundContent="null"
@@ -75,7 +75,7 @@
     </a-card>
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">任务列表</div>
+        <div class="title">站点列表</div>
         <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -106,7 +106,7 @@
           <!-- <a @click="delayShow = true">申请延期</a>
           <a-divider type="vertical" />
           <a @click="closeShow = true">任务关闭</a> -->
-          <a @click="goDetail(row)">任务详情</a>
+          <a @click="goDetail(row)">站点任务</a>
         </span>
       </a-table>
       <a-pagination
@@ -126,24 +126,11 @@
         :stationList="stationList"
         @cancel="cancel"
       ></add-edit>
-      <!--延期-->
-      <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
-      <!--关闭-->
-      <!-- <close-modal :visible="closeShow" @cancel="cancel"></close-modal> -->
-      <!--详情-->
-      <!-- <detail-modal
-        :visible="detailShow"
-        :tableData="tableData"
-        @cancel="cancel"
-      ></detail-modal> -->
     </a-card>
   </div>
 </template>
 <script>
 import addEdit from "@/components/maintain/mission/add-edit";
-// import detailModal from "@/components/maintain/mission/detail";
-// import delayModal from "@/components/maintain/mission/delay";
-// import closeModal from "@/components/maintain/mission/close";
 export default {
   components: { addEdit },
   data() {
@@ -154,8 +141,8 @@ export default {
       loading: false,
       formInline: {
         enterpriseName: undefined,
-        enterpriseId: "",
-        pointId: "",
+        enterpriseId: undefined,
+        pointId: undefined,
         pointName: undefined,
         taskStatus: "all"
       },
@@ -206,19 +193,37 @@ export default {
       stationList: [],
       planList: [],
       show: false
-      // delayShow: false,
-      // closeShow: false,
-      // detailShow: false
     };
   },
+  watch: {
+    "formInline.enterpriseName"() {
+      this.$set(this.formInline, "pointName", undefined);
+      this.$set(this.formInline, "pointId", undefined);
+    }
+  },
   methods: {
+    onFocusEnterprise() {
+      //获取第一次聚焦的列表
+      if (this.enterpriseList.length == 0) {
+        this.searchEnterprise("");
+      }
+    },
+    onFocusPoint() {
+      //获取第一次聚焦的列表
+      if (this.pointList.length == 0) {
+        this.searchPoint("");
+      }
+    },
     searchEnterprise(value) {
       //搜索企业
-      this.$api.customer
-        .getEnterPriseList({ enterpriseName: value })
-        .then(res => {
-          this.enterpriseList = res.data.data.records;
-        });
+      let params = {
+        size: 20,
+        page: 1,
+        enterpriseName: value
+      };
+      this.$api.customer.getEnterPriseList(params).then(res => {
+        this.enterpriseList = res.data.data.records;
+      });
     },
     slectEnterprise(value) {
       this.formInline.enterpriseId = value.id;
@@ -226,7 +231,13 @@ export default {
     },
     searchPoint(value) {
       //搜索站点
-      this.$api.customer.getStationList({ pointName: value }).then(res => {
+      let params = {
+        size: 20,
+        page: 1,
+        enterpriseName: this.formInline.enterpriseName,
+        pointName: value
+      };
+      this.$api.customer.getStationList(params).then(res => {
         this.pointList = res.data.data.records;
       });
     },

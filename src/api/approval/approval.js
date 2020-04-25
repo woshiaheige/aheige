@@ -15,11 +15,11 @@ const approval = {
   },
   //审核审批列表
   getApprovalList(data) {
-    return axios.get(base.api + "approvalProcess/initProcessByMine", {
+    return axios.get(base.api + "approvalProcess/approvalList", {
       params: data
     });
   },
-  //我的审批统计
+  //审批统计
   getApprovalCount(data) {
     return axios.get(base.api + "approvalProcess/approvalCount", {
       params: data

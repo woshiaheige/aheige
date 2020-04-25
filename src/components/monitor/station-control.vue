@@ -66,17 +66,7 @@
             />
             <p>
               <a-button-group>
-                <a-button
-                  @click="
-                    postCommonSend({
-                      title: '启动超标留样(仪表)',
-                      command: '3015',
-                      operate: '设置',
-                      formIndex: '14'
-                    })
-                  "
-                  >设置</a-button
-                >
+                <a-button @click="getSend3015">设置</a-button>
               </a-button-group>
             </p></a-col
           >
@@ -236,8 +226,16 @@ export default {
     };
   },
   methods: {
-    postCommonSend() {
-      this.$message.success("设置成功");
+    getSend3015() {
+      // this.$message.success("设置成功");
+      let data = {
+        pointId: this.modalObj.pointId
+      };
+      this.$api.monitor.getSend3015(data).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("设置成功");
+        }
+      });
     },
     //关闭子级事件
     onCancelSub() {
