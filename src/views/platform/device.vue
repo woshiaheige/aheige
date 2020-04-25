@@ -48,6 +48,12 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="deviceType" slot-scope="deviceType">
+          <a-tag color="blue" v-if="deviceType == 1">氨氮分析仪</a-tag>
+          <a-tag color="blue" v-if="deviceType == 2">COD分析仪</a-tag>
+          <a-tag color="blue" v-if="deviceType == 3">数采仪</a-tag>
+          <a-tag color="blue" v-if="deviceType == 4">油烟分析仪</a-tag>
+        </template>
         <template slot="type" slot-scope="type">
           <a-tag color="blue" v-if="type == 32">水类</a-tag>
           <a-tag color="red" v-if="type == 31">气类</a-tag>
@@ -59,15 +65,14 @@
           <a @click="onDelete(row)">删除</a>
         </span>
       </a-table>
-
+      <!-- 文档的defaultCurrent是有bug的，用current -->
       <a-pagination
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :defaultCurrent="current"
-        :pageSize.sync="pageSize"
         :total="total"
         :showTotal="total => `共 ${total} 条`"
+        :current="current"
         @change="pagechange"
         @showSizeChange="sizechange"
       />
@@ -109,6 +114,13 @@ export default {
         },
         {
           title: "设备类型",
+          dataIndex: "deviceType",
+          key: "deviceType",
+          align: "center",
+          scopedSlots: { customRender: "deviceType" }
+        },
+        {
+          title: "监测类型",
           dataIndex: "type",
           key: "type",
           align: "center",

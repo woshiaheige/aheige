@@ -2,12 +2,14 @@
   <div>
     <a-card :bordered="false" class="station">
       <div class="card-header">
-        <div class="title">因子列表</div>
+        <div class="title">
+          {{ $route.query.enterpriseName + " / " + $route.query.pointName }}
+        </div>
         <div class="extra">
           <a-form layout="inline">
             <a-form-item>
               <a-button type="primary" @click="onEdit('add')">
-                <a-icon type="plus" />新建
+                <a-icon type="plus" />添加
               </a-button>
             </a-form-item>
             <a-form-item>
@@ -19,6 +21,9 @@
                 allowClear
                 :filterOption="filterOptions"
               >
+                <a-select-option value="">
+                  全部
+                </a-select-option>
                 <a-select-option
                   v-for="item in factorOptions"
                   :key="item.id"
@@ -82,7 +87,7 @@ export default {
       pageSize: 10,
       total: 1,
       loading: false,
-      list: {},
+      list: { divisorId: "" },
       filterOption(input, option) {
         return (
           option.componentOptions.children[0].text
@@ -156,7 +161,7 @@ export default {
   },
   mounted() {
     this.getTableData();
-    this.getFactor();
+    this.getFactor(this.$route.query.id);
   },
   methods: {
     getTableData() {
@@ -208,12 +213,17 @@ export default {
       this.obj.type = type;
       this.obj.row = row;
     },
-    getFactor() {
-      this.$api.common.selectFactor().then(res => {
+    getFactor(pointId) {
+      this.$api.monitor.getPollCodeList(pointId).then(res => {
         if (res.data.state == 0) {
           this.factorOptions = res.data.data;
         }
       });
+      // this.$api.common.selectFactor().then(res => {
+      //   if (res.data.state == 0) {
+      //     this.factorOptions = res.data.data;
+      //   }
+      // });
     }
   }
 };

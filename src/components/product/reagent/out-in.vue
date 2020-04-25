@@ -8,7 +8,7 @@
     :maskClosable="false"
   >
     <a-form-model
-      ref="ruleForm"
+      ref="formData"
       :validateOnRuleChange="true"
       :model="formData"
       :rules="rules"
@@ -42,6 +42,7 @@
           placeholder="企业"
           showSearch
           :filterOption="filterOptions"
+          @change="changeEnterprise"
         >
           <a-select-option
             v-for="(item, index) in companyOptions"
@@ -61,6 +62,7 @@
           placeholder="监测点"
           showSearch
           :filterOption="filterOptions"
+          @change="changeStation"
         >
           <a-select-option
             v-for="(item, index) in stationOptions"
@@ -118,7 +120,12 @@
         :label="modelData.type == 'in' ? '入库数量' : '出库数量'"
         prop="stockCount"
       >
-        <a-input placeholder="数量" v-model="formData.stockCount" />
+        <a-input-number
+          :min="1"
+          placeholder="数量"
+          v-model="formData.stockCount"
+          v-width="350"
+        />
       </a-form-model-item>
       <a-form-model-item label="备注" prop="remark">
         <a-input
@@ -155,7 +162,15 @@ export default {
       stationOptions: [],
       goodsOptions: [],
       userOptions: [],
-      formData: {},
+      formData: {
+        goodsId: undefined,
+        enterpriseId: undefined,
+        pointId: undefined,
+        devId: undefined,
+        receiverUserId: undefined,
+        stockCount: "",
+        remark: ""
+      },
       list: {},
       rules: {
         goodsId: [
@@ -205,7 +220,7 @@ export default {
   mounted() {},
   methods: {
     handleOk() {
-      this.$refs.ruleForm.validate(valid => {
+      this.$refs.formData.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
@@ -225,8 +240,7 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
-      this.$refs.ruleForm.resetFields();
+      this.$refs.formData.resetFields();
     },
     getSelect() {
       this.$api.product.getGoodsSelect().then(res => {
@@ -241,14 +255,6 @@ export default {
         }
       });
     },
-    //监测点下拉
-    getStation() {
-      this.$api.common.selectStation().then(res => {
-        if (res.data.state == 0) {
-          this.stationOptions = res.data.data;
-        }
-      });
-    },
     //企业下拉
     getCompany() {
       this.$api.common.selectEnterprise().then(res => {
@@ -257,13 +263,35 @@ export default {
         }
       });
     },
+    changeEnterprise(value) {
+      this.formData.pointId = undefined;
+      this.getStation(value);
+    },
+    //监测点下拉
+    getStation(value) {
+      this.$api.common
+        .selectStationByEnterpriseId({ enterpriseId: value })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.stationOptions = res.data.data;
+          }
+        });
+    },
+    changeStation(value) {
+      this.formData.devId = undefined;
+      this.getDevice(value);
+    },
     //设备下拉
-    getDevice() {
-      this.$api.common.selectDevice().then(res => {
-        if (res.data.state == 0) {
-          this.deviceOptions = res.data.data;
-        }
-      });
+    getDevice(value) {
+      this.$api.common
+        .selectStationByStationId({
+          cusPointId: value
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.deviceOptions = res.data.data;
+          }
+        });
     },
     //领用人下拉
     getUser() {
@@ -277,11 +305,15 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.list = {
+          goodsCount: "",
+          unit: ""
+        };
+        this.stationOptions = [];
+        this.deviceOptions = [];
         this.getSelect();
         if (this.value.type == "out") {
-          this.getStation();
           this.getCompany();
-          this.getDevice();
           this.getUser();
         }
       }

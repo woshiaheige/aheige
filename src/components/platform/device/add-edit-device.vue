@@ -36,7 +36,23 @@
           @change="formDataNumber"
         />
       </a-form-model-item>
-      <a-form-model-item label="设备类型" prop="type">
+      <a-form-model-item label="设备类型" prop="deviceType">
+        <a-select
+          placeholder="请选择"
+          v-model="formData.deviceType"
+          showSearch
+          :filterOption="filterOptions"
+        >
+          <a-select-option
+            v-for="item in deviceTypeOptions"
+            :key="item.value"
+            :value="Number(item.value)"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item label="监测类型" prop="type">
         <a-select
           placeholder="请选择"
           v-model="formData.type"
@@ -55,11 +71,12 @@
       </a-form-model-item>
       <a-form-model-item label="监测因子" prop="divisorIds">
         <a-select
+          :disabled="formData.type == undefined"
           placeholder="请选择"
           mode="multiple"
           v-model="formData.divisorIds"
           :filterOption="false"
-          @search="searchDivisorName"
+          @search="searchDivisor(formData.type, $event)"
           :notFoundContent="fetching ? undefined : null"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
@@ -90,11 +107,14 @@ export default {
       fetching: false, //搜索中
       lastFetchId: 0,
       title: "新建",
+      deviceTypeOptions: [], //监测类型
       stationOptions: [],
       pointOptions: [],
       factorOptions: [],
       fileList: [],
-      formData: {},
+      formData: {
+        type: undefined
+      },
       rules: {
         name: [
           {
@@ -117,10 +137,17 @@ export default {
             trigger: "blur"
           }
         ],
-        type: [
+        deviceType: [
           {
             required: true,
             message: "请选择设备类型",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择监测类型",
             trigger: "blur"
           }
         ],
@@ -146,15 +173,15 @@ export default {
     console.log(base.api);
   },
   methods: {
-    //因子名称搜索
-    searchDivisorName(value) {
+    searchDivisor(value, divisorName) {
       const fetchId = this.lastFetchId;
       this.data = [];
       this.fetching = true;
       let params = {
         size: 20,
         page: 1,
-        name: value
+        type: value,
+        name: typeof divisorName == "string" ? divisorName : ""
       };
       this.$api.platform.sysDivisor(params).then(res => {
         console.log(res);
@@ -168,30 +195,7 @@ export default {
         }
       });
     },
-    //因子下拉
-    searchDivisor(value) {
-      console.log(value);
-      const fetchId = this.lastFetchId;
-      this.data = [];
-      this.fetching = true;
-      let params = {
-        size: 20,
-        page: 1,
-        type: value
-      };
-      this.$api.platform.sysDivisor(params).then(res => {
-        console.log(res);
-        if (res.data.state == 0) {
-          if (fetchId !== this.lastFetchId) {
-            // for fetch callback order
-            return;
-          }
-          this.factorOptions = res.data.data.records;
-          this.fetching = false;
-        }
-      });
-    },
-    //限制长度  自带的限制用户体验极差
+    //限制长度
     formDataName() {
       if (this.formData.name.length > 30) {
         this.formData.name = this.formData.name.substring(0, 29);
@@ -225,7 +229,8 @@ export default {
           manufacturer: this.formData.manufacturer,
           name: this.formData.name,
           number: this.formData.number,
-          type: this.formData.type
+          type: this.formData.type,
+          deviceType: this.formData.deviceType
         };
         if (data.gmtReceptionTime) {
           data.gmtReceptionTime = this.$moment(data.gmtReceptionTime).format(
@@ -297,6 +302,13 @@ export default {
         this.pointOptions = res.data;
       });
     },
+    //监测类型
+    getDeviceType() {
+      let params = ["DEVICE_TYPE"];
+      this.$api.common.geDictByParam(params).then(res => {
+        this.deviceTypeOptions = res.data;
+      });
+    },
     getDivisorList() {
       let params = { divisorIds: this.formData.divisorIds };
       this.$api.common.listByIds(params).then(res => {
@@ -313,7 +325,7 @@ export default {
         if (nval.show == true) {
           this.getStation();
           this.getPointSelect();
-
+          this.getDeviceType();
           this.fileList = [];
           if (nval.type == "edit") {
             this.title = "编辑";
