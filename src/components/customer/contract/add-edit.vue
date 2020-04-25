@@ -34,19 +34,12 @@
       <a-form-model-item label="合同编号" prop="number">
         <a-input placeholder="合同编号" v-model="formData.number" />
       </a-form-model-item>
-      <!-- <a-form-model-item label="起止时间" prop="time">
+      <a-form-model-item label="合同起止时间" prop="range">
         <a-range-picker
-          :value="formData.time"
-          @change="onChange"
-          show-time
-          format="YYYY-MM-DD HH:mm:ss"
+          v-model="formData.range"
+          :showTime="false"
+          v-width="350"
         />
-      </a-form-model-item> -->
-      <a-form-model-item label="合同开始时间" prop="gmtBegin">
-        <a-date-picker v-width="350" v-model="formData.gmtBegin" />
-      </a-form-model-item>
-      <a-form-model-item label="合同结束时间" prop="gmtEnd">
-        <a-date-picker v-width="350" v-model="formData.gmtEnd" />
       </a-form-model-item>
       <a-form-model-item label="合同签署时间" prop="gmtSign">
         <a-date-picker v-width="350" v-model="formData.gmtSign" />
@@ -111,6 +104,13 @@ export default {
       loading: false,
       enterpriseList: [],
       formData: {
+        enterpriseId: undefined,
+        number: "",
+        range: [],
+        gmtSign: "",
+        userName: "",
+        money: "",
+        description: "",
         state: 1
       },
       fileList: [],
@@ -137,17 +137,10 @@ export default {
             trigger: "change"
           }
         ],
-        gmtBegin: [
+        range: [
           {
             required: true,
-            message: "请选择合同开始时间",
-            trigger: "change"
-          }
-        ],
-        gmtEnd: [
-          {
-            required: true,
-            message: "请选择合同结束时间",
+            message: "请选择合同起止时间",
             trigger: "change"
           }
         ]
@@ -182,10 +175,10 @@ export default {
           state: this.formData.state,
           userName: this.formData.userName,
           description: this.formData.description,
-          gmtBegin: this.$moment(this.formData.gmtBegin).format(
+          gmtBegin: this.$moment(this.formData.range[0]).format(
             "YYYY-MM-DD hh:mm:ss"
           ),
-          gmtEnd: this.$moment(this.formData.gmtEnd).format(
+          gmtEnd: this.$moment(this.formData.range[1]).format(
             "YYYY-MM-DD hh:mm:ss"
           ),
           gmtSign: this.$moment(this.formData.gmtSign).format(
@@ -214,7 +207,6 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
     getEditData() {
@@ -232,8 +224,10 @@ export default {
                 }
               ];
             }
-            res.data.data.gmtBegin = this.$moment(res.data.data.gmtBegin);
-            res.data.data.gmtEnd = this.$moment(res.data.data.gmtEnd);
+            res.data.data.range = [
+              this.$moment(res.data.data.gmtBegin),
+              this.$moment(res.data.data.gmtEnd)
+            ];
             res.data.data.gmtSign = this.$moment(res.data.data.gmtSign);
             this.formData = res.data.data;
           }
@@ -268,12 +262,6 @@ export default {
       this.$api.common.selectEnterprise().then(res => {
         this.enterpriseList = res.data.data;
       });
-    },
-    onChange(date, dateString) {
-      console.log(date);
-      console.log(dateString);
-      // this.formData.gmtBegin = dateString[0];
-      // this.formData.gmtEnd = dateString[1];
     }
   },
   watch: {
