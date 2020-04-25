@@ -176,7 +176,6 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.notificationData = this.detailFilter(res.data.data);
-            console.log(this.notificationData, 22222);
           }
         });
     },

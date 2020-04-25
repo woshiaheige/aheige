@@ -44,7 +44,7 @@
     </a-card> -->
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">任务列表</div>
+        <div class="title">运维方案</div>
         <!-- <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -108,11 +108,11 @@ export default {
       visible: false,
       columns: [
         {
-          title: "任务类型",
+          title: "运维方案",
           dataIndex: "name"
         },
         {
-          title: "任务方案",
+          title: "任务类型",
           dataIndex: "type",
           scopedSlots: { customRender: "type" }
         },
