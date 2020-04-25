@@ -200,15 +200,16 @@ const maintain = {
   },
   //删除计划
   deletePlan(data) {
-    return axios.get(base.api + "maintainPlan/deleteMaintainPlan", {
+    return axios.get(base.api + "maintainPlanPoint/deletePlanPoint", {
       params: data
     });
   },
   //编辑计划
   editPlan(data) {
-    return axios.get(base.api + "maintainPlan/editMaintainPlan", {
-      params: data
-    });
+    return axios.post(
+      base.api + "maintainPlanPoint/editMaintainPlanPoint",
+      data
+    );
   },
   //获取日计划看板
   getMonthPlanBoard(data) {
@@ -258,6 +259,10 @@ const maintain = {
     return axios.get(base.api + "dispatch/getNextWeekTask", {
       params: data
     });
+  },
+  //任务调度
+  missionDispatch(data) {
+    return axios.get(base.api + "dispatch/", { params: data });
   }
 };
 
