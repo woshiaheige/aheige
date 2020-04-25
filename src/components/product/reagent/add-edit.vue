@@ -16,38 +16,62 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="编号" prop="number">
-        <a-input placeholder="输入编号" v-model.trim="formData.number" />
+        <a-input
+          :maxLength="30"
+          placeholder="编号"
+          v-model.trim="formData.number"
+        />
       </a-form-model-item>
       <a-form-model-item label="名称" prop="name">
-        <a-input placeholder="名称" v-model.trim="formData.name" />
+        <a-input
+          :maxLength="30"
+          placeholder="名称"
+          v-model.trim="formData.name"
+        />
       </a-form-model-item>
       <a-form-model-item label="品牌" prop="brand">
-        <a-input placeholder="输入品牌" v-model.trim="formData.brand" />
+        <a-input
+          :maxLength="30"
+          placeholder="品牌"
+          v-model.trim="formData.brand"
+        />
       </a-form-model-item>
       <a-form-model-item label="型号" prop="model">
-        <a-input placeholder="输入型号" v-model.trim="formData.model" />
+        <a-input
+          :maxLength="30"
+          placeholder="型号"
+          v-model.trim="formData.model"
+        />
       </a-form-model-item>
 
       <a-form-model-item label="库存单位" prop="unit">
-        <a-input placeholder="输入库存单位" v-model.trim="formData.unit" />
+        <a-input
+          :maxLength="30"
+          placeholder="库存单位"
+          v-model.trim="formData.unit"
+        />
       </a-form-model-item>
       <a-form-model-item label="库存警戒线" prop="cordon">
         <a-input
-          placeholder="输入库存警戒线"
+          :maxLength="30"
+          placeholder="库存警戒线"
           v-model.trim="formData.cordon"
           type="number"
         />
       </a-form-model-item>
       <a-form-model-item label="参考价格" prop="price">
-        <a-input
-          placeholder="输入参考价格"
-          v-model.trim="formData.price"
-          type="number"
+        <a-input-number
+          :min="1"
+          :max="99999999"
+          placeholder="参考价格"
+          v-model="formData.price"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="说明" prop="remark">
         <a-input
-          placeholder="输入说明"
+          :maxLength="300"
+          placeholder="说明"
           type="textarea"
           v-model="formData.remark"
         />
@@ -64,7 +88,16 @@ export default {
   },
   data() {
     return {
-      formData: {},
+      formData: {
+        number: "",
+        name: "",
+        brand: "",
+        model: "",
+        unit: "",
+        cordon: "",
+        price: "",
+        remark: ""
+      },
       rules: {
         name: [
           {
@@ -138,7 +171,6 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
     getEditData() {
