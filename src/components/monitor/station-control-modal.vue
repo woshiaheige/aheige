@@ -303,7 +303,12 @@
           v-if="monitor.command == '3016'"
         >
           <a-form-model-item label="时间间隔（小时）" prop="time">
-            <a-input-number v-model="formValidate15.time" :min="1" :max='24' :step="1" />
+            <a-input-number
+              v-model="formValidate15.time"
+              :min="1"
+              :max="24"
+              :step="1"
+            />
           </a-form-model-item>
         </a-col>
       </a-form-model>
