@@ -4,12 +4,12 @@
       <a-form layout="inline">
         <a-form-item label="企业名称">
           <a-select
+            @focus="onFocusEnterprise"
             showSearch
             v-model="formInline.enterpriseName"
             placeholder="请输入"
             style="width: 200px"
             :defaultActiveFirstOption="false"
-            :showArrow="false"
             :filterOption="false"
             @search="searchEnterprise"
             :notFoundContent="null"
@@ -25,12 +25,12 @@
         </a-form-item>
         <a-form-item label="监控点名称">
           <a-select
+            @focus="onFocusPoint"
             showSearch
             v-model="formInline.pointName"
             placeholder="请输入"
             style="width: 200px"
             :defaultActiveFirstOption="false"
-            :showArrow="false"
             :filterOption="false"
             @search="searchPoint"
             :notFoundContent="null"
@@ -141,8 +141,8 @@ export default {
       loading: false,
       formInline: {
         enterpriseName: undefined,
-        enterpriseId: "",
-        pointId: "",
+        enterpriseId: undefined,
+        pointId: undefined,
         pointName: undefined,
         taskStatus: "all"
       },
@@ -193,19 +193,37 @@ export default {
       stationList: [],
       planList: [],
       show: false
-      // delayShow: false,
-      // closeShow: false,
-      // detailShow: false
     };
   },
+  watch: {
+    "formInline.enterpriseName"() {
+      this.$set(this.formInline, "pointName", undefined);
+      this.$set(this.formInline, "pointId", undefined);
+    }
+  },
   methods: {
+    onFocusEnterprise() {
+      //获取第一次聚焦的列表
+      if (this.enterpriseList.length == 0) {
+        this.searchEnterprise("");
+      }
+    },
+    onFocusPoint() {
+      //获取第一次聚焦的列表
+      if (this.pointList.length == 0) {
+        this.searchPoint("");
+      }
+    },
     searchEnterprise(value) {
       //搜索企业
-      this.$api.customer
-        .getEnterPriseList({ enterpriseName: value })
-        .then(res => {
-          this.enterpriseList = res.data.data.records;
-        });
+      let params = {
+        size: 20,
+        page: 1,
+        enterpriseName: value
+      };
+      this.$api.customer.getEnterPriseList(params).then(res => {
+        this.enterpriseList = res.data.data.records;
+      });
     },
     slectEnterprise(value) {
       this.formInline.enterpriseId = value.id;
@@ -213,7 +231,13 @@ export default {
     },
     searchPoint(value) {
       //搜索站点
-      this.$api.customer.getStationList({ pointName: value }).then(res => {
+      let params = {
+        size: 20,
+        page: 1,
+        enterpriseName: this.formInline.enterpriseName,
+        pointName: value
+      };
+      this.$api.customer.getStationList(params).then(res => {
         this.pointList = res.data.data.records;
       });
     },
