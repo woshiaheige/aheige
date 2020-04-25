@@ -54,7 +54,7 @@
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :pageSize.sync="pagesize"
+        :pageSize.sync="pageSize"
         :showTotal="total => `共 ${total} 条`"
         :defaultCurrent="current"
         @change="pagechange"
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       loading: false,
-      pagesize: 10,
+      pageSize: 10,
       current: 1,
       total: 0,
       tableData: [],
@@ -81,7 +81,7 @@ export default {
           width: 100,
           customRender: (_, __, index) => {
             return (
-              <span>{index + (this.current - 1) * this.pagesize + 1}</span>
+              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
             );
           }
         },
@@ -94,6 +94,11 @@ export default {
           title: "监控点名称",
           dataIndex: "poiName",
           key: "poiName"
+        },
+        {
+          title: "MN号码",
+          dataIndex: "mn",
+          key: "mn"
         },
         {
           title: "分钟数据数",
@@ -175,10 +180,7 @@ export default {
         enterpriseName: "",
         pointName: "",
         mn: "",
-        range: [
-          this.$moment(this.$moment().format("YYYY-MM-DD") + " 00:00:00"),
-          this.$moment(this.$moment().format("YYYY-MM-DD") + " 23:59:59")
-        ]
+        range: [this.$moment(), this.$moment()]
       }
     };
   },
@@ -190,13 +192,13 @@ export default {
     getTableData() {
       this.loading = true;
       let data = {
-        index: this.current,
-        size: this.pagesize,
+        page: this.current,
+        size: this.pageSize,
         enterpriseName: this.formInline.enterpriseName,
         mn: this.formInline.mn,
         pointName: this.formInline.pointName,
-        startTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
-        endTime: this.formInline.range[1].format("YYYY-MM-DD HH:mm:ss")
+        startTime: this.formInline.range[0].format("YYYY-MM-DD") + " 00:00:00",
+        endTime: this.formInline.range[1].format("YYYY-MM-DD") + " 23:59:59"
       };
       this.$api.monitor
         .getReportData(data)

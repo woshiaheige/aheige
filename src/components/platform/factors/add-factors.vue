@@ -237,7 +237,8 @@ export default {
     handleCancel() {
       console.log("handleCancel");
       this.reset();
-      this.$emit("cancel");
+      this.$emit("cancel", false);
+      this.$refs.form.clearValidate();
     },
     reset() {
       this.form = this.$options.data().form;

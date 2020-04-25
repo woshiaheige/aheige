@@ -21,6 +21,33 @@
 </template>
 <script>
 export default {
+  props: ["formInline"],
+  watch: {
+    form: {
+      deep: true,
+      handler: function(nval) {
+        console.log(nval, 5555511);
+        // this.formInline = {
+        //   mm: nval.mn,
+        //   beginTime: nval.beginTime,
+        //   endTime: nval.endTime
+        // };
+
+        this.getTableData();
+      }
+    }
+  },
+  computed: {
+    form: {
+      get() {
+        if (this.formInline.show) {
+          return this.formInline;
+        } else {
+          return { show: false };
+        }
+      }
+    }
+  },
   data() {
     return {
       loading: false,
@@ -65,20 +92,16 @@ export default {
       ]
     };
   },
-  mounted() {
-    // this.getTableData();
-  },
   methods: {
     getTableData() {
+      console.log("执行了");
       this.loading = true;
       let data = {
-        index: this.current,
-        size: this.pagesize,
+        index: 1,
+        size: 999,
         beginTime: this.formInline.beginTime,
         endTime: this.formInline.endTime,
-        enterpriseName: this.formInline.enterpriseName,
-        mn: this.formInline.mn,
-        pointName: this.formInline.pointName
+        mn: this.formInline.mn
       };
       this.$api.monitor
         .getWarnData(data)
@@ -92,10 +115,6 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
-    onChange(date, dateString) {
-      this.formInline.beginTime = dateString[0] + " 00:00:00";
-      this.formInline.endTime = dateString[1] + " 23:59:59";
     }
   }
 };

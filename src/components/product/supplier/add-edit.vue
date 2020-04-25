@@ -198,6 +198,7 @@ export default {
   },
   mounted() {
     this.getArea();
+    console.log(this.cityList);
   },
   watch: {
     status() {
