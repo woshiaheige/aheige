@@ -1,12 +1,19 @@
 <template>
   <div>
     <a-card :bordered="false">
+      <div
+        class="title"
+        style="font-size:16px;color:#333;padding:0 0 15px;font-weight: bold;"
+      >
+        {{ $route.query.enterpriseName + " / " + $route.query.pointName }}
+      </div>
       <a-form layout="inline">
         <a-form-item label="设备名称">
           <a-input
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="生产厂家">
@@ -14,6 +21,7 @@
             placeholder="请输入"
             v-model="list.manufacturer"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="设备型号">
@@ -21,9 +29,13 @@
             placeholder="请输入"
             v-model="list.number"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item style="float: right">
+          <a-button type="primary" @click="reset()" style="margin-right:15px">
+            重置
+          </a-button>
           <a-button type="primary" @click="onSubmit()">
             查找
           </a-button>
@@ -145,6 +157,9 @@ export default {
     };
   },
   methods: {
+    reset() {
+      this.list = { manufacturer: "", name: "", number: "" };
+    },
     getTableData() {
       let data = {
         page: this.current,

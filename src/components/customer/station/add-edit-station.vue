@@ -35,8 +35,8 @@
       <a-form-model-item label="监测点名称" prop="name">
         <a-input v-model="formData.name" placeholder="监测点名称" />
       </a-form-model-item>
-      <a-form-model-item label="MN号码" prop="mn">
-        <a-input v-model="formData.mn" placeholder="MN号码" />
+      <a-form-model-item label="MN号" prop="mn">
+        <a-input v-model="formData.mn" placeholder="MN号" />
       </a-form-model-item>
       <a-form-model-item label="所属小组" prop="groupId">
         <a-select
@@ -186,7 +186,7 @@ export default {
         mn: [
           {
             required: true,
-            message: "请输入MN号码",
+            message: "请输入MN号",
             trigger: "blur"
           }
         ],
