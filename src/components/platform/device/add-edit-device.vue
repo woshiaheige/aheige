@@ -16,13 +16,25 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="设备名称" prop="name">
-        <a-input placeholder="请输入" v-model="formData.name" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.name"
+          @change="formDataName"
+        />
       </a-form-model-item>
       <a-form-model-item label="生产厂家" prop="manufacturer">
-        <a-input placeholder="请输入" v-model="formData.manufacturer" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.manufacturer"
+          @change="formDataManufacturer"
+        />
       </a-form-model-item>
       <a-form-model-item label="设备型号" prop="number">
-        <a-input placeholder="请输入" v-model="formData.number" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.number"
+          @change="formDataNumber"
+        />
       </a-form-model-item>
       <a-form-model-item label="设备类型" prop="type">
         <a-select
@@ -30,6 +42,7 @@
           v-model="formData.type"
           showSearch
           :filterOption="filterOptions"
+          @change="searchDivisor"
         >
           <a-select-option
             v-for="item in pointOptions"
@@ -46,7 +59,6 @@
           mode="multiple"
           v-model="formData.divisorIds"
           :filterOption="false"
-          @search="searchDivisor"
           :notFoundContent="fetching ? undefined : null"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
@@ -55,7 +67,9 @@
             :key="index"
             :value="item.id"
           >
-            {{ item.name }}
+            {{
+              item.name + " / " + item.code + " / " + item.protocolType + "协议"
+            }}
           </a-select-option>
         </a-select>
       </a-form-model-item>
@@ -91,7 +105,28 @@ export default {
         manufacturer: [
           {
             required: true,
-            message: "请输入厂家",
+            message: "请输入生产厂家",
+            trigger: "blur"
+          }
+        ],
+        number: [
+          {
+            required: true,
+            message: "请输入设备型号",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择设备类型",
+            trigger: "blur"
+          }
+        ],
+        divisorIds: [
+          {
+            required: true,
+            message: "请添加监测因子",
             trigger: "blur"
           }
         ]
@@ -112,16 +147,17 @@ export default {
   methods: {
     //因子下拉
     searchDivisor(value) {
-      console.log(111);
+      console.log(value);
       const fetchId = this.lastFetchId;
       this.data = [];
       this.fetching = true;
       let params = {
         size: 20,
         page: 1,
-        name: value
+        type: value
       };
       this.$api.platform.sysDivisor(params).then(res => {
+        console.log(res);
         if (res.data.state == 0) {
           if (fetchId !== this.lastFetchId) {
             // for fetch callback order
@@ -131,6 +167,25 @@ export default {
           this.fetching = false;
         }
       });
+    },
+    //限制长度  自带的限制用户体验极差
+    formDataName() {
+      if (this.formData.name.length > 30) {
+        this.formData.name = this.formData.name.substring(0, 29);
+      }
+    },
+    formDataNumber() {
+      if (this.formData.number.length > 30) {
+        this.formData.number = this.formData.number.substring(0, 29);
+      }
+    },
+    formDataManufacturer() {
+      if (this.formData.manufacturer.length > 30) {
+        this.formData.manufacturer = this.formData.manufacturer.substring(
+          0,
+          29
+        );
+      }
     },
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -235,6 +290,7 @@ export default {
         if (nval.show == true) {
           this.getStation();
           this.getPointSelect();
+
           this.fileList = [];
           if (nval.type == "edit") {
             this.title = "编辑";

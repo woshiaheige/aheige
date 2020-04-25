@@ -146,7 +146,7 @@ export default {
                 result[i].longitude,
                 result[i].latitude
               ),
-              title: result[i].name,
+              title: result[i].enterpriseName + "  |  " + result[i].name,
               content: result[i].errorType == "4" ? green : red,
               anchor: "center"
             });
@@ -170,7 +170,7 @@ export default {
           for (var i in result) {
             let marker;
             let content =
-              '<div class="marker-label-car"><a-icon type="car" />' +
+              '<div class="marker-info marker-car"><a-icon type="car" />' +
               result[i].number +
               "</div>";
             marker = new AMap.Marker({
@@ -193,9 +193,12 @@ export default {
           let result = res.data.data;
           for (var i in result) {
             let marker;
+            let content = '<div class="marker-info marker-man"></div>';
             marker = new AMap.Marker({
               position: new AMap.LngLat(result[i].lng, result[i].lat),
-              title: result[i].username
+              title: result[i].groupName + "  |  " + result[i].username,
+              content: content,
+              anchor: "center"
             });
             this.userList.push(result[i]);
             this.markers.push(marker);

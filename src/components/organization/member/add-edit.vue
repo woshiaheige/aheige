@@ -148,7 +148,8 @@ export default {
       groupList: [], //小组列表
       approvalList: [], //审核权限列表
       auditor: "",
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      state: false
     };
   },
   computed: {
@@ -220,6 +221,7 @@ export default {
     closeModal() {
       this.$emit("update:visible", false);
       this.reset();
+      this.state = false;
     },
     getAllRole() {
       //获取角色
@@ -236,8 +238,15 @@ export default {
       this.form.resetFields();
     },
     handleOk() {
+      if (this.state == true) {
+        this.$message.error("请勿重复点击");
+        return;
+      }
       this.form.validateFields((err, values) => {
         if (!err) {
+          if (this.state == false) {
+            this.state = true;
+          }
           if (this.memberId) {
             this.editMember(values);
           } else {
@@ -253,7 +262,6 @@ export default {
         //避免重复加密
         params.password = this.$md5(params.password);
       }
-
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
@@ -263,6 +271,7 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+          this.state = false;
         }
       });
     },
@@ -278,6 +287,7 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+          this.state = false;
         }
       });
     }

@@ -44,13 +44,14 @@ export default {
       title: "",
       columns: [
         {
-          title: "数量",
-          dataIndex: "stockCount",
-          align: "center"
-        },
-        {
           title: "时间",
           dataIndex: "gmtCreate",
+          align: "center",
+          width: 150
+        },
+        {
+          title: "数量",
+          dataIndex: "stockCount",
           align: "center"
         },
         {
@@ -73,7 +74,7 @@ export default {
         size: this.pageSize,
         page: this.current,
         goodId: this.modelData.row.id,
-        tyle: 2 //1 出库 2 入库
+        type: 2 //1 出库 2 入库
       };
       this.loading = true;
       this.$api.product

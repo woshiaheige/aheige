@@ -10,7 +10,7 @@
 
 
   #container {
-    margin-top:16px;
+    margin-top: 16px;
     height: 550px;
   }
 
@@ -18,16 +18,20 @@
     height: 74px;
   }
 
-.progress{
-  display: flex;
-  justify-content: space-around;
-  .item{
+  .progress {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    p{
-      text-align:center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    .item {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      p {
+        text-align: center;
+      }
     }
   }
-}
 }

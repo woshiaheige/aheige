@@ -42,7 +42,8 @@ export default {
     return {
       title: "新建",
       form: this.$form.createForm(this),
-      roleId: ""
+      roleId: "",
+      state: false
     };
   },
   computed: {
@@ -70,14 +71,22 @@ export default {
     handleCancel() {
       this.$emit("cancel", false);
       this.reset();
+      this.state = false;
     },
     reset() {
       this.roleId = "";
       this.form.resetFields();
     },
     handleOk() {
+      if (this.state == true) {
+        this.$message.error("请勿重复点击");
+        return;
+      }
       this.form.validateFields((err, values) => {
         if (!err) {
+          if (this.state == false) {
+            this.state = true;
+          }
           if (this.roleId) {
             this.editRole(values);
           } else {
@@ -94,6 +103,7 @@ export default {
           this.$message.success("修改权限成功");
           this.$emit("confirm");
           this.reset();
+          this.state = false;
         }
       });
     },
@@ -104,6 +114,7 @@ export default {
           this.$message.success("新建权限成功");
           this.$emit("confirm");
           this.reset();
+          this.state = false;
         }
       });
     }
