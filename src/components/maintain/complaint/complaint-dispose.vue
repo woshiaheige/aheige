@@ -12,7 +12,7 @@
           placeholder="请输入"
           type="textarea"
           v-decorator="[
-            'content',
+            'opinion',
             { rules: [{ required: true, message: '请输入反馈意见' }] }
           ]"
         />

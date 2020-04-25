@@ -1,17 +1,22 @@
 <template>
-  <a-modal title="任务详情" :visible="visible" @cancel="closeModal">
+  <a-modal
+    width="60%"
+    title="例行任务详情"
+    :visible="visible"
+    @cancel="closeModal"
+  >
     <a-steps :current="missionStatus" size="small" v-margin:bottom="40">
-      <a-step title="已创建" />
+      <a-step title="已创建" :description="detail.gmtCreate" />
       <a-step title="处理中" />
-      <a-step title="已完成" />
-      <a-step title="已延期" v-if="missionStatus == 4" />
+      <a-step title="已完成" :description="detail.gmtModified" />
+      <a-step title="已延期" v-if="missionStatus == 3" />
       <a-step title="已关闭" />
     </a-steps>
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="运维小组">{{
         detail.groupName
       }}</a-descriptions-item>
-      <a-descriptions-item label="运维人员">{{
+      <a-descriptions-item label="运维人员" v-if="detail.handleName">{{
         detail.handleName
       }}</a-descriptions-item>
       <a-descriptions-item label="运维时间">{{
@@ -31,7 +36,7 @@
           </div>
         </template>
       </a-descriptions-item>
-      <a-descriptions-item label="附件">
+      <a-descriptions-item label="附件" v-if="detail.fileId">
         <!-- <div v-for="(item, index) of detail.fileId" :key="index">
           {{ item.name }}
         </div> -->
@@ -56,7 +61,7 @@ export default {
   },
   computed: {
     missionStatus() {
-      return this.detail.status;
+      return this.detail.status - 1;
     }
   },
   data() {

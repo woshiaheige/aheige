@@ -75,7 +75,7 @@
     </a-card>
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">任务列表</div>
+        <div class="title">站点列表</div>
         <div class="extra">
           <a-button type="primary" html-type="submit" @click="show = true">
             <a-icon type="plus" />突发任务
@@ -106,7 +106,7 @@
           <!-- <a @click="delayShow = true">申请延期</a>
           <a-divider type="vertical" />
           <a @click="closeShow = true">任务关闭</a> -->
-          <a @click="goDetail(row)">任务详情</a>
+          <a @click="goDetail(row)">站点任务</a>
         </span>
       </a-table>
       <a-pagination
@@ -126,24 +126,11 @@
         :stationList="stationList"
         @cancel="cancel"
       ></add-edit>
-      <!--延期-->
-      <!-- <delay-modal :visible="delayShow" @cancel="cancel"></delay-modal> -->
-      <!--关闭-->
-      <!-- <close-modal :visible="closeShow" @cancel="cancel"></close-modal> -->
-      <!--详情-->
-      <!-- <detail-modal
-        :visible="detailShow"
-        :tableData="tableData"
-        @cancel="cancel"
-      ></detail-modal> -->
     </a-card>
   </div>
 </template>
 <script>
 import addEdit from "@/components/maintain/mission/add-edit";
-// import detailModal from "@/components/maintain/mission/detail";
-// import delayModal from "@/components/maintain/mission/delay";
-// import closeModal from "@/components/maintain/mission/close";
 export default {
   components: { addEdit },
   data() {
