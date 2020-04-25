@@ -1,40 +1,29 @@
 <template>
   <a-modal title="基本信息" :visible="visible" width="60%" @cancel="cancel">
-    <a-steps :current="1" v-margin:bottom="20">
+    <a-steps :current="current" v-margin:bottom="20">
       <a-step>
         <template slot="title">
           发起审批
         </template>
         <span slot="description">{{ gmtCreate }}</span>
       </a-step>
-      <a-step title="审批中" :description="gmtModified" />
-      <a-step title="审批完成" description="" />
+      <a-step title="审批中" />
+      <a-step title="审批完成" :description="approvalTime" />
     </a-steps>
     <a-row v-margin:bottom="10">
       <a-col :span="12"
         ><span class="descriptions">审批标题：</span>{{ title }}</a-col
       >
-      <a-col :span="12">
-        <span class="descriptions">状态：</span>
-        <a-tag v-if="state == 1" color="green">未处理</a-tag>
-        <a-tag v-if="state == 2" color="cyan">处理中</a-tag>
-        <a-tag v-if="state == 3" color="blue">通过</a-tag>
-        <a-tag v-if="state == 4" color="red">未通过</a-tag>
-      </a-col>
-    </a-row>
-    <a-row v-margin:bottom="10">
-      <a-col :span="12"
-        ><span class="descriptions">创建时间：</span>{{ gmtCreate }}</a-col
-      >
-      <a-col :span="12"
-        ><span class="descriptions">类型：</span>
-        <a-tag color="green" v-if="type == 1">任务延迟</a-tag>
-        <a-tag color="blue" v-if="type == 2">任务转交</a-tag>
-      </a-col>
-    </a-row>
-    <a-row v-margin:bottom="10">
       <a-col :span="12"
         ><span class="descriptions">审批内容：</span>{{ content }}</a-col
+      >
+    </a-row>
+    <a-row v-margin:bottom="10">
+      <a-col :span="12" v-if="approvalName"
+        ><span class="descriptions">审批人：</span>{{ approvalName }}</a-col
+      >
+      <a-col :span="12" v-if="stateStr"
+        ><span class="descriptions">审批结果：</span>{{ stateStr }}</a-col
       >
     </a-row>
     <div slot="footer">
@@ -72,6 +61,38 @@ export default {
     };
   },
   computed: {
+    stateStr() {
+      if (this.obj.info.state == 1 || this.obj.info.state == 2) {
+        return "";
+      } else if (this.obj.info.state == 3) {
+        return "通过";
+      } else {
+        return "未通过";
+      }
+    },
+    approvalName() {
+      if (this.obj.info.approvalName) {
+        return this.obj.info.approvalName;
+      } else {
+        return "";
+      }
+    },
+    approvalTime() {
+      if (this.obj.info.approvalTime) {
+        return this.obj.info.approvalTime;
+      } else {
+        return "";
+      }
+    },
+    current() {
+      if (this.obj.info.state == 1) {
+        return 1;
+      } else if (this.obj.info.state == 2) {
+        return 2;
+      } else {
+        return 3;
+      }
+    },
     id() {
       return this.obj.info.id;
     }
