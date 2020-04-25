@@ -12,7 +12,7 @@
           placeholder="请输入"
           type="textarea"
           v-decorator="[
-            'content',
+            'opinion',
             { rules: [{ required: true, message: '请输入反馈意见' }] }
           ]"
         />
@@ -70,6 +70,7 @@ export default {
       let params = values;
       params.id = this.complaintId;
       params.state = 3; //处理
+      console.log(params);
       this.$api.maintain.editManageComplaint(params).then(res => {
         if (res.data.state == 0) {
           this.$message.success("提交成功");
