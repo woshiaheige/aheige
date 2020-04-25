@@ -27,8 +27,8 @@
           :pagination="false"
         >
         </a-table>
-        <notification-exceed v-margin:top="40" />
-        <notification-unusual v-margin:top="40" />
+        <notification-exceed v-margin:top="40" :form-inline="obj" />
+        <notification-unusual v-margin:top="40" :form-inline="obj" />
       </a-card>
       <a-empty v-if="notificationData.length == 0" />
       <a-descriptions layout="vertical" bordered size="small" v-else>
@@ -85,18 +85,31 @@ export default {
     }
   },
   watch: {
-    obj(nval) {
-      if (nval.show) {
-        this.notification = nval;
-        console.log(nval);
-        this.getReportPushDetails();
-        this.getReportPushDataRateDetails();
+    obj: {
+      deep: true,
+      handler: function(nval) {
+        if (nval.show) {
+          this.notification = nval;
+          // this.formInline = {};
+          // this.formInline = {
+          //   mm: nval.mn,
+          //   beginTime: nval.beginTime,
+          //   endTime: nval.endTime
+          // };
+          // this.$forceUpdate();
+          // this.showFlag = true;
+          console.log(this.obj, 1111);
+          // this.getReportPushDetails();
+          // this.getReportPushDataRateDetails();
+        }
       }
     }
   },
   data() {
     return {
+      showFlag: false,
       loading: false,
+      formInline: { mn: "", beginTime: "", endTime: "" },
       notification: {
         pointId: "",
         beginTime: "",
