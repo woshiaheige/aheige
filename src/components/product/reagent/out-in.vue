@@ -310,6 +310,7 @@ export default {
           unit: ""
         };
         this.stationOptions = [];
+        this.deviceOptions = [];
         this.getSelect();
         if (this.value.type == "out") {
           this.getCompany();
