@@ -55,7 +55,11 @@
         <a-input placeholder="合同负责人" v-model="formData.userName" />
       </a-form-model-item>
       <a-form-model-item label="合同金额" prop="money">
-        <a-input placeholder="合同金额" v-model="formData.money" />
+        <a-input-number
+          placeholder="合同金额"
+          v-model="formData.money"
+          v-width="350"
+        />
       </a-form-model-item>
       <a-form-model-item label="合同备注" prop="description">
         <a-input
@@ -106,7 +110,9 @@ export default {
     return {
       loading: false,
       enterpriseList: [],
-      formData: {},
+      formData: {
+        state: 1
+      },
       fileList: [],
       title: "",
       rules: {
@@ -275,6 +281,9 @@ export default {
       if (this.value.show == true) {
         this.enterpriseOptions();
         this.fileList = [];
+        this.formData = {
+          state: 1
+        };
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

@@ -61,7 +61,7 @@ export default {
       }
     };
     return {
-      title: "新建",
+      title: "添加",
       formData: {
         pointId: this.$route.query.id
       },
@@ -139,11 +139,14 @@ export default {
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.formData = {
+          pointId: this.$route.query.id
+        };
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();
         } else {
-          this.title = "新建";
+          this.title = "添加";
         }
       }
     }

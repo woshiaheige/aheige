@@ -7,6 +7,7 @@
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="合同编号">
@@ -14,6 +15,7 @@
             placeholder="请输入"
             v-model="list.number"
             @pressEnter="getTableData"
+            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="合同状态">
@@ -24,6 +26,9 @@
             showSearch
             :filterOption="filterOptions"
           >
+            <a-select-option value="">
+              全部
+            </a-select-option>
             <a-select-option
               v-for="item in statusOption"
               :key="item.value"
@@ -33,6 +38,9 @@
           </a-select>
         </a-form-item>
         <a-form-item style="float: right">
+          <a-button type="primary" @click="reset()" style="margin-right:15px">
+            重置
+          </a-button>
           <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
@@ -58,12 +66,12 @@
         :loading="loading"
       >
         <span slot="period" slot-scope="period, row">
-          <span>{{ row.startTime }}</span
-          >至<span>{{ row.endTime }}</span>
+          <span>{{ $moment(row.gmtBegin).format("YYYY-MM-DD") }}</span> ~
+          <span>{{ $moment(row.gmtEnd).format("YYYY-MM-DD") }}</span>
         </span>
         <template slot="state" slot-scope="state">
-          <a-tag color="red" v-if="state == 4">合同终结</a-tag>
-          <a-tag color="green" v-if="state == 1">履约中</a-tag>
+          <a-tag color="red" v-if="state == 2">合同终结</a-tag>
+          <a-tag color="green" v-if="state == 1">履行中</a-tag>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit('edit', row)">编辑</a>
@@ -104,7 +112,7 @@ export default {
       pageSize: 10,
       total: 1,
       loading: false,
-      list: {},
+      list: { state: "" },
       obj: {
         show: false
       },
@@ -116,17 +124,20 @@ export default {
         {
           title: "企业名称",
           dataIndex: "enterpriseName",
-          key: "enterpriseName"
+          key: "enterpriseName",
+          align: "center"
         },
         {
           title: "合同编号",
           dataIndex: "number",
-          key: "number"
+          key: "number",
+          align: "center"
         },
         {
           title: "合同期限",
           dataIndex: "gmtEnd",
-          key: "gmtEnd"
+          scopedSlots: { customRender: "period" },
+          align: "center"
         },
         {
           title: "合同状态",
@@ -148,6 +159,9 @@ export default {
     };
   },
   methods: {
+    reset() {
+      this.list = { state: "", name: "", number: "" };
+    },
     getTableData() {
       let data = {
         page: this.current,
