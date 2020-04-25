@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="modelData.type == 'add' ? '新建物品' : '编辑物品信息'"
+    :title="modelData.type == 'add' ? '新建物资' : '编辑物资信息'"
     :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
@@ -15,26 +15,27 @@
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 18 }"
     >
+      <a-form-model-item label="编号" prop="number">
+        <a-input placeholder="输入编号" v-model.trim="formData.number" />
+      </a-form-model-item>
       <a-form-model-item label="名称" prop="name">
-        <a-input placeholder="名称" v-model="formData.name" />
+        <a-input placeholder="名称" v-model.trim="formData.name" />
       </a-form-model-item>
       <a-form-model-item label="品牌" prop="brand">
-        <a-input placeholder="输入品牌" v-model="formData.brand" />
+        <a-input placeholder="输入品牌" v-model.trim="formData.brand" />
       </a-form-model-item>
       <a-form-model-item label="型号" prop="model">
-        <a-input placeholder="输入型号" v-model="formData.model" />
+        <a-input placeholder="输入型号" v-model.trim="formData.model" />
       </a-form-model-item>
-      <a-form-model-item label="编号" prop="number">
-        <a-input placeholder="输入编号" v-model="formData.number" />
-      </a-form-model-item>
+
       <a-form-model-item label="库存单位" prop="unit">
-        <a-input placeholder="输入库存单位" v-model="formData.unit" />
+        <a-input placeholder="输入库存单位" v-model.trim="formData.unit" />
       </a-form-model-item>
       <a-form-model-item label="库存警戒线" prop="cordon">
-        <a-input placeholder="输入库存警戒线" v-model="formData.cordon" />
+        <a-input placeholder="输入库存警戒线" v-model.trim="formData.cordon" />
       </a-form-model-item>
       <a-form-model-item label="参考价格" prop="price">
-        <a-input placeholder="输入参考价格" v-model="formData.price" />
+        <a-input placeholder="输入参考价格" v-model.trim="formData.price" />
       </a-form-model-item>
       <a-form-model-item label="说明" prop="remark">
         <a-input
@@ -64,6 +65,27 @@ export default {
             trigger: "blur"
           }
         ],
+        brand: [
+          {
+            required: true,
+            message: "请输入品牌",
+            trigger: "blur"
+          }
+        ],
+        model: [
+          {
+            required: true,
+            message: "请输入型号",
+            trigger: "blur"
+          }
+        ],
+        number: [
+          {
+            required: true,
+            message: "请输入编号",
+            trigger: "blur"
+          }
+        ],
         unit: [
           {
             required: true,
@@ -75,11 +97,8 @@ export default {
     };
   },
   computed: {
-    modelData: {
-      get() {
-        return this.value;
-      },
-      set() {}
+    modelData() {
+      return this.value;
     }
   },
   methods: {
@@ -89,24 +108,25 @@ export default {
           console.log("error submit!!");
           return false;
         }
+
+        if (this.modelData.type == "edit") {
+          this.$api.product.editGoods(this.formData).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("编辑成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          });
+        } else {
+          this.$api.product.addGoods(this.formData).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("新建成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          });
+        }
       });
-      if (this.modelData.type == "edit") {
-        this.$api.product.editGoods(this.formData).then(res => {
-          if (res.data.state == 0) {
-            this.$message.success("编辑成功");
-            this.$emit("refresh");
-            this.handleCancel();
-          }
-        });
-      } else {
-        this.$api.product.addGoods(this.formData).then(res => {
-          if (res.data.state == 0) {
-            this.$message.success("新建成功");
-            this.$emit("refresh");
-            this.handleCancel();
-          }
-        });
-      }
     },
     handleCancel() {
       this.modelData.show = false;

@@ -5,13 +5,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>审批总数</span>
-            <p>
-              {{
-                countData.waitCount +
-                  countData.approvalCount +
-                  countData.rejectCount
-              }}
-            </p>
+            <p>{{ countData.approvalCount }}</p>
           </div>
         </a-col>
         <a-col :span="6">
@@ -23,7 +17,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>审批通过</span>
-            <p>{{ countData.approvalCount }}</p>
+            <p>{{ countData.complateCount }}</p>
           </div>
         </a-col>
         <a-col :span="6">
@@ -167,7 +161,14 @@ export default {
           title: "审核时间",
           align: "center",
           width: 200,
-          dataIndex: "approvalTime"
+          dataIndex: "approvalTime",
+          customRender: text => {
+            if (!text) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         },
         {
           title: "操作",
@@ -213,7 +214,9 @@ export default {
     },
     //获取统计数据
     getApprovalCount() {
-      let data = {};
+      let data = {
+        userId: ""
+      };
       this.$api.approval
         .getApprovalCount(data)
         .then(res => {

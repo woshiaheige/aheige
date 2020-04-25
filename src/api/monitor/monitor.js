@@ -41,6 +41,12 @@ const monitor = {
   //获取污染物编码列表
   getPollCodeList(data) {
     return axios.get(base.api + "divisor/listByPointId?pointId=" + data);
+  },
+  //提取现场机
+  getSend1011(data) {
+    return axios.get(base.api + "monitor/send17/send1011", {
+      params: data
+    });
   }
 };
 

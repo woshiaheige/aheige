@@ -24,7 +24,7 @@
           :filterOption="filterOptions"
         >
           <a-select-option
-            v-for="item in nameOptions"
+            v-for="item in goodsOptions"
             :key="item.id"
             :value="item.id"
           >
@@ -89,6 +89,25 @@
           >
         </a-select>
       </a-form-model-item>
+      <a-form-model-item
+        v-if="modelData.type == 'out'"
+        label="领用人"
+        prop="receiverUserId"
+      >
+        <a-select
+          v-model="formData.receiverUserId"
+          placeholder="领用人"
+          showSearch
+          :filterOption="filterOptions"
+        >
+          <a-select-option
+            v-for="(item, index) in userOptions"
+            :key="index"
+            :value="item.id"
+            >{{ item.groupName }} | {{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-model-item>
       <a-form-model-item label="库存余量" prop="goodsCount">
         <a-input placeholder="库存余量" v-model="list.goodsCount" disabled />
       </a-form-model-item>
@@ -134,7 +153,8 @@ export default {
       companyOptions: [],
       deviceOptions: [],
       stationOptions: [],
-      nameOptions: [],
+      goodsOptions: [],
+      userOptions: [],
       formData: {},
       list: {},
       rules: {
@@ -167,10 +187,10 @@ export default {
             trigger: "change"
           }
         ],
-        devId: [
+        receiverUserId: [
           {
             required: true,
-            message: "请选择设备",
+            message: "请选择领用人",
             trigger: "change"
           }
         ]
@@ -210,12 +230,12 @@ export default {
     },
     getSelect() {
       this.$api.product.getGoodsSelect().then(res => {
-        this.nameOptions = res.data.data;
+        this.goodsOptions = res.data.data;
       });
     },
     changeName(value) {
       console.log(value);
-      this.nameOptions.forEach(item => {
+      this.goodsOptions.forEach(item => {
         if (item.id == value) {
           this.list = item;
         }
@@ -244,6 +264,14 @@ export default {
           this.deviceOptions = res.data.data;
         }
       });
+    },
+    //领用人下拉
+    getUser() {
+      this.$api.common.selectUser().then(res => {
+        if (res.data.state == 0) {
+          this.userOptions = res.data.data;
+        }
+      });
     }
   },
   watch: {
@@ -254,6 +282,7 @@ export default {
           this.getStation();
           this.getCompany();
           this.getDevice();
+          this.getUser();
         }
       }
     }

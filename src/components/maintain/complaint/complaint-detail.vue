@@ -10,9 +10,13 @@
       <a-descriptions-item label="投诉内容">{{
         complaintDetail.content
       }}</a-descriptions-item>
-      <a-descriptions-item label="处理意见">{{
-        complaintDetail.opinion
-      }}</a-descriptions-item>
+      <a-descriptions-item
+        v-if="
+          complaintDetail.opinion != null && complaintDetail.opinion != 'null'
+        "
+        label="反馈意见"
+        >{{ complaintDetail.opinion }}</a-descriptions-item
+      >
     </a-descriptions>
     <template slot="footer">
       <a-button key="back" @click="closeModal">关闭</a-button>
