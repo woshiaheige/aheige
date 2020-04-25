@@ -142,11 +142,16 @@ export default {
       loading: false,
       columns: [
         {
-          title: "计划名称",
+          title: "方案名称",
           dataIndex: "name"
         },
         {
           title: "方案周期",
+          dataIndex: "type",
+          scopedSlots: { customRender: "type" }
+        },
+        {
+          title: "执行日期",
           dataIndex: "type",
           scopedSlots: { customRender: "type" }
         },

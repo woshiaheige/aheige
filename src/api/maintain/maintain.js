@@ -247,6 +247,16 @@ const maintain = {
         params: data
       }
     );
+  },
+  //本周任务
+  getMissionThisWeek(data) {
+    return axios.get(base.api + "dispatch/getList", { params: data });
+  },
+  //下周任务
+  getMissionNextWeek(data) {
+    return axios.get(base.api + "dispatch/dispatch/getNextWeekTask", {
+      params: data
+    });
   }
 };
 
