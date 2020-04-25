@@ -5,13 +5,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>审批总数</span>
-            <p>
-              {{
-                countData.waitCount +
-                  countData.approvalCount +
-                  countData.rejectCount
-              }}
-            </p>
+            <p>{{ countData.approvalCount }}</p>
           </div>
         </a-col>
         <a-col :span="6">
@@ -23,7 +17,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>审批通过</span>
-            <p>{{ countData.approvalCount }}</p>
+            <p>{{ countData.complateCount }}</p>
           </div>
         </a-col>
         <a-col :span="6">

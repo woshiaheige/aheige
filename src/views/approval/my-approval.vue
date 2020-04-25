@@ -5,13 +5,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>审批总数</span>
-            <p>
-              {{
-                countData.waitCount +
-                  countData.approvalCount +
-                  countData.rejectCount
-              }}
-            </p>
+            <p>{{ countData.approvalCount }}</p>
           </div>
         </a-col>
         <a-col :span="6">
@@ -23,7 +17,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>审批通过</span>
-            <p>{{ countData.approvalCount }}</p>
+            <p>{{ countData.complateCount }}</p>
           </div>
         </a-col>
         <a-col :span="6">
@@ -115,10 +109,10 @@ export default {
     return {
       visible: false,
       countData: {
-        waitCount: 0,
-        rejectCount: 0,
-        approvalCount: 0,
-        complateCount: 0
+        waitCount: 0, //等待审批
+        rejectCount: 0, //驳回审批
+        approvalCount: 0, //审批总数
+        complateCount: 0 //审批完成数
       },
       modalInfo: {},
       current: 1,
