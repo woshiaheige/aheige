@@ -153,6 +153,7 @@ export default {
         title: row.pointName,
         mn: row.mn
       };
+      this.$bus.$emit("todoSth", this.modal);
     },
     getTableData() {
       let params = {

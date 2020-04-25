@@ -22,32 +22,6 @@
 <script>
 export default {
   props: ["formInline"],
-  watch: {
-    form: {
-      deep: true,
-      handler: function(nval) {
-        console.log(nval, 5555511);
-        // this.formInline = {
-        //   mm: nval.mn,
-        //   beginTime: nval.beginTime,
-        //   endTime: nval.endTime
-        // };
-
-        this.getTableData();
-      }
-    }
-  },
-  computed: {
-    form: {
-      get() {
-        if (this.formInline.show) {
-          return this.formInline;
-        } else {
-          return { show: false };
-        }
-      }
-    }
-  },
   data() {
     return {
       loading: false,
@@ -93,21 +67,18 @@ export default {
     };
   },
   methods: {
-    getTableData() {
-      console.log("执行了");
+    getTableData(formInline) {
+      console.log("执行了222");
       this.loading = true;
       let data = {
-        index: 1,
-        size: 999,
-        beginTime: this.formInline.beginTime,
-        endTime: this.formInline.endTime,
-        mn: this.formInline.mn
+        beginTime: formInline.beginTime,
+        endTime: formInline.endTime,
+        mn: formInline.mn
       };
-      this.$api.monitor
-        .getWarnData(data)
+      this.$api.maintain
+        .getReportPushDataRateWarnData(data)
         .then(res => {
-          this.total = res.data.data.total;
-          this.tableData = res.data.data.list;
+          this.tableData = res.data.data;
         })
         .catch(err => {
           console.log(err);
@@ -116,6 +87,13 @@ export default {
           this.loading = false;
         });
     }
+  },
+  mounted() {
+    this.$bus.$on("todoSth", function(params) {
+      //获取传递的参数并进行操作
+      //todo something
+      console.log(params, 5555);
+    });
   }
 };
 </script>

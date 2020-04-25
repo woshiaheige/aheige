@@ -250,6 +250,25 @@ const maintain = {
       }
     );
   },
+  //根据监测点获取季度/月/周的异常数据
+  getReportPushDataRateExData(data) {
+    return axios.get(
+      base.api + "reportPushDetails/getReportPushDataRateExData",
+      {
+        params: data
+      }
+    );
+  },
+  //根据监测点获取季度/月/周的超标数据
+  getReportPushDataRateWarnData(data) {
+    return axios.get(
+      base.api + "reportPushDetails/getReportPushDataRateWarnData",
+      {
+        params: data
+      }
+    );
+  },
+
   //本周任务
   getMissionThisWeek(data) {
     return axios.get(base.api + "dispatch/getList", { params: data });
