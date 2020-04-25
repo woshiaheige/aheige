@@ -34,7 +34,8 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      groupId: ""
+      groupId: "",
+      state:false
     };
   },
   computed: {
@@ -62,18 +63,28 @@ export default {
     closeModal() {
       this.$emit("update:visible", false);
       this.reset();
+      this.state = false
     },
     reset() {
       this.groupId = "";
       this.form.resetFields();
     },
     handleOk() {
+      if(this.state == true){
+        this.$message.error("请勿重复点击");
+        return
+      }
       this.form.validateFields((err, values) => {
         if (!err) {
+          if(this.state == false){
+            this.state = true
+          }
           if (this.groupId) {
             this.editGroup(values);
+            this.state = false
           } else {
             this.addGroup(values);
+            this.state = false
           }
         }
       });

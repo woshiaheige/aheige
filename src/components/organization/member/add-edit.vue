@@ -148,7 +148,8 @@ export default {
       groupList: [], //小组列表
       approvalList: [], //审核权限列表
       auditor: "",
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      state:false
     };
   },
   computed: {
@@ -220,6 +221,7 @@ export default {
     closeModal() {
       this.$emit("update:visible", false);
       this.reset();
+      this.state = false
     },
     getAllRole() {
       //获取角色
@@ -236,12 +238,22 @@ export default {
       this.form.resetFields();
     },
     handleOk() {
+
+      if(this.state == true){
+        this.$message.error("请勿重复点击");
+        return
+      }
       this.form.validateFields((err, values) => {
         if (!err) {
+          if(this.state == false){
+            this.state = true
+          }
           if (this.memberId) {
             this.editMember(values);
+            this.state = false
           } else {
             this.addMember(values);
+            this.state = false
           }
         }
       });
