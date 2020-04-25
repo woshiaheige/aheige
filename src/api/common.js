@@ -35,12 +35,6 @@ const common = {
     return axios.post(base.api + "sysDict/editSysDict", data);
   },
 
-  //站点下拉
-  selectStation(data) {
-    return axios.get(base.api + "cusPoint/query", {
-      params: data
-    });
-  },
   //方案项下拉
   selectPlan(data) {
     return axios.get(base.api + "maintainProgrammeItem/query", {
@@ -53,12 +47,7 @@ const common = {
       params: data
     });
   },
-  //所有企业下拉
-  selectEnterprise(data) {
-    return axios.get(base.api + "cusEnterprise/query", {
-      params: data
-    });
-  },
+
   //所有因子下拉
   selectFactor(data) {
     return axios.get(base.api + "divisor/query", {
@@ -82,12 +71,39 @@ const common = {
       params: data
     });
   },
+  //所有企业下拉
+  selectEnterprise(data) {
+    return axios.get(base.api + "cusEnterprise/query", {
+      params: data
+    });
+  },
+  //所有监控点下拉
+  selectStation(data) {
+    return axios.get(base.api + "cusPoint/query", {
+      params: data
+    });
+  },
   //所有设备下拉
   selectDevice(data) {
     return axios.get(base.api + "sysInstrument/query", {
       params: data
     });
   },
+  //根据企业id查询监控点下拉
+  selectStationByEnterpriseId(data) {
+    //传参名:enterpriseId
+    return axios.get(base.api + "cusPoint/listByEnterpriseId", {
+      params: data
+    });
+  },
+  //根据监控点id查询设备下拉
+  selectStationByStationId(data) {
+    //传参名:cusPointId
+    return axios.get(base.api + "cusPointInstrument/listByPointId", {
+      params: data
+    });
+  },
+
   //区域树
   getTreeByName(data) {
     return axios.get(base.api + "sysRegion/getTreeByName", {
