@@ -16,13 +16,13 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="设备名称" prop="name">
-        <a-input placeholder="请输入" v-model="formData.name" />
+        <a-input placeholder="请输入" v-model.trim="formData.name" />
       </a-form-model-item>
       <a-form-model-item label="生产厂家" prop="manufacturer">
-        <a-input placeholder="请输入" v-model="formData.manufacturer" />
+        <a-input placeholder="请输入" v-model.trim="formData.manufacturer" />
       </a-form-model-item>
       <a-form-model-item label="设备型号" prop="number">
-        <a-input placeholder="请输入" v-model="formData.number" />
+        <a-input placeholder="请输入" v-model.trim="formData.number" />
       </a-form-model-item>
       <a-form-model-item label="设备类型" prop="type">
         <a-select
