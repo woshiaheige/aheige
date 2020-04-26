@@ -14,12 +14,16 @@
           {{ $moment(notification.endTime).format("YYYY-MM-DD") }}
         </div>
       </div>
-      <a-tabs type="card">
-        <a-tab-pane tab="数据周报" key="1"> <data-report /></a-tab-pane>
+      <a-tabs type="card" defaultActiveKey="1" @change="slectDetail">
+        <a-tab-pane tab="数据周报" key="1">
+          <data-report ref="dataReport"
+        /></a-tab-pane>
         <a-tab-pane tab="运维周报" key="2">
-          <operation-report />
+          <operation-report ref="operationReport" />
         </a-tab-pane>
-        <a-tab-pane tab="设备周报" key="3"> <device-report /> </a-tab-pane>
+        <a-tab-pane tab="设备周报" key="3">
+          <device-report ref="deviceReport" />
+        </a-tab-pane>
       </a-tabs>
 
       <template slot="footer">
@@ -48,42 +52,20 @@ export default {
       return this.obj.show;
     }
   },
-  watch: {
-    obj(nval) {
-      if (nval.show) {
-        this.notification = nval;
-        // this.$nextTick(() => {
-        //   this.$refs.exceed.getTableData(nval);
-        //   this.$refs.unusual.getTableData(nval);
-        // });
-
-        this.getReportPushDataRateDetails();
-      }
-    }
-  },
   data() {
     return {
       loading: false,
-      formInline: { mn: "", beginTime: "", endTime: "" },
-      notification: {
-        pointId: "",
-        beginTime: "",
-        endTime: "",
-        title: ""
-      },
-
-      chartDeviceData: {
-        columns: ["日期", "设备正常", "设备故障", "故障率"],
-        rows: [
-          { 日期: "1", 设备正常: 1393, 设备故障: 1093, 故障率: 0.32 },
-          { 日期: "2", 设备正常: 3530, 设备故障: 3230, 故障率: 0.26 },
-          { 日期: "3", 设备正常: 2923, 设备故障: 2623, 故障率: 0.76 },
-          { 日期: "4", 设备正常: 1723, 设备故障: 1423, 故障率: 0.49 },
-          { 日期: "5", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 },
-          { 日期: "6", 设备正常: 4593, 设备故障: 4293, 故障率: 0.78 }
-        ]
-      }
+      notification: {}
     };
+  },
+  watch: {
+    "obj.show"(nval) {
+      if (nval) {
+        this.$nextTick(() => {
+          this.slectDetail(1);
+        });
+      }
+    }
   },
   methods: {
     handleOk() {
@@ -93,17 +75,20 @@ export default {
       this.$emit("cancel");
     },
 
-    getReportPushDataRateDetails() {
-      let params = {
-        beginTime: this.notification.beginTime,
-        endTime: this.notification.endTime,
-        pointId: this.notification.pointId
-      };
-      this.$api.maintain.getReportPushDataRateDetails(params).then(res => {
-        if (res.data.state == 0) {
-          this.tableData = res.data.data;
-        }
-      });
+    setNotification() {
+      this.notification = this.$bus.$data.notification;
+    },
+    slectDetail(e) {
+      if (e == 1) {
+        this.$refs.dataReport.getTableData();
+        // console.log(this.$refs.dataReport);
+      } else if (e == 2) {
+        // this.$refs.operationReport.getTableData();
+      } else if (e == 3) {
+        // this.$refs.deviceReport.getTableData();
+
+        console.log(e);
+      }
     }
   },
   mounted() {}

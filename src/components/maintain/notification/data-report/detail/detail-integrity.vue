@@ -80,6 +80,21 @@ export default {
       ],
       tableData: []
     };
+  },
+  methods: {
+    getTableData() {
+      let notification = this.$bus.$data.notification;
+      let params = {
+        beginTime: notification.beginTime,
+        endTime: notification.endTime,
+        pointId: notification.pointId
+      };
+      this.$api.maintain.getReportPushDataRateDetails(params).then(res => {
+        if (res.data.state == 0) {
+          this.tableData = res.data.data;
+        }
+      });
+    }
   }
 };
 </script>
