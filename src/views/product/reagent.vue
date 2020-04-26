@@ -24,6 +24,7 @@
               placeholder="输入物资名称"
               style="width: 200px"
               v-model="name"
+              :maxLength="30"
               @search="onSubmit"
             />
           </a-form-item>

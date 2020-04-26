@@ -13,7 +13,11 @@
       :wrapper-col="{ span: 16 }"
     >
       <a-form-model-item label="企业名称" prop="name">
-        <a-input v-model="formData.name" placeholder="企业名称" />
+        <a-input
+          v-model="formData.name"
+          :maxLength="30"
+          placeholder="企业名称"
+        />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
         <a-cascader
@@ -23,15 +27,24 @@
         />
       </a-form-model-item>
       <a-form-model-item label="企业地址" prop="address">
-        <a-input v-model="formData.address" placeholder="企业地址" />
+        <a-input
+          v-model="formData.address"
+          :maxLength="30"
+          placeholder="企业地址"
+        />
       </a-form-model-item>
       <a-form-model-item label="企业信用代码" prop="code">
-        <a-input v-model="formData.code" placeholder="企业信用代码" />
+        <a-input
+          v-model="formData.code"
+          :maxLength="30"
+          placeholder="企业信用代码"
+        />
       </a-form-model-item>
       <a-form-model-item label="环保负责人" prop="environmentPrincipal">
         <a-input
           v-model="formData.environmentPrincipal"
           placeholder="环保负责人"
+          :maxLength="30"
         />
       </a-form-model-item>
       <a-form-model-item label="联系电话" prop="phone">
@@ -74,17 +87,13 @@
           type="textarea"
           v-model="formData.introduction"
           placeholder="企业简介"
+          :maxLength="300"
         />
       </a-form-model-item>
     </a-form-model>
     <template slot="footer">
-      <a-button key="back" @click="handleCancel">取消</a-button>
-      <a-button
-        key="submit"
-        type="primary"
-        @click="handleOk"
-        :disabled="isClick"
-      >
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
         保存
       </a-button>
     </template>
@@ -114,7 +123,6 @@ export default {
     };
     return {
       cityList,
-      isClick: false,
       title: "",
       options: [],
       formData: {},
@@ -203,12 +211,9 @@ export default {
       this.$refs.ruleForm.resetFields();
     },
     handleOk() {
-      this.isClick = true;
-      // console.log(this.formData.regionId);
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
-          this.isClick = false;
           return false;
         }
         //验证通过
@@ -220,7 +225,6 @@ export default {
               this.$message.success("编辑成功");
               this.$emit("refresh");
               this.handleCancel();
-              this.isClick = false;
             }
           });
         } else {
@@ -229,7 +233,6 @@ export default {
               this.$message.success("新建成功");
               this.$emit("refresh");
               this.handleCancel();
-              this.isClick = false;
             }
           });
         }
@@ -245,13 +248,6 @@ export default {
           }
         });
     }
-    // getArea() {
-    //   this.$api.common.getArea().then(res => {
-    //     if (res.data.state == 0) {
-    //       this.areaOptions = res.data.data;
-    //     }
-    //   });
-    // }
   },
   mounted() {},
   watch: {
@@ -259,7 +255,6 @@ export default {
       if (this.value.show == true) {
         this.formData = {};
         this.options = cityList;
-        // this.getArea();
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

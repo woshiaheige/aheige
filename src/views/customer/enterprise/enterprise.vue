@@ -7,13 +7,11 @@
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
-            allowClear
           ></a-input>
         </a-form-item>
         <a-form-item label="控制级别">
           <a-select
             placeholder="请选择"
-            allowClear
             v-width="150"
             v-model="list.level"
             showSearch
@@ -32,12 +30,7 @@
           </a-select>
         </a-form-item>
         <a-form-item label="行业类别">
-          <a-select
-            placeholder="请选择"
-            allowClear
-            v-width="150"
-            v-model="list.type"
-          >
+          <a-select placeholder="请选择" v-width="150" v-model="list.type">
             <a-select-option value="">
               全部
             </a-select-option>
