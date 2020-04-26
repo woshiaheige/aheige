@@ -38,7 +38,11 @@
             <a-radio-button value="c">超标</a-radio-button>
             <a-radio-button value="d">异常</a-radio-button>
           </a-radio-group>
-          <a-list itemLayout="horizontal" :dataSource="pointList">
+          <a-list
+            itemLayout="horizontal"
+            :loading="pointLoading"
+            :dataSource="pointList"
+          >
             <a-list-item slot="renderItem" slot-scope="item">
               <a-list-item-meta
                 :description="item.enterpriseName + '  |  ' + item.name"
@@ -99,7 +103,8 @@ export default {
       userList: [],
       value: "a",
       radioNum: "",
-      deadline: Date.now() + 1000 * 60
+      deadline: Date.now() + 1000 * 60,
+      pointLoading: false
     };
   },
   mounted() {
@@ -133,9 +138,11 @@ export default {
     },
     //获取监测点地标
     async getPointData(num) {
-      this.pointList = [];
+      this.pointLoading = true;
       await this.$api.index.getWarnData({ type: num }).then(res => {
         if (res.data.state == 0) {
+          this.pointLoading = false;
+          this.pointList = [];
           let result = res.data.data;
           for (var i in result) {
             let marker;
