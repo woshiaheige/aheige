@@ -53,8 +53,8 @@
             :filterOption="filterOptions"
           >
             <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="1">已完成</a-select-option>
-            <a-select-option value="2">处理中</a-select-option>
+            <a-select-option value="0">已完成</a-select-option>
+            <a-select-option value="1">处理中</a-select-option>
           </a-select>
         </a-form-item>
         <!-- <a-form-item label="任务时间">

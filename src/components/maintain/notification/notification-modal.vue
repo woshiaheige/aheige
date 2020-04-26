@@ -8,7 +8,20 @@
       @cancel="handleCancel"
     >
       <a-card v-margin:bottom="16">
-        <a-row
+        <div class="card-header">
+          <div class="title">第N期周报表</div>
+          <div>
+            <div>
+              开始时间：{{
+                $moment(notification.beginTime).format("YYYY-MM-DD")
+              }}
+            </div>
+            <div>
+              结束时间：{{ $moment(notification.endTime).format("YYYY-MM-DD") }}
+            </div>
+          </div>
+        </div>
+        <!-- <a-row
           type="flex"
           justify="center"
           :gutter="16"
@@ -16,17 +29,8 @@
         >
           <a-col>开始时间：{{ notification.beginTime }}</a-col>
           <a-col>结束时间：{{ notification.endTime }}</a-col>
-        </a-row>
-        <a-table
-          :loading="loading"
-          size="middle"
-          :rowKey="(record, index) => index"
-          :columns="columns"
-          :dataSource="tableData"
-          v-margin:top="16"
-          :pagination="false"
-        >
-        </a-table>
+        </a-row> -->
+
         <notification-exceed v-margin:top="40" :formInline="obj" ref="exceed" />
         <notification-unusual
           v-margin:top="40"
@@ -63,6 +67,16 @@
           </template>
         </a-descriptions-item>
       </a-descriptions>
+      <a-table
+        :loading="loading"
+        size="middle"
+        :rowKey="(record, index) => index"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+      >
+      </a-table>
       <template slot="footer">
         <a-button key="back" @click="handleCancel">关闭</a-button>
       </template>
