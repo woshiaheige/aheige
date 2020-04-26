@@ -48,13 +48,13 @@
           <a-select
             defaultValue="all"
             style="width: 120px"
-            v-model="formInline.taskStatus"
+            v-model="formInline.isComplete"
             showSearch
             :filterOption="filterOptions"
           >
             <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="0">已完成</a-select-option>
-            <a-select-option value="1">处理中</a-select-option>
+            <a-select-option value="1">已完成</a-select-option>
+            <a-select-option value="0">处理中</a-select-option>
           </a-select>
         </a-form-item>
         <!-- <a-form-item label="任务时间">
@@ -91,10 +91,10 @@
         :loading="loading"
         v-margin:top="16"
       >
-        <template slot="taskStatus" slot-scope="taskStatus">
+        <template slot="isComplete" slot-scope="isComplete">
           <a-badge
-            :status="taskStatus == 1 ? 'success' : 'warning'"
-            :text="taskStatus == 1 ? '已完成' : '处理中'"
+            :status="isComplete == 1 ? 'success' : 'warning'"
+            :text="isComplete == 1 ? '已完成' : '处理中'"
           />
         </template>
         <template slot="pointTypeName" slot-scope="pointTypeName">
@@ -148,7 +148,7 @@ export default {
         enterpriseId: undefined,
         pointId: undefined,
         pointName: undefined,
-        taskStatus: "all"
+        isComplete: "all"
       },
       columns: [
         {
@@ -166,8 +166,8 @@ export default {
         },
         {
           title: "任务状态",
-          dataIndex: "taskStatus",
-          scopedSlots: { customRender: "taskStatus" },
+          dataIndex: "isComplete",
+          scopedSlots: { customRender: "isComplete" },
           align: "center",
           width: 150
         },
@@ -189,7 +189,7 @@ export default {
         //   enterpriseName: "环保有限公司",
         //   pointName: "站点1",
         //   pointTypeName: "类别A",
-        //   taskStatus: 2,
+        //   isComplete: 2,
         //   taskCount: 10
         // }
       ],
@@ -257,8 +257,8 @@ export default {
         size: this.size,
         enterpriseId: this.formInline.enterpriseId,
         pointId: this.formInline.pointId,
-        taskStatus:
-          this.formInline.taskStatus == "all" ? "" : this.formInline.taskStatus
+        isComplete:
+          this.formInline.isComplete == "all" ? "" : this.formInline.isComplete
       };
       this.loading = true;
       this.$api.maintain

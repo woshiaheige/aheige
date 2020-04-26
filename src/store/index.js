@@ -25,12 +25,19 @@ export default new Vuex.Store({
     createRouterTable({ commit }, data) {
       sessionStorage.setItem("permission", JSON.stringify(data));
       //处理路由权限
-      let toAddRoutes = [
+      let allRoute = [
         {
           path: "/",
           redirect: "/index/data"
+        },
+        {
+          path: "/",
+          component: () =>
+            import(/* webpackChunkName: "view-home" */ "@/views/Home.vue"),
+          children: []
         }
       ];
+      let toAddRoutes = [];
       data.forEach(item => {
         if (
           item.permission !== "" &&
@@ -51,8 +58,10 @@ export default new Vuex.Store({
         }
       });
 
-      commit("getRouterTable", toAddRoutes); //提交
-      router.addRoutes(toAddRoutes);
+      allRoute[1].children = toAddRoutes;
+
+      commit("getRouterTable", allRoute); //提交
+      router.addRoutes(allRoute);
     }
   },
   modules: {}

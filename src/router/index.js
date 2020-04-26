@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import client from "../assets/lib/checkBrowser";
-import routerTable from "./../router/routerTable";
 
 Vue.use(VueRouter);
 
@@ -37,8 +36,6 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-
-router.addRoutes(routerTable);
 
 router.beforeEach(async (to, from, next) => {
   let token = sessionStorage.getItem("token");
