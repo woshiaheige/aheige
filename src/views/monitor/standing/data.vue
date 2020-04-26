@@ -125,6 +125,10 @@ export default {
   computed: {
     settings() {
       return {
+        digit: 4,
+        xAis: {
+          inverse: true
+        },
         labelMap: {
           value: this.columnsName
         }
@@ -155,6 +159,7 @@ export default {
           });
         }
       });
+      tempData = tempData.reverse();
       this.chartData.rows = tempData;
     },
     onColumnsChange(value, option) {
@@ -222,7 +227,7 @@ export default {
     },
     //获取实时数据表头
     getRealDataTitle() {
-      this.pageSize = 1;
+      this.current = 1;
       let data = {
         cn: this.formInline.type
       };

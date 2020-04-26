@@ -32,7 +32,11 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="合同编号" prop="number">
-        <a-input placeholder="合同编号" v-model="formData.number" />
+        <a-input
+          placeholder="合同编号"
+          :maxLength="30"
+          v-model="formData.number"
+        />
       </a-form-model-item>
       <a-form-model-item label="合同起止时间" prop="range">
         <a-range-picker
@@ -42,16 +46,26 @@
         />
       </a-form-model-item>
       <a-form-model-item label="合同签署时间" prop="gmtSign">
-        <a-date-picker v-width="350" v-model="formData.gmtSign" />
+        <a-date-picker
+          v-width="350"
+          :maxLength="30"
+          v-model="formData.gmtSign"
+        />
       </a-form-model-item>
       <a-form-model-item label="合同负责人" prop="userName">
-        <a-input placeholder="合同负责人" v-model="formData.userName" />
+        <a-input
+          placeholder="合同负责人"
+          :maxLength="30"
+          v-model="formData.userName"
+        />
       </a-form-model-item>
       <a-form-model-item label="合同金额" prop="money">
         <a-input-number
           placeholder="合同金额"
           v-model="formData.money"
           v-width="350"
+          :min="1"
+          :max="99999999"
         />
       </a-form-model-item>
       <a-form-model-item label="合同备注" prop="description">
@@ -59,6 +73,7 @@
           type="textarea"
           placeholder="合同备注"
           v-model="formData.description"
+          :maxLength="300"
         />
       </a-form-model-item>
       <a-form-model-item label="合同状态" prop="state">
@@ -91,6 +106,12 @@
         </a-upload>
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 
