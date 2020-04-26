@@ -40,7 +40,12 @@
         />
       </a-form-model-item>
       <a-form-model-item label="MN号" prop="mn">
-        <a-input v-model="formData.mn" :maxLength="30" placeholder="MN号" />
+        <a-input
+          v-model="formData.mn"
+          :maxLength="30"
+          placeholder="MN号"
+          :disabled="modelData.type == 'edit'"
+        />
       </a-form-model-item>
       <a-form-model-item label="所属小组" prop="groupId">
         <a-select
@@ -75,6 +80,7 @@
           v-model="formData.type"
           showSearch
           :filterOption="filterOptions"
+          :disabled="modelData.type == 'edit'"
         >
           <a-select-option
             v-for="item in pointOptions"
@@ -107,6 +113,7 @@
           placeholder="传输协议"
           showSearch
           :filterOption="filterOptions"
+          :disabled="modelData.type == 'edit'"
         >
           <a-select-option
             v-for="item in protocolList"
@@ -218,6 +225,13 @@ export default {
           {
             required: true,
             message: "请选择经纬度",
+            trigger: "change"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择监测点类型",
             trigger: "change"
           }
         ]

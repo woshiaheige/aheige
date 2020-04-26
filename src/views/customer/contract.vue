@@ -127,20 +127,17 @@ export default {
         {
           title: "企业名称",
           dataIndex: "enterpriseName",
-          key: "enterpriseName",
-          align: "center"
+          key: "enterpriseName"
         },
         {
           title: "合同编号",
           dataIndex: "number",
-          key: "number",
-          align: "center"
+          key: "number"
         },
         {
           title: "合同期限",
           dataIndex: "gmtEnd",
-          scopedSlots: { customRender: "period" },
-          align: "center"
+          scopedSlots: { customRender: "period" }
         },
         {
           title: "合同状态",
