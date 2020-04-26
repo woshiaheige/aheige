@@ -20,7 +20,7 @@
         detail.handleName
       }}</a-descriptions-item>
       <a-descriptions-item label="运维时间">{{
-        this.$moment(detail.gmtCreate).format("YYYY-MM-DD")
+        this.$moment(detail.gmtExecution).format("YYYY-MM-DD")
       }}</a-descriptions-item>
       <a-descriptions-item label="运维项目">
         <template v-if="detail.taskItemVos">
