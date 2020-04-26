@@ -47,19 +47,19 @@ export default {
     value: Object
   },
   data() {
-    // let that = this;
-    // const validateNum = (rule, value, callback) => {
-    //   console.log(value, that.formData.floorval);
-    //   if (
-    //     value &&
-    //     that.formData.floorval &&
-    //     Number(value) < Number(that.formData.floorval)
-    //   ) {
-    //     callback("上限值必须大于下限值");
-    //   } else {
-    //     callback();
-    //   }
-    // };
+    let that = this;
+    const validateNum = (rule, value, callback) => {
+      console.log(value, that.formData.floorval);
+      if (
+        value &&
+        that.formData.floorval &&
+        Number(value) < Number(that.formData.floorval)
+      ) {
+        callback("上限值必须大于下限值");
+      } else {
+        callback();
+      }
+    };
     return {
       title: "添加",
       formData: {
@@ -76,16 +76,17 @@ export default {
         floorval: [
           {
             required: true,
-            message: "请添加下限",
-            trigger: "change"
+            message: "请输入下限",
+            trigger: "blur"
           }
         ],
         ceilval: [
           {
             required: true,
-            message: "请添加上限",
-            trigger: "change"
-          }
+            message: "请输入上限",
+            trigger: "blur"
+          },
+          { validator: validateNum, trigger: "blur" }
         ]
       },
       filterOption(input, option) {
@@ -107,10 +108,6 @@ export default {
   },
   methods: {
     handleOk() {
-      if (this.formData.floorval > this.formData.ceilval) {
-        that.$message.error("上限必须小于下限值！");
-        return;
-      }
       let that = this;
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
