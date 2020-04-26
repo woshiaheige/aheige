@@ -270,8 +270,9 @@ export default {
       return isLt10M;
     },
     handleChange(info) {
+      console.log(info);
       let fileList = [...info.fileList];
-      //只允许上传一个文件
+      //只允许上传一个文件 start
       fileList = fileList.slice(-1);
       fileList = fileList.map(file => {
         if (file.response) {
@@ -279,13 +280,21 @@ export default {
         }
         return file;
       });
+      //只允许上传一个文件 end
 
       if (this.isError) {
         return;
       }
       this.fileList = fileList;
       if (info.file.status === "done") {
-        this.formData.files = []; //只允许上传一个文件
+        //只允许上传一个文件 start
+        if (this.modelData.type == "edit") {
+          if (this.formData.files.length > 0) {
+            this.delFile(this.formData.files[0].fileId);
+          }
+        }
+        this.formData.files = [];
+        //只允许上传一个文件 end
         let temp = {};
         temp.fileId = info.file.response.data;
         temp.fileName = info.file.name;
