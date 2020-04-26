@@ -60,13 +60,13 @@ export default {
     // this.getTableData();
   },
   methods: {
-    getTableData(formInline) {
-      console.log("执行了111");
+    getTableData() {
+      let notification = this.$bus.$data.notification;
       this.loading = true;
       let data = {
-        beginTime: formInline.beginTime,
-        endTime: formInline.endTime,
-        mn: formInline.mn
+        beginTime: notification.beginTime,
+        endTime: notification.endTime,
+        mn: notification.mn
       };
       this.$api.maintain
         .getReportPushDataRateExData(data)
@@ -81,10 +81,6 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
-    onChange(date, dateString) {
-      this.formInline.beginTime = dateString[0] + " 00:00:00";
-      this.formInline.endTime = dateString[1] + " 23:59:59";
     }
   }
 };

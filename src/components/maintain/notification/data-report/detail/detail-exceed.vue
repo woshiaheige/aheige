@@ -17,7 +17,6 @@
 </template>
 <script>
 export default {
-  props: ["formInline"],
   data() {
     return {
       loading: false,
@@ -63,18 +62,21 @@ export default {
     };
   },
   methods: {
-    getTableData(formInline) {
-      console.log("执行了222");
+    getTableData() {
+      let notification = this.$bus.$data.notification;
       this.loading = true;
       let data = {
-        beginTime: formInline.beginTime,
-        endTime: formInline.endTime,
-        mn: formInline.mn
+        beginTime: notification.beginTime,
+        endTime: notification.endTime,
+        mn: notification.mn
       };
       this.$api.maintain
         .getReportPushDataRateWarnData(data)
         .then(res => {
-          this.tableData = res.data.data;
+          if (res.data.state == 0) {
+            this.tableData = res.data.data;
+            console.log(this.tableData, 666666);
+          }
         })
         .catch(err => {
           console.log(err);

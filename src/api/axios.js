@@ -25,6 +25,11 @@ instance.interceptors.response.use(
     if (response.status === 200) {
       if (response.data.state && response.data.state != 0) {
         message.warning(response.data.msg);
+
+        if (response.data.state === 4) {
+          router.push("/login");
+          sessionStorage.clear();
+        }
       }
       return Promise.resolve(response);
     } else {
