@@ -12,6 +12,9 @@
           <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
+          <a-button @click="reset()" v-margin:left="16">
+            重置
+          </a-button>
         </a-form-item>
       </a-form>
     </a-card>
@@ -161,6 +164,9 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    reset() {
+      this.list = { name: "", phone: "" };
     }
   },
   mounted() {
