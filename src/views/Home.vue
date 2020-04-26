@@ -26,11 +26,7 @@
         :selectedKeys="selectedKeys"
       >
         <template v-for="item in menuList">
-          <a-menu-item v-if="!item.children" :key="item.key">
-            <a-icon :type="item.icon" />
-            {{ item.title }}
-          </a-menu-item>
-          <a-sub-menu v-if="item.children" :key="item.key">
+          <a-sub-menu v-if="item.children.length > 0" :key="item.key">
             <span slot="title"
               ><a-icon :type="item.icon" /><span>{{ item.title }}</span></span
             >
@@ -98,197 +94,7 @@ export default {
       ],
       collapsed: false,
       openKeys: [],
-      selectedKeys: [],
-      menuList: [
-        {
-          title: "运维一览",
-          key: "index",
-          icon: "home",
-          children: [
-            {
-              title: "运维监控",
-              key: "index-data"
-            },
-            {
-              title: "地图监控",
-              key: "index-map"
-            }
-          ]
-        },
-        {
-          title: "监控中心",
-          key: "monitor",
-          icon: "table",
-          children: [
-            {
-              title: "监测数据",
-              key: "monitor-standing"
-            },
-            {
-              title: "超标数据",
-              key: "monitor-exceed"
-            },
-
-            {
-              title: "异常数据",
-              key: "monitor-unusual"
-            },
-            {
-              title: "数据报表",
-              key: "monitor-report"
-            }
-          ]
-        },
-        {
-          title: "审批管理",
-          key: "approval",
-          icon: "audit",
-          children: [
-            {
-              title: "我的审批",
-              key: "my-approval"
-            },
-            {
-              title: "审批审核",
-              key: "approval-wait"
-            }
-          ]
-        },
-        {
-          title: "运维管理",
-          key: "maintain",
-          icon: "control",
-          children: [
-            {
-              title: "任务管理",
-              key: "mission"
-            },
-            {
-              title: "任务调度",
-              key: "dispatch"
-            },
-            {
-              title: "计划看板",
-              key: "board"
-            },
-            {
-              title: "运维计划",
-              key: "plan"
-            },
-            {
-              title: "运维方案",
-              key: "scheme"
-            },
-            {
-              title: "客户投诉",
-              key: "complaint"
-            },
-            {
-              title: "运维知识",
-              key: "knowledge"
-            },
-            {
-              title: "报表推送",
-              key: "notification"
-            }
-          ]
-        },
-        {
-          title: "客户管理",
-          key: "customer",
-          icon: "team",
-          children: [
-            {
-              title: "企业信息",
-              key: "enterprise"
-            },
-            {
-              title: "监控点管理",
-              key: "station"
-            },
-            {
-              title: "合同管理",
-              key: "contract"
-            }
-          ]
-        },
-        {
-          title: "车辆管理",
-          key: "car",
-          icon: "car",
-          children: [
-            {
-              title: "车辆管理",
-              key: "manage"
-            },
-            {
-              title: "车辆使用记录",
-              key: "usage"
-            }
-          ]
-        },
-        {
-          title: "物资管理",
-          key: "product",
-          icon: "gold",
-          children: [
-            {
-              title: "物资库存",
-              key: "reagent"
-            },
-            {
-              title: "供应商管理",
-              key: "supplier"
-            }
-          ]
-        },
-        {
-          title: "基础数据",
-          key: "platform",
-          icon: "setting",
-          children: [
-            {
-              title: "设备管理",
-              key: "device"
-            },
-            {
-              title: "因子设置",
-              key: "factors"
-            },
-            {
-              title: "运维设置",
-              key: "operation"
-            },
-            {
-              title: "行业设置",
-              key: "industry"
-            },
-            {
-              title: "数据字典",
-              key: "dictionary"
-            }
-          ]
-        },
-        {
-          title: "系统设置",
-          key: "organization",
-          icon: "user",
-          children: [
-            {
-              title: "用户管理",
-              key: "member"
-            },
-            {
-              title: "小组管理",
-              key: "group"
-            },
-            {
-              title: "权限管理",
-              key: "role"
-            }
-          ]
-        }
-      ]
+      selectedKeys: []
     };
   },
   computed: {
@@ -315,6 +121,93 @@ export default {
       }
 
       return openMenuArr;
+    },
+    menuList() {
+      let permissionArr = JSON.parse(sessionStorage.getItem("permission"));
+      let menuArr = [
+        {
+          title: "运维一览",
+          id: 10,
+          key: "index",
+          icon: "home",
+          children: []
+        },
+        {
+          title: "监控中心",
+          id: 11,
+          key: "monitor",
+          icon: "table",
+          children: []
+        },
+        {
+          title: "审批管理",
+          id: 12,
+          key: "approval",
+          icon: "audit",
+          children: []
+        },
+        {
+          title: "运维管理",
+          id: 13,
+          key: "maintain",
+          icon: "control",
+          children: []
+        },
+        {
+          title: "客户管理",
+          id: 14,
+          key: "customer",
+          icon: "team",
+          children: []
+        },
+        {
+          title: "车辆管理",
+          id: 15,
+          key: "car",
+          icon: "car",
+          children: []
+        },
+        {
+          title: "物资管理",
+          id: 16,
+          key: "product",
+          icon: "gold",
+          children: []
+        },
+        {
+          title: "基础数据",
+          id: 17,
+          key: "platform",
+          icon: "setting",
+          children: []
+        },
+        {
+          title: "系统设置",
+          id: 18,
+          key: "organization",
+          icon: "user",
+          children: []
+        }
+      ];
+
+      permissionArr.forEach(item => {
+        if (
+          item.permission !== "" ||
+          item.permission !== null ||
+          item.permission !== undefined
+        ) {
+          menuArr.forEach(menuItem => {
+            if (menuItem.id == item.parentId) {
+              menuItem.children.push({
+                title: item.name,
+                key: item.permission
+              });
+            }
+          });
+        }
+      });
+
+      return menuArr;
     }
   },
   watch: {
@@ -324,7 +217,7 @@ export default {
     }
   },
   created() {
-    // this.removeLoading();
+    this.removeLoading();
   },
   mounted() {
     this.setMenu();
@@ -341,6 +234,7 @@ export default {
         content: "是否退出？",
         onOk() {
           sessionStorage.clear();
+          location.reload();
           that.$router.push("/login");
         },
         onCancel() {}
