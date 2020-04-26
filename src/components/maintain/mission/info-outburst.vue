@@ -13,6 +13,9 @@
       <a-step title="已关闭" />
     </a-steps>
     <a-descriptions :column="1" bordered>
+      <a-descriptions-item label="任务名称">{{
+        detail.name
+      }}</a-descriptions-item>
       <a-descriptions-item label="运维小组">{{
         detail.groupName
       }}</a-descriptions-item>

@@ -52,6 +52,10 @@ export default {
       visible: false,
       columns: [
         {
+          title: "任务名称",
+          dataIndex: "name"
+        },
+        {
           title: "运维小组",
           dataIndex: "groupName"
         },

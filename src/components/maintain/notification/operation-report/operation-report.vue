@@ -54,12 +54,12 @@
         :settings="chartSettings"
       ></ve-histogram>
       <a-divider dashed>运维详情</a-divider>
-      <a-tabs defaultActiveKey="1">
+      <a-tabs defaultActiveKey="1" @change="slectDetail">
         <a-tab-pane tab="已完成任务" key="1">
-          <mission-finished />
+          <mission-finished ref="missionFinished" />
         </a-tab-pane>
         <a-tab-pane tab="未完成任务" key="2" forceRender>
-          <mission-unfinished />
+          <mission-unfinished ref="missionUnfinished" />
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -87,6 +87,18 @@ export default {
         ]
       }
     };
+  },
+  methods: {
+    slectDetail(e) {
+      if (e == 1) {
+        this.$refs.missionFinished.getTableData();
+      } else {
+        this.$refs.missionUnfinished.getTableData();
+      }
+    },
+    getTableData() {
+      this.slectDetail(1);
+    }
   }
 };
 </script>
