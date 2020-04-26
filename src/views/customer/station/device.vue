@@ -13,7 +13,7 @@
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="生产厂家">
@@ -21,7 +21,7 @@
             placeholder="请输入"
             v-model="list.manufacturer"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="设备型号">
@@ -29,7 +29,7 @@
             placeholder="请输入"
             v-model="list.number"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item style="float: right">

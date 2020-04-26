@@ -18,25 +18,36 @@
         <a-input placeholder="企业名称" disabled />
       </a-form-model-item> -->
       <a-form-model-item label="姓名" prop="name">
-        <a-input placeholder="姓名" v-model="formData.name" />
+        <a-input placeholder="姓名" :maxLength="20" v-model="formData.name" />
       </a-form-model-item>
       <a-form-model-item label="账号" prop="username">
         <a-input
           placeholder="账号"
           v-model="formData.username"
           :disabled="isEdit"
+          :maxLength="20"
         />
       </a-form-model-item>
       <a-form-model-item label="手机" prop="phone">
         <a-input placeholder="手机" v-model="formData.phone" />
       </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
-        <a-input placeholder="密码" v-model="formData.password" />
+        <a-input
+          placeholder="密码"
+          :maxLength="20"
+          v-model="formData.password"
+        />
       </a-form-model-item>
       <a-form-model-item label="微信ID" prop="wxId">
-        <a-input placeholder="微信ID" v-model="formData.wxId" />
+        <a-input placeholder="微信ID" :maxLength="30" v-model="formData.wxId" />
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 <script>
