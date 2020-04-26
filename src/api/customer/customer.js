@@ -186,6 +186,16 @@ const customer = {
   //下载文件
   downloadFile(data) {
     return axios.get(base.api + "files/download/file/" + data.id);
+  },
+  //删除文件
+  delFile(data) {
+    return axios.get(base.api + "files/delete/file/" + data.id);
+  },
+  //删除合同附件
+  delContractFile(data) {
+    return axios.get(base.api + "cusContractFile/deleteCusContractFile", {
+      params: data
+    });
   }
 };
 

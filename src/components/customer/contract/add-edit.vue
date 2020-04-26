@@ -130,11 +130,12 @@ export default {
         enterpriseId: undefined,
         number: "",
         range: [],
-        gmtSign: "",
+        gmtSign: null,
         userName: "",
         money: "",
         description: "",
-        state: 1
+        state: 1,
+        files: []
       },
       fileList: [],
       title: "",
@@ -191,7 +192,7 @@ export default {
         }
         //验证通过
         let data = {
-          fileId: this.formData.fileId,
+          files: this.formData.files,
           enterpriseId: this.formData.enterpriseId,
           id: this.formData.id,
           money: this.formData.money,
@@ -238,28 +239,30 @@ export default {
         .getContractById({ id: this.modelData.row.id })
         .then(res => {
           if (res.data.state == 0) {
-            if (res.data.data.fileName) {
-              this.fileList = [
-                {
-                  uid: "-1",
-                  name: res.data.data.fileName,
-                  status: "done",
-                  url: ""
-                }
-              ];
+            let result = res.data.data;
+            if (result.files != null) {
+              for (var i in result.files) {
+                let temp = {};
+                temp.uid = i;
+                temp.id = result.files[i].fileId;
+                temp.name = result.files[i].fileName;
+                temp.status = "done";
+                temp.url = "";
+                this.fileList.push(temp);
+              }
             }
-            res.data.data.range = [
-              this.$moment(res.data.data.gmtBegin),
-              this.$moment(res.data.data.gmtEnd)
+            result.range = [
+              this.$moment(result.gmtBegin),
+              this.$moment(result.gmtEnd)
             ];
-            res.data.data.gmtSign = this.$moment(res.data.data.gmtSign);
-            this.formData = res.data.data;
+            result.gmtSign = this.$moment(result.gmtSign);
+            this.formData = result;
           }
         });
     },
     beforeUpload(file) {
       this.isError = false;
-      const isLt10M = file.size / 1024 / 1024 < 0.1;
+      const isLt10M = file.size / 1024 / 1024 < 10;
       if (!isLt10M) {
         this.$message.error("上传文件大小不能超过 10MB!");
         this.isError = true;
@@ -268,30 +271,45 @@ export default {
     },
     handleChange(info) {
       let fileList = [...info.fileList];
-
+      //只允许上传一个文件
       fileList = fileList.slice(-1);
-
       fileList = fileList.map(file => {
         if (file.response) {
           file.url = file.response.url;
         }
         return file;
       });
+
       if (this.isError) {
         return;
       }
-
       this.fileList = fileList;
       if (info.file.status === "done") {
-        this.formData.fileId = info.file.response.data;
+        this.formData.files = []; //只允许上传一个文件
+        let temp = {};
+        temp.fileId = info.file.response.data;
+        temp.fileName = info.file.name;
+        this.formData.files.push(temp);
         this.$message.success("上传成功");
       } else if (info.file.status === "error") {
         this.$message.error("上传失败");
       }
     },
     //删除文件
-    handleRemove() {
-      this.formData.fileId = "";
+    handleRemove(file) {
+      this.formData.files.forEach((item, index) => {
+        if (item.fileId == file.id) {
+          this.formData.files.splice(index, 1);
+          this.delFile(file.id);
+        }
+      });
+    },
+    delFile(id) {
+      let data = {
+        contractId: this.modelData.row.id || "", //合同ID
+        fileId: id //文件ID
+      };
+      this.$api.customer.delContractFile(data).then(() => {});
     },
     enterpriseOptions() {
       this.$api.common.selectEnterprise().then(res => {
@@ -305,7 +323,8 @@ export default {
         this.enterpriseOptions();
         this.fileList = [];
         this.formData = {
-          state: 1
+          state: 1,
+          files: []
         };
         if (this.value.type == "edit") {
           this.title = "编辑";
