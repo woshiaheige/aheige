@@ -6,11 +6,13 @@
           <a-input
             v-model.trim="formInline.enterpriseName"
             @pressEnter="getTableData"
+            :maxLength="30"
             placeholder="请输入"
           />
         </a-form-model-item>
         <a-form-model-item label="监控点名称">
           <a-input
+            :maxLength="30"
             v-model="formInline.pointName"
             placeholder="请输入"
             @pressEnter="getTableData"

@@ -5,6 +5,7 @@
         <a-form-model-item label="企业名称">
           <a-input
             v-model="formInline.enterpriseName"
+            :maxLength="30"
             placeholder="请输入"
             @pressEnter="getTableData"
           />
@@ -13,6 +14,7 @@
           <a-input
             v-model="formInline.pointName"
             placeholder="请输入"
+            :maxLength="30"
             @pressEnter="getTableData"
           />
         </a-form-model-item>
@@ -20,6 +22,7 @@
           <a-input
             v-model="formInline.mn"
             placeholder="请输入"
+            :maxLength="30"
             @pressEnter="getTableData"
           />
         </a-form-model-item>

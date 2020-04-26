@@ -14,6 +14,7 @@
               <a-input-search
                 placeholder="输入供应商名称"
                 style="width: 200px"
+                :maxLength="30"
                 v-model="formInline.name"
                 @search="onSubmit"
               />
