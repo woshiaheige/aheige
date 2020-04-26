@@ -60,8 +60,6 @@ export default new Vuex.Store({
 
       allRoute[1].children = toAddRoutes;
 
-      console.log(toAddRoutes);
-
       commit("getRouterTable", allRoute); //提交
       router.addRoutes(allRoute);
     }

@@ -324,7 +324,7 @@ export default {
     }
   },
   created() {
-    // this.removeLoading();
+    this.removeLoading();
   },
   mounted() {
     this.setMenu();
@@ -341,6 +341,7 @@ export default {
         content: "是否退出？",
         onOk() {
           sessionStorage.clear();
+          location.reload();
           that.$router.push("/login");
         },
         onCancel() {}
