@@ -1,15 +1,11 @@
 <template>
   <div>
-    <div class="card-header">
-      <div class="title">超标数据</div>
-    </div>
     <a-table
       size="middle"
       :loading="loading"
       :rowKey="(record, index) => index"
       :columns="columns"
       :dataSource="tableData"
-      v-margin:top="16"
       :pagination="false"
     >
       <template slot="dataType" slot-scope="dataType">
