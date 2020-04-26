@@ -14,169 +14,10 @@
           {{ $moment(notification.endTime).format("YYYY-MM-DD") }}
         </div>
       </div>
-      <a-tabs @change="callback" type="card">
-        <a-tab-pane tab="数据周报" key="1">
-          <a-card>
-            <div class="card-header">
-              <div class="title">数据报表</div>
-            </div>
-            <a-row
-              type="flex"
-              justify="space-around"
-              align="middle"
-              class="data-report"
-            >
-              <a-col :span="4">
-                <span class="num" v-color="'#f44336'">13</span>
-                <p>超标次数</p>
-              </a-col>
-              <a-col :span="4">
-                <span class="num" v-color="'#ff9800'">21</span>
-                <p>异常次数</p>
-              </a-col>
-              <a-col :span="4">
-                <a-progress type="circle" :percent="31">
-                  <template v-slot:format="percent">
-                    <p v-fontsize="16">{{ percent }}%</p>
-                    <p>分钟数据完整率</p>
-                  </template>
-                </a-progress>
-              </a-col>
-              <a-col :span="4">
-                <a-progress type="circle" :percent="45">
-                  <template v-slot:format="percent">
-                    <p v-fontsize="16">{{ percent }}%</p>
-                    <p>小时数据完整率</p>
-                  </template>
-                </a-progress>
-              </a-col>
-              <a-col :span="4">
-                <a-progress type="circle" :percent="78">
-                  <template v-slot:format="percent">
-                    <p v-fontsize="16">{{ percent }}%</p>
-                    <p>日数据完整率</p>
-                  </template>
-                </a-progress>
-              </a-col>
-            </a-row>
-            <a-divider dashed>数据统计</a-divider>
-            <ve-histogram :data="chartMonitorData"></ve-histogram>
-            <a-divider dashed>数据详情</a-divider>
-            <a-tabs defaultActiveKey="1">
-              <a-tab-pane tab="超标详情" key="1">
-                <notification-exceed :formInline="obj" ref="exceed" />
-              </a-tab-pane>
-              <a-tab-pane tab="异常详情" key="2" forceRender>
-                <notification-unusual :formInline="obj" ref="unusual"
-              /></a-tab-pane>
-              <a-tab-pane tab="数据完整率" key="3">
-                <a-table
-                  :loading="loading"
-                  size="middle"
-                  :rowKey="(record, index) => index"
-                  :columns="columns"
-                  :dataSource="tableData"
-                  :pagination="false"
-                >
-                </a-table>
-              </a-tab-pane>
-            </a-tabs>
-          </a-card>
-        </a-tab-pane>
+      <a-tabs type="card">
+        <a-tab-pane tab="数据周报" key="1"> <data-report /></a-tab-pane>
         <a-tab-pane tab="运维周报" key="2">
-          <a-card>
-            <div class="card-header">
-              <div class="title">运维报表</div>
-            </div>
-            <a-row
-              type="flex"
-              justify="space-around"
-              align="middle"
-              class="data-report"
-            >
-              <a-col :span="4">
-                <span class="num">6</span>
-                <p>运维任务</p>
-              </a-col>
-              <a-col :span="4">
-                <span class="num" v-color="'#4caf50'">4</span>
-                <p>已完成</p>
-              </a-col>
-              <a-col :span="4">
-                <span class="num" v-color="'#f44336'">2</span>
-                <p>未完成</p>
-              </a-col>
-              <a-col :span="4">
-                <a-progress type="circle" :percent="89">
-                  <template v-slot:format="percent">
-                    <p v-fontsize="16">{{ percent }}%</p>
-                    <p>任务完成率</p>
-                  </template>
-                </a-progress>
-              </a-col>
-            </a-row>
-            <a-divider dashed />
-            <a-row
-              type="flex"
-              justify="space-around"
-              align="middle"
-              class="data-report"
-            >
-              <a-col :span="4">
-                <a-statistic title="日常巡检" :value="2" />
-              </a-col>
-              <a-col :span="4">
-                <a-statistic title="设备校准" :value="4" />
-              </a-col>
-              <a-col :span="4">
-                <a-statistic title="标气更换" :value="2" />
-              </a-col>
-            </a-row>
-            <a-divider dashed>运维统计</a-divider>
-            <ve-histogram
-              :data="chartMaintainData"
-              :settings="chartSettings"
-            ></ve-histogram>
-            <a-divider dashed>运维详情</a-divider>
-            <a-tabs defaultActiveKey="1">
-              <a-tab-pane tab="已完成任务" key="1">
-                <a-empty v-if="notificationData.length == 0" />
-                <a-descriptions layout="vertical" bordered size="small" v-else>
-                  <a-descriptions-item
-                    :span="3"
-                    v-for="item in notificationData"
-                    :key="item.dateTime"
-                  >
-                    <template>
-                      <span slot="label">{{ item.dateLabel }}</span>
-                      <a-list
-                        itemLayout="horizontal"
-                        :dataSource="item.taskList"
-                        class="dispatch-list"
-                      >
-                        <a-list-item slot="renderItem" slot-scope="item">
-                          <a-list-item-meta>
-                            <span slot="title"
-                              >{{ item.handleName }}（{{
-                                item.groupName
-                              }}）</span
-                            >
-                            <div slot="description">
-                              <p>运维任务：{{ item.taskName }}</p>
-                            </div>
-                          </a-list-item-meta>
-                          <div>{{ item.gmtEnd }}</div>
-                        </a-list-item>
-                      </a-list>
-                    </template>
-                  </a-descriptions-item>
-                </a-descriptions>
-              </a-tab-pane>
-              <a-tab-pane tab="未完成任务" key="2" forceRender>
-                <notification-unusual :formInline="obj" ref="unusual"
-              /></a-tab-pane>
-            </a-tabs>
-          </a-card>
+          <operation-report />
         </a-tab-pane>
         <a-tab-pane tab="设备周报" key="3">
           <a-card>
@@ -256,10 +97,10 @@
 </template>
 
 <script>
-import notificationExceed from "@/components/maintain/notification/notification-exceed";
-import notificationUnusual from "@/components/maintain/notification/notification-unusual";
+import dataReport from "./data-report/data-report"; //数据报表
+import operationReport from "./operation-report/operation-report"; //运维报表
 export default {
-  components: { notificationExceed, notificationUnusual },
+  components: { dataReport, operationReport },
   props: {
     obj: {
       type: Object,
@@ -287,11 +128,7 @@ export default {
     }
   },
   data() {
-    this.chartSettings = {
-      stack: { 任务: ["已完成", "未完成"] }
-    };
     return {
-      aaa: "",
       loading: false,
       formInline: { mn: "", beginTime: "", endTime: "" },
       notification: {
@@ -300,92 +137,8 @@ export default {
         endTime: "",
         title: ""
       },
-      columns: [
-        {
-          title: "分钟数据数",
-          children: [
-            {
-              title: "应收条数",
-              dataIndex: "minOughtCount",
-              key: "minOughtCount"
-            },
-            {
-              title: "实收条数",
-              dataIndex: "minRealCount",
-              key: "minRealCount"
-            },
-            {
-              title: "数据完整率",
-              dataIndex: "minPro",
-              key: "minPro"
-            }
-          ]
-        },
-        {
-          title: "小时数据数",
-          children: [
-            {
-              title: "应收条数",
-              dataIndex: "hourOughtCount",
-              key: "hourOughtCount"
-            },
-            {
-              title: "实收条数",
-              dataIndex: "hourRealCount",
-              key: "hourRealCount"
-            },
-            {
-              title: "数据完整率",
-              dataIndex: "hourPro",
-              key: "hourPro"
-            }
-          ]
-        },
-        {
-          title: "日数据数",
-          children: [
-            {
-              title: "应收条数",
-              dataIndex: "dayOughtCount",
-              key: "dayOughtCount"
-            },
-            {
-              title: "实收条数",
-              dataIndex: "dayRealCount",
-              key: "dayRealCount"
-            },
-            {
-              title: "数据完整率",
-              dataIndex: "dayPro",
-              key: "dayPro"
-            }
-          ]
-        }
-      ],
-      tableData: [],
       notificationData: [],
-      chartMonitorData: {
-        columns: ["日期", "超标次数", "异常次数"],
-        rows: [
-          { 日期: "1", 超标次数: 13, 异常次数: 10 },
-          { 日期: "2", 超标次数: 35, 异常次数: 32 },
-          { 日期: "3", 超标次数: 29, 异常次数: 26 },
-          { 日期: "4", 超标次数: 17, 异常次数: 14 },
-          { 日期: "5", 超标次数: 37, 异常次数: 34 },
-          { 日期: "6", 超标次数: 45, 异常次数: 42 }
-        ]
-      },
-      chartMaintainData: {
-        columns: ["日期", "已完成", "未完成", "完成率"],
-        rows: [
-          { 日期: "1", 已完成: 1393, 未完成: 1093, 完成率: 0.32 },
-          { 日期: "2", 已完成: 3530, 未完成: 3230, 完成率: 0.26 },
-          { 日期: "3", 已完成: 2923, 未完成: 2623, 完成率: 0.76 },
-          { 日期: "4", 已完成: 1723, 未完成: 1423, 完成率: 0.49 },
-          { 日期: "5", 已完成: 3792, 未完成: 3492, 完成率: 0.323 },
-          { 日期: "6", 已完成: 4593, 未完成: 4293, 完成率: 0.78 }
-        ]
-      },
+
       chartDeviceData: {
         columns: ["日期", "设备正常", "设备故障", "故障率"],
         rows: [
