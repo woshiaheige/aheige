@@ -1,6 +1,5 @@
 <template>
   <div>
-    <a-card> </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
         <div class="title">数据列表</div>
@@ -8,7 +7,8 @@
           <a-form-model layout="inline">
             <a-form-model-item>
               <a-range-picker
-                @change="getTableData"
+                :allowClear="false"
+                @change="onChange"
                 format="YYYY-MM-DD"
                 v-model="formInline.range"
               />
@@ -168,58 +168,23 @@ export default {
     },
     //时间改变事件
     onChange(date, dateString) {
-      if (this.formInline.type == "1") {
-        if (
-          this.$moment(
-            dateString[1] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).valueOf() >
-          this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-            .add(2, "days")
-            .valueOf()
-        ) {
-          this.formInline.range[1] = this.$moment(
-            dateString[0] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).add(2, "days");
-        } else {
-          this.formInline.range[1] = date[1];
-        }
-      } else if (this.formInline.type == "2") {
-        if (
-          this.$moment(
-            dateString[1] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).valueOf() >
-          this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-            .add(1, "weeks")
-            .valueOf()
-        ) {
-          this.formInline.range[1] = this.$moment(
-            dateString[0] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).add(1, "weeks");
-        } else {
-          this.formInline.range[1] = date[1];
-        }
-      } else if (this.formInline.type == "3") {
-        if (
-          this.$moment(
-            dateString[1] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).valueOf() >
-          this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-            .add(1, "months")
-            .valueOf()
-        ) {
-          this.formInline.range[1] = this.$moment(
-            dateString[0] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).add(1, "months");
-        } else {
-          this.formInline.range[1] = date[1];
-        }
+      if (
+        this.$moment(
+          dateString[1] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).valueOf() >
+        this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
+          .add(2, "days")
+          .valueOf()
+      ) {
+        this.formInline.range[1] = this.$moment(
+          dateString[0] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).add(2, "days");
+      } else {
+        this.formInline.range[1] = date[1];
       }
+      this.getTableData();
     },
     //设置pointid
     setPointId() {
