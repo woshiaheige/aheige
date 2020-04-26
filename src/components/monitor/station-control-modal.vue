@@ -69,7 +69,7 @@
               <a-select-option
                 v-for="item in divisorList"
                 :key="item.id"
-                :value="item.code"
+                :value="item.id"
                 >{{ item.name }}</a-select-option
               >
             </a-select>
@@ -250,7 +250,7 @@
               <a-select-option
                 v-for="item in divisorList"
                 :key="item.id"
-                :value="item.code"
+                :value="item.id"
                 >{{ item.name }}</a-select-option
               >
             </a-select>
@@ -276,7 +276,7 @@
               <a-select-option
                 v-for="item in divisorList"
                 :key="item.id"
-                :value="item.code"
+                :value="item.id"
                 >{{ item.name }}</a-select-option
               >
             </a-select>
@@ -330,7 +330,7 @@
               <a-select-option
                 v-for="item in divisorList"
                 :key="item.id"
-                :value="item.code"
+                :value="item.id"
                 >{{ item.name }}</a-select-option
               >
             </a-select>
