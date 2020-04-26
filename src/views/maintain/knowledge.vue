@@ -22,7 +22,7 @@
         </div>
       </div>
       <a-row :gutter="16">
-        <a-col :span="4">
+        <a-col :span="6">
           <a-button type="primary" block @click="knowledgeTypeVisible = true"
             ><a-icon type="plus" />新建分类</a-button
           >
@@ -43,7 +43,7 @@
             </a-menu-item>
           </a-menu>
         </a-col>
-        <a-col :span="20">
+        <a-col :span="18">
           <a-list
             itemLayout="vertical"
             size="large"
@@ -170,8 +170,8 @@ export default {
     knowledgeClass() {
       this.$api.maintain.knowledgeClass().then(res => {
         if (res.data.state == 0) {
-          this.menuList = res.data.data.records;
-          this.menu = [res.data.data.records[0].id];
+          this.menuList = res.data.data;
+          this.menu = [res.data.data[0].id];
         }
       });
     },

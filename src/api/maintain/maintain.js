@@ -55,10 +55,8 @@ const maintain = {
     });
   },
   //知识库分类
-  knowledgeClass(data) {
-    return axios.get(base.api + "knowledgeClass/", {
-      params: data
-    });
+  knowledgeClass() {
+    return axios.get(base.api + "knowledgeClass/query");
   },
   //新增知识库分类
   addKnowledgeClass(data) {
