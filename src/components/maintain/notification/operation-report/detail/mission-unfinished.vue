@@ -35,19 +35,32 @@
 export default {
   data() {
     return {
-      notificationData: {}
+      pointId: "",
+      notificationData: []
     };
   },
   methods: {
-    getReportPushDetails() {
-      //报表详情
-      this.$api.maintain
-        .getReportPushDetails({ reportPushId: "1252192436474576903" })
-        .then(res => {
-          if (res.data.state == 0) {
-            this.notificationData = this.detailFilter(res.data.data);
-          }
-        });
+    getTableData() {
+      // this.$api.maintain
+      //   .getReportPushDetails({ reportPushId: this.pointId })
+      //   .then(res => {
+      //     if (res.data.state == 0) {
+      //       this.notificationData = this.detailFilter(res.data.data);
+      //     }
+      //   });
+      this.notificationData = [
+        {
+          dateLabel: "星期一",
+          taskList: [
+            {
+              handleName: "张山",
+              groupName: "小组A",
+              taskName: "日常巡查",
+              gmtEnd: "2020-4-25 15:32:32"
+            }
+          ]
+        }
+      ];
     },
     detailFilter(data) {
       //过滤和整理日期
@@ -72,9 +85,6 @@ export default {
       });
       return list;
     }
-  },
-  mounted() {
-    this.getReportPushDetails();
   }
 };
 </script>

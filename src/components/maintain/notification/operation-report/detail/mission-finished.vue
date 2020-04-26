@@ -40,7 +40,7 @@ export default {
     };
   },
   methods: {
-    getReportPushDetails() {
+    getTableData() {
       // this.$api.maintain
       //   .getReportPushDetails({ reportPushId: this.pointId })
       //   .then(res => {
@@ -85,9 +85,6 @@ export default {
       });
       return list;
     }
-  },
-  mounted() {
-    this.getReportPushDetails();
   }
 };
 </script>

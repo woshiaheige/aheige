@@ -83,9 +83,13 @@ export default {
         this.$refs.dataReport.getTableData();
         // console.log(this.$refs.dataReport);
       } else if (e == 2) {
-        // this.$refs.operationReport.getTableData();
+        this.$nextTick(() => {
+          this.$refs.operationReport.getTableData();
+        });
       } else if (e == 3) {
-        // this.$refs.deviceReport.getTableData();
+        this.$nextTick(() => {
+          this.$refs.deviceReport.getTableData();
+        });
 
         console.log(e);
       }
