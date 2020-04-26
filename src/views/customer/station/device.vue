@@ -33,11 +33,11 @@
           ></a-input>
         </a-form-item>
         <a-form-item style="float: right">
-          <a-button type="primary" @click="reset()" style="margin-right:15px">
-            重置
-          </a-button>
           <a-button type="primary" @click="onSubmit()">
             查找
+          </a-button>
+          <a-button @click="reset()" v-margin:left="16">
+            重置
           </a-button>
         </a-form-item>
       </a-form>

@@ -11,12 +11,10 @@
       <a-descriptions-item label="合同编号">{{
         info.number
       }}</a-descriptions-item>
-      <a-descriptions-item label="合同开始时间">{{
-        info.gmtBegin
-      }}</a-descriptions-item>
-      <a-descriptions-item label="合同结束时间">{{
-        info.gmtEnd
-      }}</a-descriptions-item>
+      <a-descriptions-item label="合同起止时间">
+        {{ $moment(info.gmtBegin).format("YYYY-MM-DD") }} ~
+        {{ $moment(info.gmtEnd).format("YYYY-MM-DD") }}
+      </a-descriptions-item>
       <a-descriptions-item label="合同负责人">{{
         info.userName
       }}</a-descriptions-item>

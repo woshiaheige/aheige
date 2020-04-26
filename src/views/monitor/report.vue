@@ -16,7 +16,7 @@
             @pressEnter="getTableData"
           />
         </a-form-model-item>
-        <a-form-model-item label="MN号码">
+        <a-form-model-item label="MN号">
           <a-input
             v-model="formInline.mn"
             placeholder="请输入"
@@ -24,7 +24,17 @@
           />
         </a-form-model-item>
         <a-form-model-item label="数据时间">
-          <a-range-picker format="YYYY-MM-DD" v-model="formInline.range" />
+          <a-range-picker
+            :allowClear="false"
+            format="YYYY-MM-DD"
+            v-model="formInline.range"
+            @change="onChange"
+          />
+        </a-form-model-item>
+        <a-form-model-item style="float: right">
+          <a-button @click="onReset">
+            重置
+          </a-button>
         </a-form-model-item>
         <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
@@ -96,7 +106,7 @@ export default {
           key: "poiName"
         },
         {
-          title: "MN号码",
+          title: "MN号",
           dataIndex: "mn",
           key: "mn"
         },
@@ -188,6 +198,32 @@ export default {
     this.getTableData();
   },
   methods: {
+    onReset() {
+      this.formInline = {
+        enterpriseName: "",
+        pointName: "",
+        mn: "",
+        range: [this.$moment(), this.$moment()]
+      };
+    },
+    onChange(date, dateString) {
+      if (
+        this.$moment(
+          dateString[1] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).valueOf() >
+        this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
+          .add(2, "days")
+          .valueOf()
+      ) {
+        this.formInline.range[1] = this.$moment(
+          dateString[0] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).add(2, "days");
+      } else {
+        this.formInline.range[1] = date[1];
+      }
+    },
     //获取报表数据
     getTableData() {
       this.loading = true;
