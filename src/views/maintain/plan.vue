@@ -105,7 +105,7 @@
             </template>
             <template slot="status" slot-scope="status, row">
               <a-badge status="default" text="未执行" v-if="row.status == 1" />
-              <a-badge status="success" text="执行中" v-if="row.status == 2" />
+              <a-badge status="success" text="已执行" v-if="row.status == 2" />
               <a-badge status="warning" text="已延期" v-if="row.status == 3" />
             </template>
             <span slot="check" slot-scope="row">

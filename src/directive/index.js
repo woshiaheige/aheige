@@ -93,6 +93,19 @@ const scale = Vue.directive("scale", {
   }
 });
 
+const prevent = Vue.directive("preventReClick", {
+  inserted(el, binding) {
+    el.addEventListener("click", () => {
+      if (!el.disabled) {
+        el.disabled = true;
+        setTimeout(() => {
+          el.disabled = false;
+        }, binding.value || 3000);
+      }
+    });
+  }
+});
+
 export default {
   margin,
   color,
@@ -102,5 +115,6 @@ export default {
   fontSize,
   width,
   height,
-  scale
+  scale,
+  prevent
 };

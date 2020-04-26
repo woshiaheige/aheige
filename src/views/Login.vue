@@ -181,7 +181,10 @@ export default {
                   ); //动态添加路由
 
                   await this.$api.login.getResource().then(res => {
-                    console.log(res);
+                    this.$store.dispatch(
+                      "createRouterTable",
+                      res.data.data.resources
+                    );
                     that.$router.push("/");
                   });
                 }
