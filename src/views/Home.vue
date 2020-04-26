@@ -323,6 +323,9 @@ export default {
       this.setBreadcrumbName();
     }
   },
+  created() {
+    this.removeLoading();
+  },
   mounted() {
     this.setMenu();
     if (sessionStorage.getItem("routes")) {

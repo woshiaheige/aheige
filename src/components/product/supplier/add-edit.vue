@@ -42,6 +42,12 @@
       <a-form-model-item label="评级" prop="level">
         <a-rate v-model="formInline.level" />
       </a-form-model-item>
+      <template slot="footer">
+        <a-button @click="handleCancel">取消</a-button>
+        <a-button type="primary" @click="handleOk" v-preventReClick>
+          保存
+        </a-button>
+      </template>
     </a-form-model>
   </a-modal>
 </template>
@@ -60,7 +66,7 @@ export default {
         callback();
         return;
       }
-      if (!/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/.test(value)) {
+      if (!/^1\d{10}$/.test(value)) {
         callback("电话号格式不正确");
       } else {
         callback();

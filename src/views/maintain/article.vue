@@ -30,7 +30,6 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.articleDetail = res.data.data;
-            console.log(this.articleDetail);
           }
         });
     }

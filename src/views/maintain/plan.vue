@@ -269,7 +269,7 @@ export default {
         cancelText: "取消",
         onOk() {
           let data = {
-            programmeId: row.programmeId
+            id: row.id
           };
 
           that.$api.maintain.deletePlan(data).then(async res => {
