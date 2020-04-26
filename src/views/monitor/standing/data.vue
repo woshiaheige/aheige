@@ -80,12 +80,12 @@
         </div>
       </div>
       <ve-line
-        v-if="chartData"
+        v-if="chartData.rows.length > 0"
         :data="chartData"
         :legend-visible="false"
         :settings="settings"
       ></ve-line>
-      <a-empty v-if="!chartData" :image="simpleImage" />
+      <a-empty v-if="chartData.rows.length == 0" :image="simpleImage" />
     </a-card>
   </div>
 </template>
