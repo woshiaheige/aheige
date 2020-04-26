@@ -6,73 +6,50 @@
     @ok="handleOk"
     :maskClosable="false"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="姓名">
+    <a-form-model
+      ref="ruleForm"
+      :validateOnRuleChange="true"
+      :model="formData"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
+      <a-form-model-item label="姓名" prop="name">
         <a-input
           placeholder="请输入"
           :disabled="memberId == 1"
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入姓名' }] }
-          ]"
+          v-model="formData.name"
         />
-      </a-form-item>
-      <a-form-item label="账号">
+      </a-form-model-item>
+      <a-form-model-item label="账号" prop="username">
         <a-input
           placeholder="请输入"
           :disabled="memberId == 1"
-          v-decorator="[
-            'username',
-            { rules: [{ required: true, message: '请输入账号' }] }
-          ]"
+          v-model="formData.username"
         />
-      </a-form-item>
-      <a-form-item label="密码">
+      </a-form-model-item>
+      <a-form-model-item label="密码" prop="password">
         <a-input-password
           placeholder="请输入"
           type="password"
-          v-decorator="[
-            'password',
-            {
-              rules: [
-                {
-                  message: '请输入数字，字母或特殊字符的组合,6位以上',
-                  required: true
-                }
-              ]
-            }
-          ]"
+          v-model="formData.password"
         />
-      </a-form-item>
-      <a-form-item label="手机号码">
+      </a-form-model-item>
+      <a-form-model-item label="手机号码" prop="phone">
         <a-input-number
           style="width:100%"
           placeholder="请输入"
-          v-decorator="[
-            'phone',
-            {
-              rules: [
-                {
-                  required: true,
-                  pattern: validatePhone,
-                  message: '请输入正确的手机号码'
-                }
-              ]
-            }
-          ]"
+          v-model="formData.phone"
         />
-      </a-form-item>
-      <a-form-item label="微信ID">
-        <a-input placeholder="请输入" v-decorator="['wechatId']" />
-      </a-form-item>
-      <a-form-item label="选择权限">
+      </a-form-model-item>
+      <a-form-model-item label="微信ID" prop="wechatId">
+        <a-input placeholder="请输入" v-model="formData.wechatId" />
+      </a-form-model-item>
+      <a-form-model-item label="选择权限" prop="roleId">
         <a-select
           placeholder="请选择"
           :disabled="memberId == 1"
-          v-decorator="[
-            'roleId',
-            { rules: [{ required: true, message: '请选择权限' }] }
-          ]"
+          v-model="formData.roleId"
           @select="roleSelect"
           showSearch
           :filterOption="filterOptions"
@@ -84,14 +61,11 @@
             >{{ item.name }}</a-select-option
           >
         </a-select>
-      </a-form-item>
-      <a-form-item label="运维小组" v-if="roleId == 3">
+      </a-form-model-item>
+      <a-form-model-item label="运维小组" v-if="roleId == 3" prop="groupId">
         <a-select
           placeholder="请选择"
-          v-decorator="[
-            'groupId',
-            { rules: [{ required: true, message: '请选择运维小组' }] }
-          ]"
+          v-model="formData.groupId"
           showSearch
           :filterOption="filterOptions"
         >
@@ -102,14 +76,11 @@
             >{{ item.name }}</a-select-option
           >
         </a-select>
-      </a-form-item>
-      <a-form-item label="审核权限" v-if="roleId == 2">
+      </a-form-model-item>
+      <a-form-model-item label="审核权限" v-if="roleId == 2" prop="approvalIds">
         <a-select
           placeholder="请选择"
-          v-decorator="[
-            'approvalIds',
-            { rules: [{ required: true, message: '请选择审核权限' }] }
-          ]"
+          v-model="formData.approvalIds"
           showSearch
           :filterOption="filterOptions"
         >
@@ -120,11 +91,30 @@
             >{{ item.name }}</a-select-option
           >
         </a-select>
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+    </a-form-model>
   </a-modal>
 </template>
 <script>
+let timeout = null;
+function debounceFn(fn, wait = 500) {
+  console.log(timeout, 555);
+  if (timeout !== null) clearTimeout(timeout);
+  timeout = setTimeout(fn, wait);
+}
+// function debounceFn(func, wait = 500) {
+//   let timeout;
+//   return function() {
+//     // let context = this;
+//     // let args = arguments;
+
+//     if (timeout) clearTimeout(timeout);
+
+//     timeout = setTimeout(() => {
+//       func();
+//     }, wait);
+//   };
+// }
 export default {
   props: {
     visible: {
@@ -136,9 +126,61 @@ export default {
     }
   },
   data() {
-    const validatePhone = /^1\d{10}$/;
+    const validatePhone = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        //非必须输入
+        callback("请输入手机号码");
+        return;
+      }
+      if (!/^1\d{10}$/.test(value)) {
+        callback("手机号格式不正确");
+      } else {
+        callback();
+      }
+    };
     const validatePassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
     return {
+      formData: {
+        name: "",
+        username: "",
+        password: "",
+        phone: "",
+        wechatId: "",
+        roleId: ""
+      },
+      rules: {
+        enterpriseId: [
+          {
+            required: true,
+            message: "请选择所属企业",
+            trigger: "change"
+          }
+        ],
+        name: [{ required: true, message: "请输入姓名", trigger: "change" }],
+        username: [
+          { required: true, message: "请输入账号", trigger: "change" }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入数字，字母或特殊字符的组合",
+            trigger: "change"
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            validator: validatePhone
+          }
+        ],
+        roleId: [{ required: true, message: "请选择权限" }],
+        groupId: [
+          { required: true, message: "请选择运维小组", trigger: "change" }
+        ],
+        approvalIds: [
+          { required: true, message: "请选择审核权限", trigger: "change" }
+        ]
+      },
       initPassword: "", //编辑的密码
       validatePassword,
       validatePhone,
@@ -147,9 +189,7 @@ export default {
       roleList: [],
       groupList: [], //小组列表
       approvalList: [], //审核权限列表
-      auditor: "",
-      form: this.$form.createForm(this),
-      state: false
+      auditor: ""
     };
   },
   computed: {
@@ -174,24 +214,24 @@ export default {
         } else if (nval.roleId == 3) {
           this.gellAllSysGroup(); //获取小组
         }
-        setTimeout(() => {
-          this.initPassword = nval.password;
-          this.form.setFieldsValue({
-            name: nval.name,
-            username: nval.username,
-            password: nval.password,
-            phone: nval.phone,
-            wechatId: nval.wechatId,
-            roleId: nval.roleId
-          });
-          if (nval.roleId == 3) {
-            //设置运维小组
-            this.form.setFieldsValue({ groupId: nval.groupId });
-          } else if (nval.roleId == 2) {
-            //审核权限
-            this.form.setFieldsValue({ approvalIds: nval.approvalIds[0] });
-          }
-        }, 50);
+        // setTimeout(() => {
+        this.initPassword = nval.password;
+        this.formData = {
+          name: nval.name,
+          username: nval.username,
+          password: nval.password,
+          phone: nval.phone,
+          wechatId: nval.wechatId,
+          roleId: nval.roleId
+        };
+        if (nval.roleId == 3) {
+          //设置运维小组
+          this.formData.groupId = nval.groupId;
+        } else if (nval.roleId == 2) {
+          //审核权限
+          this.formData.approvalIds = nval.approvalIds[0];
+        }
+        // }, 50);
       }
     }
   },
@@ -221,7 +261,6 @@ export default {
     closeModal() {
       this.$emit("update:visible", false);
       this.reset();
-      this.state = false;
     },
     getAllRole() {
       //获取角色
@@ -235,23 +274,22 @@ export default {
       this.initPassword = "";
       this.memberId = "";
       this.roleId = "";
-      this.form.resetFields();
+      this.$refs.ruleForm.resetFields();
     },
     handleOk() {
       if (this.state == true) {
         this.$message.error("请勿重复点击");
         return;
       }
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.state == false) {
-            this.state = true;
-          }
-          if (this.memberId) {
-            this.editMember(values);
-          } else {
-            this.addMember(values);
-          }
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        if (this.memberId) {
+          debounceFn(this.editMember(this.formData));
+        } else {
+          debounceFn(this.addMember(this.formData));
         }
       });
     },
@@ -271,7 +309,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-          this.state = false;
         }
       });
     },
@@ -287,7 +324,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-          this.state = false;
         }
       });
     }

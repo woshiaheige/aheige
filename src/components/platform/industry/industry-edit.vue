@@ -12,7 +12,15 @@
           placeholder="请输入"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入行业名称' }] }
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入行业名称,长度不超30字',
+                  max: 30
+                }
+              ]
+            }
           ]"
         />
       </a-form-item>

@@ -1,6 +1,13 @@
 <template>
   <div class="counter">
-    <a-input-number style="width:200px" :value="value" @change="change">
+    <a-input-number
+      style="width:200px"
+      :value="value"
+      @change="change"
+      :min="0"
+      :formatter="formatter"
+      :max="10000000"
+    >
       <!-- <a-icon type="minus" slot="prefix" class="add" @click="subtract"/>
       <a-tooltip slot="suffix"> <a-icon type="plus" @click="add"/></a-tooltip
     > -->
@@ -37,8 +44,18 @@ export default {
       ++val;
       this.$emit("input", val);
     },
+    formatter(value) {
+      let str = "" + value;
+      if (str.indexOf(".") != -1) {
+        let arr = str.split("");
+        arr.splice(arr.length - 1);
+        let str2 = arr.join("");
+        value = +str2;
+      }
+      return value;
+    },
     change(e) {
-      console.log(e);
+      // console.log(e);
       this.$emit("input", e);
     }
   }
