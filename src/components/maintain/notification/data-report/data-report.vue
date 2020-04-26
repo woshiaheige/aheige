@@ -46,15 +46,15 @@
       <a-divider dashed>数据统计</a-divider>
       <ve-histogram :data="chartMonitorData"></ve-histogram>
       <a-divider dashed>数据详情</a-divider>
-      <a-tabs defaultActiveKey="1">
+      <a-tabs defaultActiveKey="1" @change="slectDetail">
         <a-tab-pane tab="超标详情" key="1">
-          <detail-exceed :formInline="obj" ref="exceed" />
+          <detail-exceed ref="exceed" />
         </a-tab-pane>
         <a-tab-pane tab="异常详情" key="2" forceRender>
-          <detail-unusual :formInline="obj" ref="unusual" />
+          <detail-unusual ref="unusual" />
         </a-tab-pane>
-        <a-tab-pane tab="数据完整率" key="3">
-          <detail-integrity />
+        <a-tab-pane tab="数据完整率" key="3" forceRender>
+          <detail-integrity ref="integrity" />
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -81,6 +81,20 @@ export default {
         ]
       }
     };
+  },
+  methods: {
+    slectDetail(e) {
+      if (e == 1) {
+        this.$refs.exceed.getTableData();
+      } else if (e == 2) {
+        this.$refs.unusual.getTableData();
+      } else if (e == 3) {
+        this.$refs.integrity.getTableData();
+      }
+    },
+    getTableData() {
+      this.slectDetail(1);
+    }
   }
 };
 </script>
