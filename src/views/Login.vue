@@ -185,6 +185,7 @@ export default {
                       "createRouterTable",
                       res.data.data.resources
                     );
+                    this.setLoading("正在登录中，请稍等");
                     that.$router.push("/");
                   });
                 }
