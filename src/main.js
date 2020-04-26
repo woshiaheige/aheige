@@ -72,6 +72,14 @@ Vue.prototype.$moment = moment;
 Vue.prototype.$md5 = md5;
 Vue.prototype.$bus = new Vue();
 
+if (sessionStorage.getItem("permission")) {
+  //处理F5 刷新鉴权
+  store.dispatch(
+    "createRouterTable",
+    JSON.parse(sessionStorage.getItem("permission"))
+  );
+}
+
 new Vue({
   router,
   store,
