@@ -30,7 +30,7 @@ const car = [
   {
     path: "/car/usage/detail",
     name: "car-usage-detail",
-    key: "car-usage-detail",
+    key: "usage-detail",
     meta: {
       title: "行驶路径",
       back: true
