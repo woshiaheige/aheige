@@ -38,6 +38,12 @@
         <a-input type="number" v-model="formData.ceilval" placeholder="上限" />
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 <script>

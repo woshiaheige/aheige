@@ -33,10 +33,14 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="监测点名称" prop="name">
-        <a-input v-model="formData.name" placeholder="监测点名称" />
+        <a-input
+          v-model="formData.name"
+          :maxLength="30"
+          placeholder="监测点名称"
+        />
       </a-form-model-item>
       <a-form-model-item label="MN号" prop="mn">
-        <a-input v-model="formData.mn" placeholder="MN号" />
+        <a-input v-model="formData.mn" :maxLength="30" placeholder="MN号" />
       </a-form-model-item>
       <a-form-model-item label="所属小组" prop="groupId">
         <a-select
@@ -114,6 +118,12 @@
         </a-select>
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
+        保存
+      </a-button>
+    </template>
     <search-map :obj="mapModel" @getModal="getModal"></search-map>
   </a-modal>
 </template>

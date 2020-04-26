@@ -18,7 +18,6 @@
                 showSearch
                 v-model="list.divisorId"
                 v-width="150"
-                allowClear
                 :filterOption="filterOptions"
               >
                 <a-select-option value="">

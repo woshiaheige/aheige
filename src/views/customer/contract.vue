@@ -7,7 +7,7 @@
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="合同编号">
@@ -15,7 +15,7 @@
             placeholder="请输入"
             v-model="list.number"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="合同状态">
