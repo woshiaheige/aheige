@@ -32,9 +32,10 @@
                 >
                 <div slot="description">
                   <p>
-                    {{ item.groupName }}-{{ item.handleName }} 运维任务：{{
-                      item.name
-                    }}
+                    {{ item.groupName }}
+                    <a-tag color="blue">{{ item.handleName }}</a-tag>
+                    运维任务：
+                    <a-tag color="red">{{ item.name }}</a-tag>
                     <a-badge
                       v-margin:left="5"
                       status="default"
