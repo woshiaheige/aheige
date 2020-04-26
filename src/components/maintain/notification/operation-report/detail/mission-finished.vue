@@ -1,0 +1,33 @@
+<template>
+  <div>
+    <a-empty v-if="notificationData.length == 0" />
+    <a-descriptions layout="vertical" bordered size="small" v-else>
+      <a-descriptions-item
+        :span="3"
+        v-for="item in notificationData"
+        :key="item.dateTime"
+      >
+        <template>
+          <span slot="label">{{ item.dateLabel }}</span>
+          <a-list
+            itemLayout="horizontal"
+            :dataSource="item.taskList"
+            class="dispatch-list"
+          >
+            <a-list-item slot="renderItem" slot-scope="item">
+              <a-list-item-meta>
+                <span slot="title"
+                  >{{ item.handleName }}（{{ item.groupName }}）</span
+                >
+                <div slot="description">
+                  <p>运维任务：{{ item.taskName }}</p>
+                </div>
+              </a-list-item-meta>
+              <div>{{ item.gmtEnd }}</div>
+            </a-list-item>
+          </a-list>
+        </template>
+      </a-descriptions-item>
+    </a-descriptions>
+  </div>
+</template>

@@ -11,7 +11,15 @@
           placeholder="请输入"
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入权限名称' }] }
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入权限名称,长度不能超过30位',
+                  max: 30
+                }
+              ]
+            }
           ]"
         />
       </a-form-item>
