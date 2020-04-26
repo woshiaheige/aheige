@@ -39,7 +39,7 @@
       <a-divider dashed>故障详情</a-divider>
       <a-descriptions layout="vertical" bordered size="small">
         <a-descriptions-item
-          :span="3"
+          :span="2"
           v-for="item in notificationData"
           :key="item.dateTime"
         >
@@ -52,14 +52,10 @@
             >
               <a-list-item slot="renderItem" slot-scope="item">
                 <a-list-item-meta>
-                  <span slot="title"
-                    >{{ item.handleName }}（{{ item.groupName }}）</span
-                  >
-                  <div slot="description">
-                    <p>运维任务：{{ item.taskName }}</p>
-                  </div>
+                  <span slot="title">{{ item.deviceName }}</span>
+                  <!-- <div slot="description">故障时间：{{ item.gmtEnd }}</div> -->
                 </a-list-item-meta>
-                <div>{{ item.gmtEnd }}</div>
+                <div>故障时间：{{ item.gmtEnd }}</div>
               </a-list-item>
             </a-list>
           </template>
@@ -75,42 +71,52 @@ export default {
       stack: { 设备: ["正常运行", "设备故障"] }
     };
     return {
-      notificationData: [],
+      notificationData: [
+        {
+          dateLabel: "星期一",
+          taskList: [
+            {
+              deviceName: "设备A",
+              gmtEnd: "2020-4-25 15:32:32"
+            }
+          ]
+        }
+      ],
       chartMaintainData: {
         columns: ["日期", "正常运行", "设备故障", "故障率"],
         rows: [
           {
-            日期: "2020-4-15 15:16",
+            日期: 1,
             正常运行: 6,
             设备故障: 0,
             故障率: 0
           },
           {
-            日期: "2020-4-16 15:16",
+            日期: 2,
             正常运行: 6,
             设备故障: 0,
             故障率: 0
           },
           {
-            日期: "2020-4-17 15:16",
+            日期: 3,
             正常运行: 6,
             设备故障: 0,
             故障率: 0
           },
           {
-            日期: "2020-4-18 15:16",
+            日期: 4,
             正常运行: 4,
             设备故障: 2,
             故障率: 0.89
           },
           {
-            日期: "2020-4-19 15:16",
+            日期: 5,
             正常运行: 4,
             设备故障: 2,
             故障率: 0.89
           },
           {
-            日期: "2020-4-20 15:16",
+            日期: 6,
             正常运行: 4,
             设备故障: 2,
             故障率: 0.89
