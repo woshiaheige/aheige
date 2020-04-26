@@ -214,7 +214,7 @@ export default {
       this.obj.row = row;
     },
     getFactor(pointId) {
-      this.$api.monitor.getPollCodeList(pointId).then(res => {
+      this.$api.common.selectFactorByPointId({ pointId: pointId }).then(res => {
         if (res.data.state == 0) {
           this.factorOptions = res.data.data;
         }

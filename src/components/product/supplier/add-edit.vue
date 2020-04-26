@@ -9,7 +9,11 @@
   >
     <a-form-model :model="formInline" :rules="rules" ref="ruleForm">
       <a-form-model-item label="供应商名称" prop="name">
-        <a-input placeholder="请输入" v-model="formInline.name" />
+        <a-input
+          placeholder="请输入"
+          v-model="formInline.name"
+          :maxLength="30"
+        />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
         <a-cascader
@@ -19,27 +23,24 @@
         />
       </a-form-model-item>
       <a-form-model-item label="地址" prop="address">
-        <a-input placeholder="请输入" v-model="formInline.address" />
+        <a-input
+          placeholder="请输入"
+          v-model="formInline.address"
+          :maxLength="30"
+        />
       </a-form-model-item>
       <a-form-model-item label="联系人" prop="contact">
-        <a-input placeholder="请输入" v-model="formInline.contact" />
+        <a-input
+          placeholder="请输入"
+          v-model="formInline.contact"
+          :maxLength="10"
+        />
       </a-form-model-item>
       <a-form-model-item label="联系电话" prop="telephone">
         <a-input placeholder="请输入" v-model="formInline.telephone" />
       </a-form-model-item>
       <a-form-model-item label="评级" prop="level">
-        <a-select
-          placeholder="请选择"
-          v-model="formInline.level"
-          showSearch
-          :filterOption="filterOptions"
-        >
-          <a-select-option :value="1">1</a-select-option>
-          <a-select-option :value="2">2</a-select-option>
-          <a-select-option :value="3">3</a-select-option>
-          <a-select-option :value="4">4</a-select-option>
-          <a-select-option :value="5">5</a-select-option>
-        </a-select>
+        <a-rate v-model="formInline.level" />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -53,9 +54,20 @@ export default {
     }
   },
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        //非必须输入
+        callback();
+        return;
+      }
+      if (!/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/.test(value)) {
+        callback("电话号格式不正确");
+      } else {
+        callback();
+      }
+    };
     return {
       cityList,
-      regionList: [],
       title: "",
       formInline: {
         name: "",
@@ -63,10 +75,13 @@ export default {
         address: "",
         contact: "",
         telephone: "",
-        level: ""
+        level: 0
       },
       rules: {
-        name: [{ required: true, message: "请输入供应商名称" }]
+        name: [
+          { required: true, message: "请输入供应商名称", trigger: "blur" }
+        ],
+        telephone: [{ validator: validatePhone, trigger: "blur" }]
       }
     };
   },
@@ -161,22 +176,6 @@ export default {
           this.$emit("cancel", false);
         });
     },
-    //获取区域列表
-    getArea() {
-      let data = {
-        id: ""
-      };
-      this.$api.common
-        .getArea(data)
-        .then(res => {
-          if (res.data.state == 0) {
-            this.regionList = res.data.data || [];
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     //点击ok
     handleOk(e) {
       e.preventDefault();
@@ -196,10 +195,7 @@ export default {
       this.$emit("cancel", false);
     }
   },
-  mounted() {
-    this.getArea();
-    console.log(this.cityList);
-  },
+  mounted() {},
   watch: {
     status() {
       if (this.status == true) {
