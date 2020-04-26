@@ -3,7 +3,6 @@
     :title="title"
     :visible="visible"
     @cancel="closeModal"
-    @ok="handleOk"
     :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
@@ -17,6 +16,12 @@
         />
       </a-form-item>
     </a-form>
+    <template slot="footer">
+      <a-button key="back" @click="closeModal">取消</a-button>
+      <a-button key="go" type="primary" @click="handleOk" v-preventReClick
+        >确认</a-button
+      >
+    </template>
   </a-modal>
 </template>
 
@@ -34,8 +39,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      groupId: "",
-      state: false
+      groupId: ""
     };
   },
   computed: {
@@ -63,22 +67,14 @@ export default {
     closeModal() {
       this.$emit("update:visible", false);
       this.reset();
-      this.state = false;
     },
     reset() {
       this.groupId = "";
       this.form.resetFields();
     },
     handleOk() {
-      if (this.state == true) {
-        this.$message.error("请勿重复点击");
-        return;
-      }
       this.form.validateFields((err, values) => {
         if (!err) {
-          if (this.state == false) {
-            this.state = true;
-          }
           if (this.groupId) {
             this.editGroup(values);
           } else {
@@ -96,7 +92,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-          this.state = false;
         }
       });
     },
@@ -108,7 +103,6 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-          this.state = false;
         }
       });
     }

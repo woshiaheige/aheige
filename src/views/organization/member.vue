@@ -17,15 +17,16 @@
           ></a-input>
         </a-form-item>
         <a-form-item style="float:right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
-        <a-form-item style="float:right">
           <a-button @click="reset">
             重置
           </a-button>
         </a-form-item>
+        <a-form-item style="float:right">
+          <a-button type="primary" @click="onSubmit">
+            查询
+          </a-button>
+        </a-form-item>
+
         <a-form-item label="手机号码">
           <a-input placeholder="请输入" v-model="formInline.phone"></a-input>
         </a-form-item>
@@ -179,6 +180,7 @@ export default {
       this.$api.organization.getSysUserById({ id: row.id }).then(res => {
         if (res.data.state == 0) {
           this.memberDetail = res.data.data;
+          console.log(this.memberDetail, 1111);
           this.visible = true;
         }
       });
@@ -250,6 +252,7 @@ export default {
     },
     reset() {
       this.formInline = this.$options.data().formInline;
+      this.onSubmit();
     }
   },
   mounted() {
