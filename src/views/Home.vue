@@ -324,7 +324,7 @@ export default {
     }
   },
   created() {
-    this.removeLoading();
+    // this.removeLoading();
   },
   mounted() {
     this.setMenu();
@@ -340,7 +340,7 @@ export default {
         title: "退出",
         content: "是否退出？",
         onOk() {
-          sessionStorage.removeItem("token");
+          sessionStorage.clear();
           that.$router.push("/login");
         },
         onCancel() {}

@@ -3,7 +3,6 @@
     :title="title"
     :visible="visible"
     @cancel="closeModal"
-    @ok="handleOk"
     :maskClosable="false"
   >
     <a-form-model
@@ -93,28 +92,15 @@
         </a-select>
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button key="back" @click="closeModal">取消</a-button>
+      <a-button key="go" type="primary" @click="handleOk" v-preventReClick
+        >确认</a-button
+      >
+    </template>
   </a-modal>
 </template>
 <script>
-let timeout = null;
-function debounceFn(fn, wait = 500) {
-  console.log(timeout, 555);
-  if (timeout !== null) clearTimeout(timeout);
-  timeout = setTimeout(fn, wait);
-}
-// function debounceFn(func, wait = 500) {
-//   let timeout;
-//   return function() {
-//     // let context = this;
-//     // let args = arguments;
-
-//     if (timeout) clearTimeout(timeout);
-
-//     timeout = setTimeout(() => {
-//       func();
-//     }, wait);
-//   };
-// }
 export default {
   props: {
     visible: {
@@ -128,7 +114,6 @@ export default {
   data() {
     const validatePhone = (rule, value, callback) => {
       if (value == undefined || value == "") {
-        //非必须输入
         callback("请输入手机号码");
         return;
       }
@@ -138,7 +123,56 @@ export default {
         callback();
       }
     };
-    const validatePassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
+    const validateName = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        callback("请输入姓名");
+        return;
+      }
+      if (value.length > 20) {
+        callback("姓名长度不能超过20位");
+      } else {
+        callback();
+      }
+    };
+    const validateAccount = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        callback("请输入账号");
+        return;
+      }
+      if (value.length > 20) {
+        callback("账号长度不能超过20位");
+      } else {
+        callback();
+      }
+    };
+    const validatePassword = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        callback("请输入密码");
+        return;
+      }
+      if (this.initPassword) {
+        //编辑状态
+        if (this.initPassword == this.formData.password) {
+          //编辑且没有修改密码
+          callback();
+        } else {
+          //编辑并修改了密码
+          if (value.length > 20) {
+            callback("密码长度不能超过20位");
+          } else {
+            callback();
+          }
+        }
+      } else {
+        //新增状态
+        if (value.length > 20) {
+          callback("密码长度不能超过20位");
+        } else {
+          callback();
+        }
+      }
+    };
+    // const validatePassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
     return {
       formData: {
         name: "",
@@ -156,14 +190,14 @@ export default {
             trigger: "change"
           }
         ],
-        name: [{ required: true, message: "请输入姓名", trigger: "change" }],
+        name: [{ required: true, trigger: "change", validator: validateName }],
         username: [
-          { required: true, message: "请输入账号", trigger: "change" }
+          { required: true, validator: validateAccount, trigger: "change" }
         ],
         password: [
           {
             required: true,
-            message: "请输入数字，字母或特殊字符的组合",
+            validator: validatePassword,
             trigger: "change"
           }
         ],
@@ -182,7 +216,6 @@ export default {
         ]
       },
       initPassword: "", //编辑的密码
-      validatePassword,
       validatePhone,
       memberId: "",
       roleId: "",
@@ -214,7 +247,6 @@ export default {
         } else if (nval.roleId == 3) {
           this.gellAllSysGroup(); //获取小组
         }
-        // setTimeout(() => {
         this.initPassword = nval.password;
         this.formData = {
           name: nval.name,
@@ -226,12 +258,11 @@ export default {
         };
         if (nval.roleId == 3) {
           //设置运维小组
-          this.formData.groupId = nval.groupId;
+          this.$set(this.formData, "groupId", nval.groupId);
         } else if (nval.roleId == 2) {
           //审核权限
-          this.formData.approvalIds = nval.approvalIds[0];
+          this.$set(this.formData, "approvalIds", nval.approvalIds);
         }
-        // }, 50);
       }
     }
   },
@@ -274,22 +305,19 @@ export default {
       this.initPassword = "";
       this.memberId = "";
       this.roleId = "";
-      this.$refs.ruleForm.resetFields();
+      this.$refs.ruleForm.clearValidate();
+      this.formData = this.$options.data().formData;
     },
     handleOk() {
-      if (this.state == true) {
-        this.$message.error("请勿重复点击");
-        return;
-      }
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
         }
         if (this.memberId) {
-          debounceFn(this.editMember(this.formData));
+          this.editMember(this.formData);
         } else {
-          debounceFn(this.addMember(this.formData));
+          this.addMember(this.formData);
         }
       });
     },

@@ -176,12 +176,12 @@ export default {
                   that.$message.success("登录成功！");
                   sessionStorage.setItem("token", res.data.data.token);
 
-                  await this.$api.login.getResource().then(res => {
-                    this.$store.dispatch(
+                  await this.$api.login.getResource().then(async res => {
+                    await that.$store.dispatch(
                       "createRouterTable",
-                      res.data.data.resources
+                      res.data.data
                     );
-                    this.setLoading("正在登录中，请稍等");
+                    // that.setLoading("正在登录中，请稍等");
                     that.$router.push("/");
                   });
                 }

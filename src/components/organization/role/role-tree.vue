@@ -3,7 +3,6 @@
     :title="title"
     :visible="visible"
     @cancel="closeModal"
-    @ok="handleOk"
     :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
@@ -46,6 +45,12 @@
       key="id"
       :treeData="dataList"
     />
+    <template slot="footer">
+      <a-button key="back" @click="closeModal">取消</a-button>
+      <a-button key="go" type="primary" @click="handleOk" v-preventReClick
+        >确认</a-button
+      >
+    </template>
   </a-modal>
 </template>
 
