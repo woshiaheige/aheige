@@ -100,7 +100,7 @@ const prevent = Vue.directive("preventReClick", {
         el.disabled = true;
         setTimeout(() => {
           el.disabled = false;
-        }, binding.value || 30000);
+        }, binding.value || 500);
       }
     });
   }
