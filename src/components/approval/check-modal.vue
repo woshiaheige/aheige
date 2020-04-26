@@ -10,26 +10,30 @@
       <a-step title="审批中" />
       <a-step title="审批完成" :description="approvalTime" />
     </a-steps>
-    <a-row v-margin:bottom="10">
-      <a-col :span="12"
-        ><span class="descriptions">审批标题：</span>{{ title }}</a-col
-      >
-      <a-col :span="12"
-        ><span class="descriptions">审批内容：</span>{{ content }}</a-col
-      >
-    </a-row>
-    <a-row v-margin:bottom="10">
-      <a-col :span="12" v-if="approvalName"
-        ><span class="descriptions">审批人：</span>{{ approvalName }}</a-col
-      >
-      <a-col :span="12" v-if="stateStr"
-        ><span class="descriptions">审批结果：</span>{{ stateStr }}</a-col
-      >
-    </a-row>
+    <a-descriptions :column="1" bordered>
+      <a-descriptions-item label="审批标题">{{ title }}</a-descriptions-item>
+      <a-descriptions-item label="审批内容">{{ content }}</a-descriptions-item>
+      <a-descriptions-item label="审批人" v-if="approvalName">{{
+        approvalName
+      }}</a-descriptions-item>
+      <a-descriptions-item label="审批结果" v-if="stateStr">{{
+        stateStr
+      }}</a-descriptions-item>
+    </a-descriptions>
     <div slot="footer">
-      <a-button @click="cancel">取消</a-button>
-      <a-button type="primary" @click="approvalClick(true)">通过</a-button>
-      <a-button type="danger" @click="approvalClick(false)">拒绝</a-button>
+      <a-button @click="cancel">关闭</a-button>
+      <a-button
+        type="primary"
+        @click="approvalClick(true)"
+        v-if="obj.info.state < 3"
+        >通过</a-button
+      >
+      <a-button
+        type="danger"
+        @click="approvalClick(false)"
+        v-if="obj.info.state < 3"
+        >拒绝</a-button
+      >
     </div>
   </a-modal>
 </template>

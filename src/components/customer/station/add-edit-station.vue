@@ -300,6 +300,7 @@ export default {
       this.formData.longitude = data.lnglat[0];
       this.formData.latitude = data.lnglat[1];
       this.formData.lngandlat = data.lnglat.join(",");
+      this.$forceUpdate();
     },
     getGroup() {
       this.$api.common.selectGroup().then(res => {

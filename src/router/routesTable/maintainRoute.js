@@ -112,6 +112,20 @@ const maintainRoutes = [
       )
   },
   {
+    path: "/maintain/knowledge/article",
+    name: "maintain-knowledge-article",
+    key: "article",
+    meta: {
+      title: "文章查看",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-maintain" */
+        "@/views/maintain/article"
+      )
+  },
+  {
     path: "/maintain/notification",
     name: "maintain-notification",
     key: "notification",

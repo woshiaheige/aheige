@@ -17,6 +17,7 @@
             itemLayout="horizontal"
             :dataSource="data"
             class="dispatch-list"
+            :loading="loading"
           >
             <a-list-item slot="renderItem" slot-scope="item">
               <a
@@ -31,9 +32,10 @@
                 >
                 <div slot="description">
                   <p>
-                    {{ item.groupName }}-{{ item.handleName }} 运维任务：{{
-                      item.name
-                    }}
+                    {{ item.groupName }}
+                    <a-tag color="blue">{{ item.handleName }}</a-tag>
+                    运维任务：
+                    <a-tag color="red">{{ item.name }}</a-tag>
                     <a-badge
                       v-margin:left="5"
                       status="default"
@@ -93,6 +95,7 @@ export default {
     return {
       data: [],
       editModal: false,
+      loading: false,
       week: "this",
       tabList: [
         { tab: "星期日", key: 0 },
@@ -149,6 +152,7 @@ export default {
       this.selectedDay = activeKey;
     },
     getMissionThisWeek() {
+      this.loading = true;
       let data = {};
       if (this.selectedDay >= this.today) {
         data = {
@@ -175,10 +179,14 @@ export default {
       }
 
       this.$api.maintain.getMissionThisWeek(data).then(res => {
-        this.data = res.data.data == null ? [] : res.data.data;
+        if (res.data.state == 0) {
+          this.data = res.data.data;
+          this.loading = false;
+        }
       });
     },
     getMissionNextWeek() {
+      this.loading = true;
       let data = {};
       if (this.selectedDay >= this.today) {
         data = {
@@ -209,7 +217,10 @@ export default {
       }
 
       this.$api.maintain.getMissionNextWeek(data).then(res => {
-        this.data = res.data.data == null ? [] : res.data.data;
+        if (res.data.state == 0) {
+          this.data = res.data.data;
+          this.loading = false;
+        }
       });
     }
   }

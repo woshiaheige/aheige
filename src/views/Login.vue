@@ -170,29 +170,23 @@ export default {
             };
             that.$api.login
               .login(data)
-              .then(res => {
+              .then(async res => {
                 console.log(res);
                 if (res.data.state == 0) {
                   that.$message.success("登录成功！");
                   sessionStorage.setItem("token", res.data.data.token);
-                  sessionStorage.setItem("userid", res.data.data.id);
-                  sessionStorage.setItem(
-                    "routeId",
-                    JSON.stringify(res.data.data.resources)
-                  );
                   this.$store.dispatch(
                     "createRouterTable",
                     res.data.data.resources
                   ); //动态添加路由
-                  let userinfo = {
-                    username: res.data.data.username,
-                    company: res.data.data.enterpriseName,
-                    enterpriseId: res.data.data.enterpriseId,
-                    roleId: res.data.data.role
-                  };
 
-                  sessionStorage.setItem("userinfo", JSON.stringify(userinfo));
-                  that.$router.push("/");
+                  await this.$api.login.getResource().then(res => {
+                    this.$store.dispatch(
+                      "createRouterTable",
+                      res.data.data.resources
+                    );
+                    that.$router.push("/");
+                  });
                 }
               })
               .catch(err => {

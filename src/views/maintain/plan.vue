@@ -32,6 +32,7 @@
                 placeholder="请输入站点名称"
                 style="width: 100%"
                 v-margin:top="16"
+                v-model="stationName"
                 @search="getPlanStation"
               />
               <a-menu
@@ -104,7 +105,7 @@
             </template>
             <template slot="status" slot-scope="status, row">
               <a-badge status="default" text="未执行" v-if="row.status == 1" />
-              <a-badge status="success" text="执行中" v-if="row.status == 2" />
+              <a-badge status="success" text="已执行" v-if="row.status == 2" />
               <a-badge status="warning" text="已延期" v-if="row.status == 3" />
             </template>
             <span slot="check" slot-scope="row">
@@ -159,6 +160,7 @@ export default {
         { tab: "未配置站点", key: 1 },
         { tab: "已配置站点", key: 2 }
       ],
+      stationName: "",
       current: 1,
       total: 0,
       size: 10,
@@ -293,7 +295,8 @@ export default {
       this.spinning = true;
       let data = {
         flag: this.currentTab,
-        type: this.currentType
+        type: this.currentType,
+        name: this.stationName
       };
       await this.$api.maintain.getPlanStation(data).then(res => {
         this.stationList = res.data.data;

@@ -70,11 +70,11 @@
         :pagination="false"
       >
         <template slot="type" slot-scope="type">
-          <a-tag color="green" v-if="type == 1">延迟</a-tag>
-          <a-tag color="blue" v-if="type == 2">转交</a-tag>
+          <a-tag color="green" v-if="type == 2">延迟</a-tag>
+          <a-tag color="blue" v-if="type == 1">转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
-          <a-badge color="orange" text="未处理" v-if="state == 1" />
+          <a-badge color="orange" text="待处理" v-if="state == 1" />
           <a-badge color="blue" text="处理中" v-if="state == 2" />
           <a-badge color="green" text="通过" v-if="state == 3" />
           <a-badge color="red" text="未通过" v-if="state == 4" />
@@ -114,7 +114,14 @@ export default {
         approvalCount: 0, //审批总数
         complateCount: 0 //审批完成数
       },
-      modalInfo: {},
+      modalInfo: {
+        info: {
+          id: 1,
+          state: 1,
+          approvalName: "",
+          approvalTime: ""
+        }
+      },
       current: 1,
       total: 0,
       pageSize: 10,

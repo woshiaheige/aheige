@@ -1,70 +1,63 @@
 <template>
   <div>
-    <a-card>
-      <a-form-model layout="inline">
-        <a-form-model-item label="时间范围">
-          <a-range-picker
-            @change="onChange"
-            format="YYYY-MM-DD"
-            v-model="formInline.range"
-          />
-        </a-form-model-item>
-        <a-form-model-item label="数据类型">
-          <a-radio-group v-model="formInline.type" @change="getRealDataTitle">
-            <a-radio-button :value="1">实时数据</a-radio-button>
-            <a-radio-button :value="2">分钟数据</a-radio-button>
-            <a-radio-button :value="3">小时数据</a-radio-button>
-            <a-radio-button :value="4">日数据</a-radio-button>
-          </a-radio-group>
-        </a-form-model-item>
-        <a-form-model-item style="float:right"
-          ><a-select v-model="formInline.showType" @change="getTableData">
-            <a-select-option value="data">数据</a-select-option>
-            <a-select-option value="chart">图表</a-select-option>
-          </a-select></a-form-model-item
-        >
-        <a-form-model-item style="float:right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-model-item>
-      </a-form-model>
-    </a-card>
-    <a-card
-      :bordered="false"
-      v-margin:top="16"
-      v-if="formInline.showType == 'data'"
-    >
+    <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
         <div class="title">数据列表</div>
-        <div class="extra"></div>
+        <div class="extra">
+          <a-form-model layout="inline">
+            <a-form-model-item>
+              <a-range-picker
+                :allowClear="false"
+                @change="onChange"
+                format="YYYY-MM-DD"
+                v-model="formInline.range"
+              />
+            </a-form-model-item>
+            <a-form-model-item>
+              <a-radio-group
+                v-model="formInline.type"
+                @change="getRealDataTitle"
+              >
+                <a-radio-button :value="1">实时数据</a-radio-button>
+                <a-radio-button :value="2">分钟数据</a-radio-button>
+                <a-radio-button :value="3">小时数据</a-radio-button>
+                <a-radio-button :value="4">日数据</a-radio-button>
+              </a-radio-group>
+            </a-form-model-item>
+            <a-form-model-item style="float:right"
+              ><a-select v-model="formInline.showType" @change="getTableData">
+                <a-select-option value="data">数据</a-select-option>
+                <a-select-option value="chart">图表</a-select-option>
+              </a-select></a-form-model-item
+            >
+          </a-form-model>
+        </div>
       </div>
-      <a-table
-        :loading="loading"
-        :rowKey="(record, index) => index"
-        size="middle"
-        :columns="columns"
-        :dataSource="tableData"
-        v-margin:top="16"
-        :pagination="false"
-      >
-        <span slot="action" slot-scope="row">
-          <a @click="toMonitorData(row)">监测数据</a>
-        </span>
-      </a-table>
-      <a-pagination
-        size="small"
-        v-margin:top="16"
-        showSizeChanger
-        :pageSize.sync="pageSize"
-        :showTotal="total => `共 ${total} 条`"
-        :defaultCurrent="current"
-        @change="pagechange"
-        @showSizeChange="sizechange"
-        :total="total"
-      />
-      <div v-if="formInline.showType == 'chart'">
-        <ve-line :data="chartData"></ve-line>
+      <div v-if="formInline.showType == 'data'">
+        <a-table
+          :loading="loading"
+          :rowKey="(record, index) => index"
+          size="middle"
+          :columns="columns"
+          :dataSource="tableData"
+          v-margin:top="16"
+          :pagination="false"
+        >
+          <span slot="action" slot-scope="row">
+            <a @click="toMonitorData(row)">监测数据</a>
+          </span>
+        </a-table>
+        <a-pagination
+          size="small"
+          v-margin:top="16"
+          showSizeChanger
+          :pageSize.sync="pageSize"
+          :showTotal="total => `共 ${total} 条`"
+          :defaultCurrent="current"
+          @change="pagechange"
+          @showSizeChange="sizechange"
+          :total="total"
+        />
       </div>
     </a-card>
     <a-card
@@ -87,20 +80,24 @@
         </div>
       </div>
       <ve-line
+        v-if="chartData"
         :data="chartData"
         :legend-visible="false"
         :settings="settings"
       ></ve-line>
+      <a-empty v-if="!chartData" :image="simpleImage" />
     </a-card>
   </div>
 </template>
 
 <script>
+import { Empty } from "ant-design-vue";
 export default {
   data() {
     return {
       allTableData: [],
       columnsValue: "",
+      columnsName: "",
       dateFormat: "",
       columnsList: [],
       loading: false,
@@ -121,48 +118,7 @@ export default {
       },
       chartData: {
         columns: ["dateTime", "value"],
-        rows: [
-          {
-            时间: "2020-04-03 14:24:09",
-            一氧化碳: 40
-          },
-          {
-            时间: "2020-04-03 14:23:00",
-            一氧化碳: 36
-          },
-          {
-            时间: "2020-04-03 14:22:00",
-            一氧化碳: 25
-          },
-          {
-            时间: "2020-04-03 14:21:59",
-            一氧化碳: 28
-          },
-          {
-            时间: "2020-04-03 14:21:49",
-            一氧化碳: 37
-          },
-          {
-            时间: "2020-04-03 14:21:39",
-            一氧化碳: 42
-          },
-          {
-            时间: "2020-04-03 14:21:29",
-            一氧化碳: 51
-          },
-          {
-            时间: "2020-04-03 14:21:19",
-            一氧化碳: 41
-          },
-          {
-            时间: "2020-04-03 14:21:09",
-            一氧化碳: 45
-          },
-          {
-            时间: "2020-04-03 14:21:00",
-            一氧化碳: 46
-          }
-        ]
+        rows: []
       }
     };
   },
@@ -170,10 +126,13 @@ export default {
     settings() {
       return {
         labelMap: {
-          value: this.columnsValue
+          value: this.columnsName
         }
       };
     }
+  },
+  beforeCreate() {
+    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   },
   mounted() {
     this.setPointId();
@@ -196,67 +155,36 @@ export default {
           });
         }
       });
-      console.log(tempData);
       this.chartData.rows = tempData;
     },
-    onColumnsChange(value) {
+    onColumnsChange(value, option) {
       this.columnsValue = value;
+      for (let i = 0; i < this.columnsList.length; i++) {
+        if (this.columnsList[i].value == option.key) {
+          this.columnsName = this.columnsList[i].name;
+        }
+      }
       this.setCharData();
     },
     //时间改变事件
     onChange(date, dateString) {
-      if (this.formInline.type == "1") {
-        if (
-          this.$moment(
-            dateString[1] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).valueOf() >
-          this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-            .add(2, "days")
-            .valueOf()
-        ) {
-          this.formInline.range[1] = this.$moment(
-            dateString[0] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).add(2, "days");
-        } else {
-          this.formInline.range[1] = date[1];
-        }
-      } else if (this.formInline.type == "2") {
-        if (
-          this.$moment(
-            dateString[1] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).valueOf() >
-          this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-            .add(1, "weeks")
-            .valueOf()
-        ) {
-          this.formInline.range[1] = this.$moment(
-            dateString[0] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).add(1, "weeks");
-        } else {
-          this.formInline.range[1] = date[1];
-        }
-      } else if (this.formInline.type == "3") {
-        if (
-          this.$moment(
-            dateString[1] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).valueOf() >
-          this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-            .add(1, "months")
-            .valueOf()
-        ) {
-          this.formInline.range[1] = this.$moment(
-            dateString[0] + " 23:59:59",
-            "YYYY-MM-DD HH:mm:ss"
-          ).add(1, "months");
-        } else {
-          this.formInline.range[1] = date[1];
-        }
+      if (
+        this.$moment(
+          dateString[1] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).valueOf() >
+        this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
+          .add(2, "days")
+          .valueOf()
+      ) {
+        this.formInline.range[1] = this.$moment(
+          dateString[0] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).add(2, "days");
+      } else {
+        this.formInline.range[1] = date[1];
       }
+      this.getTableData();
     },
     //设置pointid
     setPointId() {
@@ -356,13 +284,8 @@ export default {
             });
             this.columns = temp;
             this.columnsList = tempColumns;
-            console.log("-------temp------");
-            console.log(temp);
-            console.log("-------temp------");
-            console.log("-------tempColumns------");
-            console.log(tempColumns);
-            console.log("-------tempColumns------");
             this.columnsValue = tempColumns[0].value || "";
+            this.columnsName = tempColumns[0].name || "";
           }
         })
         .then(() => {

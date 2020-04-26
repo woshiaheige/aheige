@@ -170,7 +170,7 @@ export default {
           for (var i in result) {
             let marker;
             let content =
-              '<div class="marker-info marker-car"><a-icon type="car" />' +
+              '<div class="marker-info marker-car"><a-icon class="car" />' +
               result[i].number +
               "</div>";
             marker = new AMap.Marker({
@@ -193,7 +193,12 @@ export default {
           let result = res.data.data;
           for (var i in result) {
             let marker;
-            let content = '<div class="marker-info marker-man"></div>';
+            let content =
+              '<div class="marker-info marker-man"><a-icon class="man" />' +
+              result[i].groupName +
+              "  |  " +
+              result[i].username +
+              "</div>";
             marker = new AMap.Marker({
               position: new AMap.LngLat(result[i].lng, result[i].lat),
               title: result[i].groupName + "  |  " + result[i].username,

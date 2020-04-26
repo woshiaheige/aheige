@@ -17,6 +17,9 @@ export default {
     return {
       zh_CN
     };
+  },
+  created() {
+    this.removeLoading();
   }
 };
 </script>

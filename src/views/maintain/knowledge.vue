@@ -52,7 +52,7 @@
           >
             <a-list-item slot="renderItem" slot-scope="item" key="item.id">
               <template slot="actions">
-                <a @click="onDetail(item)">查看</a>
+                <a @click="onDetail(item)">查看更多</a>
               </template>
               <template slot="actions">
                 <a @click="onEdit(item)">编辑</a>
@@ -60,7 +60,7 @@
               <template slot="actions">
                 <a @click="onDelete(item)">删除</a>
               </template>
-              <img slot="extra" width="220" alt="logo" :src="item.img" />
+              <!-- <img slot="extra" width="220" alt="logo" :src="item.img" /> -->
               <a-list-item-meta>
                 <a slot="title">{{ item.title }}</a>
                 <div slot="description">
@@ -249,15 +249,11 @@ export default {
       });
     },
     onDetail(row) {
-      //查看详情
-      this.$api.maintain.getArticleById({ id: row.id }).then(res => {
-        if (res.data.state == 0) {
-          this.articleDetailVisible = true;
-          this.articleModalDetail = res.data.data;
-        }
+      this.$router.push({
+        path: "/maintain/knowledge/article",
+        query: { id: row.id }
       });
     },
-
     onDelete(row) {
       let _this = this;
       this.$confirm({

@@ -90,7 +90,7 @@ export default {
         _this.address = address;
       } else {
         // 未传入点时，获取ip所在地址
-        point = JSON.parse(localStorage.getItem("locationPoint")).lnglat
+        point = localStorage.getItem("locationPoint")
           ? JSON.parse(localStorage.getItem("locationPoint")).lnglat
           : ["113.323192", "23.029466"];
         _this.lnglat = {

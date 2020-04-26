@@ -103,6 +103,13 @@ const common = {
       params: data
     });
   },
+  //根据监控点id查询设备下拉
+  selectFactorByPointId(data) {
+    //传参名:pointId
+    return axios.get(base.api + "divisor/listAllByPointId", {
+      params: data
+    });
+  },
 
   //区域树
   getTreeByName(data) {

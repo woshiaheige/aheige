@@ -289,10 +289,9 @@
         >
           <div class="required">
             <a-form-model-item label="起始时间" prop="beginTime">
-              <a-date-picker
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
+              <a-time-picker
                 v-model="formValidate15.beginTime"
+                format="HH:mm:ss"
               />
             </a-form-model-item>
           </div>
@@ -628,7 +627,7 @@ export default {
         hour: this.formValidate15.time,
         divisorId: this.formValidate15.pollCode,
         pointId: this.monitor.pointId,
-        beginTime: this.formValidate15.beginTime.format("YYYY-MM-DD HH:mm:ss")
+        cstartTime: this.formValidate15.beginTime.format("HH:mm:ss")
       };
       this.$api.monitor
         .getSend3016(data)

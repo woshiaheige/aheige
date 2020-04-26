@@ -20,8 +20,8 @@
             <a-radio-button :value="32">水类运维</a-radio-button>
             <a-radio-button :value="0">其他运维</a-radio-button>
           </a-radio-group>
-          <a-button type="dashed" block v-margin:top="16" @click="addNewScheme"
-            >新建方案</a-button
+          <a-button type="primary" block v-margin:top="16" @click="addNewScheme"
+            ><a-icon type="plus" />新建方案</a-button
           >
           <a-menu v-model="currentScheme" mode="vertical">
             <a-menu-item v-for="item in schemeList" :key="item.id">

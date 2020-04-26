@@ -4,18 +4,6 @@
       <a-descriptions-item label="投诉人">{{
         info.userName
       }}</a-descriptions-item>
-      <a-descriptions-item label="手机号码">{{
-        info.phone
-      }}</a-descriptions-item>
-      <a-descriptions-item label="投诉来源">{{
-        info.sourceName
-      }}</a-descriptions-item>
-      <a-descriptions-item label="投诉状态">{{
-        info.stateName
-      }}</a-descriptions-item>
-      <a-descriptions-item label="企业名称">{{
-        info.enterpriseName
-      }}</a-descriptions-item>
       <a-descriptions-item label="投诉内容">{{
         info.content
       }}</a-descriptions-item>

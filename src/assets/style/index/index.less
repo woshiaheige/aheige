@@ -8,7 +8,6 @@
     overflow: hidden;
   }
 
-
   #container {
     margin-top: 16px;
     height: 550px;
@@ -21,13 +20,12 @@
   .progress {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: row;
+    align-content: flex-start;
 
     .item {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
+      margin-right: 16px;
 
       p {
         text-align: center;

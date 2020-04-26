@@ -38,11 +38,11 @@
           </a-select>
         </a-form-item>
         <a-form-item style="float: right">
-          <a-button type="primary" @click="reset()" style="margin-right:15px">
-            重置
-          </a-button>
           <a-button type="primary" @click="onSubmit()">
             查询
+          </a-button>
+          <a-button @click="reset()" v-margin:left="16">
+            重置
           </a-button>
         </a-form-item>
       </a-form>
@@ -73,6 +73,9 @@
           <a-tag color="red" v-if="state == 2">合同终结</a-tag>
           <a-tag color="green" v-if="state == 1">履行中</a-tag>
         </template>
+        <span slot="downLoad" slot-scope="row">
+          <a @click="onDown(row)">附件下载</a>
+        </span>
         <span slot="action" slot-scope="row">
           <a @click="onEdit('edit', row)">编辑</a>
           <a-divider type="vertical" />
@@ -148,6 +151,13 @@ export default {
           width: 110
         },
         {
+          title: "合同材料",
+          key: "downLoad",
+          scopedSlots: { customRender: "downLoad" },
+          align: "center",
+          width: 110
+        },
+        {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
@@ -211,6 +221,16 @@ export default {
       this.obj.show = true;
       this.obj.type = type;
       this.obj.row = row;
+    },
+    onDown(row) {
+      if (row.fileId == null) {
+        this.$message.warn("没有附件");
+        return;
+      }
+      this.$api.customer.downloadFile({ id: row.fileId }).then(() => {
+        window.location.href =
+          this.$api.base.api + "files/download/file/" + row.fileId;
+      });
     }
   },
   mounted() {
