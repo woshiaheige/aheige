@@ -77,7 +77,7 @@ export default {
           let data = {
             planDay: this.form.date,
             type: this.planDetail.type,
-            programmeId: this.planDetail.programmeId
+            id: this.planDetail.id
           };
 
           this.$api.maintain.editPlan(data).then(res => {

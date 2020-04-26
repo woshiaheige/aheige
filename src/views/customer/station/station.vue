@@ -7,7 +7,7 @@
             placeholder="请输入"
             v-model="list.name"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="监控点名称">
@@ -15,7 +15,7 @@
             placeholder="请输入"
             v-model="list.pointName"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="MN号">
@@ -23,7 +23,7 @@
             placeholder="请输入"
             v-model="list.mn"
             @pressEnter="getTableData"
-            allowClear
+            :maxLength="30"
           ></a-input>
         </a-form-item>
         <a-form-item label="监控点类型">

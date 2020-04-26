@@ -175,18 +175,15 @@ export default {
                 if (res.data.state == 0) {
                   that.$message.success("登录成功！");
                   sessionStorage.setItem("token", res.data.data.token);
-                  this.$store.dispatch(
-                    "createRouterTable",
-                    res.data.data.resources
-                  ); //动态添加路由
 
-                  await this.$api.login.getResource().then(res => {
-                    this.$store.dispatch(
-                      "createRouterTable",
-                      res.data.data.resources
-                    );
-                    that.$router.push("/");
-                  });
+                  // await this.$api.login.getResource().then(async res => {
+                  //   await that.$store.dispatch(
+                  //     "createRouterTable",
+                  //     res.data.data
+                  //   );
+                  //   that.setLoading("正在登录中，请稍等");
+                  that.$router.push("/");
+                  // });
                 }
               })
               .catch(err => {

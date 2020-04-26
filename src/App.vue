@@ -19,7 +19,19 @@ export default {
     };
   },
   created() {
+    this.refresh();
     this.removeLoading();
+  },
+  methods: {
+    refresh() {
+      if (sessionStorage.getItem("permission")) {
+        //处理F5 刷新鉴权
+        this.$store.dispatch(
+          "createRouterTable",
+          JSON.parse(sessionStorage.getItem("permission"))
+        );
+      }
+    }
   }
 };
 </script>

@@ -3,10 +3,18 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="姓名">
-          <a-input placeholder="请输入" v-model="list.name"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.name"
+            :maxLength="30"
+          ></a-input>
         </a-form-item>
         <a-form-item label="手机号">
-          <a-input placeholder="请输入" v-model="list.phone"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="list.phone"
+            :maxLength="30"
+          ></a-input>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
