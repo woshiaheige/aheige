@@ -27,8 +27,12 @@
           :pagination="false"
         >
         </a-table>
-        <notification-exceed v-margin:top="40" />
-        <notification-unusual v-margin:top="40" />
+        <notification-exceed v-margin:top="40" :formInline="obj" ref="exceed" />
+        <notification-unusual
+          v-margin:top="40"
+          :formInline="obj"
+          ref="unusual"
+        />
       </a-card>
       <a-empty v-if="notificationData.length == 0" />
       <a-descriptions layout="vertical" bordered size="small" v-else>
@@ -67,8 +71,8 @@
 </template>
 
 <script>
-import notificationExceed from "./notification-exceed";
-import notificationUnusual from "./notification-unusual";
+import notificationExceed from "@/components/maintain/notification/notification-exceed";
+import notificationUnusual from "@/components/maintain/notification/notification-unusual";
 export default {
   components: { notificationExceed, notificationUnusual },
   props: {
@@ -88,7 +92,10 @@ export default {
     obj(nval) {
       if (nval.show) {
         this.notification = nval;
-        console.log(nval);
+        this.$nextTick(() => {
+          this.$refs.exceed.getTableData(nval);
+          this.$refs.unusual.getTableData(nval);
+        });
         this.getReportPushDetails();
         this.getReportPushDataRateDetails();
       }
@@ -96,7 +103,9 @@ export default {
   },
   data() {
     return {
+      aaa: "",
       loading: false,
+      formInline: { mn: "", beginTime: "", endTime: "" },
       notification: {
         pointId: "",
         beginTime: "",

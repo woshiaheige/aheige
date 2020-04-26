@@ -70,6 +70,7 @@ Vue.prototype.$api = api;
 Vue.prototype.$base = base;
 Vue.prototype.$moment = moment;
 Vue.prototype.$md5 = md5;
+Vue.prototype.$bus = new Vue();
 
 new Vue({
   router,

@@ -22,16 +22,18 @@
                 <P v-for="(value, key) of taskList" :key="key"
                   >站点名称：{{ value.pointName }}&nbsp;&nbsp; 运维小组：{{
                     value.groupName
-                  }}&nbsp;&nbsp; 运维方案：{{ value.task }}
+                  }}&nbsp;&nbsp; 运维方案：{{ value.programmeName }}
                 </P>
               </template>
-              <a-badge
-                v-show="item.status == 1"
+              <a-tag color="#2db7f5" v-margin="5">{{
+                item.enterpriseName
+              }}</a-tag>
+              <!-- <a-badge
                 status="default"
                 :text="item.enterpriseName"
                 :title="item.enterpriseName"
-              />
-              <a-badge
+              /> -->
+              <!-- <a-badge
                 v-show="item.status == 2"
                 status="success"
                 :text="item.enterpriseName"
@@ -42,7 +44,7 @@
                 status="warning"
                 :text="item.enterpriseName"
                 :title="item.enterpriseName"
-              />
+              /> -->
             </a-popover>
           </li>
         </ul>
@@ -126,8 +128,8 @@ export default {
     getDetail(item) {
       //获取日计划详情
       let params = {
-        planId: item.id,
-        time: this.$moment(item.gmtExecution).format("YYYY-MM-DD")
+        enterpriseId: item.enterpriseId,
+        beginTime: this.$moment(item.gmtExecution).format("YYYY-MM-DD")
       };
       this.$api.maintain.getMonthPlanBoardData(params).then(res => {
         if (res.data.state == 0) {

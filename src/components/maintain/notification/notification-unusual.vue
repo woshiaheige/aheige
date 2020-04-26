@@ -64,23 +64,19 @@ export default {
     // this.getTableData();
   },
   methods: {
-    getTableData() {
+    getTableData(formInline) {
+      console.log("执行了111");
       this.loading = true;
       let data = {
-        index: this.current,
-        size: this.pagesize,
-        beginTime: this.formInline.beginTime,
-        endTime: this.formInline.endTime,
-        enterpriseName: this.formInline.enterpriseName,
-        mn: this.formInline.mn,
-        pointName: this.formInline.pointName
+        beginTime: formInline.beginTime,
+        endTime: formInline.endTime,
+        mn: formInline.mn
       };
-      this.$api.monitor
-        .getExData(data)
+      this.$api.maintain
+        .getReportPushDataRateExData(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.total = res.data.data.total;
-            this.tableData = res.data.data.list;
+            this.tableData = res.data.data;
           }
         })
         .catch(err => {
