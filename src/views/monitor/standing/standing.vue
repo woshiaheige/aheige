@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :bordered="false">
-      <a-form-model layout="inline">
+      <a-form-model layout="inline" ref="form">
         <a-form-model-item label="企业名称">
           <a-input
             v-model.trim="formInline.enterpriseName"
@@ -34,6 +34,11 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-model-item style="float: right">
+          <a-button @click="onReset">
+            重置
+          </a-button>
+        </a-form-model-item>
         <a-form-model-item style="float: right">
           <a-button type="primary" @click="onSubmit">
             查询
@@ -87,6 +92,7 @@
         :total="total"
       />
     </a-card>
+    <!-- 设备反控 -->
     <station-control
       :visible="visible"
       :modalObj="controlObj"
@@ -187,6 +193,14 @@ export default {
     this.getTableData();
   },
   methods: {
+    //重置表单事件
+    onReset() {
+      this.formInline = {
+        enterpriseName: "",
+        pointName: "",
+        level: undefined
+      };
+    },
     //关闭弹窗
     onCancel() {
       this.visible = false;

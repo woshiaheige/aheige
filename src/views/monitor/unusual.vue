@@ -16,7 +16,7 @@
             @pressEnter="getTableData"
           />
         </a-form-model-item>
-        <a-form-model-item label="MN号码">
+        <a-form-model-item label="MN号">
           <a-input
             v-model="formInline.mn"
             placeholder="请输入"
@@ -24,7 +24,17 @@
           />
         </a-form-model-item>
         <a-form-model-item label="异常时间">
-          <a-range-picker v-model="formInline.range" format="YYYY-MM-DD" />
+          <a-range-picker
+            :allowClear="false"
+            v-model="formInline.range"
+            format="YYYY-MM-DD"
+            @change="onChange"
+          />
+        </a-form-model-item>
+        <a-form-model-item style="float: right">
+          <a-button @click="onReset">
+            重置
+          </a-button>
         </a-form-model-item>
         <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
@@ -46,6 +56,10 @@
         v-margin:top="16"
         :pagination="false"
       >
+        <template slot="dataType" slot-scope="dataType">
+          <a-tag color="green" v-if="dataType == '2051'">分钟数据</a-tag>
+          <a-tag color="blue" v-if="dataType == '2061'">小时数据</a-tag>
+        </template>
       </a-table>
 
       <a-pagination
@@ -82,7 +96,7 @@ export default {
           dataIndex: "pointName"
         },
         {
-          title: "MN号码",
+          title: "MN号",
           dataIndex: "mn",
           key: "mn"
         },
@@ -91,7 +105,7 @@ export default {
           dataIndex: "flag",
           customRender: text => {
             if (text == "F") {
-              return "仪器仪表故障";
+              return "仪器仪表停运";
             } else if (text == "M") {
               return "仪器仪表处于维护期间产生的数据";
             } else if (text == "S") {
@@ -116,8 +130,16 @@ export default {
           dataIndex: "rtd"
         },
         {
+          title: "数据类型",
+          dataIndex: "dataType",
+          align: "center",
+          width: 100,
+          scopedSlots: { customRender: "dataType" }
+        },
+        {
           title: "异常时间",
           dataIndex: "dateTime",
+          align: "center",
           width: 200
         }
       ],
@@ -133,6 +155,14 @@ export default {
     this.getTableData();
   },
   methods: {
+    onReset() {
+      this.formInline = {
+        enterpriseName: "",
+        pointName: "",
+        mn: "",
+        range: [this.$moment(), this.$moment()]
+      };
+    },
     getTableData() {
       this.loading = true;
       let data = {
@@ -160,8 +190,22 @@ export default {
         });
     },
     onChange(date, dateString) {
-      this.formInline.beginTime = dateString[0] + " 00:00:00";
-      this.formInline.endTime = dateString[1] + " 23:59:59";
+      if (
+        this.$moment(
+          dateString[1] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).valueOf() >
+        this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
+          .add(2, "days")
+          .valueOf()
+      ) {
+        this.formInline.range[1] = this.$moment(
+          dateString[0] + " 23:59:59",
+          "YYYY-MM-DD HH:mm:ss"
+        ).add(2, "days");
+      } else {
+        this.formInline.range[1] = date[1];
+      }
     }
   }
 };
