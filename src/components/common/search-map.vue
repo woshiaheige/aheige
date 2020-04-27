@@ -22,6 +22,7 @@
 
 <script>
 import AMap from "AMap"; // 引入高德地图
+import $ from "jquery";
 export default {
   props: ["obj"],
   data() {
@@ -106,12 +107,12 @@ export default {
         };
         _this.address = "";
       }
+      $("#tipinput").val("");
       //搜索功能，输入提示
       AMap.plugin("AMap.Autocomplete", function() {
         let auto = new AMap.Autocomplete({
           input: "tipinput"
         });
-        // let autocomplete = new AMap.Autocomplete(auto);
         AMap.event.addListener(auto, "select", function(e) {
           if (e && e.poi) {
             _this.setPoint(map, e.poi.location.lng, e.poi.location.lat);
@@ -119,6 +120,28 @@ export default {
           }
         });
       });
+      //按下回车搜索
+      $("#tipinput").bind("keypress", function(event) {
+        if (event.keyCode == 13) {
+          var keywords = document.getElementById("tipinput").value;
+          AMap.plugin("AMap.Autocomplete", function() {
+            var autoOptions = {
+              city: "全国"
+            };
+            var autoComplete = new AMap.Autocomplete(autoOptions);
+            autoComplete.search(keywords, function(status, result) {
+              // 搜索成功时，result即是对应的匹配数据
+              if (status == "complete") {
+                let data = result.tips[0];
+                _this.setPoint(map, data.location.lng, data.location.lat);
+                _this.address = data.district;
+                $(".amap-sug-result").css("visibility", "hidden");
+              }
+            });
+          });
+        }
+      });
+
       // 创建点标记
       if (lnglat) {
         _this.setPoint(map, lnglat[0], lnglat[1]);
@@ -151,6 +174,7 @@ export default {
         });
       });
     },
+
     Submit() {
       let data = {
         lnglat: this.lnglat,
