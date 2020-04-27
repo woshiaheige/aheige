@@ -1,10 +1,10 @@
 <template>
   <div class="login">
-    <div class="login-signup-header">
+    <!-- <div class="login-signup-header">
       <div class="slider-logo">
         <img :src="require('@/assets/img/logo.png')" alt="" />
       </div>
-    </div>
+    </div> -->
     <div class="login-box">
       <div class="login-title">
         <a-icon
