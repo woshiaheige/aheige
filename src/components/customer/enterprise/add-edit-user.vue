@@ -32,7 +32,7 @@
         <a-input placeholder="手机" v-model="formData.phone" />
       </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
-        <a-input
+        <a-input-password
           placeholder="密码"
           :maxLength="20"
           v-model="formData.password"
