@@ -161,10 +161,10 @@ export default {
         }
       ],
       protocolList: [
-        {
-          name: "扩展协议",
-          id: "0"
-        },
+        // {
+        //   name: "扩展协议",
+        //   id: "0"
+        // },
         {
           name: "05协议",
           id: "05"

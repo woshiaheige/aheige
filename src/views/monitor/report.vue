@@ -183,7 +183,10 @@ export default {
         enterpriseName: "",
         pointName: "",
         mn: "",
-        range: [this.$moment(), this.$moment()]
+        range: [
+          this.$moment().subtract(1, "days"),
+          this.$moment().subtract(1, "days")
+        ]
       }
     };
   },
