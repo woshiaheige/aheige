@@ -142,7 +142,7 @@ export default {
           dataIndex: "transferType",
           align: "center",
           scopedSlots: { customRender: "transferType" },
-          width: 110
+          width: 100
         },
         {
           title: "操作",
