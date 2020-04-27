@@ -10,7 +10,7 @@
     wrapClassName="edit-article"
     :maskClosable="false"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+    <a-form :form="form">
       <a-form-item label="文章标题">
         <a-input
           placeholder="请输入"
