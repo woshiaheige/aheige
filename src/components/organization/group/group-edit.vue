@@ -86,25 +86,33 @@ export default {
     editGroup(values) {
       let params = values;
       params.id = this.groupId;
-      this.$api.organization.editSysGroup(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("修改小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
+      this.$api.organization
+        .editSysGroup(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("修改小组成功");
+            this.$emit("updateTable");
+            this.closeModal();
+          }
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     },
     addGroup(values) {
       let params = values;
-      this.$api.organization.addSysGroup(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("新建小组成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
+      this.$api.organization
+        .addSysGroup(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("新建小组成功");
+            this.$emit("updateTable");
+            this.closeModal();
+          }
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     }
   }
 };

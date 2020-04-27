@@ -72,13 +72,6 @@ export default {
       pageSizeOptions: ["8", "16", "24", "32", "40"],
       columns: [
         {
-          title: "序号",
-          align: "center",
-          customRender: (text, row, index) => {
-            return <span>{index + (this.current - 1) * this.size + 1}</span>;
-          }
-        },
-        {
           title: "车辆",
           dataIndex: "number",
           align: "center"

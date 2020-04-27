@@ -6,17 +6,18 @@
     @ok="handleOk"
     :maskClosable="false"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="分类名称">
-        <a-input
-          placeholder="请输入"
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入分类名称' }] }
-          ]"
-        />
-      </a-form-item>
-    </a-form>
+    <a-form-model
+      ref="ruleForm"
+      :validateOnRuleChange="true"
+      :model="formData"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
+      <a-form-model-item label="分类名称" prop="name">
+        <a-input placeholder="请输入" v-model="formData.name" />
+      </a-form-model-item>
+    </a-form-model>
   </a-modal>
 </template>
 
@@ -32,9 +33,29 @@ export default {
     }
   },
   data() {
+    const validateName = (rule, value, callback) => {
+      if (value == undefined || value == "") {
+        callback("请输入分类");
+        return;
+      }
+      if (value.length > 20) {
+        callback("分类长度不能超过30位");
+      } else {
+        callback();
+      }
+    };
     return {
-      form: this.$form.createForm(this, "knowledgeEdit"),
-      knowledgeId: ""
+      formData: {
+        name: ""
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            validator: validateName
+          }
+        ]
+      }
     };
   },
   computed: {
@@ -47,12 +68,10 @@ export default {
     detail(nval) {
       if (nval) {
         this.knowledgeId = nval.id;
-        setTimeout(() => {
-          this.form.setFieldsValue({
-            name: nval.name,
-            sort: nval.sort
-          });
-        }, 50);
+        this.formData = {
+          name: nval.name,
+          sort: nval.sort
+        };
       }
     }
   },
@@ -63,16 +82,19 @@ export default {
     },
     reset() {
       this.knowledgeId = "";
-      this.form.resetFields();
+      this.$refs.ruleForm.clearValidate();
+      this.formData = this.$options.data().formData;
     },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.knowledgeId) {
-            this.editknowledge(values);
-          } else {
-            this.addknowledge(values);
-          }
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        if (this.knowledgeId) {
+          this.editknowledge(this.formData);
+        } else {
+          this.addknowledge(this.formData);
         }
       });
     },

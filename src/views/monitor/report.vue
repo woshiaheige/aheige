@@ -89,16 +89,6 @@ export default {
       tableData: [],
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
-            );
-          }
-        },
-        {
           title: "企业名称",
           dataIndex: "enterpriseName",
           key: "enterpriseName"
@@ -193,7 +183,10 @@ export default {
         enterpriseName: "",
         pointName: "",
         mn: "",
-        range: [this.$moment(), this.$moment()]
+        range: [
+          this.$moment().subtract(1, "days"),
+          this.$moment().subtract(1, "days")
+        ]
       }
     };
   },

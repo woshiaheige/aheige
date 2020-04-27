@@ -32,7 +32,7 @@
         <a-input placeholder="手机" v-model="formData.phone" />
       </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
-        <a-input
+        <a-input-password
           placeholder="密码"
           :maxLength="20"
           v-model="formData.password"
@@ -101,24 +101,34 @@ export default {
           if (this.oldPassword != this.formData.password) {
             this.formData.password = this.$md5(this.formData.password);
           }
-          this.$api.customer.editEnterprise(this.formData).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("编辑成功");
-              this.$emit("refresh");
+          this.$api.customer
+            .editEnterprise(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("编辑成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         } else {
           this.formData.enterpriseId = this.$route.query.id;
           this.formData.isBinding = 0;
           this.formData.password = this.$md5(this.formData.password);
-          this.$api.customer.addEnterprise(this.formData).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("新建成功");
-              this.$emit("refresh");
+          this.$api.customer
+            .addEnterprise(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("新建成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         }
       });
     },

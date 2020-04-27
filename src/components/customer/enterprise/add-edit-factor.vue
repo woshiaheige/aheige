@@ -28,9 +28,12 @@
             :filterOption="filterOptions"
           >
             <span v-if="item.protocolType == 0">
-              {{ item.name }} | 扩展协议
+              {{ item.name }} / {{ item.code }} / 扩展协议
             </span>
-            <span v-else>{{ item.name }} | {{ item.protocolType }}协议</span>
+            <span v-else
+              >{{ item.name }} / {{ item.code }} /
+              {{ item.protocolType }}协议</span
+            >
           </a-select-option>
         </a-select>
       </a-form-model-item>
@@ -125,21 +128,31 @@ export default {
         }
         //验证通过
         if (this.modelData.type == "edit") {
-          this.$api.customer.editFactor(this.formData).then(res => {
-            if (res.data.state == 0) {
-              that.$message.success("编辑成功");
-              that.$emit("refresh");
+          this.$api.customer
+            .editFactor(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("编辑成功");
+                that.$emit("refresh");
+                that.handleCancel();
+              }
+            })
+            .catch(() => {
               that.handleCancel();
-            }
-          });
+            });
         } else {
-          this.$api.customer.addFactor(this.formData).then(res => {
-            if (res.data.state == 0) {
-              that.$message.success("新建成功");
-              that.$emit("refresh");
+          this.$api.customer
+            .addFactor(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("新建成功");
+                that.$emit("refresh");
+                that.handleCancel();
+              }
+            })
+            .catch(() => {
               that.handleCancel();
-            }
-          });
+            });
         }
       });
     },

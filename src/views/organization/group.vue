@@ -45,7 +45,7 @@
               </a-tag>
             </a-tooltip>
 
-            <a-empty v-if="item.users.length == 0" style="width:100%" />
+            <a-empty v-if="item.users.length == 0" :image="simpleImage" />
           </a-card>
         </a-list-item>
       </a-list>
@@ -75,6 +75,7 @@
 </template>
 <script>
 import groupEdit from "@/components/organization/group/group-edit";
+import { Empty } from "ant-design-vue";
 // import groupMember from "@/components/organization/group/group-member";
 export default {
   components: { groupEdit },
@@ -149,6 +150,9 @@ export default {
   },
   mounted() {
     this.getTableData();
+  },
+  beforeCreate() {
+    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   }
 };
 </script>

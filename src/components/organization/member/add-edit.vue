@@ -331,14 +331,18 @@ export default {
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
-      this.$api.organization.editSysUser(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("修改用户成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
+      this.$api.organization
+        .editSysUser(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("修改用户成功");
+            this.$emit("updateTable");
+            this.closeModal();
+          }
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     },
     addMember(values) {
       let params = values;
@@ -346,14 +350,19 @@ export default {
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
-      this.$api.organization.addSysUser(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("新建用户成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
+      this.$api.organization
+        .addSysUser(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("新建用户成功");
+            this.$emit("update:visible", false);
+            this.$emit("updateTable");
+            this.reset();
+          }
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     }
   },
   mounted() {

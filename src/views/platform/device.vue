@@ -23,6 +23,11 @@
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
+        <a-form-model-item style="float: right">
+          <a-button @click="onReset">
+            重置
+          </a-button>
+        </a-form-model-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
             查找
@@ -189,6 +194,10 @@ export default {
       this.obj.show = true;
       this.obj.type = type;
       this.obj.row = row;
+    },
+    onReset() {
+      this.list = this.$options.data().list;
+      this.onSubmit();
     },
     onDown(row) {
       if (row.fileId == null) {

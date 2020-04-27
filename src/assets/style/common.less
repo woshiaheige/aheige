@@ -13,7 +13,7 @@
   }
 }
 
-.ant-card-head + .ant-card-body {
+.ant-card-head+.ant-card-body {
   padding: 16px 24px;
 }
 
@@ -116,8 +116,16 @@
 .ant-list-item {
   cursor: pointer;
 }
+
 // 解决textarea强制换行
 form .ant-mentions,
 form textarea.ant-input {
   word-break: break-all !important;
+}
+
+//表格tag
+.ant-table-tbody {
+  .ant-tag {
+    margin-right: 0;
+  }
 }

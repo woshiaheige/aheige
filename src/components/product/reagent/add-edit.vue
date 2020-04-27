@@ -157,21 +157,31 @@ export default {
         }
 
         if (this.modelData.type == "edit") {
-          this.$api.product.editGoods(this.formData).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("编辑成功");
-              this.$emit("refresh");
+          this.$api.product
+            .editGoods(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("编辑成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         } else {
-          this.$api.product.addGoods(this.formData).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("新建成功");
-              this.$emit("refresh");
+          this.$api.product
+            .addGoods(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("新建成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         }
       });
     },

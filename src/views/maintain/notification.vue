@@ -50,7 +50,7 @@
         :pagination="false"
       >
         <template slot="type" slot-scope="type">
-          <a-tag color="green" v-if="type == 1">季报表</a-tag>
+          <!-- <a-tag color="green" v-if="type == 1">季报表</a-tag> -->
           <a-tag color="cyan" v-if="type == 2">月报表</a-tag>
           <a-tag color="blue" v-if="type == 3">周报表</a-tag>
         </template>
@@ -70,29 +70,37 @@
         :total="total"
       />
     </a-card>
-    <notification-modal
-      :obj="modal"
+    <!-- 周报表 -->
+    <notification-week
+      :obj="modalWeek"
       @cancel="onCancel"
-      ref="notificationModal"
-    ></notification-modal>
+      ref="notificationWeek"
+    ></notification-week>
+    <!-- 月报表 -->
+    <notification-month
+      :obj="modalMonth"
+      @cancel="onCancel"
+      ref="notificationMonth"
+    ></notification-month>
   </div>
 </template>
 
 <script>
-import notificationModal from "@/components/maintain/notification/notification-modal";
+import notificationWeek from "@/components/maintain/notification-week/notification-week";
+import notificationMonth from "@/components/maintain/notification-month/notification-month";
 export default {
-  components: { notificationModal },
+  components: { notificationWeek, notificationMonth },
   data() {
     return {
-      modal: {
-        show: false,
-        id: "",
-        beginTime: "",
-        endTime: ""
+      modalWeek: {
+        show: false
+      },
+      modalMonth: {
+        show: false
       },
       rportTypeList: [
         { name: "全部", value: "all" },
-        { name: "季报表", value: 1 },
+        // { name: "季报表", value: 1 },
         { name: "月报表", value: 2 },
         { name: "周报表", value: 3 }
       ],
@@ -145,12 +153,16 @@ export default {
   },
   methods: {
     onCancel() {
-      this.modal.show = false;
+      this.modalWeek.show = false;
+      this.modalMonth.show = false;
     },
     toReportModal(row) {
-      this.modal = {
+      this.modalWeek = {
         show: true
       };
+      // this.modalMonth = {
+      //   show: true
+      // };
       // this.$bus.$data.notification = {
       //   id: row.id,
       //   pointId: row.pointId,
@@ -172,11 +184,12 @@ export default {
         pointId: row.pointId,
         beginTime: "2020-01-01",
         endTime: "2020-12-01",
-        title: "对接异常详情测试",
+        title: "756877X5555553",
         mn: "756877X3333321"
       };
 
-      this.$refs.notificationModal.setNotification();
+      // this.$refs.notificationWeek.setNotification();
+      this.$refs.notificationMonth.setNotification();
     },
     getTableData() {
       let params = {

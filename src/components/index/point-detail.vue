@@ -3,6 +3,7 @@
     title="站点报警信息"
     :visible="modelData.show"
     @cancel="handleCancel"
+    :width="650"
   >
     <a-table
       :rowKey="(record, index) => index"
@@ -37,6 +38,11 @@ export default {
           key: "divisorName"
         },
         {
+          title: "超标值",
+          dataIndex: "realVal",
+          key: "realVal"
+        },
+        {
           title: "下限",
           dataIndex: "floorval",
           key: "floorval"
@@ -45,6 +51,11 @@ export default {
           title: "上限",
           dataIndex: "ceilval",
           key: "ceilval"
+        },
+        {
+          title: "时间",
+          dataIndex: "datatime",
+          key: "datatime"
         }
       ],
       tableData: [],

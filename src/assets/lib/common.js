@@ -9,10 +9,10 @@ const event = {
       this.current = page;
       this.getTableData();
     },
-    sizechange(_, pageSize) {
+    sizechange(_, size) {
       //页数
       this.current = 1;
-      this.pageSize = pageSize;
+      this.size = size;
       this.getTableData();
     },
 
