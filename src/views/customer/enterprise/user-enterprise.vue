@@ -80,10 +80,6 @@ export default {
       total: 1,
       loading: false,
       columns: [
-        // {
-        //   title: "序号",
-        //   customRender: (text, row, index) => `${index + 1}`
-        // },
         {
           title: "企业名称",
           dataIndex: "enterpriseName"

@@ -137,16 +137,6 @@ export default {
       },
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
-            );
-          }
-        },
-        {
           title: "标题",
           dataIndex: "title",
           ellipsis: true

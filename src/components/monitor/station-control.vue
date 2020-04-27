@@ -221,11 +221,6 @@ export default {
       },
       columns1: [
         {
-          title: "序号",
-          width: 80,
-          key: "index"
-        },
-        {
           title: "时间",
           key: "date"
         },
