@@ -83,27 +83,30 @@ export default {
       //lnglat:传进来的点的经纬度[113.538754,22.792099]，address:传进来的点的地址，不传则为空，没有点标记
       let _this = this;
       let point = [];
+      let map = "";
       if (lnglat) {
         // 传入点时
         point = lnglat;
         _this.lnglat = lnglat;
         _this.address = address;
+        map = new AMap.Map("myChart", {
+          resizeEnable: true,
+          zoom: 10,
+          center: point
+        });
       } else {
-        // 未传入点时，获取ip所在地址
-        point = localStorage.getItem("locationPoint")
-          ? JSON.parse(localStorage.getItem("locationPoint")).lnglat
-          : ["113.323192", "23.029466"];
+        // 未传入点时，根据用户IP自动匹配地图中心点
+        map = new AMap.Map("myChart", {
+          resizeEnable: true,
+          zoom: 10
+        });
+        point = [map.getCenter().lng, map.getCenter().lat];
         _this.lnglat = {
-          lng: "",
-          lat: ""
+          lng: map.getCenter().lng,
+          lat: map.getCenter().lat
         };
         _this.address = "";
       }
-      let map = new AMap.Map("myChart", {
-        resizeEnable: true,
-        zoom: 10,
-        center: point
-      });
       //搜索功能，输入提示
       AMap.plugin("AMap.Autocomplete", function() {
         let auto = new AMap.Autocomplete({
@@ -111,7 +114,6 @@ export default {
         });
         // let autocomplete = new AMap.Autocomplete(auto);
         AMap.event.addListener(auto, "select", function(e) {
-          console.log("data", e);
           if (e && e.poi) {
             _this.setPoint(map, e.poi.location.lng, e.poi.location.lat);
             _this.address = e.poi.address;
