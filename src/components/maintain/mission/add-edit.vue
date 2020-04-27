@@ -19,7 +19,7 @@
         <a-select
           showSearch
           v-model="formData.enterpriseId"
-          placeholder="请输入"
+          placeholder="请选择"
           style="width: 200px"
         >
           <a-select-option
@@ -32,10 +32,12 @@
       </a-form-model-item>
       <a-form-model-item label="选择站点" prop="pointId">
         <a-select
-          :disabled="formData.enterpriseId == ''"
+          :disabled="
+            formData.enterpriseId == '' || formData.enterpriseId == undefined
+          "
           showSearch
           :value="formData.pointId"
-          placeholder="请输入"
+          placeholder="请选择"
           style="width: 200px"
         >
           <a-select-option
@@ -49,7 +51,7 @@
       </a-form-model-item>
       <a-form-model-item label="运维人员" prop="memberId">
         <a-select
-          :disabled="formData.pointId == ''"
+          :disabled="formData.pointId == '' || formData.pointId == null"
           v-model="formData.memberId"
           placeholder="请选择"
           style="width: 200px"
@@ -105,9 +107,9 @@ export default {
         name: "",
         content: "",
         gmtExecution: undefined,
-        enterpriseId: "",
-        pointId: "",
-        memberId: ""
+        enterpriseId: undefined,
+        pointId: undefined,
+        memberId: undefined
       },
       rules: {
         enterpriseId: [
@@ -163,9 +165,9 @@ export default {
           name: "",
           content: "",
           gmtExecution: undefined,
-          enterpriseId: "",
-          pointId: "",
-          memberId: ""
+          enterpriseId: undefined,
+          pointId: undefined,
+          memberId: undefined
         };
       }
     },
