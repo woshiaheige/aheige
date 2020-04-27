@@ -38,7 +38,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  let token = sessionStorage.getItem("token");
+  let userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
 
   //判断是否webkit内核或IE11以上的浏览器
   if (
@@ -46,7 +46,7 @@ router.beforeEach(async (to, from, next) => {
     client.client.browser.firefox != 0 ||
     client.client.browser.ie >= 11
   ) {
-    if (token) {
+    if (userinfo) {
       if (to.path == "") {
         next("/");
       } else {

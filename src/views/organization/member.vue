@@ -40,7 +40,7 @@
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="0">正常</a-select-option>
-            <a-select-option value="1">锁定</a-select-option>
+            <a-select-option value="1">冻结</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -66,7 +66,7 @@
       >
         <template slot="status" slot-scope="text, row">
           <a-tag color="green" v-if="row.isLocked != 1">正常</a-tag>
-          <a-tag color="red" v-else>锁定</a-tag>
+          <a-tag color="red" v-else>冻结</a-tag>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>
@@ -75,7 +75,7 @@
             <a @click="onDelete(row)">删除</a>
             <a-divider type="vertical" />
             <a @click="onLock(row)" v-show="row.isLocked == 1">解锁</a>
-            <a @click="unLock(row)" v-show="row.isLocked == 0">锁定</a>
+            <a @click="unLock(row)" v-show="row.isLocked == 0">冻结</a>
           </span>
         </span>
       </a-table>
@@ -229,13 +229,13 @@ export default {
       console.log(row);
       let _this = this;
       this.$confirm({
-        title: "锁定",
-        content: `是否锁定用户${row.name}`,
+        title: "冻结",
+        content: `是否冻结用户${row.name}`,
         onOk() {
           console.log("OK");
           _this.$api.organization.unlockedUser({ id: row.id }).then(res => {
             if (res.data.state == 0) {
-              _this.$message.success("锁定成功");
+              _this.$message.success("冻结成功");
               _this.getTableData();
             }
           });

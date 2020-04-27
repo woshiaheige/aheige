@@ -22,10 +22,12 @@
         <a-form-model-item prop="user">
           <a-input
             v-model="formValidate.user"
-            placeholder="手机/用户名"
+            placeholder="用户名"
             @pressEnter="handleSubmit('login')"
+            @on-focus="onFocus('username')"
+            @on-blur="onBlur('username')"
           >
-            <a-icon slot="prefix" type="user" />
+            <a-icon slot="prefix" type="user" id="username" />
           </a-input>
         </a-form-model-item>
         <a-form-model-item prop="password">
@@ -33,8 +35,10 @@
             v-model="formValidate.password"
             placeholder="密码"
             @pressEnter="handleSubmit('login')"
+            @on-focus="onFocus('password')"
+            @on-blur="onBlur('password')"
           >
-            <a-icon slot="prefix" type="lock" />
+            <a-icon slot="prefix" type="lock" id="password" />
           </a-input-password>
         </a-form-model-item>
         <div class="link">
@@ -170,11 +174,14 @@ export default {
               .then(async res => {
                 console.log(res);
                 if (res.data.state == 0) {
-                  that.$message.success("登录成功！");
-                  sessionStorage.setItem("token", res.data.data.token);
+                  sessionStorage.setItem(
+                    "userinfo",
+                    JSON.stringify(res.data.data)
+                  );
 
                   await this.$api.login.getResource().then(async res => {
                     if (res.data.state == 0) {
+                      that.$message.success("登录成功！");
                       await that.$store.dispatch(
                         "createRouterTable",
                         res.data.data
@@ -226,10 +233,10 @@ export default {
         });
     },
     onFocus(input) {
-      console.log(input);
+      document.getElementById(input).style.color = "#0970BB";
     },
     onBlur(input) {
-      console.log(input);
+      document.getElementById(input).style.color = "#808695";
     }
   }
 };
