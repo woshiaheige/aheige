@@ -45,11 +45,7 @@
               </a-tag>
             </a-tooltip>
 
-            <a-empty
-              v-if="item.users.length == 0"
-              style="width:100%"
-              :image="simpleImage"
-            />
+            <a-empty v-if="item.users.length == 0" :image="simpleImage" />
           </a-card>
         </a-list-item>
       </a-list>

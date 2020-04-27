@@ -68,7 +68,9 @@
 export default {
   data() {
     this.chartSettings = {
-      stack: { 设备: ["正常运行", "设备故障"] }
+      axisSite: { right: ["故障率"] },
+      yAxisName: ["设备数", "故障率"],
+      stack: { 设备: ["设备正常", "设备故障"] }
     };
     return {
       notificationData: [
