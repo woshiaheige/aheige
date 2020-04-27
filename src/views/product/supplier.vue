@@ -75,16 +75,6 @@ export default {
       modalInfo: { show: false },
       columns: [
         {
-          align: "center",
-          title: "序号",
-          width: 100,
-          customRender: (_, __, index) => {
-            return (
-              <span>{index + (this.current - 1) * this.pageSize + 1}</span>
-            );
-          }
-        },
-        {
           title: "供应商名称",
           dataIndex: "name"
         },

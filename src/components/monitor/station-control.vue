@@ -1,170 +1,173 @@
 <template>
   <div class="monitor">
     <a-modal
-      :width="800"
+      :width="600"
       title="设备反控"
       :visible="visible"
       @ok="handleOk"
       @cancel="onCancel"
       :maskClosable="false"
     >
-      <a-card title="远程反控" v-margin:bottom="10">
+      <a-card title="设备反控" v-margin:bottom="10">
         <a-row>
-          <a-col :span="8" style="text-align: center;">
-            <p class="control-title">即时采样(仪表)</p>
-            <img
-              v-lazy="controlImg"
-              class="control-img"
-              style="width: 100px; height: 100px; margin: 0 auto"
-            />
-            <p>
-              <a-button-group>
-                <a-button
-                  @click="
-                    showModal({
-                      title: '即时采样(仪表)',
-                      command: '3012',
-                      operate: '设置',
-                      formIndex: '11'
-                    })
-                  "
-                  >设置</a-button
-                >
-              </a-button-group>
-            </p></a-col
-          >
-
-          <a-col :span="8" style="text-align: center;"
-            ><p class="control-title">启动清洗(仪表)</p>
-            <img
-              v-lazy="controlImg"
-              class="control-img"
-              style="width: 100px; height: 100px; margin: 0 auto"
-            />
-            <p>
-              <a-button-group>
-                <a-button
-                  @click="
-                    showModal({
-                      title: '启动清洗(仪表)',
-                      command: '3013',
-                      operate: '设置',
-                      formIndex: '12'
-                    })
-                  "
-                  >设置</a-button
-                >
-              </a-button-group>
-            </p></a-col
-          >
-          <a-col :span="8" style="text-align: center;"
-            ><p class="control-title">启动超标留样(仪表)</p>
-            <img
-              v-lazy="controlImg"
-              class="control-img"
-              style="width: 100px; height: 100px; margin: 0 auto"
-            />
-            <p>
-              <a-button-group>
-                <a-button @click="getSend3015">设置</a-button>
-              </a-button-group>
-            </p></a-col
-          >
+          <a-tabs type="card" :animated="true">
+            <a-tab-pane tab="即时采样(仪表)" key="1" style="text-align:center;"
+              ><img
+                v-lazy="controlImg"
+                class="control-img"
+                style="width: 100px; height: 100px; margin: 0 auto"
+              />
+              <p>
+                <a-button-group>
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '即时采样(仪表)',
+                        command: '3012',
+                        operate: '设置',
+                        formIndex: '11'
+                      })
+                    "
+                    >设置</a-button
+                  >
+                </a-button-group>
+              </p></a-tab-pane
+            >
+            <a-tab-pane tab="启动清洗(仪表)" key="2" style="text-align:center;"
+              ><img
+                v-lazy="controlImg"
+                class="control-img"
+                style="width: 100px; height: 100px; margin: 0 auto"
+              />
+              <p>
+                <a-button-group>
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '启动清洗(仪表)',
+                        command: '3013',
+                        operate: '设置',
+                        formIndex: '12'
+                      })
+                    "
+                    >设置</a-button
+                  >
+                </a-button-group>
+              </p></a-tab-pane
+            >
+            <a-tab-pane
+              tab="启动超标留样(仪表)"
+              key="3"
+              style="text-align:center;"
+              ><img
+                v-lazy="controlImg"
+                class="control-img"
+                style="width: 100px; height: 100px; margin: 0 auto"
+              />
+              <p>
+                <a-button-group>
+                  <a-button @click="getSend3015">设置</a-button>
+                </a-button-group>
+              </p></a-tab-pane
+            >
+          </a-tabs>
         </a-row>
       </a-card>
-      <a-card title="数据命令">
+      <a-card title="数采仪反控">
         <a-row>
-          <a-col :span="8" style="text-align: center;"
-            ><p class="control-title">现场机时间</p>
-            <img
-              v-lazy="controlImg"
-              class="control-img"
-              style="width: 100px; height: 100px; margin: 0 auto"
-            />
-            <p>
-              <a-button-group>
-                <a-button
-                  @click="
-                    showModal({
-                      title: '现场机时间',
-                      command: '1012',
-                      operate: '设置',
-                      formIndex: '2'
-                    })
-                  "
-                  >设置</a-button
-                >
-                <a-button
-                  @click="
-                    showModal({
-                      title: '现场机时间',
-                      command: '1011',
-                      operate: '提取',
-                      formIndex: '2'
-                    })
-                  "
-                  >提取</a-button
-                >
-              </a-button-group>
-            </p></a-col
-          >
-          <a-col :span="8" style="text-align: center;"
-            ><p class="control-title">污染物历史数据</p>
-            <img
-              v-lazy="controlImg"
-              class="control-img"
-              style="width: 100px; height: 100px; margin: 0 auto"
-            />
-            <p>
-              <a-button-group>
-                <a-button
-                  @click="
-                    showModal({
-                      title: '污染物历史数据',
-                      command: '2051',
-                      operate: '提取',
-                      formIndex: '9'
-                    })
-                  "
-                  >提取</a-button
-                >
-              </a-button-group>
-            </p></a-col
-          >
-          <a-col :span="8" style="text-align: center;"
-            ><p class="control-title">采样时间周期(仪表)</p>
-            <img
-              v-lazy="controlImg"
-              class="control-img"
-              style="width: 100px; height: 100px; margin: 0 auto"
-            />
-            <p>
-              <a-button-group>
-                <a-button
-                  @click="
-                    showModal({
-                      title: '采样时间周期(仪表)',
-                      command: '3016',
-                      operate: '设置',
-                      formIndex: '15'
-                    })
-                  "
-                  >设置</a-button
-                >
-                <a-button
-                  @click="
-                    showModal({
-                      title: '采样时间周期(仪表)',
-                      command: '3017',
-                      operate: '提取',
-                      formIndex: '15'
-                    })
-                  "
-                  >提取</a-button
-                >
-              </a-button-group>
-            </p></a-col
-          >
+          <a-tabs type="card" :animated="true">
+            <a-tab-pane tab="现场机时间" key="4" style="text-align:center;"
+              ><img
+                v-lazy="controlImg"
+                class="control-img"
+                style="width: 100px; height: 100px; margin: 0 auto"
+              />
+              <p>
+                <a-button-group>
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '现场机时间',
+                        command: '1012',
+                        operate: '设置',
+                        formIndex: '2'
+                      })
+                    "
+                    >设置</a-button
+                  >
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '现场机时间',
+                        command: '1011',
+                        operate: '提取',
+                        formIndex: '2'
+                      })
+                    "
+                    >提取</a-button
+                  >
+                </a-button-group>
+              </p></a-tab-pane
+            >
+            <a-tab-pane tab="污染物历史数据" key="5" style="text-align:center;"
+              ><img
+                v-lazy="controlImg"
+                class="control-img"
+                style="width: 100px; height: 100px; margin: 0 auto"
+              />
+              <p>
+                <a-button-group>
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '污染物历史数据',
+                        command: '2051',
+                        operate: '提取',
+                        formIndex: '9'
+                      })
+                    "
+                    >提取</a-button
+                  >
+                </a-button-group>
+              </p></a-tab-pane
+            >
+            <a-tab-pane
+              tab="采样时间周期(仪表)"
+              key="6"
+              style="text-align:center;"
+              ><img
+                v-lazy="controlImg"
+                class="control-img"
+                style="width: 100px; height: 100px; margin: 0 auto"
+              />
+              <p>
+                <a-button-group>
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '采样时间周期(仪表)',
+                        command: '3016',
+                        operate: '设置',
+                        formIndex: '15'
+                      })
+                    "
+                    >设置</a-button
+                  >
+                  <a-button
+                    @click="
+                      showModal({
+                        title: '采样时间周期(仪表)',
+                        command: '3017',
+                        operate: '提取',
+                        formIndex: '15'
+                      })
+                    "
+                    >提取</a-button
+                  >
+                </a-button-group>
+              </p></a-tab-pane
+            >
+          </a-tabs>
         </a-row>
       </a-card>
       <monitor-modal
@@ -209,11 +212,6 @@ export default {
         status: ""
       },
       columns1: [
-        {
-          title: "序号",
-          width: 80,
-          key: "index"
-        },
         {
           title: "时间",
           key: "date"
