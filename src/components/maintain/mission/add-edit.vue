@@ -177,12 +177,11 @@ export default {
       }
     },
     "formData.enterpriseId"() {
-      this.$set(this.formData, "pointId", "");
+      this.$set(this.formData, "pointId", undefined);
       this.getStationList();
     },
     "formData.pointId"() {
-      this.$set(this.formData, "memberId", "");
-      this.getMemberList();
+      this.$set(this.formData, "memberId", undefined);
     }
   },
   methods: {
