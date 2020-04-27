@@ -1,6 +1,8 @@
 <template>
   <div class="login">
     <div class="login-box">
+      <div class="logo"></div>
+      <div class="logo-text">博控智维云</div>
       <div class="login-title">
         <a-icon
           type="arrow-left"
