@@ -271,21 +271,31 @@ export default {
         };
         if (this.modelData.type == "edit") {
           data.id = this.formData.id;
-          this.$api.customer.editStation(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("编辑成功");
-              this.$emit("refresh");
+          this.$api.customer
+            .editStation(data)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("编辑成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         } else {
-          this.$api.customer.addStation(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("新建成功");
-              this.$emit("refresh");
+          this.$api.customer
+            .addStation(data)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("新建成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         }
       });
     },

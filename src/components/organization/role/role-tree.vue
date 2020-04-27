@@ -206,19 +206,23 @@ export default {
         id: this.roleId,
         ...name
       };
-      this.$api.organization.editSysRole(data).then(res => {
-        if (res.data.state == "0") {
-          this.$message.success("授权成功!");
-          if (this.roleId == this.userRoleId) {
-            //如果用户修改的是自己的角色,刷新页面组件
-            this.$store.dispatch("createRouterTable", this.resourceIdList);
-            // location.reload([true]);
+      this.$api.organization
+        .editSysRole(data)
+        .then(res => {
+          if (res.data.state == "0") {
+            this.$message.success("授权成功!");
+            if (this.roleId == this.userRoleId) {
+              //如果用户修改的是自己的角色,刷新页面组件
+              this.$store.dispatch("createRouterTable", this.resourceIdList);
+              // location.reload([true]);
+            }
+            this.closeModal();
+            this.$emit("updateTable");
           }
-          this.$emit("update:visible", false);
-          this.reset();
-          this.$emit("updateTable");
-        }
-      });
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     },
     addRole(name) {
       //新建
@@ -227,19 +231,23 @@ export default {
         id: this.roleId,
         ...name
       };
-      this.$api.organization.addSysRole(data).then(res => {
-        if (res.data.state == "0") {
-          this.$message.success("授权成功!");
-          if (this.roleId == this.userRoleId) {
-            //如果用户修改的是自己的角色,刷新页面组件
-            this.$store.dispatch("createRouterTable", this.resourceIdList);
-            // location.reload([true]);
+      this.$api.organization
+        .addSysRole(data)
+        .then(res => {
+          if (res.data.state == "0") {
+            this.$message.success("授权成功!");
+            if (this.roleId == this.userRoleId) {
+              //如果用户修改的是自己的角色,刷新页面组件
+              this.$store.dispatch("createRouterTable", this.resourceIdList);
+              // location.reload([true]);
+            }
+            this.closeModal();
+            this.$emit("updateTable");
           }
-          this.$emit("update:visible", false);
-          this.reset();
-          this.$emit("updateTable");
-        }
-      });
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     },
     onExpand(expandedKeys) {
       // console.log("onExpand", expandedKeys);

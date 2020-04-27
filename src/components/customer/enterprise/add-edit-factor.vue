@@ -125,21 +125,31 @@ export default {
         }
         //验证通过
         if (this.modelData.type == "edit") {
-          this.$api.customer.editFactor(this.formData).then(res => {
-            if (res.data.state == 0) {
-              that.$message.success("编辑成功");
-              that.$emit("refresh");
+          this.$api.customer
+            .editFactor(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("编辑成功");
+                that.$emit("refresh");
+                that.handleCancel();
+              }
+            })
+            .catch(() => {
               that.handleCancel();
-            }
-          });
+            });
         } else {
-          this.$api.customer.addFactor(this.formData).then(res => {
-            if (res.data.state == 0) {
-              that.$message.success("新建成功");
-              that.$emit("refresh");
+          this.$api.customer
+            .addFactor(this.formData)
+            .then(res => {
+              if (res.data.state == 0) {
+                that.$message.success("新建成功");
+                that.$emit("refresh");
+                that.handleCancel();
+              }
+            })
+            .catch(() => {
               that.handleCancel();
-            }
-          });
+            });
         }
       });
     },

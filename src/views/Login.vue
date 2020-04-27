@@ -177,12 +177,14 @@ export default {
                   sessionStorage.setItem("token", res.data.data.token);
 
                   await this.$api.login.getResource().then(async res => {
-                    await that.$store.dispatch(
-                      "createRouterTable",
-                      res.data.data
-                    );
-                    // that.setLoading("正在登录中，请稍等");
-                    that.$router.push("/");
+                    if (res.data.state == 0) {
+                      await that.$store.dispatch(
+                        "createRouterTable",
+                        res.data.data
+                      );
+                      that.setLoading("正在登录中，请稍等");
+                      that.$router.push("/");
+                    }
                   });
                 }
               })

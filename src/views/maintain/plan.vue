@@ -109,7 +109,7 @@
               <a-badge status="warning" text="已延期" v-if="row.status == 3" />
             </template>
             <span slot="check" slot-scope="row">
-              <a @click="onEditPlan(row)">编辑</a>
+              <a @click="onEditPlan(row)">修改执行日期</a>
               <a-divider type="vertical" />
               <a @click="onDeletePlan(row)">删除</a>
             </span>
@@ -197,6 +197,7 @@ export default {
         {
           title: "操作",
           key: "check",
+          align: "center",
           scopedSlots: { customRender: "check" }
         }
       ],

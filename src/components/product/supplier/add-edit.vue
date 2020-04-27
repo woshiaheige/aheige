@@ -128,12 +128,11 @@ export default {
             this.$emit("getTableData");
           }
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
+          this.handleCancel();
         })
         .finally(() => {
-          this.$refs.ruleForm.resetFields();
-          this.$emit("cancel", false);
+          this.handleCancel();
         });
     },
     //通过id查询供应商
@@ -141,19 +140,14 @@ export default {
       let data = {
         id: this.obj.row.id
       };
-      this.$api.product
-        .getSupplierById(data)
-        .then(res => {
-          this.formInline.name = res.data.data.name;
-          this.formInline.address = res.data.data.address;
-          this.formInline.contact = res.data.data.contact;
-          this.formInline.telephone = res.data.data.telephone;
-          this.formInline.level = res.data.data.level;
-          this.setRegionId(res.data.data.regionId);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$api.product.getSupplierById(data).then(res => {
+        this.formInline.name = res.data.data.name;
+        this.formInline.address = res.data.data.address;
+        this.formInline.contact = res.data.data.contact;
+        this.formInline.telephone = res.data.data.telephone;
+        this.formInline.level = res.data.data.level;
+        this.setRegionId(res.data.data.regionId);
+      });
     },
     //新建供应商
     postAddSupplier() {
@@ -173,13 +167,11 @@ export default {
             this.$emit("getTableData");
           }
         })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("系统繁忙");
+        .catch(() => {
+          this.handleCancel();
         })
         .finally(() => {
-          this.$refs.ruleForm.resetFields();
-          this.$emit("cancel", false);
+          this.handleCancel();
         });
     },
     //点击ok
