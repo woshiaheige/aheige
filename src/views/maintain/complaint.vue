@@ -91,6 +91,7 @@ export default {
         {
           title: "状态",
           dataIndex: "state",
+          align: "center",
           scopedSlots: { customRender: "state" }
         },
         {
@@ -100,6 +101,8 @@ export default {
         {
           title: "操作",
           key: "action",
+          align: "center",
+          width: 200,
           scopedSlots: { customRender: "action" }
         }
       ],
