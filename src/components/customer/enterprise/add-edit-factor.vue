@@ -28,9 +28,12 @@
             :filterOption="filterOptions"
           >
             <span v-if="item.protocolType == 0">
-              {{ item.name }} | 扩展协议
+              {{ item.name }} / {{ item.code }} / 扩展协议
             </span>
-            <span v-else>{{ item.name }} | {{ item.protocolType }}协议</span>
+            <span v-else
+              >{{ item.name }} / {{ item.code }} /
+              {{ item.protocolType }}协议</span
+            >
           </a-select-option>
         </a-select>
       </a-form-model-item>
