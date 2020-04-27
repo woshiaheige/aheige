@@ -30,6 +30,11 @@
           <a-range-picker @change="onChange" />
         </a-form-model-item>
         <a-form-model-item style="float:right">
+          <a-button @click="onRest">
+            重置
+          </a-button>
+        </a-form-model-item>
+        <a-form-model-item style="float:right">
           <a-button type="primary" @click="onSubmit">
             查询
           </a-button>
@@ -156,6 +161,10 @@ export default {
       this.modalWeek.show = false;
       this.modalMonth.show = false;
     },
+    onRest() {
+      this.formInline = this.$options.data().formInline;
+      this.onSubmit();
+    },
     toReportModal(row) {
       this.modalWeek = {
         show: true
@@ -222,6 +231,12 @@ export default {
         });
     },
     onChange(date, dateString) {
+      if (dateString[0] == "") {
+        //清除时间
+        this.formInline.beginTime = "";
+        this.formInline.endTime = "";
+        return;
+      }
       this.formInline.beginTime = dateString[0] + " 00:00:00";
       this.formInline.endTime = dateString[1] + " 23:59:59";
     }

@@ -324,6 +324,7 @@ export default {
     editMember(values) {
       let params = values;
       params.id = this.memberId;
+      let password = values.password;
       if (this.initPassword != params.password) {
         //避免重复加密
         params.password = this.$md5(params.password);
@@ -337,11 +338,15 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+        } else {
+          //避免编辑用户失败时，把密码重复加密
+          params.password = password;
         }
       });
     },
     addMember(values) {
       let params = values;
+      let password = values.password;
       params.password = this.$md5(params.password);
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
@@ -352,6 +357,9 @@ export default {
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
+        } else {
+          //避免新建用户失败时，把密码重复加密
+          params.password = password;
         }
       });
     }

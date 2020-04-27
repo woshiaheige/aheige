@@ -4,6 +4,7 @@
       <div class="title">使用记录</div>
       <div class="extra">
         <a-input-search
+          v-model="formInline.number"
           placeholder="请输入车牌号码"
           style="width: 200px"
           @search="onSubmit"
@@ -72,7 +73,10 @@ export default {
           scopedSlots: { customRender: "check" }
         }
       ],
-      tableData: []
+      tableData: [],
+      formInline: {
+        number: ""
+      }
     };
   },
   methods: {
@@ -80,7 +84,8 @@ export default {
       this.loading = true;
       let params = {
         size: this.size,
-        page: this.current
+        page: this.current,
+        number: this.formInline.number
       };
       this.$api.car
         .manageVehicleUse(params)
