@@ -74,7 +74,7 @@
           v-model="formData.gmtExecution"
           show-time
           type="date"
-          format="YYYY-MM-DD HH:mm:ss"
+          format="YYYY-MM-DD"
           placeholder="请选择"
           style="width: 100%;"
         />
