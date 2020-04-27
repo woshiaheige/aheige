@@ -9,11 +9,14 @@
             v-model="formInline.enterpriseName"
             placeholder="请输入"
             style="width: 200px"
-            :defaultActiveFirstOption="false"
             :filterOption="false"
             @search="searchEnterprise"
-            :notFoundContent="null"
           >
+            <a-spin
+              v-if="loadingEnterprise"
+              slot="notFoundContent"
+              size="small"
+            />
             <a-select-option
               v-for="(item, index) in enterpriseList"
               @click="slectEnterprise(item)"
@@ -30,11 +33,10 @@
             v-model="formInline.pointName"
             placeholder="请输入"
             style="width: 200px"
-            :defaultActiveFirstOption="false"
             :filterOption="false"
             @search="searchPoint"
-            :notFoundContent="null"
           >
+            <a-spin v-if="loadingStation" slot="notFoundContent" size="small" />
             <a-select-option
               v-for="(item, index) in pointList"
               @click="slectPoint(item)"
@@ -139,6 +141,8 @@ export default {
   components: { addEdit },
   data() {
     return {
+      loadingStation: false,
+      loadingEnterprise: false,
       current: 1,
       size: 10,
       total: 0,
@@ -227,8 +231,10 @@ export default {
         page: 1,
         enterpriseName: value
       };
+      this.loadingEnterprise = true;
       this.$api.customer.getEnterPriseList(params).then(res => {
         this.enterpriseList = res.data.data.records;
+        this.loadingEnterprise = false;
       });
     },
     slectEnterprise(value) {
@@ -244,8 +250,10 @@ export default {
         enterpriseName: this.formInline.enterpriseName,
         pointName: value
       };
+      this.loadingStation = true;
       this.$api.customer.getStationList(params).then(res => {
         this.pointList = res.data.data.records;
+        this.loadingStation = false;
       });
     },
     slectPoint(value) {

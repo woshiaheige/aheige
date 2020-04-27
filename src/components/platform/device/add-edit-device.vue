@@ -77,7 +77,6 @@
           v-model="formData.divisorIds"
           :filterOption="false"
           @search="searchDivisor(formData.type, $event)"
-          :notFoundContent="fetching ? undefined : null"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
           <a-select-option

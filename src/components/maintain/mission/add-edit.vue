@@ -40,6 +40,7 @@
           placeholder="请选择"
           style="width: 200px"
         >
+          <a-spin v-if="loadingStation" slot="notFoundContent" size="small" />
           <a-select-option
             @click="selectStation(item)"
             v-for="(item, index) in pointList"
@@ -58,6 +59,7 @@
           showSearch
           :filterOption="filterOptions"
         >
+          <a-spin v-if="loadingMember" slot="notFoundContent" size="small" />
           <a-select-option
             v-for="(item, index) in memberList"
             :key="index"
@@ -74,6 +76,7 @@
           v-model="formData.gmtExecution"
           show-time
           type="date"
+          :disabledDate="disabledDate"
           format="YYYY-MM-DD"
           placeholder="请选择"
           style="width: 100%;"
@@ -99,6 +102,8 @@ export default {
   },
   data() {
     return {
+      loadingStation: false,
+      loadingMember: false,
       enterpriseList: [], //企业
       pointList: [], //站点
       groupList: [], //小组
@@ -172,15 +177,17 @@ export default {
       }
     },
     "formData.enterpriseId"() {
-      this.$set(this.formData, "pointId", "");
+      this.$set(this.formData, "pointId", undefined);
       this.getStationList();
     },
     "formData.pointId"() {
-      this.$set(this.formData, "memberId", "");
-      this.getMemberList();
+      this.$set(this.formData, "memberId", undefined);
     }
   },
   methods: {
+    disabledDate(current) {
+      return current < this.$moment().startOf("day");
+    },
     getEnterprise(value) {
       //企业下拉
       // this.formData.enterpriseName = value;
@@ -198,8 +205,10 @@ export default {
         page: 1,
         size: 999
       };
+      this.loadingStation = true;
       this.$api.customer.getStationList(params).then(res => {
         this.pointList = res.data.data.records;
+        this.loadingStation = false;
       });
     },
     selectStation(item) {
@@ -208,12 +217,12 @@ export default {
     },
     getMemberList(groupId) {
       //获取小组成员
+      this.loadingMember = true;
       this.$api.organization
         .getUserByGroupId({ groupId: groupId })
         .then(res => {
-          if (res.data.state == 0) {
-            this.memberList = res.data.data;
-          }
+          this.memberList = res.data.data;
+          this.loadingMember = false;
         });
     },
     handleOk() {
