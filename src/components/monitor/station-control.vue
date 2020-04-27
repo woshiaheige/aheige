@@ -1,18 +1,19 @@
 <template>
   <div class="monitor">
     <a-modal
-      :width="600"
+      :width="800"
       title="设备反控"
       :visible="visible"
       @ok="handleOk"
       @cancel="onCancel"
       :maskClosable="false"
     >
-      <a-card title="设备反控" v-margin:bottom="10">
-        <a-row>
-          <a-tabs type="card" :animated="true">
-            <a-tab-pane tab="即时采样(仪表)" key="1" style="text-align:center;"
-              ><img
+      <a-tabs type="card" :animated="true">
+        <a-tab-pane tab="远程反控" key="1"
+          ><a-row>
+            <a-col :span="8" style="text-align: center;">
+              <p class="control-title">即时采样(仪表)</p>
+              <img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -31,10 +32,12 @@
                     >设置</a-button
                   >
                 </a-button-group>
-              </p></a-tab-pane
+              </p></a-col
             >
-            <a-tab-pane tab="启动清洗(仪表)" key="2" style="text-align:center;"
-              ><img
+
+            <a-col :span="8" style="text-align: center;"
+              ><p class="control-title">启动清洗(仪表)</p>
+              <img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -53,13 +56,11 @@
                     >设置</a-button
                   >
                 </a-button-group>
-              </p></a-tab-pane
+              </p></a-col
             >
-            <a-tab-pane
-              tab="启动超标留样(仪表)"
-              key="3"
-              style="text-align:center;"
-              ><img
+            <a-col :span="8" style="text-align: center;"
+              ><p class="control-title">启动超标留样(仪表)</p>
+              <img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -68,16 +69,15 @@
                 <a-button-group>
                   <a-button @click="getSend3015">设置</a-button>
                 </a-button-group>
-              </p></a-tab-pane
+              </p></a-col
             >
-          </a-tabs>
-        </a-row>
-      </a-card>
-      <a-card title="数采仪反控">
-        <a-row>
-          <a-tabs type="card" :animated="true">
-            <a-tab-pane tab="现场机时间" key="4" style="text-align:center;"
-              ><img
+          </a-row></a-tab-pane
+        >
+        <a-tab-pane tab="数据命令" key="2"
+          ><a-row>
+            <a-col :span="8" style="text-align: center;"
+              ><p class="control-title">现场机时间</p>
+              <img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -107,10 +107,11 @@
                     >提取</a-button
                   >
                 </a-button-group>
-              </p></a-tab-pane
+              </p></a-col
             >
-            <a-tab-pane tab="污染物历史数据" key="5" style="text-align:center;"
-              ><img
+            <a-col :span="8" style="text-align: center;"
+              ><p class="control-title">污染物历史数据</p>
+              <img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -129,13 +130,11 @@
                     >提取</a-button
                   >
                 </a-button-group>
-              </p></a-tab-pane
+              </p></a-col
             >
-            <a-tab-pane
-              tab="采样时间周期(仪表)"
-              key="6"
-              style="text-align:center;"
-              ><img
+            <a-col :span="8" style="text-align: center;"
+              ><p class="control-title">采样时间周期(仪表)</p>
+              <img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -165,11 +164,14 @@
                     >提取</a-button
                   >
                 </a-button-group>
-              </p></a-tab-pane
+              </p></a-col
             >
-          </a-tabs>
-        </a-row>
-      </a-card>
+          </a-row></a-tab-pane
+        >
+      </a-tabs>
+      <template slot="footer">
+        <a-button type="primary" @click="onCancel">关闭</a-button>
+      </template>
       <monitor-modal
         :modalObj="controlObj"
         :visible="subVisible"
@@ -212,6 +214,11 @@ export default {
         status: ""
       },
       columns1: [
+        {
+          title: "序号",
+          width: 80,
+          key: "index"
+        },
         {
           title: "时间",
           key: "date"
@@ -258,7 +265,8 @@ export default {
       this.controlObj = _obj;
     },
     handleOk() {
-      console.log("ok");
+      // console.log("ok");
+      this.$emit("cancel");
     },
     handleCancel() {
       this.$emit("cancel");
