@@ -54,8 +54,10 @@ import api from "@/api/index";
 import base from "@/api/base";
 import common from "@/assets/lib/common"; //公共Page和onSubmit
 import loading from "@/assets/lib/loading";
+import iconfont from "@/assets/lib/iconfont";
 Vue.mixin(common);
 Vue.mixin(loading);
+Vue.mixin(iconfont);
 
 Vue.use(Antd);
 Vue.use(VCharts);

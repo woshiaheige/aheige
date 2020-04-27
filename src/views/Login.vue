@@ -1,7 +1,12 @@
 <template>
   <div class="login">
     <div class="login-box">
-      <div class="logo"></div>
+      <div class="logo">
+        <icon-font
+          type="iconweibiaoti-1"
+          style="color:#31a2f2;font-size:80px"
+        ></icon-font>
+      </div>
       <div class="logo-text">博控智维云</div>
       <div class="login-title">
         <a-icon
