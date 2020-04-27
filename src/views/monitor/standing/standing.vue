@@ -78,7 +78,7 @@
         <span slot="action" slot-scope="row">
           <a @click="toMonitorData(row)">查看数据</a>
           <a-divider type="vertical" />
-          <a @click="stationControl(row)">设备反控</a>
+          <a @click="stationControl(row)">远程反控</a>
         </span>
       </a-table>
 
