@@ -162,6 +162,7 @@ export default {
         {
           title: "站点类别",
           dataIndex: "pointTypeName",
+          align: "center",
           scopedSlots: { customRender: "pointTypeName" }
         },
         {

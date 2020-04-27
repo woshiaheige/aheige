@@ -7,12 +7,19 @@
     okText="保存"
     :maskClosable="false"
   >
-    <a-form-model :model="formInline" :rules="rules" ref="ruleForm">
+    <a-form-model
+      :model="formInline"
+      :rules="rules"
+      ref="ruleForm"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
       <a-form-model-item label="供应商名称" prop="name">
         <a-input
           placeholder="请输入"
           v-model="formInline.name"
           :maxLength="30"
+          style="width: 200px"
         />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
@@ -20,6 +27,7 @@
           :options="cityList"
           v-model="formInline.regionId"
           placeholder="请选择"
+          style="width: 200px"
         />
       </a-form-model-item>
       <a-form-model-item label="地址" prop="address">
@@ -27,6 +35,7 @@
           placeholder="请输入"
           v-model="formInline.address"
           :maxLength="30"
+          style="width: 200px"
         />
       </a-form-model-item>
       <a-form-model-item label="联系人" prop="contact">
@@ -34,10 +43,15 @@
           placeholder="请输入"
           v-model="formInline.contact"
           :maxLength="10"
+          style="width: 200px"
         />
       </a-form-model-item>
       <a-form-model-item label="联系电话" prop="telephone">
-        <a-input placeholder="请输入" v-model="formInline.telephone" />
+        <a-input
+          placeholder="请输入"
+          v-model="formInline.telephone"
+          style="width: 200px"
+        />
       </a-form-model-item>
       <a-form-model-item label="评级" prop="level">
         <a-rate v-model="formInline.level" />

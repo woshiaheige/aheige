@@ -111,13 +111,15 @@ export default {
         {
           title: "单位",
           dataIndex: "unit",
-          align: "center"
+          align: "center",
+          width: 100
         },
         {
           title: "操作",
           key: "action",
           align: "center",
-          scopedSlots: { customRender: "action" }
+          scopedSlots: { customRender: "action" },
+          width: 265
         }
       ],
       tableData: []

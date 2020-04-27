@@ -145,6 +145,7 @@ export default {
         {
           title: "状态",
           dataIndex: "state",
+          align: "center",
           scopedSlots: { customRender: "state" }
         },
         {
