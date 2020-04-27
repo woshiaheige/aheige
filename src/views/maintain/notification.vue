@@ -70,25 +70,33 @@
         :total="total"
       />
     </a-card>
-    <notification-modal
-      :obj="modal"
+    <!-- 周报表 -->
+    <notification-week
+      :obj="modalWeek"
       @cancel="onCancel"
-      ref="notificationModal"
-    ></notification-modal>
+      ref="notificationWeek"
+    ></notification-week>
+    <!-- 月报表 -->
+    <notification-month
+      :obj="modalMonth"
+      @cancel="onCancel"
+      ref="notificationMonth"
+    ></notification-month>
   </div>
 </template>
 
 <script>
-import notificationModal from "@/components/maintain/notification/notification-modal";
+import notificationWeek from "@/components/maintain/notification-week/notification-week";
+import notificationMonth from "@/components/maintain/notification-month/notification-month";
 export default {
-  components: { notificationModal },
+  components: { notificationWeek, notificationMonth },
   data() {
     return {
-      modal: {
-        show: false,
-        id: "",
-        beginTime: "",
-        endTime: ""
+      modalWeek: {
+        show: false
+      },
+      modalMonth: {
+        show: false
       },
       rportTypeList: [
         { name: "全部", value: "all" },
@@ -145,12 +153,16 @@ export default {
   },
   methods: {
     onCancel() {
-      this.modal.show = false;
+      this.modalWeek.show = false;
+      this.modalMonth.show = false;
     },
     toReportModal(row) {
-      this.modal = {
+      this.modalWeek = {
         show: true
       };
+      // this.modalMonth = {
+      //   show: true
+      // };
       // this.$bus.$data.notification = {
       //   id: row.id,
       //   pointId: row.pointId,
@@ -176,7 +188,8 @@ export default {
         mn: "756877X3333321"
       };
 
-      this.$refs.notificationModal.setNotification();
+      // this.$refs.notificationWeek.setNotification();
+      this.$refs.notificationMonth.setNotification();
     },
     getTableData() {
       let params = {
