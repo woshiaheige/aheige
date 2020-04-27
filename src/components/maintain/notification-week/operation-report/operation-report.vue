@@ -72,6 +72,8 @@ export default {
   components: { missionFinished, missionUnfinished },
   data() {
     this.chartSettings = {
+      axisSite: { right: ["完成率"] },
+      yAxisName: ["完成数", "完成率"],
       stack: { 任务: ["已完成", "未完成"] }
     };
     return {

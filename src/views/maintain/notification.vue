@@ -50,7 +50,7 @@
         :pagination="false"
       >
         <template slot="type" slot-scope="type">
-          <a-tag color="green" v-if="type == 1">季报表</a-tag>
+          <!-- <a-tag color="green" v-if="type == 1">季报表</a-tag> -->
           <a-tag color="cyan" v-if="type == 2">月报表</a-tag>
           <a-tag color="blue" v-if="type == 3">周报表</a-tag>
         </template>
@@ -100,7 +100,7 @@ export default {
       },
       rportTypeList: [
         { name: "全部", value: "all" },
-        { name: "季报表", value: 1 },
+        // { name: "季报表", value: 1 },
         { name: "月报表", value: 2 },
         { name: "周报表", value: 3 }
       ],
