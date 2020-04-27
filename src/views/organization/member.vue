@@ -180,7 +180,6 @@ export default {
       this.$api.organization.getSysUserById({ id: row.id }).then(res => {
         if (res.data.state == 0) {
           this.memberDetail = res.data.data;
-          console.log(this.memberDetail, 1111);
           this.visible = true;
         }
       });

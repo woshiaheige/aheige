@@ -109,7 +109,7 @@ export default {
       factorsDetail: "", //因子详情
       current: 1,
       total: 0,
-      pageSize: 10,
+      size: 10,
       loading: false,
       formInline: {
         name: "",
@@ -216,7 +216,7 @@ export default {
     getTableData() {
       this.countDivisor();
       let params = {
-        size: this.pageSize,
+        size: this.size,
         page: this.current,
         name: this.formInline.name,
         code: this.formInline.code,
