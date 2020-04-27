@@ -2,19 +2,15 @@
   <div>
     <a-list itemLayout="horizontal" :dataSource="warnList" :loading="loading">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a slot="actions" @click="goDetail(item.busineId, item.id)">查看详情</a>
-        <a-list-item-meta :description="item.content">
-          <a slot="title">{{ item.enterpriseName }}</a>
-          <a-avatar slot="avatar" :src="require('@/assets/img/alarm.png')" />
-        </a-list-item-meta>
-        <div v-margin:right="48">
-          <p>报警类型</p>
-          <p>{{ item.title }}</p>
-        </div>
         <div>
-          <p>报警时间</p>
-          <p>{{ item.dataTime }}</p>
+          <a-avatar :src="require('@/assets/img/alarm.png')" />
+          <span v-color="'#424242'" v-margin:left="8"
+            >{{ item.enterpriseName }}XX监测点于{{ item.dataTime }}发生{{
+              item.title
+            }},请及时处理！</span
+          >
         </div>
+        <a slot="actions" @click="goDetail(item.busineId, item.id)">关闭提醒</a>
       </a-list-item>
     </a-list>
     <a-pagination

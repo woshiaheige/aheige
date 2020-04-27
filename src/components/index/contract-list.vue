@@ -2,14 +2,14 @@
   <div>
     <a-list itemLayout="horizontal" :dataSource="warnList" :loading="loading">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a slot="actions" @click="goDetail(item.busineId, item.id)">查看详情</a>
-        <a-list-item-meta :description="item.content">
-          <a slot="title">{{ item.enterpriseName }}</a>
-          <a-avatar slot="avatar" :src="require('@/assets/img/contract.png')" />
-        </a-list-item-meta>
+        <a slot="actions" @click="goDetail(item.busineId, item.id)">关闭提醒</a>
         <div>
-          <p>提醒时间</p>
-          <p>{{ item.dataTime }}</p>
+          <a-avatar :src="require('@/assets/img/contract.png')" />
+          <span v-color="'#424242'" v-margin:left="8"
+            >{{ item.enterpriseName }}运维合同将于{{
+              item.dataTime
+            }}到期,请及时处理！</span
+          >
         </div>
       </a-list-item>
     </a-list>
