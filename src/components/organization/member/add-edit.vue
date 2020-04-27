@@ -180,7 +180,7 @@ export default {
         password: "",
         phone: "",
         wechatId: "",
-        roleId: ""
+        roleId: undefined
       },
       rules: {
         enterpriseId: [
@@ -304,7 +304,7 @@ export default {
     reset() {
       this.initPassword = "";
       this.memberId = "";
-      this.roleId = "";
+      this.roleId = undefined;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
     },

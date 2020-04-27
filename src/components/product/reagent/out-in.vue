@@ -235,15 +235,20 @@ export default {
         }
         //验证通过
         this.formData.type = this.modelData.type == "out" ? 1 : 2;
-        this.$api.product.addStock(this.formData).then(res => {
-          if (res.data.state == 0) {
-            this.$message.success(
-              this.modelData.type == "out" ? "出库成功" : "入库成功"
-            );
-            this.$emit("refresh");
+        this.$api.product
+          .addStock(this.formData)
+          .then(res => {
+            if (res.data.state == 0) {
+              this.$message.success(
+                this.modelData.type == "out" ? "出库成功" : "入库成功"
+              );
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          })
+          .catch(() => {
             this.handleCancel();
-          }
-        });
+          });
       });
     },
     handleCancel() {

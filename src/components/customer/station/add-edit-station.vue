@@ -161,10 +161,10 @@ export default {
         }
       ],
       protocolList: [
-        {
-          name: "扩展协议",
-          id: "0"
-        },
+        // {
+        //   name: "扩展协议",
+        //   id: "0"
+        // },
         {
           name: "05协议",
           id: "05"
@@ -271,21 +271,31 @@ export default {
         };
         if (this.modelData.type == "edit") {
           data.id = this.formData.id;
-          this.$api.customer.editStation(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("编辑成功");
-              this.$emit("refresh");
+          this.$api.customer
+            .editStation(data)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("编辑成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         } else {
-          this.$api.customer.addStation(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("新建成功");
-              this.$emit("refresh");
+          this.$api.customer
+            .addStation(data)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("新建成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
               this.handleCancel();
-            }
-          });
+            });
         }
       });
     },
@@ -317,6 +327,8 @@ export default {
       this.mapModel.address = this.formData.address;
       if (this.formData.lngandlat) {
         this.mapModel.lnglat = this.formData.lngandlat.split(",");
+      } else {
+        this.mapModel.lnglat = {};
       }
     },
     getModal(data) {

@@ -2,8 +2,9 @@
   <a-modal
     :title="title"
     :visible="visible"
-    @cancel="closeModal"
     @ok="handleOk"
+    @cancel="closeModal"
+    okText="保存"
     :maskClosable="false"
   >
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
@@ -25,6 +26,12 @@
         />
       </a-form-item>
     </a-form>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 
@@ -86,25 +93,33 @@ export default {
     editIndustry(values) {
       let params = values;
       params.id = this.industryId;
-      this.$api.platform.updateSysIndustry(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("修改行业成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
+      this.$api.platform
+        .updateSysIndustry(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("修改成功");
+            this.$emit("updateTable");
+            this.closeModal();
+          }
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     },
     addIndustry(values) {
       let params = values;
-      this.$api.platform.addSysIndustry(params).then(res => {
-        if (res.data.state == 0) {
-          this.$message.success("新建行业成功");
-          this.$emit("update:visible", false);
-          this.$emit("updateTable");
-          this.reset();
-        }
-      });
+      this.$api.platform
+        .addSysIndustry(params)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.$message.success("添加成功");
+            this.$emit("updateTable");
+            this.closeModal();
+          }
+        })
+        .catch(() => {
+          this.closeModal();
+        });
     }
   }
 };

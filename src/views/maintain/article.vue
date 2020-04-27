@@ -2,7 +2,7 @@
   <div>
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">{{ articleDetail.title }}</div>
+        <div class="title" v-fontsize="36">{{ articleDetail.title }}</div>
         <div class="extra">
           文章分类：
           <a-tag color="blue">{{ articleDetail.className }}</a-tag>

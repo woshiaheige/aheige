@@ -4,12 +4,13 @@
     :visible="visible"
     @cancel="closeModal"
     @ok="handleOk"
+    okText="提交"
     width="100%"
     style="top: 0;"
     wrapClassName="edit-article"
     :maskClosable="false"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+    <a-form :form="form">
       <a-form-item label="文章标题">
         <a-input
           placeholder="请输入"
@@ -120,9 +121,26 @@ export default {
       }, 200);
     },
     closeModal() {
-      this.showEditor = false;
-      this.$emit("update:visible", false);
-      this.reset();
+      let that = this;
+      if (this.content != "") {
+        this.$confirm({
+          title: "确认退出",
+          content: "文章尚未保存，确认退出？",
+          okText: "确定",
+          okType: "danger",
+          cancelText: "取消",
+          onOk() {
+            that.showEditor = false;
+            that.$emit("update:visible", false);
+            that.reset();
+          },
+          onCancel() {}
+        });
+      } else {
+        this.showEditor = false;
+        this.$emit("update:visible", false);
+        this.reset();
+      }
     },
     reset() {
       this.content = "";

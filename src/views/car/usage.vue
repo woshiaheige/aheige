@@ -4,7 +4,7 @@
       <div class="title">使用记录</div>
       <div class="extra">
         <a-input-search
-          v-model="formInline.number"
+          v-model="number"
           placeholder="请输入车牌号码"
           style="width: 200px"
           @search="onSubmit"
@@ -21,6 +21,9 @@
       align="center"
       v-margin:top="16"
     >
+      <span slot="usageTime" slot-scope="usageTime, row">
+        {{ $moment(row.gmtDrive).format("YYYY-MM-DD") }}
+      </span>
       <a slot="check" slot-scope="row">
         <a @click="goDetail(row)">查看</a>
       </a>
@@ -65,7 +68,8 @@ export default {
         },
         {
           title: "驾驶时间",
-          dataIndex: "gmtDrive"
+          dataIndex: "usageTime",
+          scopedSlots: { customRender: "usageTime" }
         },
         {
           title: "行驶路径",
@@ -74,9 +78,7 @@ export default {
         }
       ],
       tableData: [],
-      formInline: {
-        number: ""
-      }
+      number: ""
     };
   },
   methods: {
@@ -85,7 +87,7 @@ export default {
       let params = {
         size: this.size,
         page: this.current,
-        number: this.formInline.number
+        number: this.number
       };
       this.$api.car
         .manageVehicleUse(params)
