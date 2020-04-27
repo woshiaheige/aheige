@@ -172,7 +172,7 @@ export default {
         pointId: row.pointId,
         beginTime: "2020-01-01",
         endTime: "2020-12-01",
-        title: "对接异常详情测试",
+        title: "756877X5555553",
         mn: "756877X3333321"
       };
 
