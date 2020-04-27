@@ -90,8 +90,6 @@ export default {
         this.$nextTick(() => {
           this.$refs.deviceReport.getTableData();
         });
-
-        console.log(e);
       }
     }
   },

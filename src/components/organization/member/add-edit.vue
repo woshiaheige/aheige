@@ -180,7 +180,7 @@ export default {
         password: "",
         phone: "",
         wechatId: "",
-        roleId: ""
+        roleId: undefined
       },
       rules: {
         enterpriseId: [
@@ -304,7 +304,7 @@ export default {
     reset() {
       this.initPassword = "";
       this.memberId = "";
-      this.roleId = "";
+      this.roleId = undefined;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
     },
@@ -324,6 +324,7 @@ export default {
     editMember(values) {
       let params = values;
       params.id = this.memberId;
+      let password = values.password;
       if (this.initPassword != params.password) {
         //避免重复加密
         params.password = this.$md5(params.password);
@@ -331,38 +332,36 @@ export default {
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
-      this.$api.organization
-        .editSysUser(params)
-        .then(res => {
-          if (res.data.state == 0) {
-            this.$message.success("修改用户成功");
-            this.$emit("updateTable");
-            this.closeModal();
-          }
-        })
-        .catch(() => {
-          this.closeModal();
-        });
+      this.$api.organization.editSysUser(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("修改用户成功");
+          this.$emit("update:visible", false);
+          this.$emit("updateTable");
+          this.reset();
+        } else {
+          //避免编辑用户失败时，把密码重复加密
+          params.password = password;
+        }
+      });
     },
     addMember(values) {
       let params = values;
+      let password = values.password;
       params.password = this.$md5(params.password);
       if (params.approvalIds) {
         params.approvalIds = [values.approvalIds];
       }
-      this.$api.organization
-        .addSysUser(params)
-        .then(res => {
-          if (res.data.state == 0) {
-            this.$message.success("新建用户成功");
-            this.$emit("update:visible", false);
-            this.$emit("updateTable");
-            this.reset();
-          }
-        })
-        .catch(() => {
-          this.closeModal();
-        });
+      this.$api.organization.addSysUser(params).then(res => {
+        if (res.data.state == 0) {
+          this.$message.success("新建用户成功");
+          this.$emit("update:visible", false);
+          this.$emit("updateTable");
+          this.reset();
+        } else {
+          //避免新建用户失败时，把密码重复加密
+          params.password = password;
+        }
+      });
     }
   },
   mounted() {
