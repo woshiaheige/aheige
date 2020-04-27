@@ -131,6 +131,13 @@ export default {
           this.getMissionNextWeek();
         }
       }
+    },
+    week(newVal) {
+      if (newVal === "this") {
+        this.selectedDay = this.today;
+      } else {
+        this.selectedDay = 0;
+      }
     }
   },
   mounted() {
