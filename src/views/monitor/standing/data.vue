@@ -238,20 +238,7 @@ export default {
           if (res.data.state == 0) {
             let _data = res.data.data || [];
             let tempColumns = [];
-            let temp = [
-              {
-                align: "center",
-                title: "序号",
-                width: 100,
-                customRender: (_, __, index) => {
-                  return (
-                    <span>
-                      {index + (this.current - 1) * this.pageSize + 1}
-                    </span>
-                  );
-                }
-              }
-            ];
+            let temp = [];
             _data.forEach(element => {
               if (element.title == "时间") {
                 temp.push({
