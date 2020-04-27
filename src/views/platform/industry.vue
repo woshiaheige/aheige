@@ -136,8 +136,8 @@ export default {
     onLock(row) {
       console.log(row);
       this.$confirm({
-        title: "锁定",
-        content: `是否锁定用户${row.name}`,
+        title: "冻结",
+        content: `是否冻结用户${row.name}`,
         onOk() {
           console.log("OK");
         },

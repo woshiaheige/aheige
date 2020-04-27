@@ -147,19 +147,6 @@ export default {
           console.log("Cancel");
         }
       });
-    },
-    onLock(row) {
-      console.log(row);
-      this.$confirm({
-        title: "锁定",
-        content: `是否锁定用户${row.name}`,
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {
-          console.log("Cancel");
-        }
-      });
     }
   },
   mounted() {

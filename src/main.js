@@ -30,6 +30,9 @@ import "@/assets/style/login/login.less";
 import "@/assets/style/maintain/dispatch.less";
 import "@/assets/style/monitor/monitor.less";
 
+//字体
+import "@/assets/font/font.css";
+
 //mock
 require("@/mock/index");
 require("@/mock/maintain");

@@ -46,7 +46,7 @@
               style="backgroundColor:#2db7f5"
               icon="user"
               v-margin:right="5"
-            /><span>凌可佳</span>
+            /><span>{{ username }}</span>
           </div>
           <a-icon
             type="logout"
@@ -208,6 +208,9 @@ export default {
       });
 
       return menuArr;
+    },
+    username() {
+      return JSON.parse(sessionStorage.getItem("userinfo")).username;
     }
   },
   watch: {

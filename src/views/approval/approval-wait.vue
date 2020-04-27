@@ -179,13 +179,11 @@ export default {
         },
         {
           title: "申请时间",
-          align: "center",
           width: 200,
           dataIndex: "applyTime"
         },
         {
           title: "审核时间",
-          align: "center",
           width: 200,
           dataIndex: "approvalTime",
           customRender: text => {

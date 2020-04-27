@@ -8,7 +8,7 @@ const organization = {
       params: data
     });
   },
-  //锁定用户
+  //冻结用户
   lockedUser(data) {
     return axios.get(base.api + "sysUser/lockedUser", {
       params: data
