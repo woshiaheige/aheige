@@ -45,6 +45,11 @@ export default {
           title: "上限",
           dataIndex: "ceilval",
           key: "ceilval"
+        },
+        {
+          title: "超标值",
+          dataIndex: "realVal",
+          key: "realVal"
         }
       ],
       tableData: [],

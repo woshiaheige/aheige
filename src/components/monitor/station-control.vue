@@ -1,7 +1,7 @@
 <template>
   <div class="monitor">
     <a-modal
-      :width="800"
+      :width="600"
       title="设备反控"
       :visible="visible"
       @ok="handleOk"
@@ -9,10 +9,10 @@
       :maskClosable="false"
     >
       <a-card title="设备反控" v-margin:bottom="10">
-        <a-row :gutter="16">
-          <a-col :span="8" style="text-align: center;">
-            <a-card title="即时采样(仪表)">
-              <img
+        <a-row>
+          <a-tabs type="card" :animated="true">
+            <a-tab-pane tab="即时采样(仪表)" key="1" style="text-align:center;"
+              ><img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -31,14 +31,10 @@
                     >设置</a-button
                   >
                 </a-button-group>
-              </p>
-            </a-card>
-          </a-col>
-
-          <a-col :span="8" style="text-align: center;">
-            <a-card title="启动清洗(仪表)">
-              <!-- <p class="control-title"></p> -->
-              <img
+              </p></a-tab-pane
+            >
+            <a-tab-pane tab="启动清洗(仪表)" key="2" style="text-align:center;"
+              ><img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -57,13 +53,13 @@
                     >设置</a-button
                   >
                 </a-button-group>
-              </p>
-            </a-card>
-          </a-col>
-          <a-col :span="8" style="text-align: center;">
-            <a-card title="启动超标留样(仪表)">
-              <!-- <p class="control-title"></p> -->
-              <img
+              </p></a-tab-pane
+            >
+            <a-tab-pane
+              tab="启动超标留样(仪表)"
+              key="3"
+              style="text-align:center;"
+              ><img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -72,17 +68,16 @@
                 <a-button-group>
                   <a-button @click="getSend3015">设置</a-button>
                 </a-button-group>
-              </p>
-            </a-card>
-          </a-col>
+              </p></a-tab-pane
+            >
+          </a-tabs>
         </a-row>
       </a-card>
       <a-card title="数采仪反控">
-        <a-row :gutter="16">
-          <a-col :span="8" style="text-align: center;">
-            <a-card title="现场机时间">
-              <!-- <p class="control-title"></p> -->
-              <img
+        <a-row>
+          <a-tabs type="card" :animated="true">
+            <a-tab-pane tab="现场机时间" key="4" style="text-align:center;"
+              ><img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -112,13 +107,10 @@
                     >提取</a-button
                   >
                 </a-button-group>
-              </p>
-            </a-card>
-          </a-col>
-          <a-col :span="8" style="text-align: center;">
-            <a-card title="污染物历史数据">
-              <!-- <p class="control-title"></p> -->
-              <img
+              </p></a-tab-pane
+            >
+            <a-tab-pane tab="污染物历史数据" key="5" style="text-align:center;"
+              ><img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -137,13 +129,13 @@
                     >提取</a-button
                   >
                 </a-button-group>
-              </p>
-            </a-card>
-          </a-col>
-          <a-col :span="8" style="text-align: center;">
-            <a-card title="采样时间周期(仪表)">
-              <!-- <p class="control-title"></p> -->
-              <img
+              </p></a-tab-pane
+            >
+            <a-tab-pane
+              tab="采样时间周期(仪表)"
+              key="6"
+              style="text-align:center;"
+              ><img
                 v-lazy="controlImg"
                 class="control-img"
                 style="width: 100px; height: 100px; margin: 0 auto"
@@ -173,9 +165,9 @@
                     >提取</a-button
                   >
                 </a-button-group>
-              </p>
-            </a-card>
-          </a-col>
+              </p></a-tab-pane
+            >
+          </a-tabs>
         </a-row>
       </a-card>
       <monitor-modal
