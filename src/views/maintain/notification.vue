@@ -197,8 +197,8 @@ export default {
         mn: "756877X3333321"
       };
 
-      // this.$refs.notificationWeek.setNotification();
-      this.$refs.notificationMonth.setNotification();
+      this.$refs.notificationWeek.setNotification();
+      // this.$refs.notificationMonth.setNotification();
     },
     getTableData() {
       let params = {
