@@ -201,16 +201,23 @@ export default {
     },
     //消息提醒列表
     changeTabs(key) {
+      console.log(key);
       let that = this;
       switch (key) {
         case "1":
-          that.$refs.pointList.getTableData();
+          if (that.$refs.pointList) {
+            that.$refs.pointList.getTableData();
+          }
           break;
         case "2":
-          that.$refs.contractList.getTableData();
+          if (that.$refs.contractList) {
+            that.$refs.contractList.getTableData();
+          }
           break;
         case "3":
-          that.$refs.customerList.getTableData();
+          if (that.$refs.customerList) {
+            that.$refs.customerList.getTableData();
+          }
           break;
       }
     }

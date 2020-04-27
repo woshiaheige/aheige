@@ -2,7 +2,7 @@
   <div>
     <a-list itemLayout="horizontal" :dataSource="warnList" :loading="loading">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a slot="actions" @click="goDetail(item.busineId, item.id)">关闭提醒</a>
+        <a slot="actions" @click="closeReminds(item.id)">关闭提醒</a>
         <div>
           <a-avatar :src="require('@/assets/img/complain.png')" />
           <span v-color="'#424242'" v-margin:left="8"
@@ -68,9 +68,29 @@ export default {
           this.loading = false;
         });
     },
-    goDetail(id, msgId) {
-      this.obj.show = true;
-      this.$refs.child.getDetail(id, msgId);
+    closeReminds(id) {
+      let that = this;
+
+      this.$confirm({
+        title: "确认关闭",
+        content: "确认关闭警告？",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          let data = {
+            id,
+            status: 1 //0:未处理 1已处理
+          };
+
+          that.$api.index.closeMsg(data).then(res => {
+            if (res.data.state == 0) {
+              that.getTableData();
+            }
+          });
+        },
+        onCancel() {}
+      });
     }
   },
   mounted() {

@@ -194,6 +194,7 @@ export default {
     },
     handleChangeType(value) {
       this.selectedKeys = [];
+      this.targetKeys = [];
       this.getScheme();
       if (value == 1) {
         this.form.date = 0;
