@@ -100,7 +100,6 @@ export default {
           resizeEnable: true,
           zoom: 10
         });
-        point = [map.getCenter().lng, map.getCenter().lat];
         _this.lnglat = {
           lng: map.getCenter().lng,
           lat: map.getCenter().lat
