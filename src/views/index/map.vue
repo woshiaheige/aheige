@@ -146,8 +146,8 @@ export default {
           let result = res.data.data;
           for (var i in result) {
             let marker;
-            let green = '<div class="marker-green"></div>';
-            let red = '<div class="marker-red"></div>';
+            let green = '<div class="marker-info marker-green"></div>';
+            let red = '<div class="marker-info marker-red"></div>';
             marker = new AMap.Marker({
               position: new AMap.LngLat(
                 result[i].longitude,
