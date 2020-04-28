@@ -43,7 +43,7 @@
   </a-modal>
 </template>
 <script>
-import editor from "@/components/common/editor";
+import editor from "@/components/common/editor/editor";
 export default {
   components: { editor },
   props: {
