@@ -67,7 +67,11 @@
             >
               <a-progress
                 type="circle"
-                :percent="(item.completeCount / item.count) * 100"
+                :percent="
+                  item.count == 0
+                    ? '100%'
+                    : (item.completeCount / item.count) * 100
+                "
                 :width="120"
               >
                 <template v-slot:format="percent">
