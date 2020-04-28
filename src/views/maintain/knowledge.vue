@@ -47,7 +47,7 @@
           <a-list
             itemLayout="vertical"
             size="large"
-            :dataSource="listData"
+            :dataSource="tableData"
             :loading="loading"
           >
             <a-list-item slot="renderItem" slot-scope="item" key="item.id">
@@ -64,7 +64,7 @@
               <a-list-item-meta>
                 <a slot="title">{{ item.title }}</a>
                 <div slot="description">
-                  <a-tag color="blue">{{ item.type }}</a-tag>
+                  <a-tag color="blue">{{ item.className }}</a-tag>
                 </div>
               </a-list-item-meta>
               <div v-html="item.content" class="article-content"></div>
@@ -190,16 +190,16 @@ export default {
           if (res.data.state == 0) {
             this.loading = false;
             this.tableData = res.data.data.records;
-            this.tableData.forEach(item => {
-              this.listData.push({
-                id: item.id,
-                title: `${item.title}`,
-                type: `${item.className}`,
-                content: `${item.content}`,
-                img:
-                  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              });
-            });
+            // this.tableData.forEach(item => {
+            //   this.listData.push({
+            //     id: item.id,
+            //     title: `${item.title}`,
+            //     type: `${item.className}`,
+            //     content: `${item.content}`,
+            //     img:
+            //       "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+            //   });
+            // });
             this.total = +res.data.data.total;
           }
         })
