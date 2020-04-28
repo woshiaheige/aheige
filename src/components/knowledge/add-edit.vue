@@ -38,7 +38,7 @@
           >
         </a-select>
       </a-form-item>
-      <editor v-model="content" v-if="showEditor" style="width:100%" />
+      <editor v-model="content" v-if="showEditor" />
     </a-form>
   </a-modal>
 </template>
@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      initDetail: "", //编辑时的初始数据
       form: this.$form.createForm(this),
       content: "",
       editorOption: {},
@@ -87,15 +88,16 @@ export default {
   watch: {
     detail(nval) {
       if (nval) {
+        this.initDetail = JSON.parse(JSON.stringify(nval));
         this.detailId = nval.id;
         this.content = nval.content;
         this.toggleEditor();
-        setTimeout(() => {
+        this.$nextTick(() => {
           this.form.setFieldsValue({
             title: nval.title,
             classId: nval.classId
           });
-        }, 50);
+        });
       }
     },
     visible(nval) {
@@ -113,6 +115,7 @@ export default {
   methods: {
     toggleEditor() {
       //避免富文本无法加载数据
+      this.showEditor = false;
       if (this.toggleEditorTimer) {
         clearTimeout(this.toggleEditorTimer);
       }
@@ -121,28 +124,45 @@ export default {
       }, 200);
     },
     closeModal() {
-      let that = this;
-      if (this.content != "") {
-        this.$confirm({
-          title: "确认退出",
-          content: "文章尚未保存，确认退出？",
-          okText: "确定",
-          okType: "danger",
-          cancelText: "取消",
-          onOk() {
-            that.showEditor = false;
-            that.$emit("update:visible", false);
-            that.reset();
-          },
-          onCancel() {}
-        });
+      let formData = this.form.getFieldsValue();
+      if (this.detailId) {
+        //编辑状态
+        if (
+          formData.classId != this.initDetail.classId ||
+          formData.title != this.initDetail.title ||
+          this.content != this.initDetail.content
+        ) {
+          console.log("修改了未保存");
+          this.closeModalFn();
+        } else {
+          this.reset();
+        }
       } else {
-        this.showEditor = false;
-        this.$emit("update:visible", false);
-        this.reset();
+        //新增状态
+        if (formData.title || this.content) {
+          this.closeModalFn();
+        } else {
+          this.reset();
+        }
       }
     },
+    closeModalFn() {
+      let that = this;
+      this.$confirm({
+        title: "确认退出",
+        content: "文章尚未保存，确认退出？",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          that.$emit("update:visible", false);
+          that.reset();
+        },
+        onCancel() {}
+      });
+    },
     reset() {
+      this.$emit("update:visible", false);
       this.content = "";
       this.detailId = "";
       this.form.resetFields();

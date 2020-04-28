@@ -14,10 +14,15 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="方案名称" prop="name">
-        <a-input v-model="form.name" placeholder="请输入"></a-input>
+        <a-input
+          v-model="form.name"
+          placeholder="请输入"
+          :maxLength="30"
+        ></a-input>
       </a-form-model-item>
       <a-form-model-item label="计划类别" prop="type">
         <a-select
+          :disabled="this.schemeDetail.id"
           showSearch
           v-model="form.type"
           placeholder="请选择"

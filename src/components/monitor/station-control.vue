@@ -9,7 +9,7 @@
       :maskClosable="false"
     >
       <a-tabs type="card" :animated="true">
-        <a-tab-pane tab="远程反控" key="1"
+        <a-tab-pane tab="设备反控" key="1"
           ><a-row>
             <a-col :span="8" style="text-align: center;">
               <p class="control-title">即时采样(仪表)</p>
@@ -73,7 +73,7 @@
             >
           </a-row></a-tab-pane
         >
-        <a-tab-pane tab="数据命令" key="2"
+        <a-tab-pane tab="数采仪反控" key="2"
           ><a-row>
             <a-col :span="8" style="text-align: center;"
               ><p class="control-title">现场机时间</p>
