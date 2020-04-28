@@ -69,7 +69,7 @@
                 type="circle"
                 :percent="
                   item.count == 0
-                    ? '100%'
+                    ? 100
                     : (item.completeCount / item.count) * 100
                 "
                 :width="120"
