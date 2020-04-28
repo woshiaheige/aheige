@@ -10,7 +10,7 @@
         </div>
       </div>
       <a-row :gutter="16">
-        <a-col :span="6">
+        <a-col :span="7">
           <a-radio-group
             :defaultValue="31"
             buttonStyle="solid"
@@ -25,7 +25,18 @@
           >
           <a-menu v-model="currentScheme" mode="vertical">
             <a-menu-item v-for="item in schemeList" :key="item.id">
-              {{ item.name }}({{ item.type == 1 ? "周计划" : "月计划" }})
+              <span
+                style="width:calc(100% - 65px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:top;"
+                :title="
+                  item.name +
+                    '(' +
+                    `${item.type == 1 ? '周计划' : '月计划'}` +
+                    ')'
+                "
+                >{{ item.name }}({{
+                  item.type == 1 ? "周计划" : "月计划"
+                }})</span
+              >
               <a-divider type="vertical" v-show="currentScheme == item.id" />
               <a-icon
                 type="edit"
@@ -48,7 +59,7 @@
             />
           </a-menu>
         </a-col>
-        <a-col :span="18">
+        <a-col :span="17">
           <a-table
             size="middle"
             rowKey="id"
@@ -65,24 +76,26 @@
           </a-table>
           <a-pagination
             size="small"
+            :showTotal="total => `共 ${total} 条`"
             v-margin:top="16"
-            showQuickJumper
             showSizeChanger
+            :pageSize.sync="pageSize"
             :defaultCurrent="current"
-            :defaultPageSize="pageSize"
+            @change="pagechange"
+            @showSizeChange="sizechange"
             :total="total"
           />
         </a-col>
       </a-row>
     </a-card>
-
+    <!-- 新建编辑方案 -->
     <add-scheme
       :visible="addSchemeModal"
       :scheme-detail="selectedScheme"
       :maintain-type="currentType"
       @close="addSchemeModal = false"
     ></add-scheme>
-
+    <!-- 新建编辑项目 -->
     <add-scheme-list
       :visible="addSchemeListModal"
       :scheme-id="currentScheme[0]"
