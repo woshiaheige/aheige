@@ -14,7 +14,11 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="运维项目" prop="name">
-        <a-input v-model="form.name" placeholder="请输入"></a-input>
+        <a-input
+          v-model="form.name"
+          placeholder="请输入"
+          :maxLength="30"
+        ></a-input>
       </a-form-model-item>
       <!-- <a-form-model-item label="备注" prop="remark">
         <a-input
@@ -100,7 +104,6 @@ export default {
       this.$api.maintain.editSchemeList(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("编辑成功");
-          this.reset();
           this.closeModal();
         }
       });
@@ -114,7 +117,6 @@ export default {
       this.$api.maintain.addSchemeList(data).then(res => {
         if (res.data.state == 0) {
           this.$message.success("添加成功");
-          this.reset();
           this.closeModal();
         }
       });
