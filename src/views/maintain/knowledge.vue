@@ -67,7 +67,10 @@
                   <a-tag color="blue">{{ item.className }}</a-tag>
                 </div>
               </a-list-item-meta>
-              <div v-html="item.content" class="article-content"></div>
+              <div
+                v-html="item.content"
+                class="article-content ql-snow ql-editor"
+              ></div>
             </a-list-item>
           </a-list>
           <a-pagination

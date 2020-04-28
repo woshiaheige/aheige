@@ -150,12 +150,12 @@ export default {
         if (this.formInline.type == 1) {
           tempData.push({
             dateTime: element["dataTime"],
-            value: element[columnsValue]["rtd"]
+            value: element[columnsValue]["Rtd"]
           });
         } else {
           tempData.push({
             dateTime: element["dataTime"],
-            value: Number(element[columnsValue]["avg"])
+            value: Number(element[columnsValue]["Avg"])
           });
         }
       });
@@ -254,7 +254,7 @@ export default {
                     title: element.title,
                     dataIndex: element.field,
                     key: element.field,
-                    customRender: (text, row) => `${row[element.field].rtd}`
+                    customRender: (text, row) => `${row[element.field].Rtd}`
                   });
                   tempColumns.push({
                     name: element.title,
@@ -265,7 +265,7 @@ export default {
                     title: element.title,
                     dataIndex: element.field,
                     key: element.field,
-                    customRender: (text, row) => `${row[element.field].avg}`
+                    customRender: (text, row) => `${row[element.field].Avg}`
                   });
                   tempColumns.push({
                     name: element.title,

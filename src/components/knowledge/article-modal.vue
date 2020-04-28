@@ -10,8 +10,10 @@
       <a-descriptions-item label="知识库分类">{{
         detail.className
       }}</a-descriptions-item>
-      <a-descriptions-item label="详情" class="ql-container ql-snow">
-        <div v-html="detail.content" class="article-detail"></div>
+      <a-descriptions-item label="详情">
+        <div class="ql-container ql-snow">
+          <div class="ql-editor article-detail" v-html="detail.content" />
+        </div>
       </a-descriptions-item>
     </a-descriptions>
     <template slot="footer">
