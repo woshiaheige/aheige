@@ -54,6 +54,7 @@
             type="primary"
             class="login-button"
             @click="handleSubmit('login')"
+            v-preventReClick
             >登录</a-button
           >
         </a-form-model-item>
