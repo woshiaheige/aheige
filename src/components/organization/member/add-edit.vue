@@ -56,7 +56,7 @@
       <a-form-model-item label="微信ID" prop="wechatId">
         <a-input placeholder="请输入" v-model="formData.wechatId" />
       </a-form-model-item>
-      <a-form-model-item label="选择权限" prop="roleId">
+      <a-form-model-item label="选择权限" prop="roleId" v-if="memberId != 1">
         <a-select
           placeholder="请选择"
           :disabled="memberId == 1"
