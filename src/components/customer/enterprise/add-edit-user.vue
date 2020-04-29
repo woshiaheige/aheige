@@ -14,15 +14,12 @@
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 16 }"
     >
-      <!-- <a-form-model-item label="企业名称">
-        <a-input placeholder="企业名称" disabled />
-      </a-form-model-item> -->
       <a-form-model-item label="姓名" prop="name">
-        <a-input placeholder="姓名" :maxLength="20" v-model="formData.name" />
+        <a-input placeholder="请输入" :maxLength="20" v-model="formData.name" />
       </a-form-model-item>
       <a-form-model-item label="账号" prop="username">
         <a-input
-          placeholder="账号"
+          placeholder="请输入"
           v-model="formData.username"
           :disabled="isEdit"
           :maxLength="20"
@@ -33,13 +30,25 @@
       </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
         <a-input-password
-          placeholder="密码"
+          placeholder="请输入"
+          type="password"
           :maxLength="20"
+          :visibilityToggle="false"
           v-model="formData.password"
+          v-if="!passwordShow"
+          v-focus="focusSyncOne"
+          @change="passwordInput"
+          @focus="removePassword"
+        />
+        <a-input
+          placeholder="请输入"
+          v-model="formData.password"
+          v-if="passwordShow"
+          v-focus="focusSyncTwo"
         />
       </a-form-model-item>
       <a-form-model-item label="微信ID" prop="wxId">
-        <a-input placeholder="微信ID" :maxLength="30" v-model="formData.wxId" />
+        <a-input placeholder="请输入" :maxLength="30" v-model="formData.wxId" />
       </a-form-model-item>
     </a-form-model>
     <template slot="footer">
@@ -81,7 +90,11 @@ export default {
         password: [{ required: true, message: "输入密码", trigger: "blur" }]
       },
       isEdit: false,
-      oldPassword: ""
+      oldPassword: "",
+      passwordShow: false,
+      focusSyncOne: false,
+      focusSyncTwo: false,
+      removeFlag: true
     };
   },
   computed: {
@@ -134,6 +147,7 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
+      this.removeFlag = true;
       this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
@@ -146,6 +160,22 @@ export default {
             this.oldPassword = res.data.data.password;
           }
         });
+    },
+    passwordInput() {
+      this.passwordShow = true;
+      this.focusSyncTwo = true;
+      setTimeout(() => {
+        this.passwordShow = false;
+        this.focusSyncOne = true;
+      }, 500);
+    },
+    removePassword() {
+      if (this.removeFlag) {
+        if (this.modelData.type == "edit") {
+          this.removeFlag = false;
+          this.formData.password = "";
+        }
+      }
     }
   },
   mounted() {},
