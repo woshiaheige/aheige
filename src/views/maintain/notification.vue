@@ -166,12 +166,12 @@ export default {
       this.onSubmit();
     },
     toReportModal(row) {
-      this.modalWeek = {
-        show: true
-      };
-      // this.modalMonth = {
+      // this.modalWeek = {
       //   show: true
       // };
+      this.modalMonth = {
+        show: true
+      };
       // this.$bus.$data.notification = {
       //   id: row.id,
       //   pointId: row.pointId,
@@ -197,8 +197,8 @@ export default {
         mn: "756877X3333321"
       };
 
-      this.$refs.notificationWeek.setNotification();
-      // this.$refs.notificationMonth.setNotification();
+      // this.$refs.notificationWeek.setNotification();
+      this.$refs.notificationMonth.setNotification();
     },
     getTableData() {
       let params = {
