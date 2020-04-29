@@ -69,14 +69,11 @@
       :groupDetail="groupDetail"
       @updateTable="getTableData"
     />
-    <!-- 新建编辑组员
-    <group-member :visible.sync="groupVisible" /> -->
   </div>
 </template>
 <script>
 import groupEdit from "@/components/organization/group/group-edit";
 import { Empty } from "ant-design-vue";
-// import groupMember from "@/components/organization/group/group-member";
 export default {
   components: { groupEdit },
   data() {
