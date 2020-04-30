@@ -300,6 +300,28 @@ const maintain = {
     return axios.get(base.api + "reportPushInstrumentData/getCount", {
       params: data
     });
+  },
+
+  //根据监测点获取季度/月/周的超标、异常曲线图数据
+  getReportPushDataRateWarnAndOverProofCurve(data) {
+    return axios.get(
+      base.api + "reportPushDetails/getReportPushDataRateWarnAndOverProofCurve",
+      {
+        params: data
+      }
+    );
+  },
+  //根据reportPushId查询任务曲线图数据
+  getReportPushDetailsCurve(data) {
+    return axios.get(base.api + "reportPushDetails/getReportPushDetailsCurve", {
+      params: data
+    });
+  },
+  //根据reportPushId查询统计任务数，和方案
+  getReportPushTaskCount(data) {
+    return axios.get(base.api + "reportPushDetails/getReportPushTaskCount", {
+      params: data
+    });
   }
 };
 

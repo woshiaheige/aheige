@@ -152,7 +152,7 @@ export default {
   methods: {
     onCancel() {
       this.modalModal.show = false;
-      this.modalMonth.show = false;
+      this.$bus.$data.notification = {};
     },
     onRest() {
       this.formInline = this.$options.data().formInline;
@@ -162,11 +162,9 @@ export default {
       this.modalModal = {
         show: true
       };
-      // this.modalMonth = {
-      //   show: true
-      // };
       this.$bus.$data.notification = {
-        type: "week", //month报表类型
+        batch: row.batch, //第几期
+        type: row.type, //2月报表类型，3周报表
         id: row.id,
         pointId: row.pointId,
         beginTime: row.gmtBeginTime,
@@ -175,25 +173,18 @@ export default {
         mn: row.mn
       };
       // this.$bus.$data.notification = {
-      //   id: row.id,
+      //   //数据周报
+      //   batch: row.batch,
+      //   type: row.type,
+      //   id: "1255300702180151297",
       //   pointId: row.pointId,
       //   beginTime: "2020-01-01",
       //   endTime: "2020-12-01",
-      //   title: "对接超标详情测试",
-      //   mn: 66666
-      // };
-      // this.$bus.$data.notification = {
-      //   type: "week", //month报表类型
-      //   id: row.id,
-      //   pointId: row.pointId,
-      //   beginTime: "2020-01-01",
-      //   endTime: "2020-12-01",
-      //   title: "756877X5555553",
-      //   mn: "756877X3333321"
+      //   title: row.pointName,
+      //   mn: "12345678911"
       // };
 
       this.$refs.notificationModal.setNotification();
-      // this.$refs.notificationMonth.setNotification();
     },
     getTableData() {
       let params = {

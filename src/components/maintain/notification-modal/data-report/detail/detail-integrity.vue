@@ -33,7 +33,10 @@ export default {
             {
               title: "数据完整率",
               dataIndex: "minPro",
-              key: "minPro"
+              key: "minPro",
+              customRender(text) {
+                return (Number(text) * 100).toFixed(2) + "%";
+              }
             }
           ]
         },
@@ -53,7 +56,10 @@ export default {
             {
               title: "数据完整率",
               dataIndex: "hourPro",
-              key: "hourPro"
+              key: "hourPro",
+              customRender(text) {
+                return (Number(text) * 100).toFixed(2) + "%";
+              }
             }
           ]
         },
@@ -73,6 +79,9 @@ export default {
             {
               title: "数据完整率",
               dataIndex: "dayPro",
+              customRender(text) {
+                return (Number(text) * 100).toFixed(2) + "%";
+              },
               key: "dayPro"
             }
           ]
@@ -90,8 +99,8 @@ export default {
         pointId: notification.pointId
       };
       this.$api.maintain.getReportPushDataRateDetails(params).then(res => {
-        if (res.data.state == 0) {
-          this.tableData = res.data.data;
+        if (res.data.state == 0 && res.data.data) {
+          this.tableData = [res.data.data];
         }
       });
     }
