@@ -86,6 +86,14 @@ export default {
         callback();
       }
     };
+    const validateLevel = (rule, value, callback) => {
+      if (value == 0) {
+        //非必须输入
+        callback("请选择供应商等级");
+        return;
+      }
+      callback();
+    };
     return {
       cityList,
       title: "",
@@ -101,7 +109,13 @@ export default {
         name: [
           { required: true, message: "请输入供应商名称", trigger: "blur" }
         ],
-        telephone: [{ validator: validatePhone, trigger: "blur" }]
+        regionId: [{ required: true, message: "请选择区域", trigger: "blur" }],
+        address: [
+          { required: true, message: "请输入供应商地址", trigger: "blur" }
+        ],
+
+        telephone: [{ validator: validatePhone, trigger: "blur" }],
+        level: [{ validator: validateLevel, trigger: "blur" }]
       }
     };
   },
