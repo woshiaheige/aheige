@@ -57,7 +57,14 @@ export default {
         {
           title: "操作人",
           dataIndex: "username",
-          align: "center"
+          align: "center",
+          customRender: text => {
+            if (text == "" || text == null) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         }
       ],
       tableData: []

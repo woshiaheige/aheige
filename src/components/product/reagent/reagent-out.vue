@@ -68,7 +68,14 @@ export default {
         },
         {
           title: "设备",
-          dataIndex: "devName"
+          dataIndex: "devName",
+          customRender: text => {
+            if (text == "" || text == null) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         },
         {
           title: "数量",
@@ -78,12 +85,26 @@ export default {
         {
           title: "操作人",
           dataIndex: "username",
-          align: "center"
+          align: "center",
+          customRender: text => {
+            if (text == "" || text == null) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         },
         {
           title: "领用人",
           dataIndex: "receiverUserName",
-          align: "center"
+          align: "center",
+          customRender: text => {
+            if (text == "" || text == null) {
+              return "-";
+            } else {
+              return text;
+            }
+          }
         }
       ],
       tableData: []
