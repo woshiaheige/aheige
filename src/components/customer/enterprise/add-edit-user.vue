@@ -39,6 +39,7 @@
           v-focus="focusSyncOne"
           @change="passwordInput"
           @focus="removePassword"
+          @blur="addPassword"
         />
         <a-input
           placeholder="请输入"
@@ -164,6 +165,7 @@ export default {
     passwordInput() {
       this.passwordShow = true;
       this.focusSyncTwo = true;
+      this.removeFlag = false;
       setTimeout(() => {
         this.passwordShow = false;
         this.focusSyncOne = true;
@@ -172,8 +174,14 @@ export default {
     removePassword() {
       if (this.removeFlag) {
         if (this.modelData.type == "edit") {
-          this.removeFlag = false;
           this.formData.password = "";
+        }
+      }
+    },
+    addPassword() {
+      if (this.removeFlag) {
+        if (this.modelData.type == "edit") {
+          this.formData.password = this.oldPassword;
         }
       }
     }
