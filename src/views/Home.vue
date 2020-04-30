@@ -215,7 +215,7 @@ export default {
       return JSON.parse(sessionStorage.getItem("userinfo")).username;
     },
     includeArr() {
-      return JSON.parse(sessionStorage.getItem("keepAlive"));
+      return this.$store.state.includeArr;
     }
   },
   watch: {

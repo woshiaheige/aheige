@@ -85,6 +85,14 @@ if (sessionStorage.getItem("permission")) {
   );
 }
 
+if (sessionStorage.getItem("keepAlive")) {
+  //处理F5 刷新鉴权
+  store.dispatch(
+    "createIncludeArr",
+    JSON.parse(sessionStorage.getItem("keepAlive"))
+  );
+}
+
 new Vue({
   router,
   store,
