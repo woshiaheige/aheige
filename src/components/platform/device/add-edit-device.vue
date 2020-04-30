@@ -1,5 +1,6 @@
 <template>
   <a-modal
+    :width="800"
     :title="title + '设备'"
     :visible="modelData.show"
     @ok="handleOk"
@@ -70,25 +71,21 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="监测因子" prop="divisorIds">
-        <a-select
+        <a-transfer
+          :listStyle="{
+            height: '300px',
+            width: '250px'
+          }"
+          showSearch
+          @change="handleChange"
+          @selectChange="handleSelectChange"
+          :dataSource="factorOptions"
+          :titles="['可选', '已选']"
+          :targetKeys="formData.divisorIds"
+          :selectedKeys="selectedKeys"
+          :render="item => item.title"
           :disabled="formData.type == undefined"
-          placeholder="请选择"
-          mode="multiple"
-          v-model="formData.divisorIds"
-          :filterOption="false"
-          @search="searchDivisor(formData.type, $event)"
-        >
-          <a-spin v-if="fetching" slot="notFoundContent" size="small" />
-          <a-select-option
-            v-for="(item, index) in factorOptions"
-            :key="index"
-            :value="item.id"
-          >
-            {{
-              item.name + " / " + item.code + " / " + item.protocolType + "协议"
-            }}
-          </a-select-option>
-        </a-select>
+        />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -103,6 +100,7 @@ export default {
   },
   data() {
     return {
+      selectedKeys: [],
       fetching: false, //搜索中
       lastFetchId: 0,
       title: "新建",
@@ -112,7 +110,8 @@ export default {
       factorOptions: [],
       fileList: [],
       formData: {
-        type: undefined
+        type: undefined,
+        divisorIds: []
       },
       rules: {
         name: [
@@ -172,24 +171,40 @@ export default {
     console.log(base.api);
   },
   methods: {
+    handleChange(nextTargetKeys) {
+      this.formData.divisorIds = nextTargetKeys;
+    },
+    handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
+      this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
+    },
     searchDivisor(value, divisorName) {
       const fetchId = this.lastFetchId;
       this.data = [];
       this.fetching = true;
       let params = {
-        size: 20,
-        page: 1,
         type: value,
         name: typeof divisorName == "string" ? divisorName : ""
       };
-      this.$api.platform.sysDivisor(params).then(res => {
-        console.log(res);
+      this.$api.platform.sysDivisorQuery(params).then(res => {
         if (res.data.state == 0) {
           if (fetchId !== this.lastFetchId) {
-            // for fetch callback order
             return;
           }
-          this.factorOptions = res.data.data.records;
+          let _data = res.data.data || [];
+          let temp = [];
+          _data.forEach(element => {
+            temp.push({
+              title:
+                element.name +
+                " / " +
+                element.code +
+                " / " +
+                element.protocolType +
+                "协议",
+              key: element.id
+            });
+          });
+          this.factorOptions = temp;
           this.fetching = false;
         }
       });
@@ -220,9 +235,19 @@ export default {
           return false;
         }
         //验证通过
+        let temp = [];
+        let _factorOptions = this.factorOptions || [];
+        let _divisorIds = this.formData.divisorIds || [];
+        _divisorIds.forEach(divElement => {
+          _factorOptions.forEach(factorElement => {
+            if (factorElement.key == divElement) {
+              temp.push(divElement);
+            }
+          });
+        });
         let data = {
           id: this.formData.id,
-          divisorIds: this.formData.divisorIds,
+          divisorIds: temp,
           fileId: this.formData.fileId,
           gmtReceptionTime: this.formData.gmtReceptionTime,
           manufacturer: this.formData.manufacturer,
@@ -284,6 +309,9 @@ export default {
             this.formData = res.data.data;
             this.getDivisorList();
           }
+        })
+        .then(() => {
+          this.searchDivisor();
         });
     },
     //监测点下拉
@@ -296,23 +324,41 @@ export default {
     },
     //设备类型下拉
     getPointSelect() {
-      let params = ["SYS_POINT_TYPE"];
-      this.$api.common.geDictByParam(params).then(res => {
-        this.pointOptions = res.data;
+      let data = {
+        code: "SYS_POINT_TYPE"
+      };
+      this.$api.common.geDictByParam(data).then(res => {
+        this.pointOptions = res.data.data;
       });
     },
     //监测类型
     getDeviceType() {
-      let params = ["DEVICE_TYPE"];
-      this.$api.common.geDictByParam(params).then(res => {
-        this.deviceTypeOptions = res.data;
+      let data = {
+        code: "DEVICE_TYPE"
+      };
+      this.$api.common.geDictByParam(data).then(res => {
+        this.deviceTypeOptions = res.data.data;
       });
     },
     getDivisorList() {
       let params = { divisorIds: this.formData.divisorIds };
       this.$api.common.listByIds(params).then(res => {
         if (res.data.state == 0) {
-          this.factorOptions = res.data.data;
+          let _data = res.data.data || [];
+          let temp = [];
+          _data.forEach(element => {
+            temp.push({
+              title:
+                element.name +
+                " / " +
+                element.code +
+                " / " +
+                element.protocolType +
+                "协议",
+              key: element.id
+            });
+          });
+          this.factorOptions = temp;
         }
       });
     }

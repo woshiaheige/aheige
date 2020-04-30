@@ -200,8 +200,11 @@ export default {
     },
     //监测点类型下拉
     getPointSelect() {
-      let params = ["SYS_POINT_TYPE"];
-      this.$api.common.geDictByParam(params).then(res => {
+      // let params = ["SYS_POINT_TYPE"];
+      let data = {
+        code: "SYS_POINT_TYPE"
+      };
+      this.$api.common.geDictByParam(data).then(res => {
         this.pointOptions = res.data;
         console.log(this.pointOptions);
       });

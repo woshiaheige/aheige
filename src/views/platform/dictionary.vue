@@ -72,19 +72,23 @@ export default {
       columns: [
         {
           title: "字典名称",
-          dataIndex: "name"
+          dataIndex: "name",
+          ellipsis: true
         },
         {
           title: "字典编码",
-          dataIndex: "code"
+          dataIndex: "code",
+          ellipsis: true
         },
         {
           title: "字典值",
-          dataIndex: "value"
+          dataIndex: "value",
+          ellipsis: true
         },
         {
           title: "字典说明",
-          dataIndex: "remark"
+          dataIndex: "remark",
+          ellipsis: true
         },
         {
           title: "操作",

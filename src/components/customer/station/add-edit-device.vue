@@ -203,9 +203,11 @@ export default {
     },
     //设备类型下拉
     getPointSelect() {
-      let params = ["SYS_POINT_TYPE"];
-      this.$api.common.geDictByParam(params).then(res => {
-        this.pointOptions = res.data;
+      let data = {
+        code: "SYS_POINT_TYPE"
+      };
+      this.$api.common.geDictByParam(data).then(res => {
+        this.pointOptions = res.data.data;
       });
     },
     //因子下拉
