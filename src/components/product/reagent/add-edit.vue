@@ -52,17 +52,14 @@
         />
       </a-form-model-item>
       <a-form-model-item label="库存警戒线" prop="cordon">
-        <a-input
-          :maxLength="30"
+        <a-input-number
           placeholder="库存警戒线"
           v-model.trim="formData.cordon"
-          type="number"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="参考价格" prop="price">
         <a-input-number
-          :min="1"
-          :max="99999999"
           placeholder="参考价格"
           v-model="formData.price"
           v-width="350"
@@ -93,6 +90,30 @@ export default {
     }
   },
   data() {
+    const validNum = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      }
+      if (!/^[1-9]\d*$/.test(value)) {
+        callback("请输入正整数");
+      } else if (value > 99999999) {
+        callback("最多只能输入8位数");
+      } else {
+        callback();
+      }
+    };
+    const validPrice = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      }
+      if (value < 0) {
+        callback("请输入正数");
+      } else if (value > 99999999) {
+        callback("最多只能输入8位数");
+      } else {
+        callback();
+      }
+    };
     return {
       formData: {
         number: "",
@@ -139,7 +160,9 @@ export default {
             message: "请输入库存单位",
             trigger: "blur"
           }
-        ]
+        ],
+        cordon: [{ validator: validNum, trigger: "blur" }],
+        price: [{ validator: validPrice, trigger: "blur" }]
       }
     };
   },
