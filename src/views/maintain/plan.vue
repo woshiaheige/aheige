@@ -276,7 +276,7 @@ export default {
           that.$api.maintain.deletePlan(data).then(async res => {
             if (res.data.state == 0) {
               that.$message.success("删除成功");
-              await that.getPlanStation();
+              // await that.getPlanStation();
               that.getTableData();
             }
           });

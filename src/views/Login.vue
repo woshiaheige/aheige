@@ -54,6 +54,7 @@
             type="primary"
             class="login-button"
             @click="handleSubmit('login')"
+            v-preventReClick
             >登录</a-button
           >
         </a-form-model-item>
@@ -186,13 +187,17 @@ export default {
 
                   await this.$api.login.getResource().then(async res => {
                     if (res.data.state == 0) {
-                      that.$message.success("登录成功！");
-                      await that.$store.dispatch(
-                        "createRouterTable",
-                        res.data.data
-                      );
-                      that.setLoading("正在登录中，请稍等");
-                      that.$router.push("/");
+                      if (res.data.data) {
+                        that.$message.success("登录成功！");
+                        await that.$store.dispatch(
+                          "createRouterTable",
+                          res.data.data
+                        );
+                        that.setLoading("正在登录中，请稍等");
+                        that.$router.push("/");
+                      } else {
+                        that.$message.warning("此用户暂无权限");
+                      }
                     }
                   });
                 }

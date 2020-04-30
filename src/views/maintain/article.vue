@@ -8,7 +8,10 @@
           <a-tag color="blue">{{ articleDetail.className }}</a-tag>
         </div>
       </div>
-      <div v-html="articleDetail.content" class="article-detail"></div>
+      <div
+        class="article-content ql-snow ql-editor"
+        v-html="articleDetail.content"
+      />
     </a-card>
   </div>
 </template>

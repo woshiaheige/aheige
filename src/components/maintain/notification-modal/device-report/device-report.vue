@@ -32,10 +32,7 @@
         </a-col>
       </a-row>
       <a-divider dashed>故障统计</a-divider>
-      <ve-histogram
-        :data="chartDeviceData"
-        :settings="chartSettings"
-      ></ve-histogram>
+      <ve-line :data="listData" :settings="chartSettings"></ve-line>
       <a-divider dashed>故障详情</a-divider>
       <a-descriptions layout="vertical" bordered size="small">
         <a-descriptions-item
@@ -68,12 +65,14 @@
 export default {
   data() {
     this.chartSettings = {
-      stack: { 设备: ["正常运行", "设备故障"] }
+      axisSite: { right: ["故障率"] },
+      yAxisName: ["设备数", "故障率"],
+      stack: { 设备: ["设备正常", "设备故障"] }
     };
     return {
       notificationData: [
         {
-          dateLabel: "第一周",
+          dateLabel: "2020-5-1",
           taskList: [
             {
               deviceName: "设备A",
@@ -82,7 +81,7 @@ export default {
           ]
         }
       ],
-      chartDeviceData: {
+      listData: {
         columns: ["日期", "设备正常", "设备故障", "故障率"],
         rows: []
       }
@@ -90,11 +89,14 @@ export default {
   },
   methods: {
     getTableData() {
-      this.chartDeviceData.rows = [
-        { 日期: "第一周", 设备正常: 1393, 设备故障: 1093, 故障率: 0.32 },
-        { 日期: "第二周", 设备正常: 3530, 设备故障: 3230, 故障率: 0.26 },
-        { 日期: "第三周", 设备正常: 2923, 设备故障: 2623, 故障率: 0.76 },
-        { 日期: "第四周", 设备正常: 1723, 设备故障: 1423, 故障率: 0.49 }
+      this.listData.rows = [
+        { 日期: "2020-5-1", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 },
+        { 日期: "2020-5-2", 设备正常: 1393, 设备故障: 1093, 故障率: 0.32 },
+        { 日期: "2020-5-3", 设备正常: 3530, 设备故障: 3230, 故障率: 0.26 },
+        { 日期: "2020-5-4", 设备正常: 2923, 设备故障: 2623, 故障率: 0.76 },
+        { 日期: "2020-5-5", 设备正常: 1723, 设备故障: 1423, 故障率: 0.49 },
+        { 日期: "2020-5-6", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 },
+        { 日期: "2020-5-7", 设备正常: 4593, 设备故障: 4293, 故障率: 0.78 }
       ];
     }
   }

@@ -31,7 +31,19 @@
         <a-input-password
           placeholder="请输入"
           type="password"
+          :visibilityToggle="false"
           v-model="formData.password"
+          v-if="!passwordShow"
+          v-focus="focusSyncOne"
+          @change="passwordInput"
+          @focus="removePassword"
+          @blur="addPassword"
+        />
+        <a-input
+          placeholder="请输入"
+          v-model="formData.password"
+          v-if="passwordShow"
+          v-focus="focusSyncTwo"
         />
       </a-form-model-item>
       <a-form-model-item label="手机号码" prop="phone">
@@ -44,7 +56,7 @@
       <a-form-model-item label="微信ID" prop="wechatId">
         <a-input placeholder="请输入" v-model="formData.wechatId" />
       </a-form-model-item>
-      <a-form-model-item label="选择权限" prop="roleId">
+      <a-form-model-item label="选择权限" prop="roleId" v-if="memberId != 1">
         <a-select
           placeholder="请选择"
           :disabled="memberId == 1"
@@ -100,6 +112,7 @@
     </template>
   </a-modal>
 </template>
+
 <script>
 export default {
   props: {
@@ -222,7 +235,11 @@ export default {
       roleList: [],
       groupList: [], //小组列表
       approvalList: [], //审核权限列表
-      auditor: ""
+      auditor: "",
+      passwordShow: false,
+      focusSyncOne: false,
+      focusSyncTwo: false,
+      removeFlag: true
     };
   },
   computed: {
@@ -307,6 +324,7 @@ export default {
       this.roleId = undefined;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
+      this.removeFlag = true;
     },
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -362,6 +380,29 @@ export default {
           params.password = password;
         }
       });
+    },
+    passwordInput() {
+      this.passwordShow = true;
+      this.focusSyncTwo = true;
+      this.removeFlag = false;
+      setTimeout(() => {
+        this.passwordShow = false;
+        this.focusSyncOne = true;
+      }, 500);
+    },
+    removePassword() {
+      if (this.removeFlag) {
+        if (this.memberId) {
+          this.formData.password = "";
+        }
+      }
+    },
+    addPassword() {
+      if (this.removeFlag) {
+        if (this.memberId) {
+          this.formData.password = this.memberDetail.password;
+        }
+      }
     }
   },
   mounted() {

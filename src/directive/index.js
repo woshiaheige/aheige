@@ -106,6 +106,15 @@ const prevent = Vue.directive("preventReClick", {
   }
 });
 
+const focus = Vue.directive("focus", {
+  inserted(el, binding) {
+    // 聚焦元素
+    if (binding.value) {
+      el.focus();
+    }
+  }
+});
+
 export default {
   margin,
   color,
@@ -116,5 +125,6 @@ export default {
   width,
   height,
   scale,
-  prevent
+  prevent,
+  focus
 };

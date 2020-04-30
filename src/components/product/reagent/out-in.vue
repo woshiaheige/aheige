@@ -106,7 +106,7 @@
             v-for="(item, index) in userOptions"
             :key="index"
             :value="item.id"
-            >{{ item.groupName }} | {{ item.name }}</a-select-option
+            >{{ item.name }}</a-select-option
           >
         </a-select>
       </a-form-model-item>
@@ -121,8 +121,6 @@
         prop="stockCount"
       >
         <a-input-number
-          :min="1"
-          :max="99999999"
           placeholder="数量"
           v-model="formData.stockCount"
           v-width="350"
@@ -160,6 +158,10 @@ export default {
         Number(value) > Number(that.list.goodsCount)
       ) {
         callback("库存不足");
+      } else if (!/^[1-9]\d*$/.test(value)) {
+        callback("请输入正整数");
+      } else if (value > 99999999) {
+        callback("最多只能输入8位数");
       } else {
         callback();
       }
@@ -302,7 +304,13 @@ export default {
         })
         .then(res => {
           if (res.data.state == 0) {
-            this.deviceOptions = res.data.data;
+            let result = res.data.data;
+            for (var i in result) {
+              let temp = {};
+              temp.id = result[i].sysInstrument.id;
+              temp.name = result[i].sysInstrument.name;
+              this.deviceOptions.push(temp);
+            }
           }
         });
     },

@@ -8,20 +8,31 @@
       @cancel="handleCancel"
     >
       <div class="card-header">
-        <div class="title" v-fontsize="28">第N期月报表</div>
+        <div class="title" v-fontsize="28">
+          {{ notification.type == "week" ? "第N期周报表" : "第N期月报表" }}
+        </div>
         <div>
           报表周期：{{ $moment(notification.beginTime).format("YYYY-MM-DD") }} -
           {{ $moment(notification.endTime).format("YYYY-MM-DD") }}
         </div>
       </div>
       <a-tabs type="card" defaultActiveKey="1" @change="slectDetail">
-        <a-tab-pane tab="数据月报" key="1">
+        <a-tab-pane
+          :tab="notification.type == 'week' ? '数据周报' : '数据月报'"
+          key="1"
+        >
           <data-report ref="dataReport"
         /></a-tab-pane>
-        <a-tab-pane tab="运维月报" key="2">
+        <a-tab-pane
+          :tab="notification.type == 'week' ? '运维周报' : '运维月报'"
+          key="2"
+        >
           <operation-report ref="operationReport" />
         </a-tab-pane>
-        <a-tab-pane tab="设备月报" key="3">
+        <a-tab-pane
+          :tab="notification.type == 'week' ? '设备周报' : '设备月报'"
+          key="3"
+        >
           <device-report ref="deviceReport" />
         </a-tab-pane>
       </a-tabs>
@@ -90,8 +101,6 @@ export default {
         this.$nextTick(() => {
           this.$refs.deviceReport.getTableData();
         });
-
-        console.log(e);
       }
     }
   },

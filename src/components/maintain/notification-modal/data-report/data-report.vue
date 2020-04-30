@@ -44,10 +44,8 @@
         </a-col>
       </a-row>
       <a-divider dashed>数据统计</a-divider>
-      <ve-histogram
-        :data="chartMonitorData"
-        :settings="chartSettings"
-      ></ve-histogram>
+      <ve-line :data="listData" :settings="chartSettings"></ve-line>
+
       <a-divider dashed>数据详情</a-divider>
       <a-tabs defaultActiveKey="1" @change="slectDetail">
         <a-tab-pane tab="超标详情" key="1">
@@ -75,16 +73,16 @@ export default {
     };
     return {
       obj: {},
-      chartMonitorData: {
+      listData: {
         columns: ["日期", "超标次数", "异常次数"],
         rows: [
-          { 日期: "星期天", 超标次数: 13, 异常次数: 10 },
-          { 日期: "星期一", 超标次数: 13, 异常次数: 10 },
-          { 日期: "星期二", 超标次数: 35, 异常次数: 32 },
-          { 日期: "星期三", 超标次数: 29, 异常次数: 26 },
-          { 日期: "星期四", 超标次数: 17, 异常次数: 14 },
-          { 日期: "星期五", 超标次数: 37, 异常次数: 34 },
-          { 日期: "星期六", 超标次数: 45, 异常次数: 42 }
+          { 日期: "2020-5-1", 超标次数: 13, 异常次数: 10 },
+          { 日期: "2020-5-2", 超标次数: 13, 异常次数: 10 },
+          { 日期: "2020-5-3", 超标次数: 35, 异常次数: 32 },
+          { 日期: "2020-5-4", 超标次数: 29, 异常次数: 26 },
+          { 日期: "2020-5-5", 超标次数: 17, 异常次数: 14 },
+          { 日期: "2020-5-6", 超标次数: 37, 异常次数: 34 },
+          { 日期: "2020-5-7", 超标次数: 45, 异常次数: 42 }
         ]
       }
     };

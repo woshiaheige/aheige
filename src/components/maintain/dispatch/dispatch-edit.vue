@@ -137,13 +137,13 @@ export default {
         if (this.form.date >= this.today) {
           data.dateTime =
             this.$moment()
-              .add(this.selectedDay - this.today, "d")
+              .add(this.form.date - this.today, "d")
               .add(7, "d")
               .format("YYYY-MM-DD") + " 00:00:00";
         } else {
           data.dateTime =
             this.$moment()
-              .subtract(this.today - this.selectedDay, "d")
+              .subtract(this.today - this.form.date, "d")
               .add(7, "d")
               .format("YYYY-MM-DD") + " 00:00:00";
         }

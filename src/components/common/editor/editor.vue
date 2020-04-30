@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="editor-wrappper">
     <!-- 图片上传组件辅助-->
     <a-upload
       name="file"
@@ -83,7 +83,8 @@ const toolbarOptions = [
   [{ font: [] }], // 字体种类
   [{ align: [] }], // 对齐方式
   ["clean"], // 清除文本格式
-  ["link", "image", "video"] // 链接、图片、视频
+  ["link", "image", "video"], // 链接、图片、视频
+  ["pervMobile"] //移动端预览
 ];
 
 import { quillEditor } from "vue-quill-editor";
@@ -93,7 +94,11 @@ import "quill/dist/quill.bubble.css";
 import Quill from "quill";
 import ImageResize from "quill-image-resize-module";
 Quill.register("modules/imageResize", ImageResize);
+
+// import editorPrev from "./editor-prev"; //模拟移动端弹窗
+
 export default {
+  // mixins: [editorPrev],
   props: {
     /*编辑器的内容*/
     value: {
@@ -149,6 +154,15 @@ export default {
               //     this.quill.format("link", false);
               //   }
               // },
+
+              // pervMobile: function(value) {
+              //   if (value) {
+              //     //展示移动端
+              //     editorPrev.showIframe(
+              //       `${process.env.BASE_URL}editor/prev.html`
+              //     );
+              //   }
+              // }
             }
           }
         }
@@ -220,6 +234,7 @@ export default {
 </script>
 
 <style>
+/* @import url("./prev.css"); */
 .accessories {
   display: none;
 }

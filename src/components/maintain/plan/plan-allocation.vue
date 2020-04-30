@@ -156,7 +156,13 @@ export default {
       this.$refs.form.resetFields();
     },
     disabledDate(current) {
-      return current && current < this.$moment().endOf("day");
+      return (
+        current &&
+        current <
+          this.$moment()
+            .endOf("week")
+            .subtract(1, "d")
+      );
     },
     handleOk() {
       if (this.targetKeys.length <= 0) {
