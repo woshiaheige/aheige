@@ -284,6 +284,7 @@ export default {
     },
     //监测点下拉
     getStation(value) {
+      this.stationOptions = [];
       this.$api.common
         .selectStationByEnterpriseId({ enterpriseId: value })
         .then(res => {
@@ -298,6 +299,7 @@ export default {
     },
     //设备下拉
     getDevice(value) {
+      this.deviceOptions = [];
       this.$api.common
         .selectStationByStationId({
           cusPointId: value
