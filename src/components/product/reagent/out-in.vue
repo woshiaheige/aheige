@@ -304,7 +304,13 @@ export default {
         })
         .then(res => {
           if (res.data.state == 0) {
-            this.deviceOptions = res.data.data;
+            let result = res.data.data;
+            for (var i in result) {
+              let temp = {};
+              temp.id = result[i].sysInstrument.id;
+              temp.name = result[i].sysInstrument.name;
+              this.deviceOptions.push(temp);
+            }
           }
         });
     },
