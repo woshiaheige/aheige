@@ -75,7 +75,6 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.tableData = res.data.data;
-            console.log(this.tableData, 666666);
           }
         })
         .catch(err => {

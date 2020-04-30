@@ -9,7 +9,7 @@
     >
       <div class="card-header">
         <div class="title" v-fontsize="28">
-          {{ "notification.type=='week'?'第N期周报表':'第N期月报表'" }}
+          {{ notification.type == "week" ? "第N期周报表" : "第N期月报表" }}
         </div>
         <div>
           报表周期：{{ $moment(notification.beginTime).format("YYYY-MM-DD") }} -
