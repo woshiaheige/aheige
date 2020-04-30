@@ -184,25 +184,26 @@ export default {
         mn: this.list.mn
       };
       this.loading = true;
+      let that = this;
       this.$api.customer
         .getStationList(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.loading = false;
-            this.tableData = res.data.data.records;
-            this.total = Number(res.data.data.total);
+            that.loading = false;
+            that.tableData = res.data.data.records;
+            that.total = Number(res.data.data.total);
           }
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          that.loading = false;
         });
     },
     //监测点类型下拉
     getPointSelect() {
       let params = ["SYS_POINT_TYPE"];
       this.$api.common.geDictByParam(params).then(res => {
-        this.pointOptions = res.data;
+        this.pointOptions = res.data || [];
         console.log(this.pointOptions);
       });
     },
