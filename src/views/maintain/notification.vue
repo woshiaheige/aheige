@@ -75,29 +75,22 @@
         :total="total"
       />
     </a-card>
-    <!-- 周报表 -->
-    <notification-week
-      :obj="modalWeek"
+
+    <notification-modal
+      :obj="modalModal"
       @cancel="onCancel"
-      ref="notificationWeek"
-    ></notification-week>
-    <!-- 月报表 -->
-    <notification-month
-      :obj="modalMonth"
-      @cancel="onCancel"
-      ref="notificationMonth"
-    ></notification-month>
+      ref="notificationModal"
+    ></notification-modal>
   </div>
 </template>
 
 <script>
-import notificationWeek from "@/components/maintain/notification-week/notification-week";
-import notificationMonth from "@/components/maintain/notification-month/notification-month";
+import notificationModal from "@/components/maintain/notification-modal/notification-modal";
 export default {
-  components: { notificationWeek, notificationMonth },
+  components: { notificationModal },
   data() {
     return {
-      modalWeek: {
+      modalModal: {
         show: false
       },
       modalMonth: {
@@ -158,7 +151,7 @@ export default {
   },
   methods: {
     onCancel() {
-      this.modalWeek.show = false;
+      this.modalModal.show = false;
       this.modalMonth.show = false;
     },
     onRest() {
@@ -166,12 +159,12 @@ export default {
       this.onSubmit();
     },
     toReportModal(row) {
-      // this.modalWeek = {
-      //   show: true
-      // };
-      this.modalMonth = {
+      this.modalModal = {
         show: true
       };
+      // this.modalMonth = {
+      //   show: true
+      // };
       // this.$bus.$data.notification = {
       //   id: row.id,
       //   pointId: row.pointId,
@@ -189,6 +182,7 @@ export default {
       //   mn: 66666
       // };
       this.$bus.$data.notification = {
+        type: "week", //month报表类型
         id: row.id,
         pointId: row.pointId,
         beginTime: "2020-01-01",
@@ -197,8 +191,8 @@ export default {
         mn: "756877X3333321"
       };
 
-      // this.$refs.notificationWeek.setNotification();
-      this.$refs.notificationMonth.setNotification();
+      this.$refs.notificationModal.setNotification();
+      // this.$refs.notificationMonth.setNotification();
     },
     getTableData() {
       let params = {
