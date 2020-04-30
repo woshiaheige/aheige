@@ -22,7 +22,7 @@
       </a-form-model-item>
       <a-form-model-item label="计划类别" prop="type">
         <a-select
-          :disabled="this.schemeDetail.id"
+          :disabled="disabledFlag"
           showSearch
           v-model="form.type"
           placeholder="请选择"
@@ -83,6 +83,9 @@ export default {
       } else {
         return "新建方案";
       }
+    },
+    disabledFlag() {
+      return this.schemeDetail.id ? true : false;
     }
   },
   watch: {
@@ -95,7 +98,8 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$refs.form.resetFields();
+      this.form = this.$options.data().form;
+      this.$refs.form.clearValidate();
       this.$emit("close");
     },
     handleOk() {

@@ -165,14 +165,15 @@ export default {
       // this.modalMonth = {
       //   show: true
       // };
-      // this.$bus.$data.notification = {
-      //   id: row.id,
-      //   pointId: row.pointId,
-      //   beginTime: row.gmtBeginTime,
-      //   endTime: row.gmtEndTime,
-      //   title: row.pointName,
-      //   mn: row.mn
-      // };
+      this.$bus.$data.notification = {
+        type: "week", //month报表类型
+        id: row.id,
+        pointId: row.pointId,
+        beginTime: row.gmtBeginTime,
+        endTime: row.gmtEndTime,
+        title: row.pointName,
+        mn: row.mn
+      };
       // this.$bus.$data.notification = {
       //   id: row.id,
       //   pointId: row.pointId,
@@ -181,15 +182,15 @@ export default {
       //   title: "对接超标详情测试",
       //   mn: 66666
       // };
-      this.$bus.$data.notification = {
-        type: "week", //month报表类型
-        id: row.id,
-        pointId: row.pointId,
-        beginTime: "2020-01-01",
-        endTime: "2020-12-01",
-        title: "756877X5555553",
-        mn: "756877X3333321"
-      };
+      // this.$bus.$data.notification = {
+      //   type: "week", //month报表类型
+      //   id: row.id,
+      //   pointId: row.pointId,
+      //   beginTime: "2020-01-01",
+      //   endTime: "2020-12-01",
+      //   title: "756877X5555553",
+      //   mn: "756877X3333321"
+      // };
 
       this.$refs.notificationModal.setNotification();
       // this.$refs.notificationMonth.setNotification();

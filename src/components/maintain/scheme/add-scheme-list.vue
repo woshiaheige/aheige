@@ -80,7 +80,8 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$refs.form.resetFields();
+      this.$refs.form.clearValidate();
+      this.form = this.$options.data().form;
       this.$emit("close");
     },
     handleOk() {
