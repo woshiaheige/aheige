@@ -4,6 +4,7 @@
 import axios from "axios";
 import router from "../router";
 import { message } from "ant-design-vue";
+import qs from "qs";
 
 var instance = axios.create({
   timeout: 1000 * 30
@@ -16,7 +17,11 @@ instance.interceptors.request.use(
       let token = JSON.parse(sessionStorage.getItem("userinfo")).token;
       config.headers["token"] = token;
     }
-
+    if (config.method === "get") {
+      config.paramsSerializer = function(params) {
+        return qs.stringify(params, { arrayFormat: "repeat" });
+      };
+    }
     return config;
   },
   error => {

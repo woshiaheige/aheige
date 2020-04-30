@@ -43,10 +43,15 @@
             :loading="pointLoading"
             :dataSource="pointList"
           >
-            <a-list-item slot="renderItem" slot-scope="item">
+            <a-list-item
+              slot="renderItem"
+              slot-scope="item"
+              :class="item.id == activeId ? 'active-list' : ''"
+            >
               <a-list-item-meta
+                :title="item.id"
                 :description="item.enterpriseName + '  |  ' + item.name"
-                @click="goMarker(item.longitude, item.latitude)"
+                @click="goMarker(item.longitude, item.latitude, item.id)"
               >
               </a-list-item-meta>
             </a-list-item>
@@ -59,10 +64,14 @@
           </div>
           <!-- <a-date-picker @change="onChange" class="select-time" /> -->
           <a-list itemLayout="horizontal" :dataSource="carList">
-            <a-list-item slot="renderItem" slot-scope="item">
+            <a-list-item
+              slot="renderItem"
+              slot-scope="item"
+              :class="item.id == activeId ? 'active-list' : ''"
+            >
               <a-list-item-meta
                 :description="item.number"
-                @click="goMarker(item.lng, item.lat)"
+                @click="goMarker(item.lng, item.lat, item.id)"
               >
               </a-list-item-meta>
             </a-list-item>
@@ -75,10 +84,14 @@
           </div>
           <!-- <a-date-picker @change="onChange" class="select-time" /> -->
           <a-list itemLayout="horizontal" :dataSource="userList">
-            <a-list-item slot="renderItem" slot-scope="item">
+            <a-list-item
+              slot="renderItem"
+              slot-scope="item"
+              :class="item.id == activeId ? 'active-list' : ''"
+            >
               <a-list-item-meta
                 :description="item.groupName + '  |  ' + item.username"
-                @click="goMarker(item.lng, item.lat)"
+                @click="goMarker(item.lng, item.lat, item.id)"
               >
               </a-list-item-meta>
             </a-list-item>
@@ -95,6 +108,7 @@ import AMapUI from "AMapUI";
 export default {
   data() {
     return {
+      activeId: "",
       map: null,
       markers: [],
       active: 1,
@@ -218,8 +232,9 @@ export default {
         }
       });
     },
-    goMarker(lng, lat) {
+    goMarker(lng, lat, id) {
       this.map.setCenter([lng, lat]); //设置地图中心点
+      this.activeId = id;
     },
     changStatus(e) {
       console.log(e.target.value);

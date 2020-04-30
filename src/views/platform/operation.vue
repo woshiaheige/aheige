@@ -182,16 +182,26 @@ export default {
       this.geDictByParam();
     },
     geDictByParam() {
-      let params = [
-        "SYS_PARAMETER_WEEK_TASK_GENERATE",
-        "SYS_PARAMETER_WEEK_TASK_PUSH",
-        "SYS_PARAMETER_MONTH_TASK_PUSH",
-        "SYS_PARAMETER_WARN_INTERVAL",
-        "SYS_PARAMETER_CONTRACT_REMINDER",
-        "SYS_PARAMETER_TASK_COMPLETION"
-      ];
-      this.$api.common.geDictByParam(params).then(res => {
-        let data = res.data;
+      // let params = [
+      //   "SYS_PARAMETER_WEEK_TASK_GENERATE",
+      //   "SYS_PARAMETER_WEEK_TASK_PUSH",
+      //   "SYS_PARAMETER_MONTH_TASK_PUSH",
+      //   "SYS_PARAMETER_WARN_INTERVAL",
+      //   "SYS_PARAMETER_CONTRACT_REMINDER",
+      //   "SYS_PARAMETER_TASK_COMPLETION"
+      // ];
+      let data = {
+        code: [
+          "SYS_PARAMETER_WEEK_TASK_GENERATE",
+          "SYS_PARAMETER_WEEK_TASK_PUSH",
+          "SYS_PARAMETER_MONTH_TASK_PUSH",
+          "SYS_PARAMETER_WARN_INTERVAL",
+          "SYS_PARAMETER_CONTRACT_REMINDER",
+          "SYS_PARAMETER_TASK_COMPLETION"
+        ]
+      };
+      this.$api.common.geDictByParam(data).then(res => {
+        let data = res.data.data;
         data.forEach(item => {
           switch (item.code) {
             case "SYS_PARAMETER_WEEK_TASK_GENERATE":

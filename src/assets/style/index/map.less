@@ -21,11 +21,14 @@
       left: 30px;
       width: 300px;
       min-height: 50px;
-      height: 600px;
+      height: calc(100% - 60px);
       background: rgba(255, 255, 255, 0.8);
       padding: 16px;
       border-radius: 15px;
       overflow: auto;
+      .active-list {
+        background-color: #e6f7ff;
+      }
 
       .header {
         display: flex;
@@ -90,7 +93,6 @@
       &.man {
         // background-color: rgba(186, 0, 17, 1);
         left: -100%;
-
       }
     }
   }

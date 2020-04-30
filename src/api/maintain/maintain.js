@@ -280,6 +280,26 @@ const maintain = {
   //任务调度
   missionDispatch(data) {
     return axios.get(base.api + "dispatch/", { params: data });
+  },
+  // 根据报表推送id查询设备数据列表
+  getAllReportPushInstrumentData(data) {
+    return axios.get(
+      base.api + "reportPushInstrumentData/getAllReportPushInstrumentData",
+      { params: data }
+    );
+  },
+  //根据报表推送id查询设备故障数据列表
+  getAllReportPushInstrumentDataEx(data) {
+    return axios.get(
+      base.api + "reportPushInstrumentData/getAllReportPushInstrumentDataEx",
+      { params: data }
+    );
+  },
+  //根据报表推送id查询统计设备数、设备故障数、故障百分比
+  getCount(data) {
+    return axios.get(base.api + "reportPushInstrumentData/getCount", {
+      params: data
+    });
   }
 };
 
