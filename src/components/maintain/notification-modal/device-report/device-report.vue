@@ -32,7 +32,12 @@
         </a-col>
       </a-row>
       <a-divider dashed>故障统计</a-divider>
-      <ve-line :data="listData" :settings="chartSettings"></ve-line>
+      <ve-line
+        :data="listData"
+        :settings="chartSettings"
+        v-if="listData.rows.length != 0"
+      ></ve-line>
+      <a-empty v-else :image="simpleImage" />
       <a-divider dashed>故障详情</a-divider>
       <a-descriptions layout="vertical" bordered size="small">
         <a-descriptions-item
@@ -62,6 +67,7 @@
   </div>
 </template>
 <script>
+import { Empty } from "ant-design-vue";
 export default {
   data() {
     this.chartSettings = {
@@ -73,6 +79,7 @@ export default {
       },
       axisSite: { right: ["故障率"] },
       yAxisName: ["设备数", "故障率"],
+      yAxisType: ["normal", "percent"],
       stack: { 设备: ["设备正常", "设备故障"] }
     };
     return {
@@ -133,15 +140,7 @@ export default {
       return listData;
     },
     formatDataType(data) {
-      //整理出当年的异常数，正常数，异常率
-      //  [
-      //   {
-      //  gmtDataTime
-      //     normalNumber: "", //正常数
-      //     anomalyNumber: "", //异常数
-      //     percent: ""
-      //   }
-      // ];
+      //整理出当天的异常数，正常数，异常率
       let listData = data.map(item => {
         let obj = {
           gmtDataTime: item.gmtDataTime,
@@ -171,7 +170,6 @@ export default {
       this.$api.maintain.getAllReportPushInstrumentDataEx(params).then(res => {
         if (res.data.state == 0) {
           this.anomalyList = this.formatData(res.data.data);
-          console.log(this.anomalyList, 66666);
         }
       });
     },
@@ -186,6 +184,9 @@ export default {
         }
       });
     }
+  },
+  beforeCreate() {
+    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   }
 };
 </script>

@@ -116,6 +116,7 @@
 <script>
 import addEnterprise from "@/components/customer/enterprise/add-enterprise";
 export default {
+  name: "enterprise",
   components: {
     addEnterprise
   },
@@ -179,6 +180,19 @@ export default {
   mounted() {
     this.getTableData();
     this.getIndustrySelect();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (
+      to.name === "customer-enterprise-station" ||
+      to.name === "customer-enterprise-user"
+    ) {
+      let arr = [];
+      arr.push("enterprise");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   },
   methods: {
     reset() {

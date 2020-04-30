@@ -8,10 +8,10 @@
         :key="item.dateTime"
       >
         <template>
-          <span slot="label">{{ item.dateLabel }}</span>
+          <span slot="label">{{ item.gmtEnd }}</span>
           <a-list
             itemLayout="horizontal"
-            :dataSource="item.taskList"
+            :dataSource="item.list"
             class="dispatch-list"
           >
             <a-list-item slot="renderItem" slot-scope="item">
@@ -41,26 +41,54 @@ export default {
   },
   methods: {
     getTableData() {
-      // this.$api.maintain
-      //   .getReportPushDetails({ reportPushId: this.pointId })
-      //   .then(res => {
-      //     if (res.data.state == 0) {
-      //       this.notificationData = res.data.data;
-      //     }
-      //   });
-      this.notificationData = [
-        {
-          dateLabel: "2020-5-1",
-          taskList: [
-            {
-              handleName: "张山",
-              groupName: "小组A",
-              taskName: "日常巡查",
-              gmtEnd: "2020-5-1"
-            }
-          ]
+      // this.notificationData = [
+      //   {
+      //     dateLabel: "2020-5-1",
+      //     taskList: [
+      //       {
+      //         handleName: "张山",
+      //         groupName: "小组A",
+      //         taskName: "日常巡查",
+      //         gmtEnd: "2020-5-1"
+      //       }
+      //     ]
+      //   }
+      // ];
+      let params = {
+        reportPushId: this.$bus.$data.notification.id,
+        status: 1
+      };
+      this.$api.maintain.getReportPushDetails(params).then(res => {
+        if (res.data.state == 0) {
+          this.notificationData = this.formatData(res.data.data);
+          console.log(this.notificationData, 7777);
         }
-      ];
+      });
+    },
+    formatData(data) {
+      //整理出相同天的数据
+      let listData = [];
+      data.forEach(item => {
+        let template = {
+          gmtEnd: "",
+          list: []
+        };
+        let index = listData.findIndex(listItem => {
+          return (
+            this.$moment(item.gmtEnd).format("YYYY-MM-DD") ==
+            this.$moment(listItem.gmtEnd).format("YYYY-MM-DD")
+          );
+        });
+
+        if (index == -1) {
+          template.gmtEnd = this.$moment(item.gmtEnd).format("YYYY-MM-DD");
+          template.list = [item];
+          listData.push(template);
+        } else {
+          listData[index].list.push(item);
+        }
+      });
+      return listData;
     }
   }
 };

@@ -106,6 +106,7 @@
 <script>
 import addEdit from "@/components/customer/station/add-edit-station";
 export default {
+  name: "station-enterprise",
   components: { addEdit },
   data() {
     return {
@@ -161,6 +162,19 @@ export default {
   mounted() {
     this.getTableData();
     this.getPointSelect();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (
+      to.name === "customer-enterprise-factor" ||
+      to.name === "customer-enterprise-device"
+    ) {
+      let arr = [];
+      arr.push("station-enterprise");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   },
   methods: {
     reset() {

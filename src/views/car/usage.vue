@@ -42,6 +42,7 @@
 </template>
 <script>
 export default {
+  name: "car-usage",
   components: {},
   data() {
     return {
@@ -111,6 +112,16 @@ export default {
   },
   mounted() {
     this.getTableData();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "car-usage-detail") {
+      let arr = [];
+      arr.push("car-usage");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   }
 };
 </script>

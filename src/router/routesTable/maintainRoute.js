@@ -103,7 +103,6 @@ const maintainRoutes = [
     key: "knowledge",
     meta: {
       title: "运维知识",
-      keepAlive: true,
       back: false
     },
     component: () =>
