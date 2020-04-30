@@ -30,10 +30,10 @@
         <a-list-item slot="renderItem" slot-scope="item">
           <a-card :title="item.name">
             <template class="ant-card-actions" slot="actions">
-              <span key="edit" @click="onEdit(item)">编辑</span>
-              <span key="delete" @click="onDelete(item)" v-color="'#ed4014'"
-                >删除</span
-              >
+              <div key="edit" @click="onEdit(item)">编辑</div>
+              <div key="delete" @click="onDelete(item)" v-color="'#ed4014'">
+                删除
+              </div>
             </template>
 
             <a-tooltip v-for="(member, key) of item.users" :key="key">

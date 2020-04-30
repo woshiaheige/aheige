@@ -11,19 +11,19 @@
         class="data-report"
       >
         <a-col :span="4">
-          <span class="num">6</span>
+          <span class="num">{{ count.total }}</span>
           <p>设备数量</p>
         </a-col>
         <a-col :span="4">
-          <span class="num" v-color="'#4caf50'">4</span>
+          <span class="num" v-color="'#4caf50'">{{ count.normalNumber }}</span>
           <p>正常运行</p>
         </a-col>
         <a-col :span="4">
-          <span class="num" v-color="'#f44336'">2</span>
+          <span class="num" v-color="'#f44336'">{{ count.anomalyNumber }}</span>
           <p>设备故障</p>
         </a-col>
         <a-col :span="4">
-          <a-progress type="circle" :percent="89">
+          <a-progress type="circle" :percent="count.failureRate">
             <template v-slot:format="percent">
               <p v-fontsize="16">{{ percent }}%</p>
               <p>设备故障率</p>
@@ -37,22 +37,22 @@
       <a-descriptions layout="vertical" bordered size="small">
         <a-descriptions-item
           :span="2"
-          v-for="item in notificationData"
-          :key="item.dateTime"
+          v-for="(item, index) in anomalyList"
+          :key="index"
         >
           <template>
-            <span slot="label">{{ item.dateLabel }}</span>
+            <span slot="label">{{ item.gmtDataTime }}</span>
             <a-list
               itemLayout="horizontal"
-              :dataSource="item.taskList"
+              :dataSource="item.list"
               class="dispatch-list"
             >
               <a-list-item slot="renderItem" slot-scope="item">
                 <a-list-item-meta>
-                  <span slot="title">{{ item.deviceName }}</span>
+                  <span slot="title">{{ item.instrumentName }}</span>
                   <!-- <div slot="description">故障时间：{{ item.gmtEnd }}</div> -->
                 </a-list-item-meta>
-                <div>故障时间：{{ item.gmtEnd }}</div>
+                <div>故障时间：{{ item.gmtDataTime }}</div>
               </a-list-item>
             </a-list>
           </template>
@@ -65,39 +65,126 @@
 export default {
   data() {
     this.chartSettings = {
+      labelMap: {
+        gmtDataTime: "日期",
+        normalNumber: "设备正常",
+        anomalyNumber: "设备故障",
+        percent: "故障率"
+      },
       axisSite: { right: ["故障率"] },
       yAxisName: ["设备数", "故障率"],
       stack: { 设备: ["设备正常", "设备故障"] }
     };
     return {
-      notificationData: [
-        {
-          dateLabel: "2020-5-1",
-          taskList: [
-            {
-              deviceName: "设备A",
-              gmtEnd: "2020-4-25 15:32:32"
-            }
-          ]
-        }
-      ],
+      count: "", //统计数据
+      anomalyList: "", //异常的表格
       listData: {
-        columns: ["日期", "设备正常", "设备故障", "故障率"],
+        columns: ["gmtDataTime", "normalNumber", "anomalyNumber", "percent"],
         rows: []
       }
     };
   },
   methods: {
     getTableData() {
-      this.listData.rows = [
-        { 日期: "2020-5-1", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 },
-        { 日期: "2020-5-2", 设备正常: 1393, 设备故障: 1093, 故障率: 0.32 },
-        { 日期: "2020-5-3", 设备正常: 3530, 设备故障: 3230, 故障率: 0.26 },
-        { 日期: "2020-5-4", 设备正常: 2923, 设备故障: 2623, 故障率: 0.76 },
-        { 日期: "2020-5-5", 设备正常: 1723, 设备故障: 1423, 故障率: 0.49 },
-        { 日期: "2020-5-6", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 },
-        { 日期: "2020-5-7", 设备正常: 4593, 设备故障: 4293, 故障率: 0.78 }
-      ];
+      this.getCount();
+      this.getAllReportPushInstrumentData();
+      this.getAllReportPushInstrumentDataEx();
+      // this.listData.rows = [
+      //   { 日期: "2020-5-1", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 }
+      // ];
+    },
+    getAllReportPushInstrumentData() {
+      //设备数据列表
+      let params = {
+        reportPushId: this.$bus.$data.notification.id
+      };
+      this.$api.maintain.getAllReportPushInstrumentData(params).then(res => {
+        if (res.data.state == 0) {
+          let list = this.formatData(res.data.data);
+          this.listData.rows = this.formatDataType(list);
+        }
+      });
+    },
+    formatData(data) {
+      //整理出相同天的数据
+      let listData = [];
+      data.forEach(item => {
+        let template = {
+          gmtDataTime: "",
+          list: []
+        };
+        let index = listData.findIndex(listItem => {
+          return (
+            this.$moment(item.gmtDataTime).format("YYYY-MM-DD") ==
+            this.$moment(listItem.gmtDataTime).format("YYYY-MM-DD")
+          );
+        });
+
+        if (index == -1) {
+          template.gmtDataTime = this.$moment(item.gmtDataTime).format(
+            "YYYY-MM-DD"
+          );
+          template.list = [item];
+          listData.push(template);
+        } else {
+          listData[index].list.push(item);
+        }
+      });
+      return listData;
+    },
+    formatDataType(data) {
+      //整理出当年的异常数，正常数，异常率
+      //  [
+      //   {
+      //  gmtDataTime
+      //     normalNumber: "", //正常数
+      //     anomalyNumber: "", //异常数
+      //     percent: ""
+      //   }
+      // ];
+      let listData = data.map(item => {
+        let obj = {
+          gmtDataTime: item.gmtDataTime,
+          normalNumber: 0, //正常数
+          anomalyNumber: 0, //异常数
+          percent: ""
+        };
+        item.list.forEach(listItem => {
+          if (listItem.status == 1) {
+            obj.normalNumber++;
+          } else {
+            obj.anomalyNumber++;
+          }
+          obj.percent =
+            obj.anomalyNumber /
+            (obj.normalNumber + obj.anomalyNumber).toFixed(3); //异常数
+        });
+        return obj;
+      });
+      return listData;
+    },
+    getAllReportPushInstrumentDataEx() {
+      //根据报表推送id查询设备故障数据列表
+      let params = {
+        reportPushId: this.$bus.$data.notification.id
+      };
+      this.$api.maintain.getAllReportPushInstrumentDataEx(params).then(res => {
+        if (res.data.state == 0) {
+          this.anomalyList = this.formatData(res.data.data);
+          console.log(this.anomalyList, 66666);
+        }
+      });
+    },
+    getCount() {
+      //根据报表推送id查询统计设备数、设备故障数、故障百分比
+      let params = {
+        reportPushId: this.$bus.$data.notification.id
+      };
+      this.$api.maintain.getCount(params).then(res => {
+        if (res.data.state == 0) {
+          this.count = res.data.data;
+        }
+      });
     }
   }
 };
