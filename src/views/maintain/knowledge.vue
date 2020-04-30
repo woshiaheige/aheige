@@ -112,6 +112,7 @@ import addEdit from "@/components/knowledge/add-edit";
 import typeEdit from "@/components/knowledge/type-edit";
 import articleModal from "@/components/knowledge/article-modal";
 export default {
+  name: "knowledge",
   components: { addEdit, typeEdit, articleModal },
   data() {
     return {
@@ -286,6 +287,16 @@ export default {
   mounted() {
     this.knowledgeClass();
     // this.getTableData();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "maintain-knowledge-article") {
+      let arr = [];
+      arr.push("knowledge");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   }
 };
 </script>

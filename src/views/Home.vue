@@ -76,7 +76,9 @@
         <template slot="title">{{ $route.meta.title }}</template>
       </a-page-header>
       <a-layout-content class="main-content" v-padding="16">
-        <router-view></router-view>
+        <keep-alive :include="includeArr">
+          <router-view></router-view>
+        </keep-alive>
       </a-layout-content>
     </a-layout>
   </div>
@@ -211,6 +213,9 @@ export default {
     },
     username() {
       return JSON.parse(sessionStorage.getItem("userinfo")).username;
+    },
+    includeArr() {
+      return JSON.parse(sessionStorage.getItem("keepAlive"));
     }
   },
   watch: {

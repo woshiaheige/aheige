@@ -7,20 +7,21 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    alertFlag: false,
+    includeArr: [], //缓存页面列表
     routeTable: [] //用户路由表
   },
   mutations: {
-    getAlertFlag(state, data) {
-      state.alertFlag = data;
-    },
     getRouterTable(state, data) {
       state.routeTable = data; //储存路由表
+    },
+    getIncludeArr(state, data) {
+      state.includeArr = data;
     }
   },
   actions: {
-    createAlertFlag({ commit }, data) {
-      commit("getAlertFlag", data);
+    createIncludeArr({ commit }, data) {
+      sessionStorage.setItem("keepAlive", JSON.stringify(data));
+      commit("getIncludeArr", data);
     },
     createRouterTable({ commit }, data) {
       sessionStorage.setItem("permission", JSON.stringify(data));
