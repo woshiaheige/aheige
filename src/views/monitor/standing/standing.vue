@@ -215,7 +215,7 @@ export default {
         enterpriseName: this.formInline.enterpriseName,
         pointName: this.formInline.pointName,
         page: this.current,
-        pageSize: this.pageSize,
+        size: this.pageSize,
         level: this.formInline.level || ""
       };
       this.loading = true;

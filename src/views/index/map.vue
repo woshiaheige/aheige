@@ -49,7 +49,6 @@
               :class="item.id == activeId ? 'active-list' : ''"
             >
               <a-list-item-meta
-                :title="item.id"
                 :description="item.enterpriseName + '  |  ' + item.name"
                 @click="goMarker(item.longitude, item.latitude, item.id)"
               >
