@@ -5,7 +5,9 @@ import qs from "qs";
 const common = {
   //获取字典》》根据参数查询
   geDictByParam(data) {
-    return axios.post(base.api + "sysDict/getDictByCode", data);
+    return axios.get(base.api + "sysDict/getDictByCode", {
+      params: data
+    });
   },
   //数据字典》》分页查询
   sysDict(data) {

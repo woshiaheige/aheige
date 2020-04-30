@@ -8,6 +8,12 @@ const platform = {
       params: data
     });
   },
+  //因子设备列表全部
+  sysDivisorQuery(data) {
+    return axios.get(base.api + "divisor/query", {
+      params: data
+    });
+  },
   //因子设置列表
   sysDivisor(data) {
     return axios.get(base.api + "divisor/", {
