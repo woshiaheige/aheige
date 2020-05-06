@@ -90,7 +90,7 @@
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
-        :defaultCurrent="current"
+        :current="current"
         @change="pagechange"
         @showSizeChange="sizechange"
         :total="total"
@@ -222,7 +222,7 @@ export default {
     //获取统计数据
     getApprovalCount() {
       let data = {
-        userId: sessionStorage.getItem("userid")
+        type: "1"
       };
       this.$api.approval
         .getApprovalCount(data)

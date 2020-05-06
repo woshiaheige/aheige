@@ -69,7 +69,7 @@
         showSizeChanger
         :pageSize.sync="pageSize"
         :showTotal="total => `共 ${total} 条`"
-        :defaultCurrent="current"
+        :current="current"
         @change="pagechange"
         @showSizeChange="sizechange"
         :total="total"
