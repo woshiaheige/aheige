@@ -70,7 +70,6 @@
           <a @click="onDelete(row)">删除</a>
         </span>
       </a-table>
-      <!-- 文档的defaultCurrent是有bug的，用current -->
       <a-pagination
         size="small"
         v-margin:top="16"

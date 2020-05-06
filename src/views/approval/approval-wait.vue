@@ -90,7 +90,7 @@
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
-        :defaultCurrent="current"
+        :current="current"
         @change="pagechange"
         @showSizeChange="sizechange"
         :total="total"

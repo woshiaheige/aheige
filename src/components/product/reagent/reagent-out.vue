@@ -24,7 +24,7 @@
         size="small"
         showSizeChanger
         v-margin:top="5"
-        :defaultCurrent="current"
+        :current="current"
         :pageSize.sync="pageSize"
         :total="total"
         :showTotal="total => `共 ${total} 条`"
