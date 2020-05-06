@@ -239,7 +239,7 @@ export default {
     //获取统计数据
     getApprovalCount() {
       let data = {
-        userId: ""
+        type: "2"
       };
       this.$api.approval
         .getApprovalCount(data)

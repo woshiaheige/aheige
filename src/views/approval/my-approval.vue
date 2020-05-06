@@ -222,7 +222,7 @@ export default {
     //获取统计数据
     getApprovalCount() {
       let data = {
-        userId: sessionStorage.getItem("userid")
+        type: "1"
       };
       this.$api.approval
         .getApprovalCount(data)
