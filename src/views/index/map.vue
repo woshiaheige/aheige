@@ -104,6 +104,7 @@
 <script>
 import AMap from "AMap";
 import AMapUI from "AMapUI";
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -117,7 +118,8 @@ export default {
       value: "a",
       radioNum: "",
       deadline: Date.now() + 1000 * 60,
-      pointLoading: false
+      pointLoading: false,
+      showModelId: ""
     };
   },
   mounted() {
@@ -145,13 +147,15 @@ export default {
       } else if (key == 3) {
         await this.getUserData();
       }
-      console.log(this.markers);
+
       this.map.add(this.markers);
       this.map.setFitView();
     },
     //获取监测点地标
     async getPointData(num) {
+      $(".amap-info").remove();
       this.pointLoading = true;
+      let that = this;
       await this.$api.index.getWarnData({ type: num }).then(res => {
         if (res.data.state == 0) {
           this.pointLoading = false;
@@ -168,11 +172,13 @@ export default {
               ),
               title: result[i].enterpriseName + "  |  " + result[i].name,
               content: result[i].errorType == "4" ? green : red,
+              id: result[i].id,
               anchor: "center"
             });
             if (result[i].errorType != "4") {
               marker.on("click", e => {
-                this.showInfo(marker, e, result[i]);
+                that.showModelId = e.target.w.id;
+                this.showInfo(marker, e);
               });
             }
             this.pointList.push(result[i]);
@@ -236,7 +242,6 @@ export default {
       this.activeId = id;
     },
     changStatus(e) {
-      console.log(e.target.value);
       //1： 离线，2：超标 3：异常
       this.value = e.target.value;
       this.radioNum =
@@ -247,19 +252,21 @@ export default {
           : this.value == "d"
           ? 3
           : "";
-      console.log(this.radioNum);
       this.callback(this.active, this.radioNum);
     },
     // onChange(_, dateString) {
     //   this.callback(this.active, dateString);
     // },
     onFinish() {
-      console.log("finished!");
       this.deadline = Date.now() + 1000 * 60;
       this.callback(this.active, this.radioNum);
     },
     //自定义窗体
-    showInfo(marker, e, data) {
+    showInfo(marker, e) {
+      let data = {};
+      this.pointList.forEach(item => {
+        if (item.id == this.showModelId) data = item;
+      });
       let that = this;
       let typeName = data.type == 32 ? "有线传输" : "无线传输";
       AMapUI.loadUI(["overlay/SimpleInfoWindow"], function(SimpleInfoWindow) {
@@ -274,7 +281,7 @@ export default {
             "</div>"
           ].join(""),
           // 基点指向marker的头部位置（信息窗体的具体位置）
-          offset: new AMap.Pixel(-10, -30)
+          offset: new AMap.Pixel(-10, -40)
         });
         infoWindow.open(that.map, e.target.getPosition());
       });
