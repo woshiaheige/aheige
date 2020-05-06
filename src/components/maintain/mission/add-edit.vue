@@ -74,7 +74,6 @@
       <a-form-model-item label="执行时间" prop="gmtExecution">
         <a-date-picker
           v-model="formData.gmtExecution"
-          show-time
           type="date"
           :disabledDate="disabledDate"
           format="YYYY-MM-DD"
@@ -82,14 +81,21 @@
           style="width: 100%;"
         />
       </a-form-model-item>
-      <a-form-model-item label="任务说明" prop="content" :maxLength="300">
+      <a-form-model-item label="任务说明" prop="content">
         <a-input
           v-model="formData.content"
           type="textarea"
           placeholder="请输入"
+          :maxLength="300"
         />
       </a-form-model-item>
     </a-form-model>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" v-preventReClick @click="handleOk">
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 <script>
@@ -98,13 +104,13 @@ export default {
     visible: {
       required: true,
       type: Boolean
-    }
+    },
+    enterpriseList: Array
   },
   data() {
     return {
       loadingStation: false,
       loadingMember: false,
-      enterpriseList: [], //企业
       pointList: [], //站点
       groupList: [], //小组
       memberList: [], //成员
@@ -188,15 +194,6 @@ export default {
     disabledDate(current) {
       return current < this.$moment().startOf("day");
     },
-    getEnterprise(value) {
-      //企业下拉
-      // this.formData.enterpriseName = value;
-      this.$api.customer
-        .getEnterPriseList({ enterpriseName: value })
-        .then(res => {
-          this.enterpriseList = res.data.data.records;
-        });
-    },
     getStationList(value) {
       //获取站点
       let params = {
@@ -254,9 +251,7 @@ export default {
       this.$emit("cancel", false);
     }
   },
-  mounted() {
-    this.getEnterprise();
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped></style>
