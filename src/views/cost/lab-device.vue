@@ -55,6 +55,10 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="footer">
+          合计
+          <span style="float: right">1000</span>
+        </template>
       </a-table>
 
       <a-pagination
