@@ -110,20 +110,6 @@ const costRoutes = [
         /* webpackChunkName: "view-cost" */
         "@/views/cost/other.vue"
       )
-  },
-  {
-    path: "/cost/cost-statistic",
-    name: "cost-statistic",
-    key: "cost-statistic",
-    meta: {
-      title: "其他成本",
-      back: false
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-cost" */
-        "@/views/cost/statistic.vue"
-      )
   }
 ];
 
