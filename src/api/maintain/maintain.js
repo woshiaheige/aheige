@@ -266,7 +266,6 @@ const maintain = {
       }
     );
   },
-
   //本周任务
   getMissionThisWeek(data) {
     return axios.get(base.api + "dispatch/getList", { params: data });
