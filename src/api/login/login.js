@@ -7,7 +7,7 @@ const login = {
   },
   //获取权限
   getResource() {
-    return axios.get(base.api + "/sysResource/queryUserResource");
+    return axios.get(base.api + "sysResource/queryUserResource");
   }
 };
 

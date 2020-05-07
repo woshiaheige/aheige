@@ -3,36 +3,18 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-select
-            v-model="formInline.enterpriseId"
+          <a-input
             placeholder="请输入"
-            style="width: 200px"
-            :filterOption="filterOptions"
-            @change="changeEnterprise"
-          >
-            <a-select-option
-              v-for="(item, index) in enterpriseList"
-              :key="index"
-              :value="item.id"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
+            v-model="formInline.enterpriseName"
+            :maxLength="30"
+          />
         </a-form-item>
         <a-form-item label="监控点名称">
-          <a-select
-            v-model="formInline.pointId"
+          <a-input
             placeholder="请输入"
-            style="width: 200px"
-            :filterOption="filterOptions"
-            :disabled="isTrue"
-          >
-            <a-select-option
-              v-for="(item, index) in pointList"
-              :key="index"
-              :value="item.id"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
+            v-model="formInline.pointName"
+            :maxLength="30"
+          />
         </a-form-item>
         <a-form-item label="任务状态">
           <a-select
@@ -134,10 +116,9 @@ export default {
       size: 10,
       total: 0,
       loading: false,
-      isTrue: true,
       formInline: {
-        enterpriseId: undefined,
-        pointId: undefined,
+        enterpriseName: "",
+        pointName: "",
         isComplete: "all"
       },
       columns: [
@@ -185,7 +166,6 @@ export default {
         // }
       ],
       enterpriseList: [],
-      pointList: [],
       stationList: [],
       planList: [],
       show: false
@@ -194,32 +174,17 @@ export default {
   watch: {},
   methods: {
     getSelectEnterprise() {
-      //搜索企业
+      //企业
       this.$api.common.selectEnterprise().then(res => {
         this.enterpriseList = res.data.data;
       });
-    },
-    changeEnterprise(value) {
-      this.isTrue = false;
-      this.formInline.pointId = undefined;
-      this.searchPoint(value);
-    },
-    searchPoint(value) {
-      //根据企业查询站点
-      this.$api.common
-        .selectStationByEnterpriseId({
-          enterpriseId: value
-        })
-        .then(res => {
-          this.pointList = res.data.data;
-        });
     },
     getTableData() {
       let params = {
         page: this.current,
         size: this.size,
-        enterpriseId: this.formInline.enterpriseId,
-        pointId: this.formInline.pointId,
+        enterpriseName: this.formInline.enterpriseName,
+        pointName: this.formInline.pointName,
         isComplete:
           this.formInline.isComplete == "all" ? "" : this.formInline.isComplete
       };
@@ -242,11 +207,9 @@ export default {
       this.show = value;
       this.delayShow = value;
       this.closeShow = value;
-      this.detailShow = value;
       this.getTableData();
     },
     resetFormInLine() {
-      this.isTrue = true;
       this.formInline = this.$options.data().formInline;
       this.getTableData();
     },

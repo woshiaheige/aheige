@@ -42,6 +42,7 @@ require("@/mock/report");
 require("@/mock/platform");
 //图表
 import VCharts from "v-charts";
+import echarts from "echarts";
 //monent
 import moment from "moment";
 //懒加载
@@ -71,6 +72,7 @@ Vue.use(VueAwesomeProgress);
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$echarts = echarts;
 Vue.prototype.$api = api;
 Vue.prototype.$base = base;
 Vue.prototype.$moment = moment;

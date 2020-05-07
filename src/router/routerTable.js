@@ -7,6 +7,8 @@ import productRoute from "../router/routesTable/productRoute"; //物品管理
 import organization from "../router/routesTable/organization"; //人员管理
 import platform from "../router/routesTable/platform"; //平台设置
 import monitorRoute from "../router/routesTable/monitorRoute"; //监控中心
+import costRoute from "../router/routesTable/costRoute"; //监控中心
+import assessmentRoute from "../router/routesTable/assessmentRoute"; //监控中心
 
 const RouterTable = [
   {
@@ -26,7 +28,9 @@ const RouterTable = [
       ...productRoute,
       ...organization,
       ...platform,
-      ...monitorRoute
+      ...monitorRoute,
+      ...costRoute,
+      ...assessmentRoute
     ]
   }
 ];
