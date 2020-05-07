@@ -20,7 +20,7 @@
           showSearch
           v-model="formData.enterpriseId"
           placeholder="请选择"
-          style="width: 200px"
+          v-width="350"
         >
           <a-select-option
             v-for="(item, index) in enterpriseList"
@@ -38,7 +38,7 @@
           showSearch
           :value="formData.pointId"
           placeholder="请选择"
-          style="width: 200px"
+          v-width="350"
         >
           <a-spin v-if="loadingStation" slot="notFoundContent" size="small" />
           <a-select-option
@@ -55,7 +55,7 @@
           :disabled="formData.pointId == '' || formData.pointId == null"
           v-model="formData.memberId"
           placeholder="请选择"
-          style="width: 200px"
+          v-width="350"
           showSearch
           :filterOption="filterOptions"
         >
