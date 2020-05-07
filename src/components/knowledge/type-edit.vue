@@ -15,7 +15,7 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="分类名称" prop="name">
-        <a-input placeholder="请输入" v-model="formData.name" />
+        <a-input placeholder="请输入" v-model="formData.name" :maxLength="30" />
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -38,7 +38,7 @@ export default {
         callback("请输入分类");
         return;
       }
-      if (value.length > 20) {
+      if (value.length > 30) {
         callback("分类长度不能超过30位");
       } else {
         callback();

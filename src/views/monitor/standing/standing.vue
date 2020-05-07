@@ -26,6 +26,7 @@
             v-model="formInline.level"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option
               v-for="item in controlOptions"

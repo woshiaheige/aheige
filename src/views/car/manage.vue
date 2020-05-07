@@ -27,14 +27,22 @@
           :headStyle="{ background: '#2d8cf0', color: '#ffffff' }"
         >
           <template class="ant-card-actions" slot="actions">
-            <span key="edit" @click="onEdit(item, 'edit')">编辑</span>
-            <span key="delete" @click="onDelect(item)" v-color="'#ed4014'"
-              >删除</span
-            >
+            <div key="edit" @click="onEdit(item, 'edit')">编辑</div>
+            <div key="delete" @click="onDelect(item)" v-color="'#ed4014'">
+              删除
+            </div>
           </template>
-          <p>车辆品牌：{{ item.model }}</p>
-          <p>GPS设备号：{{ item.gps }}</p>
-          <p>车架号：{{ item.frameNumber }}</p>
+          <p class="nowrap">
+            车辆品牌：<span :title="item.model">{{ item.model }}</span>
+          </p>
+          <p class="nowrap">
+            GPS设备号：<span :title="item.gps">{{ item.gps }}</span>
+          </p>
+          <p class="nowrap">
+            车架号：<span :title="item.frameNumber">{{
+              item.frameNumber
+            }}</span>
+          </p>
         </a-card>
       </a-list-item>
     </a-list>
@@ -170,3 +178,11 @@ export default {
   }
 };
 </script>
+<style lang="less" scoped>
+.nowrap {
+  white-space: nowrap;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+</style>

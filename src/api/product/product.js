@@ -28,7 +28,7 @@ const product = {
       params: data
     });
   },
-  //获取试剂管理列表
+  //获取物资库存列表
   getGoodsList(data) {
     return axios.get(base.api + "assetGoods/", {
       params: data

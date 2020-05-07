@@ -16,6 +16,7 @@
             v-model="list.level"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option value="">
               全部
@@ -30,7 +31,12 @@
           </a-select>
         </a-form-item>
         <a-form-item label="行业类别">
-          <a-select placeholder="请选择" v-width="150" v-model="list.type">
+          <a-select
+            placeholder="请选择"
+            v-width="150"
+            v-model="list.type"
+            @change="getTableData"
+          >
             <a-select-option value="">
               全部
             </a-select-option>
