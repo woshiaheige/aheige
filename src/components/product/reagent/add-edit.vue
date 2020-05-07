@@ -162,7 +162,14 @@ export default {
           }
         ],
         cordon: [{ validator: validNum, trigger: "blur" }],
-        price: [{ validator: validPrice, trigger: "blur" }]
+        price: [
+          {
+            required: true,
+            message: "请输入参考价格",
+            trigger: "blur"
+          },
+          { validator: validPrice, trigger: "blur" }
+        ]
       }
     };
   },
