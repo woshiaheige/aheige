@@ -1,6 +1,28 @@
 <template>
   <div>
     <a-card :bordered="false">
+      <a-form layout="inline">
+        <a-form-item label="考评时间">
+          <a-range-picker
+            format="YYYY-MM"
+            :mode="mode"
+            :value="value"
+            @panelChange="handlePanelChange"
+            @change="handleChange"
+          />
+        </a-form-item>
+        <a-form-item style="float: right">
+          <a-button type="primary">
+            查询
+          </a-button>
+          <a-button @click="reset()" v-margin:left="16">
+            重置
+          </a-button>
+        </a-form-item>
+        <a-form-item> </a-form-item>
+      </a-form>
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
       <div id="pieChart" style="width:100%; height: 400px"></div>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
@@ -11,11 +33,27 @@
 
 <script>
 export default {
+  data() {
+    return {
+      mode: ["month", "month"],
+      value: []
+    };
+  },
   mounted() {
     this.drawPieChart();
     this.drawLineChart();
   },
   methods: {
+    handleChange(value) {
+      this.value = value;
+    },
+    handlePanelChange(value, mode) {
+      this.value = value;
+      this.mode = [
+        mode[0] === "date" ? "month" : mode[0],
+        mode[1] === "date" ? "month" : mode[1]
+      ];
+    },
     drawPieChart() {
       let pieChart = this.$echarts.init(document.getElementById("pieChart"));
 

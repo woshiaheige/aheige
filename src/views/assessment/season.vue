@@ -19,8 +19,9 @@
         <a-form-item label="考评时间">
           <a-range-picker
             format="YYYY-MM"
-            :mode="['month', 'month']"
-            @panelChange="handlePanelChange2"
+            :mode="mode"
+            v-model="list.range"
+            @panelChange="handlePanelChange"
             @change="handleChange"
           />
         </a-form-item>
@@ -125,7 +126,8 @@ export default {
         name: "",
         level: "",
         type: ""
-      }
+      },
+      mode: ["month", "month"]
     };
   },
   mounted() {
@@ -134,7 +136,17 @@ export default {
   },
   methods: {
     reset() {
-      this.list = { name: "", level: "", type: "" };
+      this.list = { name: "", level: "", range: "" };
+    },
+    handleChange(value) {
+      this.list.range = value;
+    },
+    handlePanelChange(value, mode) {
+      this.list.range = value;
+      this.mode = [
+        mode[0] === "date" ? "month" : mode[0],
+        mode[1] === "date" ? "month" : mode[1]
+      ];
     },
     getTableData() {
       let data = {
