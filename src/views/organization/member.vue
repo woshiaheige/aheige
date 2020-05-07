@@ -16,19 +16,12 @@
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
-        <a-form-item style="float:right">
-          <a-button @click="reset">
-            重置
-          </a-button>
-        </a-form-item>
-        <a-form-item style="float:right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-        </a-form-item>
-
         <a-form-item label="手机号码">
-          <a-input placeholder="请输入" v-model="formInline.phone"></a-input>
+          <a-input
+            placeholder="请输入"
+            v-model="formInline.phone"
+            @pressEnter="getTableData"
+          ></a-input>
         </a-form-item>
         <a-form-item label="用户状态">
           <a-select
@@ -43,6 +36,16 @@
             <a-select-option value="0">正常</a-select-option>
             <a-select-option value="1">冻结</a-select-option>
           </a-select>
+        </a-form-item>
+        <a-form-item style="float:right">
+          <a-button @click="reset">
+            重置
+          </a-button>
+        </a-form-item>
+        <a-form-item style="float:right">
+          <a-button type="primary" @click="onSubmit">
+            查询
+          </a-button>
         </a-form-item>
       </a-form>
     </a-card>
