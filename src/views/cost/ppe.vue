@@ -5,28 +5,27 @@
         <a-form-item label="企业名称">
           <a-input
             placeholder="请输入"
-            v-model="list.name"
+            v-model="list.enterpriseName"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
         <a-form-item label="监控点名称">
           <a-input
             placeholder="请输入"
-            v-model="list.name"
+            v-model="list.pointName"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
         <a-form-item label="设备名称">
           <a-input
             placeholder="请输入"
-            v-model="list.name"
+            v-model="list.devName"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
         <a-form-item label="出库时间">
           <a-range-picker
             :allowClear="false"
-            @change="onChange"
             format="YYYY-MM-DD"
             v-model="list.range"
           />
@@ -57,7 +56,7 @@
       >
         <template slot="footer">
           合计
-          <span style="float: right">1000</span>
+          <span style="float: right">{{ costCount }}</span>
         </template>
       </a-table>
 
@@ -87,85 +86,88 @@ export default {
       columns: [
         {
           title: "企业名称",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "enterpriseName",
+          key: "enterpriseName"
         },
         {
           title: "监控点名称",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "pointName",
+          key: "pointName"
         },
         {
           title: "品牌",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "brand",
+          key: "brand"
         },
         {
           title: "型号",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "model",
+          key: "model"
         },
         {
           title: "数量",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "stockCount",
+          key: "stockCount"
         },
         {
           title: "单位",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "unit",
+          key: "unit"
         },
         {
           title: "出库时间",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "gmtModified",
+          key: "gmtModified"
         },
         {
           title: "总价",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "totalPrices",
+          key: "totalPrices"
         }
       ],
       tableData: [],
       list: {
-        name: "",
-        level: "",
-        type: ""
-      }
+        enterpriseName: "",
+        pointName: "",
+        devName: "",
+        range: []
+      },
+      costCount: 0
     };
   },
   mounted() {
     this.getTableData();
-    this.getIndustrySelect();
   },
   methods: {
     reset() {
-      this.list = { name: "", level: "", type: "" };
+      this.list = {
+        enterpriseName: "",
+        pointName: "",
+        devName: "",
+        range: []
+      };
     },
     getTableData() {
       let data = {
         page: this.current,
         size: this.pageSize,
-        enterpriseName: this.list.name,
-        controlLevel: this.list.level,
-        industryId: this.list.type
+        enterpriseName: this.list.enterpriseName,
+        pointName: this.list.pointName,
+        devName: this.list.devName,
+        beginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
+        endTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD"),
+        type: 6 //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
       };
       this.loading = true;
-      this.$api.customer
-        .getEnterPriseList(data)
+      this.$api.cost
+        .getCostList(data)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
             let result = res.data.data;
-            result.records.forEach(item => {
-              this.typeList.forEach(element => {
-                if (item.industryId == element.id) {
-                  item.industry = element.name;
-                }
-              });
-            });
-            this.tableData = result.records;
-            this.total = Number(result.total);
+            this.tableData = result.voIPage.records;
+            this.total = Number(result.voIPage.total);
+            this.costCount = result.totalAmount || 0;
           }
         })
         .catch(error => {
