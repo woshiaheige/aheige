@@ -131,8 +131,7 @@ export default {
     };
   },
   mounted() {
-    this.getTableData();
-    this.getIndustrySelect();
+    // this.getTableData();
   },
   methods: {
     reset() {

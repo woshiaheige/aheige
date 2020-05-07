@@ -40,6 +40,48 @@ const assessmentRoutes = [
         /* webpackChunkName: "view-assessment" */
         "@/views/assessment/yearly.vue"
       )
+  },
+  {
+    path: "/assessment/monthly-assessment/detail",
+    name: "monthly-assessment-detail",
+    key: "monthly-assessment-detail",
+    meta: {
+      title: "考评详情",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-assessment" */
+        "@/views/assessment/detail.vue"
+      )
+  },
+  {
+    path: "/assessment/season-assessment/detail",
+    name: "season-assessment-detail",
+    key: "season-assessment-detail",
+    meta: {
+      title: "考评详情",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-assessment" */
+        "@/views/assessment/detail.vue"
+      )
+  },
+  {
+    path: "/assessment/yearly-assessment/detail",
+    name: "yearly-assessment-detail",
+    key: "yearly-assessment-detail",
+    meta: {
+      title: "考评详情",
+      back: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-assessment" */
+        "@/views/assessment/detail.vue"
+      )
   }
 ];
 
