@@ -2,7 +2,7 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item label="考评时间">
+        <a-form-item label="统计时间">
           <a-range-picker
             format="YYYY-MM"
             :mode="mode"
