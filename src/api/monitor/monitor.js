@@ -50,7 +50,7 @@ const monitor = {
   },
   //设置现场机时间 1012
   getSend1012(data) {
-    return axios.get(base.api + "monitor/send17/send1011", {
+    return axios.get(base.api + "monitor/send17/send1012", {
       params: data
     });
   },
