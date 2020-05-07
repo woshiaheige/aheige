@@ -17,12 +17,7 @@
           ></a-input>
         </a-form-item>
         <a-form-item label="考评时间">
-          <a-range-picker
-            :allowClear="false"
-            @change="onChange"
-            format="YYYY-MM-DD"
-            v-model="list.range"
-          />
+          <a-date-picker format="YYYY" mode="year" v-model="list.year" />
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">

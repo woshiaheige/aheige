@@ -17,12 +17,24 @@
           ></a-input>
         </a-form-item>
         <a-form-item label="考评时间">
-          <a-range-picker
-            :allowClear="false"
-            @change="onChange"
-            format="YYYY-MM-DD"
-            v-model="list.range"
-          />
+          <a-select
+            placeholder="请选择"
+            v-model="list.season"
+            style="width: 200px"
+          >
+            <a-select-option value="1">
+              第一季度
+            </a-select-option>
+            <a-select-option value="2">
+              第二季度
+            </a-select-option>
+            <a-select-option value="3">
+              第三季度
+            </a-select-option>
+            <a-select-option value="4">
+              第四季度
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
