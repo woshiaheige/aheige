@@ -19,6 +19,7 @@
                 v-model="list.divisorId"
                 v-width="150"
                 :filterOption="filterOptions"
+                @change="getTableData"
               >
                 <a-select-option value="">
                   全部

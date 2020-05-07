@@ -7,6 +7,7 @@
             placeholder="请输入"
             v-model="list.name"
             :maxLength="30"
+            @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
         <a-form-item label="手机号">
@@ -14,6 +15,7 @@
             placeholder="请输入"
             v-model="list.phone"
             :maxLength="30"
+            @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
         <a-form-item style="float: right">
