@@ -48,9 +48,9 @@
           v-focus="focusSyncTwo"
         />
       </a-form-model-item>
-      <a-form-model-item label="微信ID" prop="wxId">
+      <!-- <a-form-model-item label="微信ID" prop="wxId">
         <a-input placeholder="请输入" :maxLength="30" v-model="formData.wxId" />
-      </a-form-model-item>
+      </a-form-model-item> -->
     </a-form-model>
     <template slot="footer">
       <a-button @click="handleCancel">取消</a-button>

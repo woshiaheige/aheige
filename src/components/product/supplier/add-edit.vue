@@ -19,7 +19,7 @@
           placeholder="请输入"
           v-model="formInline.name"
           :maxLength="30"
-          style="width: 200px"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
@@ -27,7 +27,7 @@
           :options="cityList"
           v-model="formInline.regionId"
           placeholder="请选择"
-          style="width: 200px"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="地址" prop="address">
@@ -35,7 +35,7 @@
           placeholder="请输入"
           v-model="formInline.address"
           :maxLength="30"
-          style="width: 200px"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="联系人" prop="contact">
@@ -43,26 +43,26 @@
           placeholder="请输入"
           v-model="formInline.contact"
           :maxLength="10"
-          style="width: 200px"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="联系电话" prop="telephone">
         <a-input
           placeholder="请输入"
           v-model="formInline.telephone"
-          style="width: 200px"
+          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="评级" prop="level">
         <a-rate v-model="formInline.level" />
       </a-form-model-item>
-      <template slot="footer">
-        <a-button @click="handleCancel">取消</a-button>
-        <a-button type="primary" @click="handleOk" v-preventReClick>
-          保存
-        </a-button>
-      </template>
     </a-form-model>
+    <template slot="footer">
+      <a-button @click="handleCancel">取消</a-button>
+      <a-button type="primary" @click="handleOk" v-preventReClick>
+        保存
+      </a-button>
+    </template>
   </a-modal>
 </template>
 <script>
