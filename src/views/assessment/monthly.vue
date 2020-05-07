@@ -74,8 +74,8 @@ export default {
       columns: [
         {
           title: "运维小组",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "group",
+          key: "group"
         },
         {
           title: "运维人员",
@@ -84,28 +84,28 @@ export default {
         },
         {
           title: "运维活动",
-          dataIndex: "name",
-          key: "name",
+          dataIndex: "movement",
+          key: "movement",
           children: [
             {
               title: "巡检",
-              dataIndex: "name",
-              key: "name"
+              dataIndex: "1",
+              key: "1"
             },
             {
               title: "维护",
-              dataIndex: "name",
-              key: "name"
+              dataIndex: "2",
+              key: "2"
             },
             {
               title: "校准",
-              dataIndex: "name",
-              key: "name"
+              dataIndex: "3",
+              key: "3"
             },
             {
               title: "合计",
-              dataIndex: "name",
-              key: "name"
+              dataIndex: "4",
+              key: "4"
             }
           ]
         },
@@ -115,7 +115,16 @@ export default {
           scopedSlots: { customRender: "check" }
         }
       ],
-      tableData: [],
+      tableData: [
+        {
+          group: "运维一组",
+          name: "张学友",
+          1: 1,
+          2: 2,
+          3: 3,
+          4: 6
+        }
+      ],
       list: {
         name: "",
         level: "",
@@ -124,8 +133,7 @@ export default {
     };
   },
   mounted() {
-    this.getTableData();
-    this.getIndustrySelect();
+    // this.getTableData();
   },
   methods: {
     reset() {
@@ -161,6 +169,9 @@ export default {
           console.log(error);
           this.loading = false;
         });
+    },
+    goDetail() {
+      this.$router.push("/assessment/monthly-assessment/detail");
     }
   }
 };

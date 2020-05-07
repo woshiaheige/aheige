@@ -17,24 +17,13 @@
           ></a-input>
         </a-form-item>
         <a-form-item label="考评时间">
-          <a-select
-            placeholder="请选择"
-            v-model="list.season"
-            style="width: 200px"
-          >
-            <a-select-option value="1">
-              第一季度
-            </a-select-option>
-            <a-select-option value="2">
-              第二季度
-            </a-select-option>
-            <a-select-option value="3">
-              第三季度
-            </a-select-option>
-            <a-select-option value="4">
-              第四季度
-            </a-select-option>
-          </a-select>
+          <a-range-picker
+            format="YYYY-MM"
+            :mode="mode"
+            v-model="list.range"
+            @panelChange="handlePanelChange"
+            @change="handleChange"
+          />
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
@@ -137,16 +126,26 @@ export default {
         name: "",
         level: "",
         type: ""
-      }
+      },
+      mode: ["month", "month"]
     };
   },
   mounted() {
-    this.getTableData();
-    this.getIndustrySelect();
+    // this.getTableData();
   },
   methods: {
     reset() {
-      this.list = { name: "", level: "", type: "" };
+      this.list = { name: "", level: "", range: "" };
+    },
+    handleChange(value) {
+      this.list.range = value;
+    },
+    handlePanelChange(value, mode) {
+      this.list.range = value;
+      this.mode = [
+        mode[0] === "date" ? "month" : mode[0],
+        mode[1] === "date" ? "month" : mode[1]
+      ];
     },
     getTableData() {
       let data = {

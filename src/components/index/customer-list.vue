@@ -5,11 +5,7 @@
         <a slot="actions" @click="closeReminds(item.id)">关闭提醒</a>
         <div>
           <a-avatar :src="require('@/assets/img/complain.png')" />
-          <span v-color="'#424242'" v-margin:left="8"
-            >{{ item.enterpriseName }}于{{
-              item.dataTime
-            }}提交了投诉建议,请及时处理！</span
-          >
+          <span v-color="'#424242'" v-margin:left="8">{{ item.content }}</span>
         </div>
       </a-list-item>
     </a-list>

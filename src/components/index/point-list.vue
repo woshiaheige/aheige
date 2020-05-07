@@ -4,11 +4,7 @@
       <a-list-item slot="renderItem" slot-scope="item">
         <div>
           <a-avatar :src="require('@/assets/img/alarm.png')" />
-          <span v-color="'#424242'" v-margin:left="8"
-            >{{ item.enterpriseName }}XX监测点于{{ item.dataTime }}发生{{
-              item.title
-            }},请及时处理！</span
-          >
+          <span v-color="'#424242'" v-margin:left="8">{{ item.content }}</span>
         </div>
         <a slot="actions" @click="closeReminds(item.id)">关闭提醒</a>
       </a-list-item>
