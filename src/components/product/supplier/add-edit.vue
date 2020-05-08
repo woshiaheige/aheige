@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title + '供应商信息'"
-    v-model="status"
+    :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
     okText="保存"
@@ -19,7 +19,6 @@
           placeholder="请输入"
           v-model="formInline.name"
           :maxLength="30"
-          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="所属区域" prop="regionId">
@@ -27,7 +26,6 @@
           :options="cityList"
           v-model="formInline.regionId"
           placeholder="请选择"
-          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="地址" prop="address">
@@ -35,7 +33,6 @@
           placeholder="请输入"
           v-model="formInline.address"
           :maxLength="30"
-          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="联系人" prop="contact">
@@ -43,15 +40,10 @@
           placeholder="请输入"
           v-model="formInline.contact"
           :maxLength="10"
-          v-width="350"
         />
       </a-form-model-item>
       <a-form-model-item label="联系电话" prop="telephone">
-        <a-input
-          placeholder="请输入"
-          v-model="formInline.telephone"
-          v-width="350"
-        />
+        <a-input placeholder="请输入" v-model="formInline.telephone" />
       </a-form-model-item>
       <a-form-model-item label="评级" prop="level">
         <a-rate v-model="formInline.level" />
@@ -69,7 +61,7 @@
 import cityList from "@/assets/json/city_code.json";
 export default {
   props: {
-    obj: {
+    value: {
       type: Object
     }
   },
@@ -88,7 +80,6 @@ export default {
     };
     const validateLevel = (rule, value, callback) => {
       if (value == 0) {
-        //非必须输入
         callback("请选择供应商等级");
         return;
       }
@@ -115,16 +106,16 @@ export default {
         ],
 
         telephone: [{ validator: validatePhone, trigger: "blur" }],
-        level: [{ validator: validateLevel, trigger: "blur" }]
+        level: [
+          { required: true, message: "请选择供应商等级", trigger: "blur" },
+          { validator: validateLevel, trigger: "blur" }
+        ]
       }
     };
   },
   computed: {
-    status: {
-      get() {
-        return this.obj.show;
-      },
-      set() {}
+    modelData() {
+      return this.value;
     }
   },
   methods: {
@@ -217,15 +208,15 @@ export default {
     },
     //点击取消
     handleCancel() {
+      this.modelData.show = false;
       this.$refs.ruleForm.resetFields();
-      this.$emit("cancel", false);
     }
   },
   mounted() {},
   watch: {
-    status() {
-      if (this.status == true) {
-        if (this.obj.row != "" && this.obj.row != undefined) {
+    "value.show"() {
+      if (this.value.show == true) {
+        if (this.value.type == "edit") {
           this.title = "编辑";
           this.getSupplierById();
         } else {
