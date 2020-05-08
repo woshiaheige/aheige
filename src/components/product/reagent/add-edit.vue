@@ -189,14 +189,14 @@ export default {
         type: [{ required: true, message: "请选择类别", trigger: "change" }]
       },
       typeOptions: [
-        { id: 1, name: "设备成本" },
+        { id: 1, name: "设备" },
         { id: 2, name: "实验室设备" },
-        { id: 3, name: "部件成本" },
-        { id: 4, name: "试剂成本" },
-        { id: 5, name: "标气成本" },
+        { id: 3, name: "部件" },
+        { id: 4, name: "试剂" },
+        { id: 5, name: "标气" },
         { id: 6, name: "劳保用品" },
-        { id: 7, name: "车辆成本" },
-        { id: 8, name: "其他成本" }
+        { id: 7, name: "车辆" },
+        { id: 8, name: "其他" }
       ]
     };
   },

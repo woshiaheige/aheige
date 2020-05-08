@@ -37,6 +37,7 @@ instance.interceptors.response.use(
         if (response.data.state === 4) {
           router.push("/login");
           sessionStorage.clear();
+          location.reload();
         }
       }
       return Promise.resolve(response);

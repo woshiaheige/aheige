@@ -63,7 +63,7 @@
         <template slot="protocolType" slot-scope="protocolType">
           <span v-show="protocolType == '05'">05协议</span>
           <span v-show="protocolType == '17'">17协议</span>
-          <span v-show="protocolType == '0'">扩张协议</span>
+          <span v-show="protocolType == '0'">扩展协议</span>
         </template>
         <template slot="type" slot-scope="type">
           <a-tag color="blue" v-if="type == 32">水类</a-tag>
