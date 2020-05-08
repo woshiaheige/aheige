@@ -1,4 +1,14 @@
+import { Empty } from "ant-design-vue";
+
 const event = {
+  data() {
+    return {
+      simpleImage: ""
+    };
+  },
+  beforeCreate() {
+    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
+  },
   methods: {
     onSubmit() {
       this.current = 1; //页码
