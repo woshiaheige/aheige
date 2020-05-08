@@ -122,7 +122,6 @@
 </template>
 
 <script>
-import { Empty } from "ant-design-vue";
 import pointList from "@/components/index/point-list.vue";
 import contractList from "@/components/index/contract-list.vue";
 import customerList from "@/components/index/customer-list.vue";
@@ -147,9 +146,7 @@ export default {
       isEmpty: true
     };
   },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
-  },
+
   mounted() {
     this.getRankingData();
     this.getTaskData();

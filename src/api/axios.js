@@ -32,6 +32,7 @@ instance.interceptors.response.use(
   response => {
     if (response.status === 200) {
       if (response.data.state && response.data.state != 0) {
+        message.destroy();
         message.warning(response.data.msg);
 
         if (response.data.state === 4) {
