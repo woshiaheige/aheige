@@ -23,9 +23,15 @@
       </a-form>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">成本统计分析</div>
+      </div>
       <div id="pieChart" style="width:100%; height: 400px"></div>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">成本趋势分析</div>
+      </div>
       <div id="lineChart" style="width:100%; height: 400px"></div>
     </a-card>
   </div>
@@ -65,10 +71,6 @@ export default {
         pieChart.resize();
       });
       let option = {
-        title: {
-          text: "成本统计分析",
-          left: "center"
-        },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -127,9 +129,6 @@ export default {
         lineChart.resize();
       });
       let option = {
-        title: {
-          text: "成本趋势"
-        },
         tooltip: {
           trigger: "axis"
         },

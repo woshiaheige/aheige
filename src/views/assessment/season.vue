@@ -5,7 +5,7 @@
         <a-form-item label="运维小组">
           <a-input
             placeholder="请输入"
-            v-model="list.name"
+            v-model="list.group"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
@@ -22,7 +22,6 @@
             :mode="mode"
             v-model="list.range"
             @panelChange="handlePanelChange"
-            @change="handleChange"
           />
         </a-form-item>
         <a-form-item style="float: right">
@@ -80,40 +79,19 @@ export default {
       columns: [
         {
           title: "运维小组",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "groupName",
+          key: "groupName"
         },
         {
           title: "运维人员",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "username",
+          key: "username"
         },
         {
           title: "运维活动",
-          dataIndex: "name",
-          key: "name",
-          children: [
-            {
-              title: "巡检",
-              dataIndex: "name",
-              key: "name"
-            },
-            {
-              title: "维护",
-              dataIndex: "name",
-              key: "name"
-            },
-            {
-              title: "校准",
-              dataIndex: "name",
-              key: "name"
-            },
-            {
-              title: "合计",
-              dataIndex: "name",
-              key: "name"
-            }
-          ]
+          dataIndex: "movement",
+          key: "movement",
+          children: []
         },
         {
           title: "操作",
@@ -123,60 +101,115 @@ export default {
       ],
       tableData: [],
       list: {
+        group: "",
         name: "",
-        level: "",
-        type: ""
+        range: this.season
       },
       mode: ["month", "month"]
     };
   },
+  computed: {
+    season() {
+      if (this.$moment().month() <= 2) {
+        return [this.$moment().month(0), this.$moment().month(2)];
+      } else if (this.$moment().month() > 2 && this.$moment().month() <= 5) {
+        return [this.$moment().month(3), this.$moment().month(5)];
+      } else if (this.$moment().month() > 5 && this.$moment().month() <= 8) {
+        return [this.$moment().month(6), this.$moment().month(8)];
+      } else {
+        return [this.$moment().month(9), this.$moment().month(11)];
+      }
+    }
+  },
   mounted() {
-    // this.getTableData();
+    this.list.range = this.season;
+    this.getTableData();
   },
   methods: {
     reset() {
-      this.list = { name: "", level: "", range: "" };
-    },
-    handleChange(value) {
-      this.list.range = value;
+      this.list = {
+        group: "",
+        name: "",
+        range: this.season
+      };
     },
     handlePanelChange(value, mode) {
+      value[1] = this.$moment(value[0]).add(2, "M");
       this.list.range = value;
       this.mode = [
         mode[0] === "date" ? "month" : mode[0],
         mode[1] === "date" ? "month" : mode[1]
       ];
     },
-    getTableData() {
+    async getTableData() {
       let data = {
+        groupName: this.list.group,
+        startMonth:
+          this.list.range[0] == ""
+            ? this.$moment()
+                .subtract(2, "M")
+                .format("YYYY-MM")
+            : this.$moment(this.list.range[0]).format("YYYY-MM"),
+        endMonth:
+          this.list.range[1] == ""
+            ? this.$moment().format("YYYY-MM")
+            : this.$moment(this.list.range[1]).format("YYYY-MM"),
+        name: this.list.name,
         page: this.current,
-        size: this.pageSize,
-        enterpriseName: this.list.name,
-        controlLevel: this.list.level,
-        industryId: this.list.type
+        size: this.pageSize
       };
       this.loading = true;
-      this.$api.customer
-        .getEnterPriseList(data)
-        .then(res => {
+      await this.$api.assessment
+        .getSeasonAssessment(data)
+        .then(async res => {
           if (res.data.state == 0) {
             this.loading = false;
-            let result = res.data.data;
-            result.records.forEach(item => {
-              this.typeList.forEach(element => {
-                if (item.industryId == element.id) {
-                  item.industry = element.name;
-                }
-              });
-            });
-            this.tableData = result.records;
-            this.total = Number(result.total);
+            await this.getTitle();
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
           }
         })
         .catch(error => {
           console.log(error);
           this.loading = false;
         });
+    },
+    async getTitle() {
+      this.columns[2].children = [];
+
+      let data = {
+        groupName: this.list.group,
+        startMonth:
+          this.list.range[0] == ""
+            ? this.$moment()
+                .subtract(2, "M")
+                .format("YYYY-MM")
+            : this.$moment(this.list.range[0]).format("YYYY-MM"),
+        endMonth:
+          this.list.range[1] == ""
+            ? this.$moment().format("YYYY-MM")
+            : this.$moment(this.list.range[1]).format("YYYY-MM"),
+        name: this.list.name
+      };
+
+      await this.$api.assessment.getSeasonTitle(data).then(res => {
+        if (res.data.state == 0) {
+          res.data.data.forEach(item => {
+            if (item.title == "运维操作") {
+              item.childs.forEach(children => {
+                this.columns[2].children.push({
+                  title: children.title,
+                  dataIndex: children.title == "合计" ? "total" : children.id,
+                  key: children.title == "合计" ? "total" : children.id
+                });
+              });
+            }
+          });
+        }
+      });
+    },
+    goDetail() {
+      this.$router.push("/assessment/season-assessment/detail");
     }
   }
 };
