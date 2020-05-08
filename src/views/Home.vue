@@ -256,8 +256,10 @@ export default {
         content: "是否退出？",
         onOk() {
           sessionStorage.clear();
-          location.reload();
           that.$router.push("/login");
+          setTimeout(() => {
+            location.reload();
+          }, 500);
         },
         onCancel() {}
       });
