@@ -178,7 +178,6 @@ export default {
             that.$api.login
               .login(data)
               .then(async res => {
-                console.log(res);
                 if (res.data.state == 0) {
                   sessionStorage.setItem(
                     "userinfo",

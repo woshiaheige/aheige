@@ -26,6 +26,7 @@
             v-model="formInline.level"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option
               v-for="item in controlOptions"
@@ -88,7 +89,7 @@
         v-margin:top="16"
         showSizeChanger
         :pageSize.sync="pageSize"
-        :defaultCurrent="current"
+        :current="current"
         @change="pagechange"
         @showSizeChange="sizechange"
         :total="total"

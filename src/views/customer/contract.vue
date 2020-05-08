@@ -25,6 +25,7 @@
             v-model="list.state"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option value="">
               全部
@@ -87,7 +88,7 @@
         size="small"
         v-margin:top="16"
         showSizeChanger
-        :defaultCurrent="current"
+        :current="current"
         :pageSize.sync="pageSize"
         :total="total"
         :showTotal="total => `共 ${total} 条`"

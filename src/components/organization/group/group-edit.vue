@@ -8,6 +8,7 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="小组名称">
         <a-input
+          :maxLength="30"
           placeholder="请输入"
           v-decorator="[
             'name',

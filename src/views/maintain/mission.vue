@@ -3,48 +3,20 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-select
-            @focus="onFocusEnterprise"
-            showSearch
-            v-model="formInline.enterpriseName"
+          <a-input
             placeholder="请输入"
-            style="width: 200px"
-            :filterOption="false"
-            @search="searchEnterprise"
-          >
-            <a-spin
-              v-if="loadingEnterprise"
-              slot="notFoundContent"
-              size="small"
-            />
-            <a-select-option
-              v-for="(item, index) in enterpriseList"
-              @click="slectEnterprise(item)"
-              :key="index"
-              :value="item.name"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
+            v-model="formInline.enterpriseName"
+            :maxLength="30"
+            @pressEnter="getTableData"
+          />
         </a-form-item>
         <a-form-item label="监控点名称">
-          <a-select
-            @focus="onFocusPoint"
-            showSearch
-            v-model="formInline.pointName"
+          <a-input
             placeholder="请输入"
-            style="width: 200px"
-            :filterOption="false"
-            @search="searchPoint"
-          >
-            <a-spin v-if="loadingStation" slot="notFoundContent" size="small" />
-            <a-select-option
-              v-for="(item, index) in pointList"
-              @click="slectPoint(item)"
-              :key="index"
-              :value="item.name"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
+            v-model="formInline.pointName"
+            :maxLength="30"
+            @pressEnter="getTableData"
+          />
         </a-form-item>
         <a-form-item label="任务状态">
           <a-select
@@ -53,6 +25,7 @@
             v-model="formInline.isComplete"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="1">已完成</a-select-option>
@@ -130,6 +103,7 @@
         :visible="show"
         :planList="planList"
         :stationList="stationList"
+        :enterpriseList="enterpriseList"
         @cancel="cancel"
       ></add-edit>
     </a-card>
@@ -141,17 +115,13 @@ export default {
   components: { addEdit },
   data() {
     return {
-      loadingStation: false,
-      loadingEnterprise: false,
       current: 1,
       size: 10,
       total: 0,
       loading: false,
       formInline: {
-        enterpriseName: undefined,
-        enterpriseId: undefined,
-        pointId: undefined,
-        pointName: undefined,
+        enterpriseName: "",
+        pointName: "",
         isComplete: "all"
       },
       columns: [
@@ -199,73 +169,25 @@ export default {
         // }
       ],
       enterpriseList: [],
-      pointList: [],
       stationList: [],
       planList: [],
       show: false
     };
   },
-  watch: {
-    "formInline.enterpriseName"() {
-      this.$set(this.formInline, "pointName", undefined);
-      this.$set(this.formInline, "pointId", undefined);
-    }
-  },
+  watch: {},
   methods: {
-    onFocusEnterprise() {
-      //获取第一次聚焦的列表
-      if (this.enterpriseList.length == 0) {
-        this.searchEnterprise("");
-      }
-    },
-    onFocusPoint() {
-      //获取第一次聚焦的列表
-      if (this.pointList.length == 0) {
-        this.searchPoint("");
-      }
-    },
-    searchEnterprise(value) {
-      //搜索企业
-      let params = {
-        size: 20,
-        page: 1,
-        enterpriseName: value
-      };
-      this.loadingEnterprise = true;
-      this.$api.customer.getEnterPriseList(params).then(res => {
-        this.enterpriseList = res.data.data.records;
-        this.loadingEnterprise = false;
+    getSelectEnterprise() {
+      //企业
+      this.$api.common.selectEnterprise().then(res => {
+        this.enterpriseList = res.data.data;
       });
-    },
-    slectEnterprise(value) {
-      this.formInline.enterpriseId = value.id;
-      this.formInline.enterpriseName = value.name;
-      this.searchPoint("");
-    },
-    searchPoint(value) {
-      //搜索站点
-      let params = {
-        size: 20,
-        page: 1,
-        enterpriseName: this.formInline.enterpriseName,
-        pointName: value
-      };
-      this.loadingStation = true;
-      this.$api.customer.getStationList(params).then(res => {
-        this.pointList = res.data.data.records;
-        this.loadingStation = false;
-      });
-    },
-    slectPoint(value) {
-      this.formInline.pointId = value.id;
-      this.formInline.pointName = value.name;
     },
     getTableData() {
       let params = {
         page: this.current,
         size: this.size,
-        enterpriseId: this.formInline.enterpriseId,
-        pointId: this.formInline.pointId,
+        enterpriseName: this.formInline.enterpriseName,
+        pointName: this.formInline.pointName,
         isComplete:
           this.formInline.isComplete == "all" ? "" : this.formInline.isComplete
       };
@@ -288,7 +210,6 @@ export default {
       this.show = value;
       this.delayShow = value;
       this.closeShow = value;
-      this.detailShow = value;
       this.getTableData();
     },
     resetFormInLine() {
@@ -304,6 +225,7 @@ export default {
   },
   mounted() {
     this.getTableData();
+    this.getSelectEnterprise();
   }
 };
 </script>

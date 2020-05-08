@@ -53,7 +53,7 @@
           showSizeChanger
           :pageSize.sync="pageSize"
           :showTotal="total => `共 ${total} 条`"
-          :defaultCurrent="current"
+          :current="current"
           @change="pagechange"
           @showSizeChange="sizechange"
           :total="total"
@@ -254,7 +254,14 @@ export default {
                     title: element.title,
                     dataIndex: element.field,
                     key: element.field,
-                    customRender: (text, row) => `${row[element.field].Rtd}`
+                    align: "center",
+                    customRender: (text, row) => {
+                      if (row[element.field].Rtd) {
+                        return row[element.field].Rtd;
+                      } else {
+                        return "-";
+                      }
+                    }
                   });
                   tempColumns.push({
                     name: element.title,
@@ -265,7 +272,14 @@ export default {
                     title: element.title,
                     dataIndex: element.field,
                     key: element.field,
-                    customRender: (text, row) => `${row[element.field].Avg}`
+                    align: "center",
+                    customRender: (text, row) => {
+                      if (row[element.field].Avg) {
+                        return row[element.field].Avg;
+                      } else {
+                        return "-";
+                      }
+                    }
                   });
                   tempColumns.push({
                     name: element.title,

@@ -163,6 +163,20 @@ export default {
           children: []
         },
         {
+          title: "成本管理",
+          id: 19,
+          key: "cost",
+          icon: "money-collect",
+          children: []
+        },
+        {
+          title: "人员考评",
+          id: 20,
+          key: "assessment",
+          icon: "file-done",
+          children: []
+        },
+        {
           title: "车辆管理",
           id: 15,
           key: "car",
