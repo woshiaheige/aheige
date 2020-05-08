@@ -23,6 +23,9 @@
       </a-form>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">成本统计分析</div>
+      </div>
       <div class="loading" v-if="pieLoading">
         <a-spin size="large" />
       </div>
@@ -34,6 +37,9 @@
       <a-empty v-else :image="simpleImage" />
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">成本趋势分析</div>
+      </div>
       <div class="loading" v-if="lineLoading">
         <a-spin size="large" />
       </div>
@@ -207,10 +213,6 @@ export default {
         pieChart.resize();
       });
       let option = {
-        title: {
-          text: "成本统计分析",
-          left: "center"
-        },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -260,9 +262,6 @@ export default {
         lineChart.resize();
       });
       let option = {
-        title: {
-          text: "成本趋势"
-        },
         tooltip: {
           trigger: "axis"
         },

@@ -5,7 +5,7 @@
         <a-form-item label="运维小组">
           <a-input
             placeholder="请输入"
-            v-model="list.name"
+            v-model="list.group"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
@@ -35,7 +35,7 @@
         <div class="title">考评列表</div>
       </div>
       <a-table
-        rowKey="id"
+        :rowKey="(record, index) => index"
         size="middle"
         :columns="columns"
         :dataSource="tableData"
@@ -74,40 +74,19 @@ export default {
       columns: [
         {
           title: "运维小组",
-          dataIndex: "group",
-          key: "group"
+          dataIndex: "groupName",
+          key: "groupName"
         },
         {
           title: "运维人员",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "username",
+          key: "username"
         },
         {
           title: "运维活动",
           dataIndex: "movement",
           key: "movement",
-          children: [
-            {
-              title: "巡检",
-              dataIndex: "1",
-              key: "1"
-            },
-            {
-              title: "维护",
-              dataIndex: "2",
-              key: "2"
-            },
-            {
-              title: "校准",
-              dataIndex: "3",
-              key: "3"
-            },
-            {
-              title: "合计",
-              dataIndex: "4",
-              key: "4"
-            }
-          ]
+          children: []
         },
         {
           title: "操作",
@@ -115,54 +94,41 @@ export default {
           scopedSlots: { customRender: "check" }
         }
       ],
-      tableData: [
-        {
-          group: "运维一组",
-          name: "张学友",
-          1: 1,
-          2: 2,
-          3: 3,
-          4: 6
-        }
-      ],
+      tableData: [],
       list: {
+        group: "",
         name: "",
-        level: "",
-        type: ""
+        month: this.$moment()
       }
     };
   },
   mounted() {
-    // this.getTableData();
+    this.getTableData();
   },
   methods: {
     reset() {
-      this.list = { name: "", level: "", type: "" };
+      this.list = { group: "", name: "", month: this.$moment() };
     },
-    getTableData() {
+    async getTableData() {
       let data = {
+        groupName: this.list.group,
+        month:
+          this.list.month == ""
+            ? this.$moment().format("YYYY-MM")
+            : this.$moment(this.list.month).format("YYYY-MM"),
+        name: this.list.name,
         page: this.current,
-        size: this.pageSize,
-        enterpriseName: this.list.name,
-        controlLevel: this.list.level,
-        industryId: this.list.type
+        size: this.pageSize
       };
       this.loading = true;
-      this.$api.customer
-        .getEnterPriseList(data)
-        .then(res => {
+      await this.$api.assessment
+        .getMonthlyAssessment(data)
+        .then(async res => {
           if (res.data.state == 0) {
             this.loading = false;
-            let result = res.data.data;
-            result.records.forEach(item => {
-              this.typeList.forEach(element => {
-                if (item.industryId == element.id) {
-                  item.industry = element.name;
-                }
-              });
-            });
-            this.tableData = result.records;
-            this.total = Number(result.total);
+            await this.getTitle();
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
           }
         })
         .catch(error => {
@@ -170,8 +136,43 @@ export default {
           this.loading = false;
         });
     },
-    goDetail() {
-      this.$router.push("/assessment/monthly-assessment/detail");
+    async getTitle() {
+      this.columns[2].children = [];
+
+      let data = {
+        groupName: this.list.group,
+        month:
+          this.list.month == ""
+            ? this.$moment().format("YYYY-MM")
+            : this.$moment(this.list.month).format("YYYY-MM"),
+        name: this.list.name
+      };
+
+      await this.$api.assessment.getMonthlyTitle(data).then(res => {
+        if (res.data.state == 0) {
+          res.data.data.forEach(item => {
+            if (item.title == "运维操作") {
+              item.childs.forEach(children => {
+                this.columns[2].children.push({
+                  title: children.title,
+                  dataIndex: children.title == "合计" ? "total" : children.id,
+                  key: children.title == "合计" ? "total" : children.id
+                });
+              });
+            }
+          });
+        }
+      });
+    },
+    goDetail(row) {
+      this.$router.push({
+        path: "/assessment/monthly-assessment/detail",
+        query: {
+          memberId: row.id,
+          beginTime: this.$moment(this.list.month).format("YYYY-MM"),
+          type: 1
+        }
+      });
     }
   }
 };
