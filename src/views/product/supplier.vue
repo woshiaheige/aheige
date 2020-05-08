@@ -1,61 +1,58 @@
 <template>
-  <a-form-model-item>
-    <a-card :bordered="false" class="standing">
-      <div class="card-header">
-        <div class="title">供应商列表</div>
-        <div class="extra">
-          <a-form layout="inline" :model="formInline">
-            <a-form-item>
-              <a-button type="primary" @click="onEdit()">
-                <a-icon type="plus" />新建
-              </a-button>
-            </a-form-item>
-            <a-form-item>
-              <a-input-search
-                placeholder="输入供应商名称"
-                style="width: 200px"
-                :maxLength="30"
-                v-model="formInline.name"
-                @search="onSubmit"
-              />
-            </a-form-item>
-          </a-form>
-        </div>
+  <a-card :bordered="false" class="standing">
+    <div class="card-header">
+      <div class="title">供应商列表</div>
+      <div class="extra">
+        <a-form layout="inline" :model="formInline">
+          <a-form-item>
+            <a-button type="primary" @click="onEdit('add')">
+              <a-icon type="plus" />新建
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-input-search
+              placeholder="输入供应商名称"
+              style="width: 200px"
+              :maxLength="30"
+              v-model="formInline.name"
+              @search="onSubmit"
+            />
+          </a-form-item>
+        </a-form>
       </div>
-      <a-table
-        :loading="loading"
-        size="middle"
-        :rowKey="(record, index) => index"
-        :columns="columns"
-        :dataSource="tableData"
-        v-margin:top="16"
-        :pagination="false"
-      >
-        <template slot="star" slot-scope="level">
-          <a-rate :value="level" disabled />
-        </template>
-        <span slot="action" slot-scope="row">
-          <a @click="onEdit(row)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="onDelete(row)">删除</a>
-        </span>
-      </a-table>
-      <a-pagination
-        size="small"
-        :showTotal="total => `共 ${total} 条`"
-        v-margin:top="16"
-        showSizeChanger
-        :pageSize.sync="pageSize"
-        :current="current"
-        @change="pagechange"
-        @showSizeChange="sizechange"
-        :total="total"
-      />
-      <!-- 新建编辑供应商 -->
-      <add-edit :obj="modalInfo" @cancel="cancel" @getTableData="getTableData">
-      </add-edit>
-    </a-card>
-  </a-form-model-item>
+    </div>
+    <a-table
+      :loading="loading"
+      size="middle"
+      :rowKey="(record, index) => index"
+      :columns="columns"
+      :dataSource="tableData"
+      v-margin:top="16"
+      :pagination="false"
+    >
+      <template slot="star" slot-scope="level">
+        <a-rate :value="level" disabled />
+      </template>
+      <span slot="action" slot-scope="row">
+        <a @click="onEdit('edit', row)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="onDelete(row)">删除</a>
+      </span>
+    </a-table>
+    <a-pagination
+      size="small"
+      :showTotal="total => `共 ${total} 条`"
+      v-margin:top="16"
+      showSizeChanger
+      :pageSize.sync="pageSize"
+      :current="current"
+      @change="pagechange"
+      @showSizeChange="sizechange"
+      :total="total"
+    />
+    <!-- 新建编辑供应商 -->
+    <add-edit v-model="modalInfo" @getTableData="getTableData"> </add-edit>
+  </a-card>
 </template>
 
 <script>
@@ -133,9 +130,12 @@ export default {
           this.loading = false;
         });
     },
-    onEdit(row) {
-      this.modalInfo.show = true;
-      this.modalInfo.row = row;
+    onEdit(type, row) {
+      this.modalInfo = {
+        show: true,
+        type: type,
+        row: row
+      };
     },
     onDelete(row) {
       let that = this;
@@ -162,9 +162,6 @@ export default {
           console.log("Cancel");
         }
       });
-    },
-    cancel(value) {
-      this.modalInfo.show = value;
     }
   }
 };
