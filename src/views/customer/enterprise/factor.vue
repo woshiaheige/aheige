@@ -69,7 +69,7 @@
         @showSizeChange="sizechange"
       />
       <add-edit
-        :factorOptions="factorOptions"
+        :factorOptions="factorAllOptions"
         v-model="obj"
         @refresh="getTableData"
       ></add-edit>
@@ -156,7 +156,8 @@ export default {
       obj: {
         show: false
       },
-      factorOptions: []
+      factorOptions: [],
+      factorAllOptions: []
     };
   },
   mounted() {
@@ -216,6 +217,11 @@ export default {
     getFactor(pointId) {
       this.$api.monitor.getPollCodeList(pointId).then(res => {
         this.factorOptions = res.data.data;
+      });
+      this.$api.common.selectFactorByPointId({ pointId: pointId }).then(res => {
+        if (res.data.state == 0) {
+          this.factorAllOptions = res.data.data;
+        }
       });
     }
   }
