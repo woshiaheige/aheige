@@ -19,6 +19,10 @@
 
 <script>
 export default {
+  props: {
+    range: Array,
+    type: [Object, Number]
+  },
   data() {
     return {
       mode: ["month", "month"],
@@ -33,6 +37,8 @@ export default {
   },
   methods: {
     reset() {
+      console.log(this.range);
+      console.log(this.type);
       let data = this.getLast3Month();
       this.value = [this.$moment(data[0]), this.$moment(data[1])];
       this.getData();
