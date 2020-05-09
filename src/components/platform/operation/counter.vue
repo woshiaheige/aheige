@@ -63,6 +63,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .counter {
+  display: inline-block;
   .add {
     cursor: pointer;
   }

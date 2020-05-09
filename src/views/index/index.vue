@@ -94,6 +94,12 @@
             <a-tab-pane tab="客户投诉提醒" key="3">
               <customer-list ref="customerList"></customer-list>
             </a-tab-pane>
+            <a-tab-pane tab="物资库存提醒" key="4">
+              <customer-list ref="customerList"></customer-list>
+            </a-tab-pane>
+            <a-tab-pane tab="车辆年检提醒" key="5">
+              <customer-list ref="customerList"></customer-list>
+            </a-tab-pane>
           </a-tabs>
         </a-card>
       </a-col>
