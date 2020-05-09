@@ -2,20 +2,6 @@
   <div>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">成本统计分析</div>
-      </div>
-      <div class="loading" v-if="pieLoading">
-        <a-spin size="large" />
-      </div>
-      <div
-        v-if="!isPieEmpty"
-        id="pieChart"
-        style="width:100%; height: 400px"
-      ></div>
-      <a-empty v-else :image="simpleImage" />
-    </a-card>
-    <a-card :bordered="false" v-margin:top="16">
-      <div class="card-header">
         <div class="title">成本趋势分析</div>
       </div>
       <div class="loading" v-if="lineLoading">
@@ -37,17 +23,6 @@ export default {
     return {
       mode: ["month", "month"],
       value: [],
-      pieData: [
-        { value: 0, name: "设备成本", key: 1 },
-        { value: 0, name: "实验室设备成本", key: 2 },
-        { value: 0, name: "部件成本", key: 3 },
-        { value: 0, name: "试剂成本", key: 4 },
-        { value: 0, name: "标气成本", key: 5 },
-        { value: 0, name: "劳保用品成本", key: 6 },
-        { value: 0, name: "其他成本", key: 7 }
-      ],
-      isPieEmpty: false,
-      pieLoading: false,
       isLineEmpty: false,
       lineLoading: false,
       dateList: []
@@ -57,21 +32,6 @@ export default {
     this.reset();
   },
   methods: {
-    handleChange(value) {
-      this.value = value;
-    },
-    handlePanelChange(value, mode) {
-      this.value = value;
-      this.mode = [
-        mode[0] === "date" ? "month" : mode[0],
-        mode[1] === "date" ? "month" : mode[1]
-      ];
-      let data = {
-        beginTime: this.$moment(this.value[0]).format("YYYY-MM"),
-        endTime: this.$moment(this.value[1]).format("YYYY-MM")
-      };
-      this.validTime(data);
-    },
     reset() {
       let data = this.getLast3Month();
       this.value = [this.$moment(data[0]), this.$moment(data[1])];
@@ -82,23 +42,7 @@ export default {
         beginTime: this.$moment(this.value[0]).format("YYYY-MM"),
         endTime: this.$moment(this.value[1]).format("YYYY-MM")
       };
-      if (!this.validTime(data)) {
-        return;
-      }
       this.getLine(data);
-      this.getPie(data);
-    },
-    validTime(data) {
-      this.dateList = this.getMonthBetween(data.beginTime, data.endTime);
-      if (data.beginTime == data.endTime) {
-        this.$message.warn("不能选择同年同月，请重新选择时间");
-        return false;
-      }
-      if (this.dateList.length > 12) {
-        this.$message.warn("时间不能超过一年，请重新选择时间");
-        return false;
-      }
-      return true;
     },
     //曲线图
     getLine(data) {
@@ -149,85 +93,6 @@ export default {
           this.isLineEmpty = true;
           this.lineLoading = false;
         });
-    },
-    //饼状图
-    getPie(data) {
-      this.isPieEmpty = false;
-      this.pieLoading = true;
-      this.$api.cost
-        .getChartPie(data)
-        .then(res => {
-          if (res.data.state == 0) {
-            this.pieLoading = false;
-            let result = res.data.data || [];
-            let data = JSON.parse(JSON.stringify(this.pieData));
-            if (result.length > 0) {
-              for (var i in result) {
-                data.forEach(item => {
-                  if (result[i].type == item.key) {
-                    item.value = result[i].totalAmount;
-                  }
-                });
-              }
-              this.drawPieChart(data);
-            } else {
-              this.isPieEmpty = true;
-            }
-          }
-        })
-        .catch(() => {
-          this.isPieEmpty = true;
-          this.pieLoading = false;
-        });
-    },
-    drawPieChart(data) {
-      let pieChart = this.$echarts.init(document.getElementById("pieChart"));
-
-      this.$nextTick(() => {
-        pieChart.resize();
-      });
-
-      window.addEventListener("resize", () => {
-        pieChart.resize();
-      });
-      let option = {
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-          orient: "vertical",
-          left: "left",
-          data: [
-            "设备成本",
-            "实验室设备成本",
-            "部件成本",
-            "试剂成本",
-            "标气成本",
-            "劳保用品成本",
-            "车辆成本",
-            "其他成本"
-          ]
-        },
-        series: [
-          {
-            name: "成本统计",
-            type: "pie",
-            radius: "55%",
-            center: ["50%", "60%"],
-            data: data,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
-      };
-
-      pieChart.setOption(option);
     },
     drawLineChart(data, legend) {
       let lineChart = this.$echarts.init(document.getElementById("lineChart"));

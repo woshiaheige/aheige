@@ -3,35 +3,80 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <a-input
+          <!-- <a-input
             placeholder="请输入"
             v-model="list.enterpriseName"
             @pressEnter="getTableData"
-          ></a-input>
+          ></a-input> -->
+          <a-select
+            v-model="list.enterpriseId"
+            placeholder="请选择"
+            v-width="150"
+            showSearch
+            :filterOption="filterOptions"
+            @change="changeEnterprise"
+          >
+            <a-select-option
+              v-for="item in enterPriseOptions"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
         <a-form-item label="监控点名称">
-          <a-input
+          <!-- <a-input
             placeholder="请输入"
             v-model="list.pointName"
             @pressEnter="getTableData"
-          ></a-input>
+          ></a-input> -->
+          <a-select
+            v-model="list.pointId"
+            placeholder="请选择"
+            v-width="150"
+            showSearch
+            :filterOption="filterOptions"
+            :disabled="isDisabled"
+          >
+            <a-select-option
+              v-for="item in pointOptions"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
-        <a-form-item label="设备名称">
-          <a-input
+        <a-form-item label="标气名称">
+          <!-- <a-input
             placeholder="请输入"
             v-model="list.devName"
             @pressEnter="getTableData"
-          ></a-input>
+          ></a-input> -->
+          <a-select
+            v-model="list.goodsId"
+            placeholder="请选择"
+            v-width="150"
+            showSearch
+            :filterOption="filterOptions"
+          >
+            <a-select-option
+              v-for="item in goodsOptions"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.name }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
         <a-form-item label="出库时间">
           <a-range-picker
             :allowClear="false"
             format="YYYY-MM-DD"
             v-model="list.range"
+            @change="handleChange"
           />
         </a-form-item>
         <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit()">
+          <a-button type="primary" @click="onSubmit()" :disabled="isSearch">
             查询
           </a-button>
           <a-button @click="reset()" v-margin:left="16">
@@ -42,41 +87,51 @@
       </a-form>
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
-      <div class="card-header">
-        <div class="title">出库详情</div>
-      </div>
-      <a-table
-        rowKey="id"
-        size="middle"
-        :columns="columns"
-        :dataSource="tableData"
-        v-margin:top="16"
-        :pagination="false"
-        :loading="loading"
-      >
-        <template slot="footer">
-          合计
-          <span style="float: right">{{ costCount }}</span>
-        </template>
-      </a-table>
+      <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="出库详情">
+          <a-table
+            rowKey="id"
+            size="middle"
+            :columns="columns"
+            :dataSource="tableData"
+            v-margin:top="16"
+            :pagination="false"
+            :loading="loading"
+          >
+            <template slot="footer">
+              合计
+              <span style="float: right">{{ costCount }}</span>
+            </template>
+          </a-table>
 
-      <a-pagination
-        size="small"
-        v-margin:top="16"
-        showSizeChanger
-        :current="current"
-        :pageSize.sync="pageSize"
-        :total="total"
-        :showTotal="total => `共 ${total} 条`"
-        @change="pagechange"
-        @showSizeChange="sizechange"
-      />
+          <a-pagination
+            size="small"
+            v-margin:top="16"
+            showSizeChanger
+            :current="current"
+            :pageSize.sync="pageSize"
+            :total="total"
+            :showTotal="total => `共 ${total} 条`"
+            @change="pagechange"
+            @showSizeChange="sizechange"
+          />
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="成本统计分析">
+          <pie-charts></pie-charts>
+        </a-tab-pane>
+        <a-tab-pane key="3" tab="成本趋势分析">
+          <line-charts></line-charts>
+        </a-tab-pane>
+      </a-tabs>
     </a-card>
   </div>
 </template>
 
 <script>
+import pieCharts from "./pie-charts";
+import lineCharts from "./line-charts";
 export default {
+  components: { pieCharts, lineCharts },
   data() {
     return {
       current: 1,
@@ -93,6 +148,11 @@ export default {
           title: "监控点名称",
           dataIndex: "pointName",
           key: "pointName"
+        },
+        {
+          title: "标气名称",
+          dataIndex: "name",
+          key: "name"
         },
         {
           title: "品牌",
@@ -115,6 +175,11 @@ export default {
           key: "unit"
         },
         {
+          title: "单价",
+          dataIndex: "price",
+          key: "price"
+        },
+        {
           title: "出库时间",
           dataIndex: "gmtModified",
           key: "gmtModified"
@@ -127,19 +192,30 @@ export default {
       ],
       tableData: [],
       list: {
-        enterpriseName: "",
-        pointName: "",
+        enterpriseId: undefined,
+        pointId: undefined,
+        goodsId: undefined,
         devName: "",
         range: []
       },
-      costCount: 0
+      costCount: 0,
+      enterPriseOptions: [],
+      pointOptions: [],
+      goodsOptions: [],
+      isDisabled: true,
+      diffDay: 0,
+      isSearch: false
     };
   },
   mounted() {
     this.getTableData();
+    this.getEnterprise();
+    this.getGoods();
   },
   methods: {
     reset() {
+      this.isDisabled = true;
+      this.isSearch = false;
       this.list = {
         enterpriseName: "",
         pointName: "",
@@ -151,8 +227,8 @@ export default {
       let data = {
         page: this.current,
         size: this.pageSize,
-        enterpriseName: this.list.enterpriseName,
-        pointName: this.list.pointName,
+        enterpriseName: "",
+        pointName: "",
         devName: this.list.devName,
         beginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
         endTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD"),
@@ -174,6 +250,50 @@ export default {
           console.log(error);
           this.loading = false;
         });
+    },
+    //企业下拉
+    getEnterprise() {
+      this.$api.common.selectEnterprise().then(res => {
+        if (res.data.state == 0) {
+          this.enterPriseOptions = res.data.data;
+        }
+      });
+    },
+    changeEnterprise(value) {
+      this.isDisabled = false;
+      this.list.pointId = undefined;
+      this.getPoint(value);
+    },
+    //监测点下拉
+    getPoint(value) {
+      this.$api.common
+        .selectStationByEnterpriseId({
+          enterpriseId: value
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.pointOptions = res.data.data;
+          }
+        });
+    },
+    //物资下拉
+    getGoods() {
+      this.$api.product.getGoodsSelect().then(res => {
+        if (res.data.state == 0) {
+          this.goodsOptions = res.data.data;
+        }
+      });
+    },
+    handleChange(value) {
+      this.diffDay = 0;
+      this.isSearch = false;
+      var a = this.$moment(value[1]);
+      var b = this.$moment(value[0]);
+      this.diffDay = a.diff(b, "days");
+      if (this.diffDay > 365) {
+        this.$message.warn("时间不能超过一年，请重新选择时间");
+        this.isSearch = true;
+      }
     }
   }
 };

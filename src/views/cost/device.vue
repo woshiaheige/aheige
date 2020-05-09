@@ -46,7 +46,7 @@
             >
           </a-select>
         </a-form-item>
-        <a-form-item label="物资名称">
+        <a-form-item label="设备名称">
           <!-- <a-input
             placeholder="请输入"
             v-model="list.devName"
@@ -72,10 +72,11 @@
             :allowClear="false"
             format="YYYY-MM-DD"
             v-model="list.range"
+            @change="handleChange"
           />
         </a-form-item>
         <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit()">
+          <a-button type="primary" @click="onSubmit()" :disabled="isSearch">
             查询
           </a-button>
           <a-button @click="reset()" v-margin:left="16">
@@ -86,7 +87,7 @@
       </a-form>
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
-      <a-tabs default-active-key="1" @change="callback">
+      <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="出库详情">
           <a-table
             rowKey="id"
@@ -115,8 +116,11 @@
             @showSizeChange="sizechange"
           />
         </a-tab-pane>
-        <a-tab-pane key="2" tab="成本分析" force-render>
-          <charts-model></charts-model>
+        <a-tab-pane key="2" tab="成本统计分析">
+          <pie-charts></pie-charts>
+        </a-tab-pane>
+        <a-tab-pane key="3" tab="成本趋势分析">
+          <line-charts></line-charts>
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -124,9 +128,10 @@
 </template>
 
 <script>
-import chartsModel from "./charts";
+import pieCharts from "./pie-charts";
+import lineCharts from "./line-charts";
 export default {
-  components: { chartsModel },
+  components: { pieCharts, lineCharts },
   data() {
     return {
       current: 1,
@@ -145,7 +150,7 @@ export default {
           key: "pointName"
         },
         {
-          title: "物资名称",
+          title: "设备名称",
           dataIndex: "name",
           key: "name"
         },
@@ -197,16 +202,20 @@ export default {
       enterPriseOptions: [],
       pointOptions: [],
       goodsOptions: [],
-      isDisabled: true
+      isDisabled: true,
+      diffDay: 0,
+      isSearch: false
     };
   },
   mounted() {
     this.getTableData();
     this.getEnterprise();
+    this.getGoods();
   },
   methods: {
     reset() {
       this.isDisabled = true;
+      this.isSearch = false;
       this.list = {
         enterpriseName: "",
         pointName: "",
@@ -274,6 +283,17 @@ export default {
           this.goodsOptions = res.data.data;
         }
       });
+    },
+    handleChange(value) {
+      this.diffDay = 0;
+      this.isSearch = false;
+      var a = this.$moment(value[1]);
+      var b = this.$moment(value[0]);
+      this.diffDay = a.diff(b, "days");
+      if (this.diffDay > 365) {
+        this.$message.warn("时间不能超过一年，请重新选择时间");
+        this.isSearch = true;
+      }
     }
   }
 };
