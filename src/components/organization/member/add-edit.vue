@@ -332,6 +332,9 @@ export default {
           console.log("error submit!!");
           return false;
         }
+        if (this.formData.roleId != 3) {
+          this.formData.groupId = "";
+        }
         if (this.memberId) {
           this.editMember(this.formData);
         } else {
