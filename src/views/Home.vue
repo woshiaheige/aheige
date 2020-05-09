@@ -40,6 +40,7 @@
     <a-layout :style="{ marginLeft: '256px' }">
       <a-layout-header class="layout-header">
         <div class="header-menu">
+          <a-icon type="qrcode" :style="{ fontSize: '24px' }" />
           <!-- <a-icon type="bell" :style="{ fontSize: '24px' }" /> -->
           <div v-margin:left="16">
             <a-avatar
