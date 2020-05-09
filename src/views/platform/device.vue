@@ -53,11 +53,8 @@
         :pagination="false"
         :loading="loading"
       >
-        <template slot="deviceType" slot-scope="deviceType">
-          <a-tag color="blue" v-if="deviceType == 1">氨氮分析仪</a-tag>
-          <a-tag color="blue" v-if="deviceType == 2">COD分析仪</a-tag>
-          <a-tag color="blue" v-if="deviceType == 3">数采仪</a-tag>
-          <a-tag color="blue" v-if="deviceType == 4">油烟分析仪</a-tag>
+        <template slot="deviceName" slot-scope="deviceName">
+          <a-tag color="blue">{{ deviceName }}</a-tag>
         </template>
         <template slot="type" slot-scope="type">
           <a-tag color="blue" v-if="type == 32">水类</a-tag>
@@ -98,7 +95,7 @@ export default {
       list: {
         manufacturer: "",
         name: "",
-        number: ""
+        number: undefined
       },
       columns: [
         {
@@ -118,10 +115,10 @@ export default {
         },
         {
           title: "设备类型",
-          dataIndex: "deviceType",
-          key: "deviceType",
+          dataIndex: "deviceName",
+          key: "deviceName",
           align: "center",
-          scopedSlots: { customRender: "deviceType" }
+          scopedSlots: { customRender: "deviceName" }
         },
         {
           title: "监测类型",
@@ -140,7 +137,8 @@ export default {
       tableData: [],
       obj: {
         show: false
-      }
+      },
+      deviceTypeOptions: []
     };
   },
   methods: {
@@ -158,6 +156,13 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
+            let result = res.data.data.records;
+            this.deviceTypeOptions.forEach(item => {
+              for (var i in result) {
+                if (Number(item.value) == result[i].deviceType)
+                  result[i].deviceName = item.name;
+              }
+            });
             this.tableData = res.data.data.records;
             this.total = Number(res.data.data.total);
           }
@@ -207,10 +212,20 @@ export default {
         window.location.href =
           this.$api.base.api + "files/download/file/" + row.fileId;
       });
+    },
+    //设备类型
+    async getDeviceType() {
+      let data = {
+        code: "DEVICE_TYPE"
+      };
+      await this.$api.common.geDictByParam(data).then(res => {
+        this.deviceTypeOptions = res.data.data;
+      });
+      this.getTableData();
     }
   },
   mounted() {
-    this.getTableData();
+    this.getDeviceType();
   }
 };
 </script>
