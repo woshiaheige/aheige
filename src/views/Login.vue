@@ -1,108 +1,121 @@
 <template>
   <div class="login">
-    <div class="login-box">
-      <div class="logo">
-        <icon-font
-          type="iconweibiaoti-1"
-          style="color:#31a2f2;font-size:80px"
-        ></icon-font>
-      </div>
-      <div class="logo-text">博控智维云</div>
-      <div class="login-title">
-        <a-icon
-          type="arrow-left"
-          id="toLogin"
-          style="cursor: pointer"
-          v-if="forgetFlag"
-          v-margin:right="5"
-        />{{ forgetFlag ? "找回密码" : "登录" }}
-      </div>
-      <div class="title-line"></div>
-      <a-form-model
-        ref="login"
-        :model="formValidate"
-        :rules="ruleValidate"
-        v-if="!forgetFlag"
-      >
-        <a-form-model-item prop="user">
-          <a-input
-            v-model="formValidate.user"
-            placeholder="用户名"
-            @pressEnter="handleSubmit('login')"
-            @on-focus="onFocus('username')"
-            @on-blur="onBlur('username')"
-          >
-            <a-icon slot="prefix" type="user" id="username" />
-          </a-input>
-        </a-form-model-item>
-        <a-form-model-item prop="password">
-          <a-input-password
-            v-model="formValidate.password"
-            placeholder="密码"
-            @pressEnter="handleSubmit('login')"
-            @on-focus="onFocus('password')"
-            @on-blur="onBlur('password')"
-          >
-            <a-icon slot="prefix" type="lock" id="password" />
-          </a-input-password>
-        </a-form-model-item>
-        <div class="link">
-          <span id="forgetPass">忘记密码？</span>
+    <div class="login-header">
+      <div class="banner">
+        <div class="logo">
+          <icon-font
+            type="iconweibiaoti-1"
+            style="color:#31a2f2;font-size:80px"
+          ></icon-font>
         </div>
-        <a-form-model-item>
-          <a-button
-            type="primary"
-            class="login-button"
-            @click="handleSubmit('login')"
-            v-preventReClick
-            >登录</a-button
+        <div class="logo-text">博控智维云</div>
+      </div>
+    </div>
+    <div class="login-content">
+      <div class="banner">
+        <img
+          :src="require('@/assets/img/login_bg.png')"
+          v-height="335"
+          class="login-img"
+        />
+        <div class="login-box">
+          <div class="login-title">
+            <a-icon
+              type="arrow-left"
+              id="toLogin"
+              style="cursor: pointer"
+              v-if="forgetFlag"
+              v-margin:right="5"
+            />{{ forgetFlag ? "找回密码" : "登录" }}
+          </div>
+          <!-- <div class="title-line"></div> -->
+          <a-form-model
+            ref="login"
+            :model="formValidate"
+            :rules="ruleValidate"
+            v-if="!forgetFlag"
           >
-        </a-form-model-item>
-      </a-form-model>
-      <a-form-model
-        ref="login"
-        :model="formValidate"
-        :rules="ruleValidate"
-        v-if="forgetFlag"
-      >
-        <a-form-model-item prop="user">
-          <a-input
-            v-model="formValidate.user"
-            placeholder="请输入手机号"
-            @pressEnter="handleSubmit('login')"
+            <a-form-model-item prop="user">
+              <a-input
+                v-model="formValidate.user"
+                placeholder="用户名"
+                @pressEnter="handleSubmit('login')"
+                @on-focus="onFocus('username')"
+                @on-blur="onBlur('username')"
+              >
+                <a-icon slot="prefix" type="user" id="username" />
+              </a-input>
+            </a-form-model-item>
+            <a-form-model-item prop="password">
+              <a-input-password
+                v-model="formValidate.password"
+                placeholder="密码"
+                @pressEnter="handleSubmit('login')"
+                @on-focus="onFocus('password')"
+                @on-blur="onBlur('password')"
+              >
+                <a-icon slot="prefix" type="lock" id="password" />
+              </a-input-password>
+            </a-form-model-item>
+            <div class="link">
+              <span id="forgetPass">忘记密码？</span>
+            </div>
+            <a-form-model-item>
+              <a-button
+                type="primary"
+                class="login-button"
+                @click="handleSubmit('login')"
+                v-preventReClick
+                >登录</a-button
+              >
+            </a-form-model-item>
+          </a-form-model>
+          <a-form-model
+            ref="login"
+            :model="formValidate"
+            :rules="ruleValidate"
+            v-if="forgetFlag"
           >
-            <a-icon type="tablet" slot="prefix" />
-          </a-input>
-        </a-form-model-item>
-        <a-form-model-item prop="code">
-          <a-input
-            :maxlength="4"
-            v-model="formValidate.code"
-            placeholder="验证码"
-            class="verify-code"
-            @on-focus="onFocus('code')"
-            @on-blur="onBlur('code')"
-          >
-            <a-icon type="barcode" slot="prefix" />
-          </a-input>
-          <a-button
-            type="primary"
-            class="verify-button"
-            @click="getVerifyCode"
-            :disabled="disable"
-            >{{ buttonText }}</a-button
-          >
-        </a-form-model-item>
-        <a-form-model-item class="login-button-form">
-          <a-button
-            type="primary"
-            class="login-button"
-            @click="handleSubmit('login')"
-            :disabled="disable"
-            >找回密码</a-button
-          >
-        </a-form-model-item>
-      </a-form-model>
+            <a-form-model-item prop="user">
+              <a-input
+                v-model="formValidate.user"
+                placeholder="请输入手机号"
+                @pressEnter="handleSubmit('login')"
+              >
+                <a-icon type="tablet" slot="prefix" />
+              </a-input>
+            </a-form-model-item>
+            <a-form-model-item prop="code">
+              <a-input
+                :maxlength="4"
+                v-model="formValidate.code"
+                placeholder="验证码"
+                class="verify-code"
+                @on-focus="onFocus('code')"
+                @on-blur="onBlur('code')"
+              >
+                <a-icon type="barcode" slot="prefix" />
+              </a-input>
+              <a-button
+                type="primary"
+                class="verify-button"
+                @click="getVerifyCode"
+                :disabled="disable"
+                >{{ buttonText }}</a-button
+              >
+            </a-form-model-item>
+            <a-form-model-item class="login-button-form">
+              <a-button
+                type="primary"
+                class="login-button"
+                @click="handleSubmit('login')"
+                :disabled="disable"
+                >找回密码</a-button
+              >
+            </a-form-model-item>
+          </a-form-model>
+        </div>
+      </div>
     </div>
   </div>
 </template>
