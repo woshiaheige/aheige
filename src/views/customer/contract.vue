@@ -169,6 +169,7 @@ export default {
   methods: {
     reset() {
       this.list = { state: "", name: "", number: "" };
+      this.onSubmit();
     },
     getTableData() {
       let data = {

@@ -180,6 +180,7 @@ export default {
   methods: {
     reset() {
       this.list = { name: "", pointName: "", mn: "", type: "" };
+      this.onSubmit();
     },
     getTableData() {
       let data = {

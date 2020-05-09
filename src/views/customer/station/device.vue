@@ -159,6 +159,7 @@ export default {
   methods: {
     reset() {
       this.list = { manufacturer: "", name: "", number: "" };
+      this.onSubmit();
     },
     getTableData() {
       let data = {
