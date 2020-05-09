@@ -31,8 +31,8 @@
         >
           <a-select-option
             v-for="item in typeOptions"
-            :key="item.id"
-            :value="item.id"
+            :key="item.value"
+            :value="Number(item.value)"
           >
             {{ item.name }}
           </a-select-option>
@@ -189,14 +189,14 @@ export default {
         type: [{ required: true, message: "请选择类别", trigger: "change" }]
       },
       typeOptions: [
-        { id: 1, name: "设备" },
-        { id: 2, name: "实验室设备" },
-        { id: 3, name: "部件" },
-        { id: 4, name: "试剂" },
-        { id: 5, name: "标气" },
-        { id: 6, name: "劳保用品" },
-        { id: 7, name: "车辆" },
-        { id: 8, name: "其他" }
+        // { id: 1, name: "设备" },
+        // { id: 2, name: "实验室设备" },
+        // { id: 3, name: "部件" },
+        // { id: 4, name: "试剂" },
+        // { id: 5, name: "标气" },
+        // { id: 6, name: "劳保用品" },
+        // // { id: 7, name: "车辆" },
+        // { id: 8, name: "其他" }
       ]
     };
   },
@@ -254,12 +254,24 @@ export default {
             this.formData = res.data.data;
           }
         });
+    },
+    getTypeData() {
+      this.$api.common
+        .geDictByParam({
+          code: "MATERIAL_TYPE"
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.typeOptions = res.data.data;
+          }
+        });
     }
   },
   mounted() {},
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.getTypeData();
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();
