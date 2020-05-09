@@ -70,6 +70,7 @@
         :pagination="false"
       >
         <template slot="type" slot-scope="type">
+          <a-tag color="red" v-if="type == 3">关闭</a-tag>
           <a-tag color="green" v-if="type == 2">延迟</a-tag>
           <a-tag color="blue" v-if="type == 1">转交</a-tag>
         </template>

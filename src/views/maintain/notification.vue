@@ -149,6 +149,7 @@ export default {
       ],
       formInline: {
         enterpriseName: "",
+        pointName: "",
         beginTime: "",
         reportType: "all",
         endTime: "",
@@ -200,6 +201,7 @@ export default {
       let params = {
         size: this.pagesize,
         page: this.current,
+        pointName: this.formInline.pointName,
         beginTime: this.formInline.beginTime
           ? this.$moment(this.formInline.beginTime).format(
               "YYYY-MM-DD HH:mm:ss"

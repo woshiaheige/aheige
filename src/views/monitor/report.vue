@@ -107,15 +107,15 @@ export default {
           title: "分钟数据数",
           children: [
             {
-              title: "应收条数",
-              dataIndex: "minOughtCount",
-              key: "minOughtCount",
-              align: "center"
-            },
-            {
               title: "实收条数",
               dataIndex: "minRealCount",
               key: "minRealCount",
+              align: "center"
+            },
+            {
+              title: "应收条数",
+              dataIndex: "minOughtCount",
+              key: "minOughtCount",
               align: "center"
             },
             {
