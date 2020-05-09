@@ -73,7 +73,7 @@
 </template>
 <script>
 import groupEdit from "@/components/organization/group/group-edit";
-import { Empty } from "ant-design-vue";
+
 export default {
   components: { groupEdit },
   data() {
@@ -147,9 +147,6 @@ export default {
   },
   mounted() {
     this.getTableData();
-  },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   }
 };
 </script>

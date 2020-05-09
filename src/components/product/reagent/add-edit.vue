@@ -22,6 +22,22 @@
           v-model.trim="formData.number"
         />
       </a-form-model-item>
+      <a-form-model-item label="类别" prop="type">
+        <a-select
+          placeholder="类别"
+          v-model="formData.type"
+          showSearch
+          :filterOption="filterOptions"
+        >
+          <a-select-option
+            v-for="item in typeOptions"
+            :key="item.value"
+            :value="Number(item.value)"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
       <a-form-model-item label="名称" prop="name">
         <a-input
           :maxLength="30"
@@ -169,8 +185,19 @@ export default {
             trigger: "blur"
           },
           { validator: validPrice, trigger: "blur" }
-        ]
-      }
+        ],
+        type: [{ required: true, message: "请选择类别", trigger: "change" }]
+      },
+      typeOptions: [
+        // { id: 1, name: "设备" },
+        // { id: 2, name: "实验室设备" },
+        // { id: 3, name: "部件" },
+        // { id: 4, name: "试剂" },
+        // { id: 5, name: "标气" },
+        // { id: 6, name: "劳保用品" },
+        // // { id: 7, name: "车辆" },
+        // { id: 8, name: "其他" }
+      ]
     };
   },
   computed: {
@@ -227,12 +254,24 @@ export default {
             this.formData = res.data.data;
           }
         });
+    },
+    getTypeData() {
+      this.$api.common
+        .geDictByParam({
+          code: "MATERIAL_TYPE"
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.typeOptions = res.data.data;
+          }
+        });
     }
   },
   mounted() {},
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.getTypeData();
         if (this.value.type == "edit") {
           this.title = "编辑";
           this.getEditData();

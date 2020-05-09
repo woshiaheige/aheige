@@ -16,6 +16,8 @@ import monitor from "./monitor/monitor";
 import organization from "./organization/organization";
 import product from "./product/product";
 import index from "./index/index";
+import cost from "./cost/cost";
+import assessment from "./assessment/assessment";
 
 // 导出接口
 export default {
@@ -31,5 +33,7 @@ export default {
   monitor,
   organization,
   product,
-  index
+  index,
+  cost,
+  assessment
 };

@@ -200,7 +200,7 @@ export default {
                 element.code +
                 " / " +
                 (element.protocolType == 0
-                  ? "拓展协议"
+                  ? "扩展协议"
                   : element.protocolType + "协议"),
               key: element.id
             });

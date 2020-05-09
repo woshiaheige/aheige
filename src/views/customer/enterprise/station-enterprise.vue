@@ -25,6 +25,7 @@
             v-model="list.type"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option value="">
               全部

@@ -74,7 +74,6 @@
 import detailExceed from "./detail/detail-exceed";
 import detailUnusual from "./detail/detail-unusual.vue";
 import detailIntegrity from "./detail/detail-integrity.vue";
-import { Empty } from "ant-design-vue";
 export default {
   components: { detailExceed, detailUnusual, detailIntegrity },
   data() {
@@ -196,9 +195,6 @@ export default {
       });
       return listData;
     }
-  },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   }
 };
 </script>

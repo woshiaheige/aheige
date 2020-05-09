@@ -348,7 +348,7 @@ export default {
         params.password = this.$md5(params.password);
       }
       if (params.approvalIds) {
-        params.approvalIds = [values.approvalIds];
+        params.approvalIds = values.approvalIds;
       }
       this.$api.organization.editSysUser(params).then(res => {
         if (res.data.state == 0) {

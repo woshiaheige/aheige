@@ -1,12 +1,21 @@
 <template>
   <div>
     <a-card :bordered="false">
+      <div class="card-header">
+        <div class="title">完成情况考评</div>
+      </div>
       <ve-histogram :data="chartData"></ve-histogram>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">运维活动统计次数走势分析</div>
+      </div>
       <div id="lineChart" style="width:100%; height: 400px"></div>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">运维活动统计</div>
+      </div>
       <div id="pieChart" style="width:100%; height: 400px"></div>
     </a-card>
   </div>
@@ -20,15 +29,12 @@ export default {
       value: [],
       chartData: {
         columns: ["运维项目", "已完成", "未完成"],
-        rows: [
-          { 运维项目: "巡检", 已完成: 1393, 未完成: 1093 },
-          { 运维项目: "维护", 已完成: 3530, 未完成: 3230 },
-          { 运维项目: "校准", 已完成: 2923, 未完成: 2623 }
-        ]
+        rows: []
       }
     };
   },
   mounted() {
+    this.getAssessmentDetail();
     this.drawPieChart();
     this.drawLineChart();
   },
@@ -54,10 +60,6 @@ export default {
         pieChart.resize();
       });
       let option = {
-        title: {
-          text: "运维活动统计次数走势分析",
-          left: "center"
-        },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -102,9 +104,6 @@ export default {
         lineChart.resize();
       });
       let option = {
-        title: {
-          text: "运维活动统计次数走势分析"
-        },
         tooltip: {
           trigger: "axis"
         },
@@ -148,6 +147,26 @@ export default {
       };
 
       lineChart.setOption(option);
+    },
+    getAssessmentDetail() {
+      let data = {
+        flag: this.$route.query.type,
+        userId: this.$route.query.memberId,
+        beginTime: this.$route.query.beginTime
+      };
+
+      this.$api.assessment.getAssessmentDetail(data).then(res => {
+        console.log(res);
+        if (res.data.state == 0) {
+          for (let key in res.data.data[0].isComplete) {
+            this.chartData.rows.push({
+              运维项目: key,
+              已完成: res.data.data[0].isComplete[key][0],
+              未完成: res.data.data[0].isComplete[key][1]
+            });
+          }
+        }
+      });
     }
   }
 };

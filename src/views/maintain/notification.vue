@@ -3,10 +3,18 @@
     <a-card :bordered="false"
       ><a-form-model layout="inline">
         <a-form-model-item label="企业名称">
-          <a-input v-model="formInline.enterpriseName" placeholder="请输入" />
+          <a-input
+            v-model="formInline.enterpriseName"
+            placeholder="请输入"
+            @pressEnter="getTableData"
+          />
         </a-form-model-item>
         <a-form-model-item label="监控点名称">
-          <a-input v-model="formInline.pointName" placeholder="请输入" />
+          <a-input
+            v-model="formInline.pointName"
+            placeholder="请输入"
+            @pressEnter="getTableData"
+          />
         </a-form-model-item>
         <a-form-item label="报表类型">
           <a-select
@@ -16,6 +24,7 @@
             v-model="formInline.reportType"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option
               v-for="item in rportTypeList"
@@ -27,7 +36,7 @@
           </a-select>
         </a-form-item>
         <a-form-model-item label="时间范围">
-          <a-range-picker @change="onChange" />
+          <a-range-picker @change="onChange" v-model="formInline.range" />
         </a-form-model-item>
         <a-form-model-item style="float:right">
           <a-button @click="onRest">
@@ -142,7 +151,8 @@ export default {
         enterpriseName: "",
         beginTime: "",
         reportType: "all",
-        endTime: ""
+        endTime: "",
+        range: []
       }
     };
   },
@@ -188,7 +198,7 @@ export default {
     },
     getTableData() {
       let params = {
-        size: this.size,
+        size: this.pagesize,
         page: this.current,
         beginTime: this.formInline.beginTime
           ? this.$moment(this.formInline.beginTime).format(

@@ -50,6 +50,7 @@
                 <a-empty
                   v-margin:top="16"
                   v-if="stationList.length <= 0 && spinning == false"
+                  :image="simpleImage"
                 />
               </a-menu>
             </a-tab-pane>
