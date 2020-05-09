@@ -107,7 +107,8 @@ export default {
         group: "",
         name: "",
         month: this.$moment()
-      }
+      },
+      chartData: []
     };
   },
   mounted() {
@@ -175,12 +176,23 @@ export default {
       });
     },
     goDetail(row) {
+      this.columns[2].children
+        .filter(item => item.key != "total")
+        .forEach(item => {
+          for (let key in row) {
+            if (item.key == key) {
+              this.chartData.push({ value: row[key], name: item.title });
+            }
+          }
+        });
+
       this.$router.push({
         path: "/assessment/monthly-assessment/detail",
         query: {
           memberId: row.id,
           beginTime: this.$moment(this.list.month).format("YYYY-MM"),
-          type: 1
+          type: 1,
+          chartData: JSON.stringify(this.chartData)
         }
       });
     }

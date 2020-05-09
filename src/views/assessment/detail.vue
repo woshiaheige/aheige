@@ -30,13 +30,15 @@ export default {
       chartData: {
         columns: ["运维项目", "已完成", "未完成"],
         rows: []
-      }
+      },
+      schemeList: [],
+      timeList: [],
+      lineData: []
     };
   },
   mounted() {
+    console.log(JSON.parse(this.$route.query.chartData));
     this.getAssessmentDetail();
-    this.drawPieChart();
-    this.drawLineChart();
   },
   methods: {
     handleChange(value) {
@@ -49,6 +51,7 @@ export default {
         mode[1] === "date" ? "month" : mode[1]
       ];
     },
+    //饼图的数据是从列表带过来的
     drawPieChart() {
       let pieChart = this.$echarts.init(document.getElementById("pieChart"));
 
@@ -67,7 +70,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          data: ["巡检", "维护", "校准"]
+          data: this.schemeList
         },
         series: [
           {
@@ -75,11 +78,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "巡检" },
-              { value: 310, name: "维护" },
-              { value: 234, name: "校准" }
-            ],
+            data: JSON.parse(this.$route.query.chartData),
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -108,7 +107,7 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: ["巡检", "维护", "校准"]
+          data: this.schemeList
         },
         grid: {
           left: "3%",
@@ -117,46 +116,54 @@ export default {
           containLabel: true
         },
         xAxis: {
-          type: "category",
-          boundaryGap: false,
-          data: ["2020-02", "2020-03", "2020-04"]
+          type: "time",
+          max:
+            this.$route.query.type == 1
+              ? this.$moment(this.$route.query.beginTime)
+                  .date(1)
+                  .valueOf()
+              : "",
+          min:
+            this.$route.query.type == 1
+              ? this.$moment(this.$route.query.beginTime)
+                  .date(31)
+                  .valueOf()
+              : "",
+          boundaryGap: false
         },
         yAxis: {
           type: "value"
         },
         series: [
-          {
-            name: "巡检",
-            type: "line",
-            stack: "总量",
-            data: [120, 132, 101]
-          },
-          {
-            name: "维护",
-            type: "line",
-            stack: "总量",
-            data: [220, 182, 191]
-          },
-          {
-            name: "校准",
-            type: "line",
-            stack: "总量",
-            data: [150, 232, 201]
-          }
+          // {
+          //   name: "巡检",
+          //   type: "line",
+          //   data: [120, 132, 101]
+          // },
+          // {
+          //   name: "维护",
+          //   type: "line",
+          //   data: [220, 182, 191]
+          // },
+          // {
+          //   name: "校准",
+          //   type: "line",
+          //   data: [150, 232, 201]
+          // }
         ]
       };
 
       lineChart.setOption(option);
     },
-    getAssessmentDetail() {
+    async getAssessmentDetail() {
       let data = {
         flag: this.$route.query.type,
         userId: this.$route.query.memberId,
-        beginTime: this.$route.query.beginTime
+        beginTime: this.$route.query.beginTime,
+        endTime: this.$route.query.endTime ? this.$route.query.endTime : ""
       };
 
-      this.$api.assessment.getAssessmentDetail(data).then(res => {
-        console.log(res);
+      await this.$api.assessment.getAssessmentDetail(data).then(res => {
         if (res.data.state == 0) {
           for (let key in res.data.data[0].isComplete) {
             this.chartData.rows.push({
@@ -164,9 +171,21 @@ export default {
               已完成: res.data.data[0].isComplete[key][0],
               未完成: res.data.data[0].isComplete[key][1]
             });
+
+            this.schemeList.push(key);
           }
+
+          // for (let key in res.data.data[0].statistic) {
+          //   this.lineData.push({
+          //     name: res.data.data[0].statistic[key],
+          //     type: "line",
+          //   })
+          // }
         }
       });
+
+      this.drawPieChart();
+      this.drawLineChart();
     }
   }
 };

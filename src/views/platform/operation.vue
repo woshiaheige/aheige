@@ -4,7 +4,7 @@
       <div class="title">参数设置</div>
     </div>
     <a-tabs default-active-key="1" tab-position="left">
-      <a-tab-pane key="1" tab="运维相关">
+      <a-tab-pane key="1" tab="运维参数">
         <a-form
           ref="formModal"
           :form="form"
@@ -139,7 +139,7 @@
           </a-row>
         </a-form>
       </a-tab-pane>
-      <a-tab-pane key="2" tab="数据相关">
+      <a-tab-pane key="2" tab="数据参数">
         <a-form
           ref="formModal"
           :form="form"
@@ -192,7 +192,7 @@
           </a-row>
         </a-form>
       </a-tab-pane>
-      <a-tab-pane key="3" tab="提醒相关">
+      <a-tab-pane key="3" tab="提醒参数">
         <a-form
           ref="formModal"
           :form="form"
