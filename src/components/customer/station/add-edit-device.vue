@@ -64,7 +64,6 @@ export default {
     return {
       title: "添加",
       stationOptions: [],
-      pointOptions: [],
       factorOptions: [],
       deviceOptions: [],
       fileList: [],
@@ -201,15 +200,6 @@ export default {
         }
       });
     },
-    //设备类型下拉
-    getPointSelect() {
-      let data = {
-        code: "SYS_POINT_TYPE"
-      };
-      this.$api.common.geDictByParam(data).then(res => {
-        this.pointOptions = res.data.data;
-      });
-    },
     //因子下拉
     getFactor() {
       this.$api.common.selectFactor().then(res => {
@@ -220,11 +210,15 @@ export default {
     },
     //设备下拉
     getDevice() {
-      this.$api.common.selectDevice().then(res => {
-        if (res.data.state == 0) {
-          this.deviceOptions = res.data.data;
-        }
-      });
+      this.$api.common
+        .selectDevice({
+          type: this.$route.query.type
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.deviceOptions = res.data.data;
+          }
+        });
     }
   },
   watch: {
@@ -232,7 +226,6 @@ export default {
       if (this.value.show == true) {
         this.getDevice();
         // this.getStation();
-        // this.getPointSelect();
         // this.getFactor();
         this.fileList = [];
         if (this.value.type == "edit") {

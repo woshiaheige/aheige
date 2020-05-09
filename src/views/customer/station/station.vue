@@ -240,7 +240,8 @@ export default {
         query: {
           id: row.id,
           enterpriseName: row.enterpriseName,
-          pointName: row.name
+          pointName: row.name,
+          type: row.type
         }
       });
     },
