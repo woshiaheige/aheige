@@ -72,6 +72,30 @@
           <a-tag color="blue" v-if="transferType == 1">无线传输</a-tag>
           <a-tag color="green" v-if="transferType == 2">有线传输</a-tag>
         </template>
+        <template slot="isRun" slot-scope="row">
+          <a-switch
+            v-model="row.isRun"
+            checked-children="开"
+            un-checked-children="关"
+            @change="changeSwitch(row)"
+            @click="clickSwitch"
+          />
+          <a-popover v-if="!row.isRun">
+            <template slot="content">
+              <p>因为……所以关了</p>
+            </template>
+            <a-icon
+              type="question-circle"
+              theme="filled"
+              :style="{
+                marginLeft: '8px',
+                fontSize: '16px',
+                verticalAlign: 'middle',
+                color: 'rgba(0, 0, 0, 0.25)'
+              }"
+            />
+          </a-popover>
+        </template>
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
           <a-divider type="vertical" />
@@ -100,15 +124,18 @@
         v-model="obj"
         @refresh="getTableData"
       ></add-edit>
+      <!--是否停运-->
+      <run-model v-model="runInfo" @refresh="getTableData"></run-model>
     </a-card>
   </div>
 </template>
 
 <script>
 import addEdit from "@/components/customer/station/add-edit-station";
+import runModel from "@/components/customer/station/run-model";
 export default {
   name: "station-enterprise",
-  components: { addEdit },
+  components: { addEdit, runModel },
   data() {
     return {
       current: 1,
@@ -139,6 +166,13 @@ export default {
           width: 150
         },
         {
+          title: "是否停运",
+          key: "isRun",
+          align: "center",
+          scopedSlots: { customRender: "isRun" },
+          width: 100
+        },
+        {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "action" },
@@ -157,7 +191,11 @@ export default {
         type: ""
       },
       loading: false,
-      pointOptions: []
+      pointOptions: [],
+      runInfo: {
+        show: false
+      },
+      switchInfo: {}
     };
   },
   mounted() {
@@ -180,6 +218,7 @@ export default {
   methods: {
     reset() {
       this.list = { name: "", pointName: "", mn: "", type: "" };
+      this.onSubmit();
     },
     getTableData() {
       let data = {
@@ -204,6 +243,27 @@ export default {
           console.log(error);
           this.loading = false;
         });
+    },
+    changeSwitch(row) {
+      this.switchInfo = row;
+    },
+    clickSwitch(value) {
+      if (value) {
+        let that = this;
+        this.$confirm({
+          title: "启动",
+          content: "是否确定启动" + that.switchInfo.name + "？",
+          onOk() {},
+          onCancel() {
+            console.log("Cancel");
+          }
+        });
+      } else {
+        this.runInfo = {
+          show: true,
+          row: this.switchInfo
+        };
+      }
     },
     //监测点类型下拉
     getPointSelect() {

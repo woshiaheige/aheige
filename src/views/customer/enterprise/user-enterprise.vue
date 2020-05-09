@@ -173,6 +173,7 @@ export default {
     },
     reset() {
       this.list = { name: "", phone: "" };
+      this.onSubmit();
     }
   },
   mounted() {

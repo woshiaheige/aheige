@@ -203,6 +203,7 @@ export default {
   methods: {
     reset() {
       this.list = { name: "", level: "", type: "" };
+      this.onSubmit();
     },
     getTableData() {
       let data = {

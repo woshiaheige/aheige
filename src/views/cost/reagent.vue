@@ -37,6 +37,7 @@
             showSearch
             :filterOption="filterOptions"
             :disabled="isDisabled"
+            @change="getTableData"
           >
             <a-select-option
               v-for="item in pointOptions"
@@ -46,7 +47,7 @@
             >
           </a-select>
         </a-form-item>
-        <a-form-item label="试剂名称">
+        <a-form-item label="设备名称">
           <!-- <a-input
             placeholder="请输入"
             v-model="list.devName"
@@ -58,6 +59,7 @@
             v-width="150"
             showSearch
             :filterOption="filterOptions"
+            @change="getTableData"
           >
             <a-select-option
               v-for="item in goodsOptions"
@@ -117,10 +119,10 @@
           />
         </a-tab-pane>
         <a-tab-pane key="2" tab="成本统计分析">
-          <pie-charts></pie-charts>
+          <pie-charts :range="list.range" :type="4"></pie-charts>
         </a-tab-pane>
         <a-tab-pane key="3" tab="成本趋势分析">
-          <line-charts></line-charts>
+          <line-charts :range="list.range" :type="4"></line-charts>
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -150,7 +152,7 @@ export default {
           key: "pointName"
         },
         {
-          title: "试剂名称",
+          title: "设备名称",
           dataIndex: "name",
           key: "name"
         },
@@ -196,7 +198,7 @@ export default {
         pointId: undefined,
         goodsId: undefined,
         devName: "",
-        range: []
+        range: [this.$moment().subtract(7, "days"), this.$moment()]
       },
       costCount: 0,
       enterPriseOptions: [],
@@ -217,11 +219,12 @@ export default {
       this.isDisabled = true;
       this.isSearch = false;
       this.list = {
-        enterpriseName: "",
-        pointName: "",
-        devName: "",
-        range: []
+        enterpriseId: undefined,
+        pointId: undefined,
+        goodsId: undefined,
+        range: [this.$moment().subtract(7, "days"), this.$moment()]
       };
+      this.onSubmit();
     },
     getTableData() {
       let data = {
@@ -263,6 +266,7 @@ export default {
       this.isDisabled = false;
       this.list.pointId = undefined;
       this.getPoint(value);
+      this.getTableData();
     },
     //监测点下拉
     getPoint(value) {
@@ -294,6 +298,7 @@ export default {
         this.$message.warn("时间不能超过一年，请重新选择时间");
         this.isSearch = true;
       }
+      this.getTableData();
     }
   }
 };
