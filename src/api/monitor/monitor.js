@@ -89,6 +89,12 @@ const monitor = {
     return axios.get(base.api + "monitor/send17/send3017", {
       params: data
     });
+  },
+  //查询反控结果
+  getResultByQn(data) {
+    return axios.get(
+      base.api + "monitor/send17/getResultByQn/ + " + data.qn + "/{command}"
+    );
   }
 };
 

@@ -47,6 +47,7 @@
         v-margin:top="16"
         :pagination="false"
         :loading="loading"
+        :scroll="{ x: 1300 }"
       >
         <a slot="check" slot-scope="row">
           <a @click="goDetail(row)">详情</a>
@@ -80,12 +81,16 @@ export default {
         {
           title: "运维小组",
           dataIndex: "groupName",
-          key: "groupName"
+          key: "groupName",
+          fixed: "left",
+          width: 120
         },
         {
           title: "运维人员",
           dataIndex: "username",
-          key: "username"
+          key: "username",
+          fixed: "left",
+          width: 120
         },
         {
           title: "运维活动",
@@ -96,6 +101,9 @@ export default {
         {
           title: "操作",
           key: "check",
+          fixed: "right",
+          align: "center",
+          width: 80,
           scopedSlots: { customRender: "check" }
         }
       ],
@@ -200,7 +208,9 @@ export default {
                 this.columns[2].children.push({
                   title: children.title,
                   dataIndex: children.title == "合计" ? "total" : children.id,
-                  key: children.title == "合计" ? "total" : children.id
+                  key: children.title == "合计" ? "total" : children.id,
+                  width: 120,
+                  align: "center"
                 });
               });
             }
