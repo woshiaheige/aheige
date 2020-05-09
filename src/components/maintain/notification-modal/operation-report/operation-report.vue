@@ -67,7 +67,7 @@
 <script>
 import missionFinished from "./detail/mission-finished";
 import missionUnfinished from "./detail/mission-unfinished";
-import { Empty } from "ant-design-vue";
+
 export default {
   components: { missionFinished, missionUnfinished },
   data() {
@@ -180,9 +180,6 @@ export default {
       });
       return listData;
     }
-  },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   }
 };
 </script>

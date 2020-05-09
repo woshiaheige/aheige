@@ -40,7 +40,7 @@
     <a-layout :style="{ marginLeft: '256px' }">
       <a-layout-header class="layout-header">
         <div class="header-menu">
-          <a-icon type="bell" :style="{ fontSize: '24px' }" />
+          <!-- <a-icon type="bell" :style="{ fontSize: '24px' }" /> -->
           <div v-margin:left="16">
             <a-avatar
               style="backgroundColor:#2db7f5"
@@ -256,8 +256,10 @@ export default {
         content: "是否退出？",
         onOk() {
           sessionStorage.clear();
-          location.reload();
           that.$router.push("/login");
+          setTimeout(() => {
+            location.reload();
+          }, 500);
         },
         onCancel() {}
       });

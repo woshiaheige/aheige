@@ -32,12 +32,15 @@ instance.interceptors.response.use(
   response => {
     if (response.status === 200) {
       if (response.data.state && response.data.state != 0) {
+        message.destroy();
         message.warning(response.data.msg);
 
         if (response.data.state === 4) {
           router.push("/login");
           sessionStorage.clear();
-          location.reload();
+          setTimeout(() => {
+            location.reload();
+          }, 500);
         }
       }
       return Promise.resolve(response);

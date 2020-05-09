@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import { Empty } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -135,9 +134,7 @@ export default {
       };
     }
   },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
-  },
+
   mounted() {
     this.setPointId();
     this.getRealDataTitle();

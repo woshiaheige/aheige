@@ -67,7 +67,6 @@
   </div>
 </template>
 <script>
-import { Empty } from "ant-design-vue";
 export default {
   data() {
     this.chartSettings = {
@@ -184,9 +183,6 @@ export default {
         }
       });
     }
-  },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
   }
 };
 </script>

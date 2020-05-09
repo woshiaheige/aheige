@@ -56,6 +56,7 @@
             <a-empty
               v-margin:top="16"
               v-if="schemeList.length <= 0 && spinning == false"
+              :image="simpleImage"
             />
           </a-menu>
         </a-col>

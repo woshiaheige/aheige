@@ -1,4 +1,9 @@
+import { Empty } from "ant-design-vue";
+
 const event = {
+  beforeCreate() {
+    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
+  },
   methods: {
     onSubmit() {
       this.current = 1; //页码
