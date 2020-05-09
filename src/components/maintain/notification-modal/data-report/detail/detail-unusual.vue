@@ -27,7 +27,7 @@ export default {
           dataIndex: "flag",
           customRender: text => {
             if (text == "F") {
-              return "仪器仪表故障";
+              return "仪器仪表停运";
             } else if (text == "M") {
               return "仪器仪表处于维护期间产生的数据";
             } else if (text == "S") {

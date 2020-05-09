@@ -117,7 +117,11 @@ export default {
 
   data() {
     return {
-      headers: {},
+      headers: {
+        token: sessionStorage.getItem("userinfo")
+          ? JSON.parse(sessionStorage.getItem("userinfo")).token
+          : ""
+      },
       content: this.value,
       quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
       editorOption: {

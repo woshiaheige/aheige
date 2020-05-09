@@ -682,7 +682,7 @@ export default {
       let data = {
         beginTime: this.formValidate9.time[0].format("YYYY-MM-DD HH:mm:ss"),
         cn: this.formValidate9.timetype,
-        endTime: this.formValidate9.time[0].format("YYYY-MM-DD HH:mm:ss"),
+        endTime: this.formValidate9.time[1].format("YYYY-MM-DD HH:mm:ss"),
         pointId: this.monitor.pointId
       };
       this.$api.monitor
