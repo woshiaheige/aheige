@@ -75,7 +75,6 @@ export default {
         position: [lng, lat],
         icon:
           "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-        iconSize: new AMap.Size(40, 50),
         offset: new AMap.Pixel(-20, -50),
         // 设置是否可拖拽
         draggable: true,
