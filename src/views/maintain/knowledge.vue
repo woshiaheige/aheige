@@ -28,7 +28,13 @@
           >
           <a-menu v-model="menu" mode="vertical">
             <a-menu-item :key="item.id" v-for="item of menuList">
-              {{ item.name }}
+              <span
+                :title="item.name"
+                style="width:calc(100% - 65px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:top;"
+              >
+                {{ item.name }}
+              </span>
+
               <a-divider type="vertical" v-show="menu == item.id" />
               <a-icon
                 type="edit"
