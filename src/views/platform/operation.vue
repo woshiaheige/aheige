@@ -110,7 +110,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="签到范围">
-                <counter v-model="formValue.mission.value">
+                <counter v-model="formValue.range.value">
                   <span slot="uni">米</span>
                 </counter>
                 <a-tooltip v-margin:left="16">
@@ -149,7 +149,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="恒值判定时限">
-                <counter v-model="formValue.spaceMin.value">
+                <counter v-model="formValue.constantValue.value">
                   <span slot="uni">小时</span>
                 </counter>
                 <a-tooltip v-margin:left="16">
@@ -163,7 +163,7 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="零值判定时限">
-                <counter v-model="formValue.remind.value">
+                <counter v-model="formValue.zeroValue.value">
                   <span slot="uni">小时</span>
                 </counter>
                 <a-tooltip v-margin:left="16">
@@ -202,8 +202,8 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="车辆年检到期提醒天数">
-                <counter v-model="formValue.spaceMin.value">
-                  <span slot="uni">分</span>
+                <counter v-model="formValue.carRemindAnnualSurvey.value">
+                  <span slot="uni">天</span>
                 </counter>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
@@ -268,7 +268,11 @@ export default {
         missionMonthPush: { id: "", value: "1" }, //月任务推送时间
         spaceMin: { id: "", value: "" }, //最小间隔时间
         remind: { id: "", value: "" }, //到期提醒天数
-        mission: { id: "", value: "" }
+        mission: { id: "", value: "" },
+        range: { id: "", value: "" }, //签到范围
+        carRemindAnnualSurvey: { id: "", value: "" }, //车辆年检到期提醒天数
+        zeroValue: { id: "", value: "" }, //零值判定时限
+        constantValue: { id: "", value: "" } //恒值判定时限
       },
       verifyList: [
         {
@@ -303,14 +307,6 @@ export default {
       this.geDictByParam();
     },
     geDictByParam() {
-      // let params = [
-      //   "SYS_PARAMETER_WEEK_TASK_GENERATE",
-      //   "SYS_PARAMETER_WEEK_TASK_PUSH",
-      //   "SYS_PARAMETER_MONTH_TASK_PUSH",
-      //   "SYS_PARAMETER_WARN_INTERVAL",
-      //   "SYS_PARAMETER_CONTRACT_REMINDER",
-      //   "SYS_PARAMETER_TASK_COMPLETION"
-      // ];
       let data = {
         code: [
           "SYS_PARAMETER_WEEK_TASK_GENERATE",
@@ -318,7 +314,11 @@ export default {
           "SYS_PARAMETER_MONTH_TASK_PUSH",
           "SYS_PARAMETER_WARN_INTERVAL",
           "SYS_PARAMETER_CONTRACT_REMINDER",
-          "SYS_PARAMETER_TASK_COMPLETION"
+          "SYS_PARAMETER_TASK_COMPLETION",
+          "CAR_ANNUAL_SURVEY_REMIND_DAY",
+          "REGISTRATION_RANGE",
+          "ZERO_VALUE",
+          "CONSTANT_VALUE"
         ]
       };
       this.$api.common.geDictByParam(data).then(res => {
@@ -352,6 +352,21 @@ export default {
               break;
             case "SYS_PARAMETER_TASK_COMPLETION":
               this.formValue.mission = { id: item.id, value: item.value };
+              break;
+            case "CAR_ANNUAL_SURVEY_REMIND_DAY":
+              this.formValue.carRemindAnnualSurvey = {
+                id: item.id,
+                value: item.value
+              };
+              break;
+            case "REGISTRATION_RANGE":
+              this.formValue.range = { id: item.id, value: item.value };
+              break;
+            case "ZERO_VALUE":
+              this.formValue.zeroValue = { id: item.id, value: item.value };
+              break;
+            case "CONSTANT_VALUE":
+              this.formValue.constantValue = { id: item.id, value: item.value };
               break;
           }
         });

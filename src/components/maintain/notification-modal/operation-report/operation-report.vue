@@ -76,8 +76,7 @@ export default {
       labelMap: {
         gmtEnd: "日期",
         finishNumber: "已完成",
-        unfinishNumber: "未完成",
-        percent: "完成率"
+        unfinishNumber: "未完成"
       },
       axisSite: { right: ["完成率"] },
       yAxisName: ["完成数"],
@@ -103,10 +102,10 @@ export default {
               res +=
                 "<br>完成率：" +
                 (
-                  params[i - 1].data[1] /
-                  (params[i - 1].data[1] + params[i].data[1])
-                ).toFixed(2) *
-                  100 +
+                  (params[i - 1].data[1] /
+                    (params[i - 1].data[1] + params[i].data[1])) *
+                  100
+                ).toFixed(2) +
                 "%";
             }
           }
@@ -195,8 +194,8 @@ export default {
         let obj = {
           gmtEnd: item.gmtEnd,
           finishNumber: 0, //已完成数
-          unfinishNumber: 0, //未完成数
-          percent: ""
+          unfinishNumber: 0 //未完成数
+          // percent: ""
         };
         item.list.forEach(listItem => {
           if (listItem.status == 1) {
@@ -204,9 +203,9 @@ export default {
           } else {
             obj.unfinishNumber++;
           }
-          obj.percent =
-            obj.finishNumber /
-            (obj.finishNumber + obj.unfinishNumber).toFixed(3); //完成率
+          // obj.percent =
+          //   obj.finishNumber /
+          //   (obj.finishNumber + obj.unfinishNumber).toFixed(3); //完成率
         });
         return obj;
       });
