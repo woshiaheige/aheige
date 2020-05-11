@@ -75,7 +75,7 @@
               >
                 <a-select-option value="05">05协议</a-select-option>
                 <a-select-option value="17">17协议</a-select-option>
-                <a-select-option value="0">扩张协议</a-select-option>
+                <a-select-option value="0">扩展协议</a-select-option>
               </a-select>
             </a-form-model-item>
           </a-col>
