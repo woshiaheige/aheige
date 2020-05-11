@@ -69,11 +69,7 @@
         @change="pagechange"
         @showSizeChange="sizechange"
       />
-      <add-edit
-        :factorOptions="factorAllOptions"
-        v-model="obj"
-        @refresh="getTableData"
-      ></add-edit>
+      <add-edit v-model="obj" @refresh="getTableData"></add-edit>
     </a-card>
   </div>
 </template>
@@ -157,8 +153,7 @@ export default {
       obj: {
         show: false
       },
-      factorOptions: [],
-      factorAllOptions: []
+      factorOptions: []
     };
   },
   mounted() {
@@ -218,11 +213,6 @@ export default {
     getFactor(pointId) {
       this.$api.monitor.getPollCodeList(pointId).then(res => {
         this.factorOptions = res.data.data;
-      });
-      this.$api.common.selectFactorByPointId({ pointId: pointId }).then(res => {
-        if (res.data.state == 0) {
-          this.factorAllOptions = res.data.data;
-        }
       });
     }
   }

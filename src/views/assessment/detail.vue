@@ -37,20 +37,14 @@ export default {
     };
   },
   mounted() {
-    console.log(JSON.parse(this.$route.query.chartData));
+    console.log(
+      this.$moment(this.$route.query.beginTime)
+        .date(1)
+        .valueOf()
+    );
     this.getAssessmentDetail();
   },
   methods: {
-    handleChange(value) {
-      this.value = value;
-    },
-    handlePanelChange(value, mode) {
-      this.value = value;
-      this.mode = [
-        mode[0] === "date" ? "month" : mode[0],
-        mode[1] === "date" ? "month" : mode[1]
-      ];
-    },
     //饼图的数据是从列表带过来的
     drawPieChart() {
       let pieChart = this.$echarts.init(document.getElementById("pieChart"));
@@ -117,40 +111,38 @@ export default {
         },
         xAxis: {
           type: "time",
-          max:
+          min:
             this.$route.query.type == 1
               ? this.$moment(this.$route.query.beginTime)
                   .date(1)
                   .valueOf()
-              : "",
-          min:
+              : this.$route.query.type == 2
+              ? this.$moment(this.$route.query.beginTime)
+                  .date(1)
+                  .valueOf()
+              : this.$moment(this.$route.query.beginTime)
+                  .month(0)
+                  .date(1)
+                  .valueOf(),
+          max:
             this.$route.query.type == 1
               ? this.$moment(this.$route.query.beginTime)
                   .date(31)
                   .valueOf()
-              : "",
+              : this.$route.query.type == 2
+              ? this.$moment(this.$route.query.endTime)
+                  .date(31)
+                  .valueOf()
+              : this.$moment(this.$route.query.beginTime)
+                  .month(11)
+                  .date(31)
+                  .valueOf(),
           boundaryGap: false
         },
         yAxis: {
           type: "value"
         },
-        series: [
-          // {
-          //   name: "巡检",
-          //   type: "line",
-          //   data: [120, 132, 101]
-          // },
-          // {
-          //   name: "维护",
-          //   type: "line",
-          //   data: [220, 182, 191]
-          // },
-          // {
-          //   name: "校准",
-          //   type: "line",
-          //   data: [150, 232, 201]
-          // }
-        ]
+        series: this.lineData
       };
 
       lineChart.setOption(option);
@@ -175,12 +167,18 @@ export default {
             this.schemeList.push(key);
           }
 
-          // for (let key in res.data.data[0].statistic) {
-          //   this.lineData.push({
-          //     name: res.data.data[0].statistic[key],
-          //     type: "line",
-          //   })
-          // }
+          for (let key in res.data.data[0].statistic) {
+            let singleData = [];
+            res.data.data[0].statistic[key].forEach(item => {
+              singleData.push([item.executionTimeStamp * 1000, item.countTask]);
+            });
+
+            this.lineData.push({
+              name: key,
+              type: "line",
+              data: singleData
+            });
+          }
         }
       });
 
