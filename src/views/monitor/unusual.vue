@@ -51,6 +51,7 @@
         <div class="title">异常列表</div>
       </div>
       <a-table
+        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"

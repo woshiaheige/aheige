@@ -92,6 +92,7 @@
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="出库详情">
           <a-table
+            bordered
             rowKey="id"
             size="middle"
             :columns="columns"
