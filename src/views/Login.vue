@@ -119,6 +119,69 @@
         </div>
       </div>
     </div>
+    <div class="login-footer">
+      <div class="banner">
+        <a-row>
+          <a-col :span="12">
+            <a-card :bordered="false" v-margin:top="16">
+              <div class="card-header">
+                <div class="title">微信小程序</div>
+              </div>
+              <a-row :gutter="16">
+                <a-col :span="12">
+                  <a-card>
+                    <img
+                      alt="example"
+                      style="width: 100%; height: 100%"
+                      :src="require('@/assets/img/wx-app-qrcode.png')"
+                    />
+                    <template slot="actions" class="ant-card-actions">
+                      <span>运维人员</span>
+                    </template>
+                  </a-card>
+                </a-col>
+                <a-col :span="12">
+                  <a-card>
+                    <img
+                      alt="example"
+                      style="width: 100%; height: 100%"
+                      :src="
+                        require('@/assets/img/wx-app-enterprise-qrcode.png')
+                      "
+                    />
+                    <template slot="actions" class="ant-card-actions">
+                      <span>企业用户</span>
+                    </template>
+                  </a-card>
+                </a-col>
+              </a-row>
+            </a-card>
+          </a-col>
+          <a-col :span="12">
+            <a-card :bordered="false" v-margin:top="16">
+              <div class="card-header">
+                <div class="title">微信公众号</div>
+              </div>
+              <a-card>
+                <a-list item-layout="vertical" size="large">
+                  <a-list-item>
+                    <img
+                      slot="extra"
+                      width="172"
+                      :src="
+                        require('@/assets/img/wx-app-enterprise-qrcode.png')
+                      "
+                    />
+                    即刻关注博控智维云微信公众号，可实时获取包括数据报警，任务通知，
+                    审批通知，报表推送等信息提醒
+                  </a-list-item>
+                </a-list>
+              </a-card>
+            </a-card>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
   </div>
 </template>
 
