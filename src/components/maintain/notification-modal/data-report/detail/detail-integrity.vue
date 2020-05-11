@@ -24,19 +24,27 @@ export default {
             {
               title: "应收条数",
               dataIndex: "minOughtCount",
-              key: "minOughtCount"
+              key: "minOughtCount",
+              customRender(text) {
+                let content = !text ? "0" : text;
+                return content;
+              }
             },
             {
               title: "实收条数",
               dataIndex: "minRealCount",
-              key: "minRealCount"
+              key: "minRealCount",
+              customRender(text) {
+                let content = !text ? "0" : text;
+                return content;
+              }
             },
             {
               title: "数据完整率",
               dataIndex: "minPro",
               key: "minPro",
               customRender(text) {
-                let percent = isNaN(text) ? "" : text + "%";
+                let percent = !text ? "0.00%" : text + "%";
                 return percent;
               }
             }
@@ -48,19 +56,27 @@ export default {
             {
               title: "应收条数",
               dataIndex: "hourOughtCount",
-              key: "hourOughtCount"
+              key: "hourOughtCount",
+              customRender(text) {
+                let content = !text ? "0" : text;
+                return content;
+              }
             },
             {
               title: "实收条数",
               dataIndex: "hourRealCount",
-              key: "hourRealCount"
+              key: "hourRealCount",
+              customRender(text) {
+                let content = !text ? "0" : text;
+                return content;
+              }
             },
             {
               title: "数据完整率",
               dataIndex: "hourPro",
               key: "hourPro",
               customRender(text) {
-                let percent = isNaN(text) ? "" : text + "%";
+                let percent = !text ? "0.00%" : text + "%";
                 return percent;
               }
             }
@@ -72,18 +88,26 @@ export default {
             {
               title: "应收条数",
               dataIndex: "dayOughtCount",
-              key: "dayOughtCount"
+              key: "dayOughtCount",
+              customRender(text) {
+                let content = !text ? "0" : text;
+                return content;
+              }
             },
             {
               title: "实收条数",
               dataIndex: "dayRealCount",
-              key: "dayRealCount"
+              key: "dayRealCount",
+              customRender(text) {
+                let content = !text ? "0" : text;
+                return content;
+              }
             },
             {
               title: "数据完整率",
               dataIndex: "dayPro",
               customRender(text) {
-                let percent = isNaN(text) ? "" : text + "%";
+                let percent = !text ? "0.00%" : text + "%";
                 return percent;
               },
               key: "dayPro"
