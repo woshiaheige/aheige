@@ -158,13 +158,19 @@ export default {
         {
           title: "行业类型",
           dataIndex: "industryName",
-          key: "industryName",
-          width: 120
+          key: "industryName"
         },
         {
           title: "环保负责人",
           dataIndex: "environmentPrincipal",
           key: "environmentPrincipal"
+        },
+        {
+          title: "联系电话",
+          dataIndex: "phone",
+          key: "phone",
+          width: 150,
+          align: "center"
         },
         {
           title: "操作",

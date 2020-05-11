@@ -1,5 +1,11 @@
 <template>
-  <a-modal v-model="modalInfo.show" title="地图" @cancel="cancel" width="60%">
+  <a-modal
+    v-model="modalInfo.show"
+    title="地图"
+    @cancel="cancel"
+    width="60%"
+    class="search-map"
+  >
     <div id="myChart" :style="{ width: '100%', height: '450px' }"></div>
     <div class="info">
       <div class="input-item">
@@ -69,14 +75,15 @@ export default {
         position: [lng, lat],
         icon:
           "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-        offset: new AMap.Pixel(-13, -30),
+        iconSize: new AMap.Size(40, 50),
+        offset: new AMap.Pixel(-20, -50),
         // 设置是否可拖拽
         draggable: true,
         cursor: "move"
       });
       marker.setMap(map);
       // 设置点标记的动画效果，此处为弹跳效果
-      marker.setAnimation("AMAP_ANIMATION_BOUNCE");
+      // marker.setAnimation("AMAP_ANIMATION_BOUNCE");
       map.setCenter([lng, lat]); //重新设置地图中心点
     },
     // 创建地图
@@ -92,14 +99,16 @@ export default {
         _this.address = address;
         map = new AMap.Map("myChart", {
           resizeEnable: true,
-          zoom: 10,
+          zoom: 12,
+          mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18",
           center: point
         });
       } else {
         // 未传入点时，根据用户IP自动匹配地图中心点
         map = new AMap.Map("myChart", {
           resizeEnable: true,
-          zoom: 10
+          zoom: 12,
+          mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18"
         });
         _this.lnglat = {
           lng: map.getCenter().lng,
@@ -191,14 +200,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.chart-pie {
-  width: 88px;
-  height: 87px;
-  .chart-item {
-    width: 100%;
-    height: 100%;
-  }
-}
 .info {
   display: inline-block;
   position: absolute;
