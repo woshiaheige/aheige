@@ -60,6 +60,12 @@ const index = {
       params: data
     });
   },
+  //监测站点基本信息
+  getPointData(data) {
+    return axios.get(base.api + "monitor/data/point/" + data.id, {
+      params: data
+    });
+  },
   //运维车辆位置定位
   getCarData(data) {
     return axios.get(base.api + "operation/monitor/vehicleLocation", {

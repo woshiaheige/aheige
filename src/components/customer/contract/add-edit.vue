@@ -299,7 +299,7 @@ export default {
       if (info.file.status === "done") {
         //只允许上传一个文件 start
         if (this.modelData.type == "edit") {
-          if (this.formData.files.length > 0) {
+          if (this.formData.files && this.formData.files.length > 0) {
             this.delFile(this.formData.files[0].fileId);
           }
         }
