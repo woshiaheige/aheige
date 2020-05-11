@@ -62,6 +62,7 @@
         </a-col>
         <a-col :span="17">
           <a-table
+            bordered
             size="middle"
             rowKey="id"
             :columns="columns"

@@ -70,6 +70,7 @@
         </div>
       </div>
       <a-table
+        bordered
         rowKey="id"
         size="middle"
         :columns="columns"

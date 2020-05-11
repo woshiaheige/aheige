@@ -62,6 +62,7 @@
         </div>
       </div>
       <a-table
+        bordered
         size="middle"
         :columns="columns"
         :dataSource="data"

@@ -1,6 +1,7 @@
 <template>
   <div>
     <a-table
+      bordered
       size="middle"
       :loading="loading"
       :rowKey="(record, index) => index"
