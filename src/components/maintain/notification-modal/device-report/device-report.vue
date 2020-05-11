@@ -35,6 +35,7 @@
       <ve-line
         :data="listData"
         :settings="chartSettings"
+        :extend="chartExtend"
         v-if="listData.rows.length != 0"
       ></ve-line>
       <a-empty v-else :image="simpleImage" />
@@ -89,8 +90,7 @@ export default {
       labelMap: {
         gmtDataTime: "日期",
         normalNumber: "设备正常",
-        anomalyNumber: "设备故障",
-        percent: "故障率"
+        anomalyNumber: "设备故障"
       },
       yAxisName: ["设备数"],
       yAxisType: ["normal"]
@@ -114,10 +114,10 @@ export default {
               res +=
                 "<br>故障率：" +
                 (
-                  params[i - 1].data[1] /
-                  (params[i - 1].data[1] + params[i].data[1])
-                ).toFixed(2) *
-                  100 +
+                  (params[i - 1].data[1] /
+                    (params[i - 1].data[1] + params[i].data[1])) *
+                  100
+                ).toFixed(2) +
                 "%";
             }
           }
@@ -130,7 +130,7 @@ export default {
       count: "", //统计数据
       anomalyList: "", //异常的表格
       listData: {
-        columns: ["gmtDataTime", "normalNumber", "anomalyNumber", "percent"],
+        columns: ["gmtDataTime", "normalNumber", "anomalyNumber"],
         rows: []
       },
       deviceName: [],
@@ -268,8 +268,8 @@ export default {
         let obj = {
           gmtDataTime: item.gmtDataTime,
           normalNumber: 0, //正常数
-          anomalyNumber: 0, //异常数
-          percent: ""
+          anomalyNumber: 0 //异常数
+          // percent: ""
         };
         item.list.forEach(listItem => {
           if (listItem.status == 1) {
@@ -277,9 +277,9 @@ export default {
           } else {
             obj.anomalyNumber++;
           }
-          obj.percent =
-            obj.anomalyNumber /
-            (obj.normalNumber + obj.anomalyNumber).toFixed(3); //异常数
+          // obj.percent =
+          //   obj.anomalyNumber /
+          //   (obj.normalNumber + obj.anomalyNumber).toFixed(3); //异常率
         });
         return obj;
       });

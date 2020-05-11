@@ -35,6 +35,7 @@ export default {
         // center: [113.53, 23.36],
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 8,
+        mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18",
         // zoomEnable: false, //地图是否可缩放
         doubleClickZoom: false // 地图是否可通过双击鼠标放大地图
       });
