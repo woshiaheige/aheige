@@ -212,7 +212,7 @@ export default {
       arr.push("station-enterprise");
       this.$store.dispatch("createIncludeArr", arr);
     } else {
-      this.$store.dispatch("createIncludeArr", []);
+      // this.$store.dispatch("createIncludeArr", []);
     }
     next();
   },
