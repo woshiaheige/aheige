@@ -20,6 +20,7 @@
           placeholder="因子"
           showSearch
           :filterOption="filterOptions"
+          @change="handleChange"
         >
           <a-select-option
             v-for="item in factorOptions"
@@ -48,7 +49,6 @@
 <script>
 export default {
   props: {
-    factorOptions: Array,
     value: Object
   },
   data() {
@@ -67,6 +67,7 @@ export default {
     };
     return {
       title: "添加",
+      factorOptions: [],
       formData: {
         pointId: this.$route.query.id
       },
@@ -155,12 +156,30 @@ export default {
             this.formData = res.data.data;
           }
         });
+    },
+    getFactor(pointId) {
+      this.$api.common.selectFactorByPointId({ pointId: pointId }).then(res => {
+        if (res.data.state == 0) {
+          this.factorOptions = res.data.data;
+        }
+      });
+    },
+    handleChange(value) {
+      this.formData.floorval = "";
+      this.formData.ceilval = "";
+      this.factorOptions.forEach(item => {
+        if (item.id == value) {
+          if (item.floorval) this.formData.floorval = item.floorval;
+          if (item.ceilval) this.formData.ceilval = item.ceilval;
+        }
+      });
     }
   },
   mounted() {},
   watch: {
     "value.show"() {
       if (this.value.show == true) {
+        this.getFactor(this.$route.query.id);
         this.formData = {
           pointId: this.$route.query.id
         };
