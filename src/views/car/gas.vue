@@ -24,6 +24,13 @@
             >
           </a-select>
         </a-form-item>
+        <a-form-item label="车辆品牌">
+          <a-input
+            placeholder="请输入"
+            v-model="list.devName"
+            @pressEnter="getTableData"
+          ></a-input>
+        </a-form-item>
         <a-form-item label="付款时间">
           <a-range-picker
             :allowClear="false"
@@ -103,44 +110,14 @@ export default {
           key: "pointName"
         },
         {
-          title: "设备名称",
+          title: "付款时间",
           dataIndex: "name",
           key: "name"
         },
         {
-          title: "品牌",
+          title: "付款价格",
           dataIndex: "brand",
           key: "brand"
-        },
-        {
-          title: "型号",
-          dataIndex: "model",
-          key: "model"
-        },
-        {
-          title: "数量",
-          dataIndex: "stockCount",
-          key: "stockCount"
-        },
-        {
-          title: "单位",
-          dataIndex: "unit",
-          key: "unit"
-        },
-        {
-          title: "单价",
-          dataIndex: "price",
-          key: "price"
-        },
-        {
-          title: "出库时间",
-          dataIndex: "gmtModified",
-          key: "gmtModified"
-        },
-        {
-          title: "总价",
-          dataIndex: "totalPrices",
-          key: "totalPrices"
         }
       ],
       tableData: [],

@@ -66,7 +66,21 @@ const car = [
     component: () =>
       import(
         /* webpackChunkName: "view-car" */
-        "@/views/car/toll.vue"
+        "@/views/car/insurance.vue"
+      )
+  },
+  {
+    path: "/car/annual",
+    name: "car-annual",
+    key: "car-annual",
+    meta: {
+      title: "年检费管理",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/annual.vue"
       )
   },
   {

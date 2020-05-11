@@ -31,7 +31,7 @@
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
-        <a-form-item label="下次保险时间">
+        <a-form-item label="下次年检时间">
           <a-range-picker
             :allowClear="false"
             format="YYYY-MM-DD"
@@ -52,7 +52,7 @@
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
       <div class="card-header">
-        <div class="title">保险详情</div>
+        <div class="title">年检详情</div>
         <div class="extra">
           <a-button type="primary" @click="onEdit('add')">
             <a-icon type="plus" />新建
@@ -115,7 +115,7 @@ export default {
           key: "name"
         },
         {
-          title: "下次保险时间",
+          title: "下次年检时间",
           dataIndex: "name",
           key: "name"
         },

@@ -76,6 +76,9 @@
       </a-form-model-item>
       <a-form-model-item label="参考价格" prop="price">
         <a-input-number
+          :formatter="
+            value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          "
           placeholder="参考价格"
           v-model="formData.price"
           v-width="350"
