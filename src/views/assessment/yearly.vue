@@ -40,6 +40,7 @@
         <div class="title">考评列表</div>
       </div>
       <a-table
+        bordered
         rowKey="id"
         size="middle"
         :columns="columns"
@@ -97,7 +98,27 @@ export default {
           title: "运维活动",
           dataIndex: "movement",
           key: "movement",
-          children: []
+          children: [
+            {
+              title: "气类",
+              dataIndex: "gas",
+              key: "gas",
+              children: []
+            },
+            {
+              title: "水类",
+              dataIndex: "water",
+              key: "water",
+              children: []
+            },
+            {
+              title: "合计",
+              dataIndex: "total",
+              key: "total",
+              width: 120,
+              align: "center"
+            }
+          ]
         },
         {
           title: "操作",
@@ -156,7 +177,8 @@ export default {
         });
     },
     async getTitle() {
-      this.columns[2].children = [];
+      this.columns[2].children[0].children = [];
+      this.columns[2].children[1].children = [];
 
       let data = {
         groupName: this.list.group,
@@ -172,13 +194,25 @@ export default {
           res.data.data.forEach(item => {
             if (item.title == "运维操作") {
               item.childs.forEach(children => {
-                this.columns[2].children.push({
-                  title: children.title,
-                  dataIndex: children.title == "合计" ? "total" : children.id,
-                  key: children.title == "合计" ? "total" : children.id,
-                  width: 120,
-                  align: "center"
-                });
+                if (children.title !== "合计") {
+                  if (children.type === 31) {
+                    this.columns[2].children[0].children.push({
+                      title: children.title,
+                      dataIndex: children.id,
+                      key: children.id,
+                      width: 120,
+                      align: "center"
+                    });
+                  } else if (children.type === 32) {
+                    this.columns[2].children[1].children.push({
+                      title: children.title,
+                      dataIndex: children.id,
+                      key: children.id,
+                      width: 120,
+                      align: "center"
+                    });
+                  }
+                }
               });
             }
           });
@@ -186,22 +220,28 @@ export default {
       });
     },
     goDetail(row) {
-      this.columns[2].children
-        .filter(item => item.key != "total")
-        .forEach(item => {
-          for (let key in row) {
-            if (item.key == key) {
-              this.chartData.push({ value: row[key], name: item.title });
-            }
+      this.columns[2].children[0].children.forEach(item => {
+        for (let key in row) {
+          if (item.key == key) {
+            this.chartData.push({ value: row[key], name: item.title });
           }
-        });
+        }
+      });
+
+      this.columns[2].children[1].children.forEach(item => {
+        for (let key in row) {
+          if (item.key == key) {
+            this.chartData.push({ value: row[key], name: item.title });
+          }
+        }
+      });
 
       this.$router.push({
         path: "/assessment/yearly-assessment/detail",
         query: {
           memberId: row.id,
           beginTime: this.$moment(this.list.month).format("YYYY"),
-          type: 1,
+          type: 3,
           chartData: JSON.stringify(this.chartData)
         }
       });

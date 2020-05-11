@@ -35,6 +35,7 @@
       </div>
       <div v-if="formInline.showType == 'data'">
         <a-table
+          bordered
           :loading="loading"
           :rowKey="(record, index) => index"
           size="middle"

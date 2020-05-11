@@ -59,6 +59,36 @@ const monitorRoute = [
         "@/views/monitor/unusual.vue"
       )
   },
+  //恒值数据
+  {
+    path: "/monitor/unchange",
+    name: "monitor-unchange",
+    key: "monitor-unchange",
+    meta: {
+      title: "恒值数据",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-monitor" */
+        "@/views/monitor/unchange.vue"
+      )
+  },
+  //零值数据
+  {
+    path: "/monitor/zero",
+    name: "monitor-zero",
+    key: "monitor-zero",
+    meta: {
+      title: "零值数据",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-monitor" */
+        "@/views/monitor/zero.vue"
+      )
+  },
   //数据报表
   {
     path: "/monitor/report",

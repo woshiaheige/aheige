@@ -2,6 +2,7 @@
   <a-modal :title="title" :visible="modelData.show" @cancel="handleCancel">
     <div v-margin:bottom="25">
       <a-table
+        bordered
         rowKey="id"
         size="middle"
         :columns="columns"

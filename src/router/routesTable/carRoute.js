@@ -28,6 +28,76 @@ const car = [
       )
   },
   {
+    path: "/car/gas",
+    name: "car-gas",
+    key: "car-gas",
+    meta: {
+      title: "油费管理",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/gas.vue"
+      )
+  },
+  {
+    path: "/car/toll",
+    name: "car-toll",
+    key: "car-toll",
+    meta: {
+      title: "过路费管理",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/toll.vue"
+      )
+  },
+  {
+    path: "/car/insurance",
+    name: "car-insurance",
+    key: "car-insurance",
+    meta: {
+      title: "保险费管理",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/toll.vue"
+      )
+  },
+  {
+    path: "/car/repair",
+    name: "car-repair",
+    key: "car-repair",
+    meta: {
+      title: "维修保养费",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/repair.vue"
+      )
+  },
+  {
+    path: "/car/statistic",
+    name: "car-statistic",
+    key: "car-statistic",
+    meta: {
+      title: "车辆成本分析",
+      back: false
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "view-car" */
+        "@/views/car/statistic.vue"
+      )
+  },
+  {
     path: "/car/usage/detail",
     name: "car-usage-detail",
     key: "usage-detail",
