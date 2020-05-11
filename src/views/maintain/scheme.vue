@@ -18,7 +18,7 @@
           >
             <a-radio-button :value="31">气类运维</a-radio-button>
             <a-radio-button :value="32">水类运维</a-radio-button>
-            <a-radio-button :value="0">其他运维</a-radio-button>
+            <!-- <a-radio-button :value="0">其他运维</a-radio-button> -->
           </a-radio-group>
           <a-button type="primary" block v-margin:top="16" @click="addNewScheme"
             ><a-icon type="plus" />新建方案</a-button

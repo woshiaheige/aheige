@@ -26,7 +26,7 @@
               >
                 <a-radio-button :value="31">气类站点</a-radio-button>
                 <a-radio-button :value="32">水类站点</a-radio-button>
-                <a-radio-button :value="0">其他站点</a-radio-button>
+                <!-- <a-radio-button :value="0">其他站点</a-radio-button> -->
               </a-radio-group>
               <a-input-search
                 placeholder="请输入站点名称"
