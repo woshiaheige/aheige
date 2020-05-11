@@ -91,6 +91,7 @@
                 v-model="formValidate.code"
                 placeholder="验证码"
                 class="verify-code"
+                v-width="128"
                 @on-focus="onFocus('code')"
                 @on-blur="onBlur('code')"
               >
@@ -101,6 +102,7 @@
                 class="verify-button"
                 @click="getVerifyCode"
                 :disabled="disable"
+                v-height="41"
                 >{{ buttonText }}</a-button
               >
             </a-form-model-item>
