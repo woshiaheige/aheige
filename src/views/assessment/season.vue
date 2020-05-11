@@ -254,15 +254,21 @@ export default {
       });
     },
     goDetail(row) {
-      this.columns[2].children
-        .filter(item => item.key != "total")
-        .forEach(item => {
-          for (let key in row) {
-            if (item.key == key) {
-              this.chartData.push({ value: row[key], name: item.title });
-            }
+      this.columns[2].children[0].children.forEach(item => {
+        for (let key in row) {
+          if (item.key == key) {
+            this.chartData.push({ value: row[key], name: item.title });
           }
-        });
+        }
+      });
+
+      this.columns[2].children[1].children.forEach(item => {
+        for (let key in row) {
+          if (item.key == key) {
+            this.chartData.push({ value: row[key], name: item.title });
+          }
+        }
+      });
       this.$router.push({
         path: "/assessment/season-assessment/detail",
         query: {
