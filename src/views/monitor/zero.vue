@@ -109,13 +109,6 @@ export default {
           dataIndex: "divisorName"
         },
         {
-          title: "数据类型",
-          dataIndex: "dataType",
-          align: "center",
-          width: 100,
-          scopedSlots: { customRender: "dataType" }
-        },
-        {
           title: "时间",
           dataIndex: "dateTime",
           align: "center",

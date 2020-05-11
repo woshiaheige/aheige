@@ -115,11 +115,6 @@ export default {
           key: "name"
         },
         {
-          title: "下次年检时间",
-          dataIndex: "name",
-          key: "name"
-        },
-        {
           title: "付款价格",
           dataIndex: "brand",
           key: "brand"

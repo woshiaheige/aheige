@@ -75,6 +75,12 @@ const fontSize = Vue.directive("fontsize", {
   }
 });
 
+const fontWeight = Vue.directive("fontWeight", {
+  inserted: function(el, binding) {
+    el.style.fontWeight = binding.value + "px";
+  }
+});
+
 const width = Vue.directive("width", {
   inserted: function(el, binding) {
     el.style.width = binding.value + "px";
@@ -126,5 +132,6 @@ export default {
   height,
   scale,
   prevent,
-  focus
+  focus,
+  fontWeight
 };
