@@ -92,10 +92,39 @@ export default {
         anomalyNumber: "设备故障",
         percent: "故障率"
       },
-      axisSite: { right: ["故障率"] },
-      yAxisName: ["设备数", "故障率"],
-      yAxisType: ["normal", "percent"],
-      stack: { 设备: ["设备正常", "设备故障"] }
+      yAxisName: ["设备数"],
+      yAxisType: ["normal"]
+    };
+    this.chartExtend = {
+      tooltip: {
+        trigger: "axis",
+        // axisPointer: {
+        //   type: "cross"
+        // },
+        formatter: function(params) {
+          var res = params[0].name;
+          for (var i = 0; i < params.length; i++) {
+            res +=
+              "<br>" +
+              params[i].marker +
+              params[i].seriesName +
+              "：" +
+              params[i].data[1];
+            if (i == params.length - 1) {
+              res +=
+                "<br>故障率：" +
+                (
+                  params[i - 1].data[1] /
+                  (params[i - 1].data[1] + params[i].data[1])
+                ).toFixed(2) *
+                  100 +
+                "%";
+            }
+          }
+
+          return res;
+        }
+      }
     };
     return {
       count: "", //统计数据
@@ -104,6 +133,7 @@ export default {
         columns: ["gmtDataTime", "normalNumber", "anomalyNumber", "percent"],
         rows: []
       },
+      deviceName: [],
       loading: false,
       tableData: [],
       columns: [
@@ -118,7 +148,7 @@ export default {
         },
         {
           title: "设备型号",
-          dataIndex: "number"
+          dataIndex: "deviceName"
         },
         {
           title: "生产厂家",
@@ -135,11 +165,11 @@ export default {
         !arrId.includes(i.gmtDataTime) ? arrId.push(i.gmtDataTime) : arrId;
       });
 
-      // //排序使相同age放在一起
+      // //排序使相同gmtDataTime放在一起
       // let newData=[]
       // arrId.forEach(item=>{
       //   data.forEach((val,key,arr)=>{
-      //     if(val.age==item){
+      //     if(val.gmtDataTime==item){
       //       newData.push(val);
 
       //     }
@@ -147,7 +177,7 @@ export default {
       // })
       // data=newData
 
-      // 提前为每个年龄值设置跨行数为0
+      // 提前为每个时间值设置跨行数为0
       let arrObj = [];
       arrId.forEach(j => {
         arrObj.push({
@@ -155,7 +185,7 @@ export default {
           num: 0
         });
       });
-      // 计算每个年龄的可跨行数
+      // 计算每个时间的可跨行数
       data.forEach(k => {
         arrObj.forEach(l => {
           k.gmtDataTime === l.id ? l.num++ : l.num;
@@ -175,9 +205,8 @@ export default {
       });
       return data;
     },
-    // 只针对相同age字段合并列，age位于第一列，columnIndex为0
+    // 只针对相同时间字段合并列，时间位于第一列，columnIndex为0
     handleSpan(row, column, rowIndex, columnIndex) {
-      console.log(777, columnIndex);
       if (columnIndex === 0) {
         return {
           rowspan: row.mergeCol === 0 ? 0 : row.mergeCol,
@@ -185,9 +214,10 @@ export default {
         };
       }
     },
-    getTableData() {
+    async getTableData() {
       this.getCount();
       this.getAllReportPushInstrumentData();
+      await this.geDictByParam();
       this.getAllReportPushInstrumentDataEx();
       // this.listData.rows = [
       //   { 日期: "2020-5-1", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 }
@@ -266,6 +296,10 @@ export default {
             item.gmtDataTime = this.$moment(item.gmtDataTime).format(
               "YYYY-MM-DD"
             );
+            let nameItem = this.deviceName.find(name => {
+              return item.deviceType == name.value;
+            });
+            item.deviceName = nameItem.name;
             return item;
           });
           this.tableData = this.integratedData(data);
@@ -282,6 +316,18 @@ export default {
           this.count = res.data.data;
         }
       });
+    },
+    async geDictByParam() {
+      //获取设备名称
+      await this.$api.common
+        .geDictByParam({
+          code: "DEVICE_TYPE"
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.deviceName = res.data.data;
+          }
+        });
     }
   }
 };

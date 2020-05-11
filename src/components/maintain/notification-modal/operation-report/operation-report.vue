@@ -49,6 +49,7 @@
         :data="listData"
         :settings="chartSettings"
         :data-empty="true"
+        :extend="chartExtend"
         v-if="listData.rows.length != 0"
       ></ve-line>
       <a-empty v-else :image="simpleImage" />
@@ -79,15 +80,46 @@ export default {
         percent: "完成率"
       },
       axisSite: { right: ["完成率"] },
-      yAxisName: ["完成数", "完成率"],
-      yAxisType: ["normal", "percent"],
+      yAxisName: ["完成数"],
+      yAxisType: ["normal"],
       stack: { 任务: ["已完成", "未完成"] }
+    };
+    this.chartExtend = {
+      tooltip: {
+        trigger: "axis",
+        // axisPointer: {
+        //   type: "cross"
+        // },
+        formatter: function(params) {
+          var res = params[0].name;
+          for (var i = 0; i < params.length; i++) {
+            res +=
+              "<br>" +
+              params[i].marker +
+              params[i].seriesName +
+              "：" +
+              params[i].data[1];
+            if (i == params.length - 1) {
+              res +=
+                "<br>完成率：" +
+                (
+                  params[i - 1].data[1] /
+                  (params[i - 1].data[1] + params[i].data[1])
+                ).toFixed(2) *
+                  100 +
+                "%";
+            }
+          }
+
+          return res;
+        }
+      }
     };
     return {
       count: "",
       taskList: "", //运维项
       listData: {
-        columns: ["gmtEnd", "finishNumber", "unfinishNumber", "percent"],
+        columns: ["gmtEnd", "finishNumber", "unfinishNumber"],
         rows: [
           // { 日期: "2020-5-1", 已完成: 4593, 未完成: 4293, 完成率: 0.78 }
         ]

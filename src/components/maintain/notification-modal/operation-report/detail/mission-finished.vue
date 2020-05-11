@@ -61,7 +61,6 @@ export default {
       this.$api.maintain.getReportPushDetails(params).then(res => {
         if (res.data.state == 0) {
           this.notificationData = this.formatData(res.data.data);
-          console.log(this.notificationData, 7777);
         }
       });
     },

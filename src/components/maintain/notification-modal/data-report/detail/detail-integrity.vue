@@ -36,7 +36,8 @@ export default {
               dataIndex: "minPro",
               key: "minPro",
               customRender(text) {
-                return (Number(text) * 100).toFixed(2) + "%";
+                let percent = isNaN(text) ? "" : text + "%";
+                return percent;
               }
             }
           ]
@@ -59,7 +60,8 @@ export default {
               dataIndex: "hourPro",
               key: "hourPro",
               customRender(text) {
-                return (Number(text) * 100).toFixed(2) + "%";
+                let percent = isNaN(text) ? "" : text + "%";
+                return percent;
               }
             }
           ]
@@ -81,7 +83,8 @@ export default {
               title: "数据完整率",
               dataIndex: "dayPro",
               customRender(text) {
-                return (Number(text) * 100).toFixed(2) + "%";
+                let percent = isNaN(text) ? "" : text + "%";
+                return percent;
               },
               key: "dayPro"
             }
