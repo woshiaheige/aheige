@@ -39,9 +39,9 @@
       ></ve-line>
       <a-empty v-else :image="simpleImage" />
       <a-divider dashed>故障详情</a-divider>
-      <a-descriptions layout="vertical" bordered size="small">
+      <!-- <a-descriptions bordered size="small">
         <a-descriptions-item
-          :span="2"
+          :span="1"
           v-for="(item, index) in anomalyList"
           :key="index"
         >
@@ -55,18 +55,34 @@
               <a-list-item slot="renderItem" slot-scope="item">
                 <a-list-item-meta>
                   <span slot="title">{{ item.instrumentName }}</span>
-                  <!-- <div slot="description">故障时间：{{ item.gmtEnd }}</div> -->
                 </a-list-item-meta>
-                <div>故障时间：{{ item.gmtDataTime }}</div>
               </a-list-item>
             </a-list>
           </template>
         </a-descriptions-item>
-      </a-descriptions>
+      </a-descriptions> -->
+      <a-table
+        size="middle"
+        :loading="loading"
+        :rowKey="(record, index) => index"
+        :columns="columns"
+        :dataSource="tableData"
+        :pagination="false"
+      >
+      </a-table>
     </a-card>
   </div>
 </template>
 <script>
+const renderContent = (value, row) => {
+  const obj = {
+    children: value,
+    attrs: {}
+  };
+  obj.attrs.rowSpan = row.mergeCol === 0 ? 0 : row.mergeCol;
+  obj.attrs.colSpan = row.mergeCol === 0 ? 0 : 1;
+  return obj;
+};
 export default {
   data() {
     this.chartSettings = {
@@ -76,10 +92,39 @@ export default {
         anomalyNumber: "设备故障",
         percent: "故障率"
       },
-      axisSite: { right: ["故障率"] },
-      yAxisName: ["设备数", "故障率"],
-      yAxisType: ["normal", "percent"],
-      stack: { 设备: ["设备正常", "设备故障"] }
+      yAxisName: ["设备数"],
+      yAxisType: ["normal"]
+    };
+    this.chartExtend = {
+      tooltip: {
+        trigger: "axis",
+        // axisPointer: {
+        //   type: "cross"
+        // },
+        formatter: function(params) {
+          var res = params[0].name;
+          for (var i = 0; i < params.length; i++) {
+            res +=
+              "<br>" +
+              params[i].marker +
+              params[i].seriesName +
+              "：" +
+              params[i].data[1];
+            if (i == params.length - 1) {
+              res +=
+                "<br>故障率：" +
+                (
+                  params[i - 1].data[1] /
+                  (params[i - 1].data[1] + params[i].data[1])
+                ).toFixed(2) *
+                  100 +
+                "%";
+            }
+          }
+
+          return res;
+        }
+      }
     };
     return {
       count: "", //统计数据
@@ -87,13 +132,92 @@ export default {
       listData: {
         columns: ["gmtDataTime", "normalNumber", "anomalyNumber", "percent"],
         rows: []
-      }
+      },
+      deviceName: [],
+      loading: false,
+      tableData: [],
+      columns: [
+        {
+          title: "日期",
+          dataIndex: "gmtDataTime",
+          customRender: renderContent
+        },
+        {
+          title: "设备名称",
+          dataIndex: "instrumentName"
+        },
+        {
+          title: "设备型号",
+          dataIndex: "deviceName"
+        },
+        {
+          title: "生产厂家",
+          dataIndex: "manufacturer"
+        }
+      ]
     };
   },
   methods: {
-    getTableData() {
+    integratedData(data) {
+      // 获取所有的不同年龄值
+      let arrId = [];
+      data.forEach(i => {
+        !arrId.includes(i.gmtDataTime) ? arrId.push(i.gmtDataTime) : arrId;
+      });
+
+      // //排序使相同gmtDataTime放在一起
+      // let newData=[]
+      // arrId.forEach(item=>{
+      //   data.forEach((val,key,arr)=>{
+      //     if(val.gmtDataTime==item){
+      //       newData.push(val);
+
+      //     }
+      //   })
+      // })
+      // data=newData
+
+      // 提前为每个时间值设置跨行数为0
+      let arrObj = [];
+      arrId.forEach(j => {
+        arrObj.push({
+          id: j,
+          num: 0
+        });
+      });
+      // 计算每个时间的可跨行数
+      data.forEach(k => {
+        arrObj.forEach(l => {
+          k.gmtDataTime === l.id ? l.num++ : l.num;
+        });
+      });
+      data.forEach(m => {
+        arrObj.forEach(n => {
+          if (m.gmtDataTime === n.id) {
+            if (arrId.includes(m.gmtDataTime)) {
+              m.mergeCol = n.num;
+              arrId.splice(arrId.indexOf(m.gmtDataTime), 1);
+            } else {
+              m.mergeCol = 0;
+            }
+          }
+        });
+      });
+      return data;
+    },
+    // 只针对相同时间字段合并列，时间位于第一列，columnIndex为0
+    handleSpan(row, column, rowIndex, columnIndex) {
+      if (columnIndex === 0) {
+        return {
+          rowspan: row.mergeCol === 0 ? 0 : row.mergeCol,
+          colspan: row.mergeCol === 0 ? 0 : 1
+        };
+      }
+    },
+    async getTableData() {
       this.getCount();
       this.getAllReportPushInstrumentData();
+      await this.geDictByParam();
       this.getAllReportPushInstrumentDataEx();
       // this.listData.rows = [
       //   { 日期: "2020-5-1", 设备正常: 3792, 设备故障: 3492, 故障率: 0.323 }
@@ -168,7 +292,17 @@ export default {
       };
       this.$api.maintain.getAllReportPushInstrumentDataEx(params).then(res => {
         if (res.data.state == 0) {
-          this.anomalyList = this.formatData(res.data.data);
+          let data = res.data.data.map(item => {
+            item.gmtDataTime = this.$moment(item.gmtDataTime).format(
+              "YYYY-MM-DD"
+            );
+            let nameItem = this.deviceName.find(name => {
+              return item.deviceType == name.value;
+            });
+            item.deviceName = nameItem.name;
+            return item;
+          });
+          this.tableData = this.integratedData(data);
         }
       });
     },
@@ -182,6 +316,18 @@ export default {
           this.count = res.data.data;
         }
       });
+    },
+    async geDictByParam() {
+      //获取设备名称
+      await this.$api.common
+        .geDictByParam({
+          code: "DEVICE_TYPE"
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.deviceName = res.data.data;
+          }
+        });
     }
   }
 };

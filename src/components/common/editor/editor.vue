@@ -21,6 +21,7 @@
       @change="onEditorChange($event)"
     >
     </quill-editor>
+    <div style="textAlign:right">{{ contentLength }}/800</div>
   </div>
 </template>
 <script>
@@ -117,6 +118,7 @@ export default {
 
   data() {
     return {
+      contentLength: 0,
       headers: {
         token: sessionStorage.getItem("userinfo")
           ? JSON.parse(sessionStorage.getItem("userinfo")).token
@@ -185,9 +187,15 @@ export default {
     onEditorFocus() {
       //获得焦点事件
     },
-    onEditorChange() {
+    onEditorChange(event) {
       //内容改变事件
+      event.quill.deleteText(800, 4);
       this.$emit("input", this.content);
+      if (this.content == "") {
+        this.contentLength = 0;
+      } else {
+        this.contentLength = event.quill.getLength() - 1;
+      }
     },
     handleChange(info) {
       if (info.file.status !== "uploading") {

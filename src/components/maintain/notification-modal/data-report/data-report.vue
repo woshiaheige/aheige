@@ -181,11 +181,11 @@ export default {
       let listData = data.map(item => {
         let obj = {
           dateTime: item.dateTime,
-          exceedNumber: 0, //异常数
-          unusualNumber: 0 //超标数
+          exceedNumber: 0, //超标数
+          unusualNumber: 0 //异常数
         };
         item.list.forEach(listItem => {
-          if (listItem.status == 1) {
+          if (listItem.status != 1) {
             obj.exceedNumber++;
           } else {
             obj.unusualNumber++;
