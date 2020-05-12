@@ -9,8 +9,8 @@
       <a-step title="已创建" :description="detail.gmtCreate" />
       <a-step title="处理中" />
       <a-step title="已完成" :description="detail.gmtModified" />
-      <a-step title="已延期" v-if="missionStatus == 3" />
-      <a-step title="已关闭" />
+      <!-- <a-step title="已延期" v-if="missionStatus == 3" />
+      <a-step title="已关闭" /> -->
     </a-steps>
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="运维小组">{{
@@ -37,10 +37,16 @@
         </template>
       </a-descriptions-item>
       <a-descriptions-item label="附件" v-if="detail.fileId">
-        <!-- <div v-for="(item, index) of detail.fileId" :key="index">
-          {{ item.name }}
-        </div> -->
-        <a :href="fileDownload + detail.fileId">{{ detail.fileName }}</a>
+        <!-- <a :href="fileViewOnline + detail.fileId">{{ detail.fileName }}</a> -->
+
+        <img
+          v-for="(item, index) of detail.fileId"
+          :key="index"
+          v-image-preview
+          :src="fileViewOnline + item"
+          alt=""
+          style="width:100px;height:100px;object-fit:cover;margin:5px"
+        />
       </a-descriptions-item>
     </a-descriptions>
     <template slot="footer">
@@ -66,7 +72,7 @@ export default {
   },
   data() {
     return {
-      fileDownload: this.$api.common.fileDownload
+      fileViewOnline: this.$api.common.fileViewOnline
     };
   },
   methods: {

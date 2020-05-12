@@ -39,6 +39,12 @@ const car = {
     return axios.get(base.api + "manageVehicleUse/trajectory", {
       params: data
     });
+  },
+  //查询所有车辆
+  getAllCar(data) {
+    return axios.get(base.api + "assetVehicle/query", {
+      params: data
+    });
   }
 };
 
