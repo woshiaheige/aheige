@@ -21,7 +21,7 @@
       @change="onEditorChange($event)"
     >
     </quill-editor>
-    <div style="textAlign:right">{{ contentLength }}/800</div>
+    <div style="textAlign:right">{{ contentLength }}/20000</div>
   </div>
 </template>
 <script>
@@ -189,7 +189,7 @@ export default {
     },
     onEditorChange(event) {
       //内容改变事件
-      event.quill.deleteText(800, 4);
+      event.quill.deleteText(20000, 4);
       this.$emit("input", this.content);
       if (this.content == "") {
         this.contentLength = 0;
