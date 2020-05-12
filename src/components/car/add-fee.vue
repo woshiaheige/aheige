@@ -83,8 +83,7 @@ export default {
             : "",
           gmtInspection: detail.gmtInspection
             ? this.$moment(detail.gmtInspection, "YYYY-MM-DD")
-            : "",
-          gps: detail.gps
+            : ""
         });
       }
     }

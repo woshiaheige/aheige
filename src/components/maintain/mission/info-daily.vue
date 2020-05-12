@@ -36,11 +36,11 @@
           </div>
         </template>
       </a-descriptions-item>
-      <a-descriptions-item label="附件" v-if="detail.fileId">
-        <!-- <a :href="fileViewOnline + detail.fileId">{{ detail.fileName }}</a> -->
+      <a-descriptions-item label="附件" v-if="detail.fileIds">
+        <!-- <a :href="fileViewOnline + detail.fileIds">{{ detail.fileName }}</a> -->
 
         <img
-          v-for="(item, index) of detail.fileId"
+          v-for="(item, index) of detail.fileIds"
           :key="index"
           v-image-preview
           :src="fileViewOnline + item"
