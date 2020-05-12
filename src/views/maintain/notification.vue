@@ -55,7 +55,6 @@
         <div class="title">报表推送</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"

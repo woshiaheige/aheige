@@ -60,7 +60,6 @@ const common = {
   listByIds(data) {
     return axios.post(base.api + "divisor/listByIds", data);
   },
-
   //所有小组下拉
   selectGroup(data) {
     return axios.get(base.api + "sysGroup/query", {

@@ -51,7 +51,6 @@
         <div class="title">恒值列表</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"

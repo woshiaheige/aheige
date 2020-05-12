@@ -12,7 +12,6 @@
       </div>
     </div>
     <a-table
-      bordered
       size="middle"
       :columns="columns"
       :loading="loading"
