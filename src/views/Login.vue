@@ -168,9 +168,7 @@
                     <img
                       slot="extra"
                       width="172"
-                      :src="
-                        require('@/assets/img/wx-app-enterprise-qrcode.png')
-                      "
+                      :src="require('@/assets/img/official_account_qrcode.png')"
                     />
                     即刻关注博控智维云微信公众号，可实时获取包括数据报警，任务通知，
                     审批通知，报表推送等信息提醒
@@ -180,6 +178,9 @@
             </a-card>
           </a-col>
         </a-row>
+        <span class="copyright"
+          >Copyright © 2003-2020 Bocon. All Rights Reserved.</span
+        >
       </div>
     </div>
   </div>

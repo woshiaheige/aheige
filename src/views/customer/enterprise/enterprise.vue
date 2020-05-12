@@ -70,7 +70,6 @@
         </div>
       </div>
       <a-table
-        bordered
         rowKey="id"
         size="middle"
         :columns="columns"
@@ -195,6 +194,7 @@ export default {
     this.getIndustrySelect();
   },
   beforeRouteLeave(to, from, next) {
+    console.log(to.name);
     if (
       to.name === "customer-enterprise-station" ||
       to.name === "customer-enterprise-user"

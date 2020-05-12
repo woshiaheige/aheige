@@ -6,7 +6,6 @@
     :width="650"
   >
     <a-table
-      bordered
       :rowKey="(record, index) => index"
       size="middle"
       :columns="columns"

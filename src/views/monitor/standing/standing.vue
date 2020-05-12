@@ -54,7 +54,6 @@
         <div class="title">企业监测点</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"
