@@ -95,6 +95,18 @@ const monitor = {
     return axios.get(
       base.api + "monitor/send17/getResultByQn/ + " + data.qn + "/{command}"
     );
+  },
+  //获取零值数据列表
+  getZeroData(data) {
+    return axios.get(base.api + "monitor/zeroData/", {
+      params: data
+    });
+  },
+  //获取恒值数据列表
+  getConstantData(data) {
+    return axios.get(base.api + "monitor/constantData/", {
+      params: data
+    });
   }
 };
 

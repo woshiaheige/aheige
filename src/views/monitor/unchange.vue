@@ -133,6 +133,7 @@ export default {
         mn: "",
         range: [this.$moment(), this.$moment()]
       };
+      this.getTableData();
     },
     getTableData() {
       this.loading = true;
@@ -146,7 +147,7 @@ export default {
         pointName: this.formInline.pointName
       };
       this.$api.monitor
-        .getExData(data)
+        .getConstantData(data)
         .then(res => {
           if (res.data.state == 0) {
             this.total = res.data.data.total;
