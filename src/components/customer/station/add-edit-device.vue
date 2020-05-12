@@ -37,10 +37,13 @@
         <a-upload
           name="file"
           :multiple="true"
-          :action="$base.api + 'files/uploadFile'"
+          :action="serverUrl"
           :fileList="fileList"
           @change="handleChange"
           :remove="handleRemove"
+          :headers="{
+            token: token
+          }"
         >
           <a-button> <a-icon type="upload" /> 上传材料</a-button>
         </a-upload>
@@ -55,7 +58,6 @@
   </a-modal>
 </template>
 <script>
-import base from "@/api/base";
 export default {
   props: {
     value: Object
@@ -76,7 +78,9 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      serverUrl: this.$api.common.uploadFileArr, // 上传图片服务器地址
+      token: JSON.parse(sessionStorage.getItem("userinfo")).token
     };
   },
   computed: {
@@ -87,9 +91,7 @@ export default {
       set() {}
     }
   },
-  mounted() {
-    console.log(base.api);
-  },
+  mounted() {},
   methods: {
     handleOk() {
       this.$refs.ruleForm.validate(valid => {

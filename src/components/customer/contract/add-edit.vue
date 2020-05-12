@@ -95,11 +95,14 @@
         <a-upload
           name="file"
           :multiple="true"
-          :action="$base.api + 'files/uploadFile'"
+          :action="serverUrl"
           :fileList="fileList"
           @change="handleChange"
           :remove="handleRemove"
           :beforeUpload="beforeUpload"
+          :headers="{
+            token: token
+          }"
         >
           <a-button> <a-icon type="upload" /> 选择文件 </a-button>
           <span v-margin:left="10">上传文件大小不能超过10MB</span>
@@ -116,7 +119,6 @@
 </template>
 
 <script>
-import base from "@/api/base";
 export default {
   props: {
     statusOption: Array,
@@ -169,7 +171,9 @@ export default {
           }
         ]
       },
-      isError: false
+      isError: false,
+      serverUrl: this.$api.common.uploadFileArr, // 上传图片服务器地址
+      token: JSON.parse(sessionStorage.getItem("userinfo")).token
     };
   },
   computed: {
@@ -180,9 +184,7 @@ export default {
       set() {}
     }
   },
-  mounted() {
-    console.log(base.api);
-  },
+  mounted() {},
   methods: {
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
