@@ -20,7 +20,7 @@
           <a-col :span="12"
             ><a-form-model-item label="因子名称" prop="name">
               <a-input
-                v-model="form.name"
+                v-model.trim="form.name"
                 placeholder="请输入"
               /> </a-form-model-item
           ></a-col>
@@ -28,7 +28,7 @@
             ><a-form-model-item label="因子编码" prop="code">
               <a-input
                 :disabled="factorsDetail != ''"
-                v-model="form.code"
+                v-model.trim="form.code"
                 placeholder="请输入"
               /> </a-form-model-item
           ></a-col>

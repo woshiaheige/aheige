@@ -26,7 +26,8 @@
             v-for="(item, index) in deviceOptions"
             :key="index"
             :value="item.id"
-            >{{ item.manufacturer }} | {{ item.name }}</a-select-option
+            >{{ item.manufacturer }} | {{ item.name }} |
+            {{ item.number }}</a-select-option
           >
         </a-select>
       </a-form-model-item>
