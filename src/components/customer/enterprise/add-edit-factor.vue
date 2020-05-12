@@ -32,10 +32,20 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="下限" prop="floorval">
-        <a-input type="number" v-model="formData.floorval" placeholder="下限" />
+        <a-input-number
+          v-model="formData.floorval"
+          placeholder="下限"
+          @change="changeFloor"
+          v-width="350"
+        />
       </a-form-model-item>
       <a-form-model-item label="上限" prop="ceilval">
-        <a-input type="number" v-model="formData.ceilval" placeholder="上限" />
+        <a-input-number
+          v-model="formData.ceilval"
+          placeholder="上限"
+          @change="changeCeil"
+          v-width="350"
+        />
       </a-form-model-item>
     </a-form-model>
     <template slot="footer">
@@ -54,7 +64,7 @@ export default {
   data() {
     let that = this;
     const validateNum = (rule, value, callback) => {
-      console.log(value, that.formData.floorval);
+      value = that.formData.ceilval;
       if (
         value &&
         that.formData.floorval &&
@@ -69,7 +79,10 @@ export default {
       title: "添加",
       factorOptions: [],
       formData: {
-        pointId: this.$route.query.id
+        pointId: this.$route.query.id,
+        floorval: "",
+        ceilval: "",
+        divisorId: undefined
       },
       rules: {
         divisorId: [
@@ -145,7 +158,6 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
-      this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
     },
     getEditData() {
@@ -165,14 +177,23 @@ export default {
       });
     },
     handleChange(value) {
-      this.formData.floorval = "";
-      this.formData.ceilval = "";
       this.factorOptions.forEach(item => {
         if (item.id == value) {
-          if (item.floorval) this.formData.floorval = item.floorval;
-          if (item.ceilval) this.formData.ceilval = item.ceilval;
+          this.formData.floorval =
+            item.floorval != null ? Number(item.floorval) : "";
+          this.formData.ceilval =
+            item.ceilval != null ? Number(item.ceilval) : "";
+          this.$forceUpdate();
         }
       });
+    },
+    changeFloor(value) {
+      this.formData.floorval = value;
+      this.$forceUpdate();
+    },
+    changeCeil(value) {
+      this.formData.ceilval = value;
+      this.$forceUpdate();
     }
   },
   mounted() {},
