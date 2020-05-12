@@ -35,7 +35,7 @@
         <a-input
           placeholder="合同编号"
           :maxLength="30"
-          v-model="formData.number"
+          v-model.trim="formData.number"
         />
       </a-form-model-item>
       <a-form-model-item label="合同起止时间" prop="range">

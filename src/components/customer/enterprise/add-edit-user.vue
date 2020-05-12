@@ -15,18 +15,22 @@
       :wrapper-col="{ span: 16 }"
     >
       <a-form-model-item label="姓名" prop="name">
-        <a-input placeholder="请输入" :maxLength="20" v-model="formData.name" />
+        <a-input
+          placeholder="请输入"
+          :maxLength="20"
+          v-model.trim="formData.name"
+        />
       </a-form-model-item>
       <a-form-model-item label="账号" prop="username">
         <a-input
           placeholder="请输入"
-          v-model="formData.username"
+          v-model.trim="formData.username"
           :disabled="isEdit"
           :maxLength="20"
         />
       </a-form-model-item>
       <a-form-model-item label="手机" prop="phone">
-        <a-input placeholder="手机" v-model="formData.phone" />
+        <a-input placeholder="手机" v-model.trim="formData.phone" />
       </a-form-model-item>
       <a-form-model-item label="密码" prop="password" has-feedback>
         <a-input-password
@@ -34,7 +38,7 @@
           type="password"
           :maxLength="20"
           :visibilityToggle="false"
-          v-model="formData.password"
+          v-model.trim="formData.password"
           v-if="!passwordShow"
           v-focus="focusSyncOne"
           @change="passwordInput"

@@ -34,14 +34,14 @@
       </a-form-model-item>
       <a-form-model-item label="监测点名称" prop="name">
         <a-input
-          v-model="formData.name"
+          v-model.trim="formData.name"
           :maxLength="30"
           placeholder="监测点名称"
         />
       </a-form-model-item>
       <a-form-model-item label="MN号" prop="mn">
         <a-input
-          v-model="formData.mn"
+          v-model.trim="formData.mn"
           :maxLength="30"
           placeholder="MN号"
           :disabled="modelData.type == 'edit'"
@@ -67,7 +67,7 @@
         <a-input
           placeholder="请选择经纬度"
           @click="onLnglat()"
-          v-model="formData.lngandlat"
+          v-model.trim="formData.lngandlat"
         >
           <a-tooltip slot="suffix">
             <a-icon type="environment" style="color: rgba(0,0,0,.45)" />
