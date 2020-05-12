@@ -27,7 +27,8 @@
             :key="item.id"
             :value="item.id"
           >
-            {{ item.name }} / {{ item.code }} / {{ item.protocolType }}协议
+            {{ item.name }} / {{ item.code }} /
+            {{ item.protocolType == "0" ? "扩展" : item.protocolType }}协议
           </a-select-option>
         </a-select>
       </a-form-model-item>
