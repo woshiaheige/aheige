@@ -122,7 +122,7 @@ const car = [
     component: () =>
       import(
         /* webpackChunkName: "view-car" */
-        "@/views/car/car-modal.vue"
+        "@/views/car/car-route.vue"
       )
   }
 ];

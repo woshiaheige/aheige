@@ -67,6 +67,7 @@
 
 <script>
 export default {
+  name: "monthly-assessment",
   data() {
     return {
       current: 1,
@@ -134,6 +135,16 @@ export default {
   },
   mounted() {
     this.getTableData();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "monthly-assessment-detail") {
+      let arr = [];
+      arr.push("monthly-assessment");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   },
   methods: {
     reset() {

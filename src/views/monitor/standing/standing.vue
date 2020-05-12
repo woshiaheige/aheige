@@ -54,7 +54,6 @@
         <div class="title">企业监测点</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"
@@ -108,6 +107,7 @@
 <script>
 import stationControl from "@/components/monitor/station-control.vue";
 export default {
+  name: "standing",
   components: { stationControl },
   data() {
     return {
@@ -185,6 +185,16 @@ export default {
   },
   mounted() {
     this.getTableData();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "monitor-standing-data") {
+      let arr = [];
+      arr.push("standing");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   },
   methods: {
     //重置表单事件

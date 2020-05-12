@@ -7,7 +7,6 @@
   >
     <div v-margin:bottom="25">
       <a-table
-        bordered
         rowKey="id"
         size="middle"
         :columns="columns"

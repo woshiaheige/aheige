@@ -40,7 +40,51 @@
     <a-layout :style="{ marginLeft: '256px' }">
       <a-layout-header class="layout-header">
         <div class="header-menu">
-          <a-icon type="qrcode" :style="{ fontSize: '24px' }" />
+          <a-popover title="相关二维码" placement="bottom">
+            <template slot="content">
+              <a-row :gutter="16">
+                <a-col :span="8">
+                  <a-card style="width: 200px">
+                    <img
+                      alt="example"
+                      style="width: 100%; height: 100%"
+                      :src="require('@/assets/img/wx-app-qrcode.png')"
+                    />
+                    <template slot="actions" class="ant-card-actions">
+                      <span>运维人员小程序</span>
+                    </template>
+                  </a-card>
+                </a-col>
+                <a-col :span="8">
+                  <a-card style="width: 200px">
+                    <img
+                      alt="example"
+                      style="width: 100%; height: 100%"
+                      :src="
+                        require('@/assets/img/wx-app-enterprise-qrcode.png')
+                      "
+                    />
+                    <template slot="actions" class="ant-card-actions">
+                      <span>企业用户小程序</span>
+                    </template>
+                  </a-card>
+                </a-col>
+                <a-col :span="8">
+                  <a-card style="width: 200px">
+                    <img
+                      alt="example"
+                      style="width: 100%; height: 100%"
+                      :src="require('@/assets/img/official_account_qrcode.png')"
+                    />
+                    <template slot="actions" class="ant-card-actions">
+                      <span>微信公众号</span>
+                    </template>
+                  </a-card>
+                </a-col>
+              </a-row>
+            </template>
+            <a-icon type="qrcode" :style="{ fontSize: '24px' }" />
+          </a-popover>
           <!-- <a-icon type="bell" :style="{ fontSize: '24px' }" /> -->
           <div v-margin:left="16">
             <a-avatar

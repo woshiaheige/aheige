@@ -31,7 +31,7 @@
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
-        <a-form-item label="下次年检时间">
+        <a-form-item label="付款时间">
           <a-range-picker
             :allowClear="false"
             format="YYYY-MM-DD"
@@ -52,15 +52,14 @@
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
       <div class="card-header">
-        <div class="title">年检详情</div>
+        <div class="title">年检费用详情</div>
         <div class="extra">
-          <a-button type="primary" @click="onEdit('add')">
+          <a-button type="primary" @click="add">
             <a-icon type="plus" />新建
           </a-button>
         </div>
       </div>
       <a-table
-        bordered
         rowKey="id"
         size="middle"
         :columns="columns"
@@ -87,13 +86,20 @@
         @showSizeChange="sizechange"
       />
     </a-card>
+
+    <add-fee v-model="modalInfo" @refresh="getTableData"></add-fee>
   </div>
 </template>
 
 <script>
+import addFee from "@/components/car/add-fee";
 export default {
+  components: {
+    addFee
+  },
   data() {
     return {
+      modalInfo: { show: false },
       current: 1,
       pageSize: 10,
       total: 0,
@@ -143,6 +149,11 @@ export default {
     this.getGoods();
   },
   methods: {
+    add() {
+      this.modalInfo = {
+        show: true
+      };
+    },
     reset() {
       this.isDisabled = true;
       this.isSearch = false;

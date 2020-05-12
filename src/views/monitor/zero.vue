@@ -26,7 +26,7 @@
             @pressEnter="getTableData"
           />
         </a-form-model-item>
-        <a-form-model-item label="异常时间">
+        <a-form-model-item label="零值时间">
           <a-range-picker
             :allowClear="false"
             v-model="formInline.range"
@@ -51,7 +51,6 @@
         <div class="title">零值列表</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"

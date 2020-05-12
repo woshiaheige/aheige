@@ -72,6 +72,7 @@
 
 <script>
 export default {
+  name: "season-assessment",
   data() {
     return {
       current: 1,
@@ -154,6 +155,16 @@ export default {
   mounted() {
     this.list.range = this.season;
     this.getTableData();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "season-assessment-detail") {
+      let arr = [];
+      arr.push("season-assessment");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   },
   methods: {
     reset() {
