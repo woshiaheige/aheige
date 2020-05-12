@@ -47,7 +47,7 @@
             >
           </a-select>
         </a-form-item>
-        <a-form-item label="设备名称">
+        <a-form-item label="实验室设备名称">
           <!-- <a-input
             placeholder="请输入"
             v-model="list.devName"
@@ -152,7 +152,7 @@ export default {
           key: "pointName"
         },
         {
-          title: "设备名称",
+          title: "实验室设备名称",
           dataIndex: "name",
           key: "name"
         },

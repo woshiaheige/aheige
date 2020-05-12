@@ -9,8 +9,8 @@
       <a-step title="已创建" :description="detail.gmtCreate" />
       <a-step title="处理中" />
       <a-step title="已完成" :description="detail.gmtModified" />
-      <a-step title="已延期" v-if="missionStatus == 3" />
-      <a-step title="已关闭" />
+      <!-- <a-step title="已延期" v-if="missionStatus == 3" />
+      <a-step title="已关闭" /> -->
     </a-steps>
     <a-descriptions :column="1" bordered>
       <a-descriptions-item label="任务名称">{{
@@ -28,14 +28,20 @@
       <a-descriptions-item label="任务描述">{{
         detail.content
       }}</a-descriptions-item>
-      <!-- <a-descriptions-item label="反馈结果" v-if="missionStatus == 2">
-        {{ detail.result }}</a-descriptions-item
-      > -->
       <a-descriptions-item label="反馈结果" v-if="detail.result">
         {{ detail.result }}</a-descriptions-item
       >
-      <a-descriptions-item label="附件" v-if="detail.fileId">
-        <a :href="fileDownload + detail.fileId">{{ detail.fileName }}</a>
+      <a-descriptions-item label="附件" v-if="detail.fileIds">
+        <!-- <a :href="fileViewOnline + detail.fileIds">{{ detail.fileName }}</a> -->
+
+        <img
+          v-for="(item, index) of detail.fileIds"
+          :key="index"
+          v-image-preview
+          :src="fileViewOnline + item"
+          alt=""
+          style="width:100px;height:100px;object-fit:cover;margin:5px"
+        />
       </a-descriptions-item>
     </a-descriptions>
     <template slot="footer">

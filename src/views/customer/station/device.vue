@@ -133,7 +133,14 @@ export default {
         {
           title: "验收时间",
           key: "gmtReceptionTime",
-          dataIndex: "gmtReceptionTime"
+          dataIndex: "gmtReceptionTime",
+          customRender: text => {
+            if (text) {
+              return this.$moment(text).format("YYYY-MM-DD");
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "验收材料",

@@ -3,31 +3,16 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="车牌号码">
-          <!-- <a-input
+          <a-input
             placeholder="请输入"
             v-model="list.devName"
             @pressEnter="getTableData"
-          ></a-input> -->
-          <a-select
-            v-model="list.goodsId"
-            placeholder="请选择"
-            v-width="150"
-            showSearch
-            :filterOption="filterOptions"
-            @change="getTableData"
-          >
-            <a-select-option
-              v-for="item in goodsOptions"
-              :key="item.id"
-              :value="item.id"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
+          ></a-input>
         </a-form-item>
         <a-form-item label="车辆品牌">
           <a-input
             placeholder="请输入"
-            v-model="list.devName"
+            v-model="list.brandName"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
@@ -40,7 +25,7 @@
           />
         </a-form-item>
         <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit()" :disabled="isSearch">
+          <a-button type="primary" @click="onSubmit()">
             查询
           </a-button>
           <a-button @click="reset()" v-margin:left="16">
@@ -52,7 +37,7 @@
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
       <div class="card-header">
-        <div class="title">年检费用详情</div>
+        <div class="title">年检费用费用详情</div>
         <div class="extra">
           <a-button type="primary" @click="add">
             <a-icon type="plus" />新建
@@ -128,25 +113,16 @@ export default {
       ],
       tableData: [],
       list: {
-        enterpriseId: undefined,
-        pointId: undefined,
-        goodsId: undefined,
+        brandName: "",
         devName: "",
         range: [this.$moment().subtract(7, "days"), this.$moment()]
       },
       costCount: 0,
-      enterPriseOptions: [],
-      pointOptions: [],
-      goodsOptions: [],
-      isDisabled: true,
-      diffDay: 0,
-      isSearch: false
+      diffDay: 0
     };
   },
   mounted() {
     this.getTableData();
-    this.getEnterprise();
-    this.getGoods();
   },
   methods: {
     add() {
@@ -155,23 +131,15 @@ export default {
       };
     },
     reset() {
-      this.isDisabled = true;
-      this.isSearch = false;
-      this.list = {
-        enterpriseId: undefined,
-        pointId: undefined,
-        goodsId: undefined,
-        range: [this.$moment().subtract(7, "days"), this.$moment()]
-      };
+      this.list = this.$options.data().list;
       this.onSubmit();
     },
     getTableData() {
       let data = {
         page: this.current,
         size: this.pageSize,
-        enterpriseName: "",
-        pointName: "",
         devName: this.list.devName,
+        brandName: this.list.brandName,
         beginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
         endTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD"),
         type: 1 //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
@@ -193,49 +161,13 @@ export default {
           this.loading = false;
         });
     },
-    //企业下拉
-    getEnterprise() {
-      this.$api.common.selectEnterprise().then(res => {
-        if (res.data.state == 0) {
-          this.enterPriseOptions = res.data.data;
-        }
-      });
-    },
-    changeEnterprise(value) {
-      this.isDisabled = false;
-      this.list.pointId = undefined;
-      this.getPoint(value);
-      this.getTableData();
-    },
-    //监测点下拉
-    getPoint(value) {
-      this.$api.common
-        .selectStationByEnterpriseId({
-          enterpriseId: value
-        })
-        .then(res => {
-          if (res.data.state == 0) {
-            this.pointOptions = res.data.data;
-          }
-        });
-    },
-    //物资下拉
-    getGoods() {
-      this.$api.product.getGoodsSelect().then(res => {
-        if (res.data.state == 0) {
-          this.goodsOptions = res.data.data;
-        }
-      });
-    },
     handleChange(value) {
       this.diffDay = 0;
-      this.isSearch = false;
       var a = this.$moment(value[1]);
       var b = this.$moment(value[0]);
       this.diffDay = a.diff(b, "days");
       if (this.diffDay > 365) {
         this.$message.warn("时间不能超过一年，请重新选择时间");
-        this.isSearch = true;
       }
       this.getTableData();
     }

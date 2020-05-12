@@ -17,7 +17,7 @@
       <a-form-model-item label="供应商名称" prop="name">
         <a-input
           placeholder="请输入"
-          v-model="formInline.name"
+          v-model.trim="formInline.name"
           :maxLength="30"
         />
       </a-form-model-item>
@@ -31,7 +31,7 @@
       <a-form-model-item label="地址" prop="address">
         <a-input
           placeholder="请输入"
-          v-model="formInline.address"
+          v-model.trim="formInline.address"
           :maxLength="30"
         />
       </a-form-model-item>
@@ -130,7 +130,7 @@ export default {
     //修改供应商
     editSupplier() {
       let data = {
-        id: this.obj.row.id,
+        id: this.modelData.row.id,
         name: this.formInline.name,
         regionId:
           this.formInline.regionId[this.formInline.regionId.length - 1] || "",
@@ -157,7 +157,7 @@ export default {
     //通过id查询供应商
     getSupplierById() {
       let data = {
-        id: this.obj.row.id
+        id: this.modelData.row.id
       };
       this.$api.product.getSupplierById(data).then(res => {
         this.formInline.name = res.data.data.name;
@@ -198,7 +198,7 @@ export default {
       e.preventDefault();
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          if (this.obj.row != "" && this.obj.row != undefined) {
+          if (this.modelData.type == "edit") {
             this.editSupplier();
           } else {
             this.postAddSupplier();
