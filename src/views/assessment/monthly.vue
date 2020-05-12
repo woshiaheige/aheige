@@ -221,6 +221,8 @@ export default {
       });
     },
     goDetail(row) {
+      this.chartData = [];
+
       this.columns[2].children[0].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
