@@ -13,8 +13,8 @@
         <a-badge color="cyan" text="已创建" v-show="status == 1" />
         <a-badge status="processing" text="处理中" v-show="status == 2" />
         <a-badge status="success" text="已完成" v-show="status == 3" />
-        <a-badge status="warning" text="已延期" v-show="status == 4" />
-        <a-badge status="default" text="已关闭" v-show="status == 5" />
+        <!-- <a-badge status="warning" text="已延期" v-show="status == 4" />
+        <a-badge status="default" text="已关闭" v-show="status == 5" /> -->
       </template>
       <span slot="action" slot-scope="row">
         <a @click="goDetail(row)">详情</a>
