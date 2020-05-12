@@ -61,7 +61,7 @@
             <div class="title">运维车辆</div>
             <div class="value">{{ carList.length }}</div>
           </div>
-          <!-- <a-date-picker @change="onChange" class="select-time" /> -->
+          <a-date-picker @change="onChange" class="select-time" />
           <a-list itemLayout="horizontal" :dataSource="carList">
             <a-list-item
               slot="renderItem"
@@ -98,6 +98,7 @@
         </div>
       </div>
     </a-card>
+    <!-- <map-info v-model="modelInfo" /> -->
   </div>
 </template>
 
@@ -105,7 +106,9 @@
 import AMap from "AMap";
 import AMapUI from "AMapUI";
 import $ from "jquery";
+// import mapInfo from "@/components/index/map-info";
 export default {
+  // components: { mapInfo },
   data() {
     return {
       activeId: "",
@@ -119,7 +122,9 @@ export default {
       radioNum: "",
       deadline: Date.now() + 1000 * 60,
       pointLoading: false,
-      showModelId: ""
+      showModelId: "",
+      lineArr: ""
+      // modelInfo: { show: false }
     };
   },
   mounted() {
@@ -143,7 +148,7 @@ export default {
       if (key == 1) {
         await this.getPointData(value);
       } else if (key == 2) {
-        await this.getCarData();
+        await this.getCarData(value);
       } else if (key == 3) {
         await this.getUserData();
       }
@@ -188,9 +193,9 @@ export default {
       });
     },
     //获取运维车辆地标
-    async getCarData() {
+    async getCarData(value) {
       this.carList = [];
-      await this.$api.index.getCarData().then(res => {
+      await this.$api.index.getCarData({ dateTime: value }).then(res => {
         if (res.data.state == 0) {
           let result = res.data.data;
           for (var i in result) {
@@ -237,7 +242,41 @@ export default {
         }
       });
     },
-    goMarker(lng, lat, id) {
+    async goMarker(lng, lat, id) {
+      if (this.active == 1) {
+        await this.callback(this.active, this.radioNum);
+        this.map.remove(this.markers);
+        // var cache = [];
+        // let cloneMarkers = JSON.parse(
+        //   JSON.stringify(this.markers, function(key, value) {
+        //     if (typeof value === "object" && value !== null) {
+        //       if (cache.indexOf(value) !== -1) {
+        //         return;
+        //       }
+        //       cache.push(value);
+        //     }
+        //     return value;
+        //   })
+        // );
+        this.markers.forEach(item => {
+          if (item.w.id == id) {
+            item.setAnimation("AMAP_ANIMATION_BOUNCE");
+          }
+        });
+        this.map.add(this.markers);
+      } else if (this.active == 2) {
+        let params = {
+          vehicleId: id
+        };
+        await this.$api.car.trajectory(params).then(res => {
+          if (!(JSON.stringify(res.data.data) == "{}")) {
+            this.lineArr = res.data.data.arr;
+            // this.setCar();
+            // this.setPolyLine();
+            // this.map.setFitView();
+          }
+        });
+      }
       this.map.setCenter([lng, lat]); //设置地图中心点
       this.activeId = id;
     },
@@ -254,34 +293,95 @@ export default {
           : "";
       this.callback(this.active, this.radioNum);
     },
-    // onChange(_, dateString) {
-    //   this.callback(this.active, dateString);
-    // },
+    onChange(_, dateString) {
+      this.callback(this.active, dateString);
+    },
     onFinish() {
       this.deadline = Date.now() + 1000 * 60;
       this.callback(this.active, this.radioNum);
     },
+    //设置车辆起点
+    setCar() {
+      this.markers = new AMap.Marker({
+        map: this.map,
+        position: this.lineArr[0],
+        icon: "https://webapi.amap.com/images/car.png",
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle: -90
+      });
+    },
+    // 绘制轨迹
+    setPolyLine() {
+      this.polyline = new AMap.Polyline({
+        map: this.map,
+        path: this.lineArr,
+        showDir: true,
+        strokeColor: "blue", //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6 //线宽
+        // strokeStyle: "solid"  //线样式
+      });
+    },
     //自定义窗体
-    showInfo(marker, e) {
+    async showInfo(marker, e) {
       let data = {};
-      this.pointList.forEach(item => {
-        if (item.id == this.showModelId) data = item;
+      let id = e.target.w.id;
+      await this.$api.index.getPointData({ id }).then(res => {
+        if (res.data.state == 0) {
+          data = res.data.data;
+        }
       });
       let that = this;
-      let typeName = data.type == 32 ? "有线传输" : "无线传输";
+      let normalName = data.isNormal == 0 ? "正常" : "异常";
+      let linelName = data.state == 0 ? "在线" : "离线";
+      let bodyHtml = [
+        '<div class="content-window ant-row">',
+        '<div class="ant-col-12"><span>监控点名称：</span>' +
+          data.name +
+          "</div>",
+        "<div class='ant-col-12'><span>所属企业：</span>" +
+          data.enterpriseName +
+          "</div>",
+        "<div  class='ant-col-12'><span>MN号码：</span>" + data.mn + "</div>",
+        "<div  class='ant-col-12'><span>监测因子数：</span>" +
+          data.divisorCount +
+          "</div>",
+        "<div  class='ant-col-12'><span>是否在线：</span>" +
+          linelName +
+          "</div>",
+        "<div  class='ant-col-12'><span>是否异常：</span>" +
+          normalName +
+          "</div>",
+        "<div class='ant-col-24'><span>最后通迅时间：</span>" +
+          data.communicationTime +
+          "</div>"
+      ];
+      if (!(JSON.stringify(data.realData) == "{}")) {
+        let res = data.realData;
+        let html = [
+          "<div class='ant-col-24'><span>监控数据：</span>" +
+            res.dataTime +
+            "</div>"
+        ];
+        res.list.forEach(item => {
+          html.push(
+            "<div class='ant-col-12'><span>" +
+              item.codeName +
+              "：</span>" +
+              item.Avg +
+              item.unit +
+              "</div>"
+          );
+        });
+        bodyHtml = bodyHtml.concat(html);
+      }
       AMapUI.loadUI(["overlay/SimpleInfoWindow"], function(SimpleInfoWindow) {
         var infoWindow = new SimpleInfoWindow({
           infoTitle: data.name,
-          infoBody: [
-            '<div class="content-window">',
-            "<p><span>监控点名称：</span>" + data.name + "</p>",
-            "<p><span>所属企业：</span>" + data.enterpriseName + "</p>",
-            "<p><span>MN号码：</span>" + data.mn + "</p>",
-            "<p><span>传输类型：</span>" + typeName + "</p>",
-            "</div>"
-          ].join(""),
+          infoBody: bodyHtml.join(""),
           // 基点指向marker的头部位置（信息窗体的具体位置）
-          offset: new AMap.Pixel(-10, -40)
+          offset: new AMap.Pixel(-20, -40)
         });
         infoWindow.open(that.map, e.target.getPosition());
       });
