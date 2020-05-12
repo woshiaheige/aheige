@@ -130,8 +130,8 @@
 </template>
 
 <script>
-import pieCharts from "./pie-charts";
-import lineCharts from "./line-charts";
+import pieCharts from "@/components/cost/pie-charts";
+import lineCharts from "@/components/cost/line-charts";
 export default {
   components: { pieCharts, lineCharts },
   data() {
