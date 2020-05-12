@@ -78,7 +78,7 @@ export default {
   },
   data() {
     return {
-      form: { date: 0, member: "" },
+      form: { date: 0, group: "", member: "" },
       groupId: "",
       memberList: [],
       groupList: []
@@ -152,6 +152,7 @@ export default {
     },
     handleOk() {
       let data = {
+        groupId: this.form.group,
         id: this.missionDetail.id,
         dateTime: "",
         userId: this.form.member
