@@ -12,7 +12,7 @@
         <div class="ant-col-12">
           <span>所属企业：</span>{{ list.enterpriseName }}
         </div>
-        <div class="ant-col-12"><span>MN号码：</span>{{ list.mn }}</div>
+        <div class="ant-col-12"><span>MN号：</span>{{ list.mn }}</div>
         <div class="ant-col-12">
           <span>监测因子数：</span>{{ list.divisorCount }}
         </div>

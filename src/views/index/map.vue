@@ -362,7 +362,7 @@ export default {
         "<div class='ant-col-12'><span>所属企业：</span>" +
           data.enterpriseName +
           "</div>",
-        "<div  class='ant-col-12'><span>MN号码：</span>" + data.mn + "</div>",
+        "<div  class='ant-col-12'><span>MN号：</span>" + data.mn + "</div>",
         "<div  class='ant-col-12'><span>监测因子数：</span>" +
           data.divisorCount +
           "</div>",
