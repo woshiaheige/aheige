@@ -41,11 +41,13 @@
           :fileList="fileList"
           @change="handleChange"
           :remove="handleRemove"
+          :beforeUpload="beforeUpload"
           :headers="{
             token: token
           }"
         >
           <a-button> <a-icon type="upload" /> 上传材料</a-button>
+          <span v-margin:left="10">上传材料大小不能超过10MB</span>
         </a-upload>
       </a-form-model-item>
     </a-form-model>
@@ -145,6 +147,15 @@ export default {
       this.modelData.show = false;
       this.$refs.ruleForm.clearValidate();
       this.$refs.ruleForm.resetFields();
+    },
+    beforeUpload(file) {
+      this.isError = false;
+      const isLt10M = file.size / 1024 / 1024 < 10;
+      if (!isLt10M) {
+        this.$message.error("上传文件大小不能超过 10MB!");
+        this.isError = true;
+      }
+      return isLt10M;
     },
     handleChange(info) {
       let fileList = [...info.fileList];
