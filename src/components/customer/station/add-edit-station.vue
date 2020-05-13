@@ -271,6 +271,7 @@ export default {
         };
         if (this.modelData.type == "edit") {
           data.id = this.formData.id;
+          data.isStarted = this.formData.isStarted;
           this.$api.customer
             .editStation(data)
             .then(res => {
@@ -284,6 +285,7 @@ export default {
               this.handleCancel();
             });
         } else {
+          data.isStarted = 1;
           this.$api.customer
             .addStation(data)
             .then(res => {

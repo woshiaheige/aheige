@@ -20,62 +20,59 @@
 <script>
 export default {
   props: {
-    range: Array,
-    type: [Object, Number]
+    value: Object
   },
   data() {
     return {
-      value: [],
-      pieData: [
-        { value: 0, name: "设备成本", key: 1 },
-        { value: 0, name: "实验室设备成本", key: 2 },
-        { value: 0, name: "部件成本", key: 3 },
-        { value: 0, name: "试剂成本", key: 4 },
-        { value: 0, name: "标气成本", key: 5 },
-        { value: 0, name: "劳保用品成本", key: 6 },
-        { value: 0, name: "其他成本", key: 7 }
-      ],
+      legend: [],
       isPieEmpty: false,
       pieLoading: false
     };
   },
+  computed: {
+    listArr: {
+      get() {
+        return this.value;
+      },
+      set() {}
+    }
+  },
   mounted() {
-    this.reset();
+    this.getPieData();
   },
   methods: {
-    reset() {
-      console.log(this.range);
-      console.log(this.type);
-      let data = this.getLast3Month();
-      this.value = [this.$moment(data[0]), this.$moment(data[1])];
-      this.getData();
-    },
-    getData() {
+    getPieData(temp) {
+      let list = {};
+      if (temp != undefined) {
+        list = temp;
+      } else {
+        list = this.listArr;
+      }
       let data = {
-        beginTime: this.$moment(this.value[0]).format("YYYY-MM"),
-        endTime: this.$moment(this.value[1]).format("YYYY-MM")
+        beginTime: this.$moment(list.range[0]).format("YYYY-MM-DD"),
+        endTime: this.$moment(list.range[1]).format("YYYY-MM-DD"),
+        type: list.type,
+        enterpriseId: list.enterpriseId,
+        pointId: list.pointId || "",
+        goodsId: list.goodsId
       };
-      this.getPie(data);
-    },
-    //饼状图
-    getPie(data) {
       this.isPieEmpty = false;
       this.pieLoading = true;
       this.$api.cost
-        .getChartPie(data)
+        .getTypeChartPie(data)
         .then(res => {
           if (res.data.state == 0) {
             this.pieLoading = false;
             let result = res.data.data || [];
-            let data = JSON.parse(JSON.stringify(this.pieData));
+            let data = [];
             if (result.length > 0) {
-              for (var i in result) {
-                data.forEach(item => {
-                  if (result[i].type == item.key) {
-                    item.value = result[i].totalAmount;
-                  }
-                });
-              }
+              result.forEach(item => {
+                let temp = {};
+                temp.value = item.total_prices;
+                temp.name = item.goods_name;
+                data.push(temp);
+                this.legend.push(item.goods_name);
+              });
               this.drawPieChart(data);
             } else {
               this.isPieEmpty = true;
@@ -105,16 +102,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          data: [
-            "设备成本",
-            "实验室设备成本",
-            "部件成本",
-            "试剂成本",
-            "标气成本",
-            "劳保用品成本",
-            "车辆成本",
-            "其他成本"
-          ]
+          data: this.legend
         },
         series: [
           {
@@ -135,70 +123,6 @@ export default {
       };
 
       pieChart.setOption(option);
-    },
-    changeText(key) {
-      switch (key) {
-        case 1:
-          return "设备成本";
-        case 2:
-          return "实验室设备成本";
-        case 3:
-          return "部件成本";
-        case 4:
-          return "试剂成本";
-        case 5:
-          return "标气成本";
-        case 6:
-          return "劳保用品成本";
-        case 7:
-          return "车辆成本";
-        default:
-          return "其他成本";
-      }
-    },
-    //获取当前月的前二个月
-    getLast3Month() {
-      var now = new Date();
-      var year = now.getFullYear();
-      var month = now.getMonth() + 1; //0-11表示1-12月
-      var dateObj = [];
-      if (parseInt(month) < 10) {
-        month = "0" + month;
-      }
-      dateObj[1] = year + "-" + month;
-      if (parseInt(month) == 1) {
-        //如果是1月份，则取上一年的11月份
-        dateObj[0] = parseInt(year) - 1 + "-11";
-      } else if (parseInt(month) == 2) {
-        dateObj[0] = parseInt(year) - 1 + "-12";
-      } else if (parseInt(month) <= 10) {
-        dateObj[0] = year + "-0" + (parseInt(month) - 2);
-      } else {
-        dateObj[0] = year + "-" + (parseInt(month) - 2);
-      }
-      return dateObj;
-    },
-    //获取区域间的所有月份
-    getMonthBetween(start, end) {
-      var result = [];
-      var s = start.split("-");
-      var e = end.split("-");
-      var min = new Date();
-      var max = new Date();
-      min.setFullYear(s[0], s[1]);
-      max.setFullYear(e[0], e[1]);
-      var curr = min;
-      while (curr <= max) {
-        var month = curr.getMonth();
-        var str = curr.getFullYear() + "-" + month;
-        var y = curr.getFullYear() + "-0";
-        if (str == y) {
-          str = curr.getFullYear() + "-12";
-        }
-        result.push(str);
-        curr.setMonth(month + 1);
-      }
-      return result;
     }
   }
 };

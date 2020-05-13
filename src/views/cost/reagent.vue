@@ -3,11 +3,6 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-form-item label="企业名称">
-          <!-- <a-input
-            placeholder="请输入"
-            v-model="list.enterpriseName"
-            @pressEnter="getTableData"
-          ></a-input> -->
           <a-select
             v-model="list.enterpriseId"
             placeholder="请选择"
@@ -16,6 +11,9 @@
             :filterOption="filterOptions"
             @change="changeEnterprise"
           >
+            <a-select-option value="">
+              全部
+            </a-select-option>
             <a-select-option
               v-for="item in enterPriseOptions"
               :key="item.id"
@@ -25,11 +23,6 @@
           </a-select>
         </a-form-item>
         <a-form-item label="监控点名称">
-          <!-- <a-input
-            placeholder="请输入"
-            v-model="list.pointName"
-            @pressEnter="getTableData"
-          ></a-input> -->
           <a-select
             v-model="list.pointId"
             placeholder="请选择"
@@ -37,7 +30,7 @@
             showSearch
             :filterOption="filterOptions"
             :disabled="isDisabled"
-            @change="getTableData"
+            @change="freshenData"
           >
             <a-select-option
               v-for="item in pointOptions"
@@ -48,19 +41,17 @@
           </a-select>
         </a-form-item>
         <a-form-item label="试剂名称">
-          <!-- <a-input
-            placeholder="请输入"
-            v-model="list.devName"
-            @pressEnter="getTableData"
-          ></a-input> -->
           <a-select
             v-model="list.goodsId"
             placeholder="请选择"
             v-width="150"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="freshenData"
           >
+            <a-select-option value="">
+              全部
+            </a-select-option>
             <a-select-option
               v-for="item in goodsOptions"
               :key="item.id"
@@ -89,7 +80,7 @@
       </a-form>
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
-      <a-tabs default-active-key="1">
+      <a-tabs v-model="activeKey" @change="changeTab">
         <a-tab-pane key="1" tab="出库详情">
           <a-table
             rowKey="id"
@@ -102,7 +93,7 @@
           >
             <template slot="footer">
               合计
-              <span style="float: right">{{ costCount }}</span>
+              <span style="float: right">￥{{ costCount }}</span>
             </template>
           </a-table>
 
@@ -119,10 +110,10 @@
           />
         </a-tab-pane>
         <a-tab-pane key="2" tab="成本统计分析">
-          <pie-charts :range="list.range" :type="4"></pie-charts>
+          <pie-charts v-model="list" ref="childPie"></pie-charts>
         </a-tab-pane>
         <a-tab-pane key="3" tab="成本趋势分析">
-          <line-charts :range="list.range" :type="4"></line-charts>
+          <line-charts v-model="list" ref="childLine"></line-charts>
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -153,8 +144,8 @@ export default {
         },
         {
           title: "试剂名称",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "goodsName",
+          key: "goodsName"
         },
         {
           title: "品牌",
@@ -177,28 +168,42 @@ export default {
           key: "unit"
         },
         {
-          title: "单价",
+          title: "单价(元)",
           dataIndex: "price",
-          key: "price"
+          key: "price",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "出库时间",
-          dataIndex: "gmtModified",
-          key: "gmtModified"
+          dataIndex: "gmtCreate",
+          key: "gmtCreate"
         },
         {
-          title: "总价",
+          title: "总价(元)",
           dataIndex: "totalPrices",
-          key: "totalPrices"
+          key: "totalPrices",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         }
       ],
       tableData: [],
       list: {
-        enterpriseId: undefined,
+        type: 4, //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
+        enterpriseId: "",
         pointId: undefined,
-        goodsId: undefined,
-        devName: "",
-        range: [this.$moment().subtract(7, "days"), this.$moment()]
+        goodsId: "",
+        range: [this.$moment().subtract(6, "days"), this.$moment()]
       },
       costCount: 0,
       enterPriseOptions: [],
@@ -206,11 +211,12 @@ export default {
       goodsOptions: [],
       isDisabled: true,
       diffDay: 0,
-      isSearch: false
+      isSearch: false,
+      activeKey: "1"
     };
   },
   mounted() {
-    this.getTableData();
+    this.freshenData();
     this.getEnterprise();
     this.getGoods();
   },
@@ -219,23 +225,28 @@ export default {
       this.isDisabled = true;
       this.isSearch = false;
       this.list = {
-        enterpriseId: undefined,
+        type: 4,
+        enterpriseId: "",
         pointId: undefined,
-        goodsId: undefined,
-        range: [this.$moment().subtract(7, "days"), this.$moment()]
+        goodsId: "",
+        range: [this.$moment().subtract(6, "days"), this.$moment()]
       };
       this.onSubmit();
+      this.changeTab(this.activeKey);
+    },
+    freshenData() {
+      this.changeTab(this.activeKey);
     },
     getTableData() {
       let data = {
         page: this.current,
         size: this.pageSize,
-        enterpriseName: "",
-        pointName: "",
-        devName: this.list.devName,
+        enterpriseId: this.list.enterpriseId,
+        pointId: this.list.pointId || "",
+        goodsId: this.list.goodsId,
         beginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
         endTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD"),
-        type: 4 //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
+        type: this.list.type
       };
       this.loading = true;
       this.$api.cost
@@ -263,10 +274,13 @@ export default {
       });
     },
     changeEnterprise(value) {
-      this.isDisabled = false;
+      this.isDisabled = true;
       this.list.pointId = undefined;
-      this.getPoint(value);
-      this.getTableData();
+      if (value) {
+        this.isDisabled = false;
+        this.getPoint(value);
+      }
+      this.freshenData();
     },
     //监测点下拉
     getPoint(value) {
@@ -282,11 +296,15 @@ export default {
     },
     //物资下拉
     getGoods() {
-      this.$api.product.getGoodsSelect().then(res => {
-        if (res.data.state == 0) {
-          this.goodsOptions = res.data.data;
-        }
-      });
+      this.$api.cost
+        .getGoodsByType({
+          type: this.list.type
+        })
+        .then(res => {
+          if (res.data.state == 0) {
+            this.goodsOptions = res.data.data;
+          }
+        });
     },
     handleChange(value) {
       this.diffDay = 0;
@@ -298,7 +316,26 @@ export default {
         this.$message.warn("时间不能超过一年，请重新选择时间");
         this.isSearch = true;
       }
-      this.getTableData();
+      this.freshenData();
+    },
+    changeTab(key) {
+      let that = this;
+      this.activeKey = key;
+      switch (key) {
+        case "1":
+          that.getTableData();
+          break;
+        case "2":
+          if (that.$refs.childPie) {
+            that.$refs.childPie.getPieData(that.list);
+          }
+          break;
+        case "3":
+          if (that.$refs.childLine) {
+            that.$refs.childLine.getLineData(that.list);
+          }
+          break;
+      }
     }
   }
 };
