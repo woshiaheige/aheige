@@ -265,7 +265,6 @@ export default {
       this.controlObj = _obj;
     },
     handleOk() {
-      // console.log("ok");
       this.$emit("cancel");
     },
     handleCancel() {

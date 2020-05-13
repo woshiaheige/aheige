@@ -91,9 +91,9 @@ const monitor = {
     });
   },
   //查询反控结果
-  getResultByQn(data) {
+  getResultByQn(qn, command) {
     return axios.get(
-      base.api + "monitor/send17/getResultByQn/ + " + data.qn + "/{command}"
+      base.api + "monitor/send17/getResultByQn/ + " + qn + "/" + command
     );
   }
 };
