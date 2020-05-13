@@ -229,7 +229,7 @@ export default {
       let _this = this;
       this.$confirm({
         title: "删除",
-        content: `是否删除分类 ${row.name}`,
+        content: `将删除该分类下所有文章，确定删除吗?`,
         onOk() {
           console.log("OK");
           _this.$api.maintain.deleteKnowledgeClass({ id: row.id }).then(res => {

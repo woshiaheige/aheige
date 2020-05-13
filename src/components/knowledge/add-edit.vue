@@ -10,23 +10,23 @@
     wrapClassName="edit-article"
     :maskClosable="false"
   >
-    <a-form :form="form">
-      <a-form-item label="文章标题">
+    <a-form-model
+      ref="ruleForm"
+      :validateOnRuleChange="true"
+      :model="formData"
+      :rules="rules"
+    >
+      <a-form-model-item label="文章标题" prop="title">
         <a-input
           placeholder="请输入"
-          v-decorator="[
-            'title',
-            { rules: [{ required: true, message: '请输入文章标题' }] }
-          ]"
+          v-model.trim="formData.title"
+          :maxLength="30"
         />
-      </a-form-item>
-      <a-form-item label="知识库分类">
+      </a-form-model-item>
+      <a-form-model-item label="知识库分类" prop="classId">
         <a-select
           placeholder="请选择"
-          v-decorator="[
-            'classId',
-            { rules: [{ required: true, message: '请选择知识库分类' }] }
-          ]"
+          v-model="formData.classId"
           showSearch
           :filterOption="filterOptions"
         >
@@ -37,9 +37,9 @@
             >{{ item.name }}</a-select-option
           >
         </a-select>
-      </a-form-item>
+      </a-form-model-item>
       <editor v-model="content" v-if="showEditor" />
-    </a-form>
+    </a-form-model>
   </a-modal>
 </template>
 <script>
@@ -68,12 +68,26 @@ export default {
   data() {
     return {
       initDetail: "", //编辑时的初始数据
-      form: this.$form.createForm(this),
+      formData: {
+        title: "",
+        classId: undefined
+      },
       content: "",
-      editorOption: {},
       detailId: "",
       showEditor: false,
-      toggleEditorTimer: ""
+      toggleEditorTimer: "",
+      rules: {
+        classId: [
+          {
+            required: true,
+            message: "请选择知识库分类",
+            trigger: "change"
+          }
+        ],
+        title: [
+          { required: true, trigger: "change", message: "请输入文章标题" }
+        ]
+      }
     };
   },
   computed: {
@@ -93,10 +107,10 @@ export default {
         this.content = nval.content;
         this.toggleEditor();
         this.$nextTick(() => {
-          this.form.setFieldsValue({
+          this.formData = {
             title: nval.title,
             classId: nval.classId
-          });
+          };
         });
       }
     },
@@ -107,7 +121,8 @@ export default {
       if (nval && this.type && !this.detail) {
         //新增
         setTimeout(() => {
-          this.form.setFieldsValue({ classId: this.type[0] });
+          // this.form.setFieldsValue({ classId: this.type[0] });
+          this.formData.classId = this.type[0];
         }, 50);
       }
     }
@@ -124,22 +139,21 @@ export default {
       }, 200);
     },
     closeModal() {
-      let formData = this.form.getFieldsValue();
       if (this.detailId) {
         //编辑状态
         if (
-          formData.classId != this.initDetail.classId ||
-          formData.title != this.initDetail.title ||
+          this.formData.classId != this.initDetail.classId ||
+          this.formData.title != this.initDetail.title ||
           this.content != this.initDetail.content
         ) {
-          console.log("修改了未保存");
+          // console.log("修改了未保存");
           this.closeModalFn();
         } else {
           this.reset();
         }
       } else {
         //新增状态
-        if (formData.title || this.content) {
+        if (this.formData.title || this.content) {
           this.closeModalFn();
         } else {
           this.reset();
@@ -165,16 +179,19 @@ export default {
       this.$emit("update:visible", false);
       this.content = "";
       this.detailId = "";
-      this.form.resetFields();
+      this.$refs.ruleForm.clearValidate();
+      this.formData = this.$options.data().formData;
     },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.detailId) {
-            this.editknowledge(values);
-          } else {
-            this.addknowledge(values);
-          }
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        if (this.detailId) {
+          this.editknowledge(this.formData);
+        } else {
+          this.addknowledge(this.formData);
         }
       });
     },
