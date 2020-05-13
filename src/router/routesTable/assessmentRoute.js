@@ -46,7 +46,7 @@ const assessmentRoutes = [
     name: "monthly-assessment-detail",
     key: "monthly-assessment-detail",
     meta: {
-      title: "月度考评详情",
+      title: "月度考评分析",
       back: true
     },
     component: () =>
@@ -60,7 +60,7 @@ const assessmentRoutes = [
     name: "season-assessment-detail",
     key: "season-assessment-detail",
     meta: {
-      title: "季度考评详情",
+      title: "季度考评分析",
       back: true
     },
     component: () =>
@@ -74,7 +74,7 @@ const assessmentRoutes = [
     name: "yearly-assessment-detail",
     key: "yearly-assessment-detail",
     meta: {
-      title: "年度考评详情",
+      title: "年度考评分析",
       back: true
     },
     component: () =>

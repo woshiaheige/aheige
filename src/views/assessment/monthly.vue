@@ -46,7 +46,7 @@
         :scroll="{ x: 1300 }"
       >
         <a slot="check" slot-scope="row">
-          <a @click="goDetail(row)">详情</a>
+          <a @click="goDetail(row)">分析</a>
         </a>
       </a-table>
 
