@@ -75,8 +75,8 @@
         <template slot="isRun" slot-scope="row">
           <a-switch
             v-model="row.isRun"
-            checked-children="开"
-            un-checked-children="关"
+            checked-children="正常"
+            un-checked-children="停运"
             @change="changeSwitch(row)"
             @click="clickSwitch"
           />
