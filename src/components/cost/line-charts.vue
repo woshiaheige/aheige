@@ -67,7 +67,7 @@ export default {
             this.lineLoading = false;
             let result = res.data.data;
             if (result.length > 0) {
-              let legend = result[0].goods_name;
+              let legend = [result[0].goods_name];
               let obj = [
                 {
                   type: "line",
@@ -80,7 +80,9 @@ export default {
                 let isHas = true;
                 obj.forEach(element => {
                   if (element.name == item.goods_name) {
-                    that.dateList.push(item.gmt_create);
+                    if (!that.dateList.some(k => k == item.gmt_create)) {
+                      that.dateList.push(item.gmt_create);
+                    }
                     element.data.push(item.total_prices);
                     isHas = false;
                   }
@@ -94,6 +96,9 @@ export default {
                   });
                 }
               });
+              console.log("obj", obj);
+              console.log("legend", legend);
+              console.log("that.dateList", that.dateList);
               this.drawLineChart(obj, legend);
             } else {
               this.isLineEmpty = true;
