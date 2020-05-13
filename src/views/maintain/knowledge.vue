@@ -228,7 +228,7 @@ export default {
     onDeleteKnowledgeType(row) {
       let _this = this;
       this.$confirm({
-        title: "删除",
+        title: "删除" + row.name,
         content: `将删除该分类下所有文章，确定删除吗?`,
         onOk() {
           console.log("OK");

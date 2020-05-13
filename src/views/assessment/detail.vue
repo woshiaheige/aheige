@@ -131,7 +131,7 @@ export default {
                   .valueOf()
               : this.$route.query.type == 2
               ? this.$moment(this.$route.query.endTime)
-                  .date(31)
+                  .endOf("month")
                   .valueOf()
               : this.$moment(this.$route.query.beginTime)
                   .month(11)

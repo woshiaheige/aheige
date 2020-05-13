@@ -24,18 +24,20 @@
                 <a-radio-button :value="4">日数据</a-radio-button>
               </a-radio-group>
             </a-form-model-item>
-            <a-form-model-item style="float:right"
-              ><a-select v-model="formInline.showType" @change="getTableData">
-                <a-select-option value="data">数据</a-select-option>
-                <a-select-option value="chart">图表</a-select-option>
-              </a-select></a-form-model-item
-            >
+            <a-form-model-item style="float:right">
+              <a-radio-group
+                v-model="formInline.showType"
+                @change="getTableData"
+              >
+                <a-radio-button value="data">数据</a-radio-button>
+                <a-radio-button value="chart">图表</a-radio-button>
+              </a-radio-group>
+            </a-form-model-item>
           </a-form-model>
         </div>
       </div>
       <div v-if="formInline.showType == 'data'">
         <a-table
-          bordered
           :loading="loading"
           :rowKey="(record, index) => index"
           size="middle"
@@ -68,23 +70,12 @@
     >
       <div class="card-header">
         <div class="title">数据图表</div>
-        <!-- 因子列表下拉框 -->
-        <div class="extra">
-          <a-select :defaultValue="columnsValue" @change="onColumnsChange">
-            <a-select-option
-              v-for="item in columnsList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
-        </div>
       </div>
       <ve-line
         v-if="chartData.rows.length > 0"
         :data="chartData"
-        :legend-visible="false"
         :settings="settings"
+        :extend="chartExtend"
       ></ve-line>
       <a-empty v-if="chartData.rows.length == 0" :image="simpleImage" />
     </a-card>
@@ -96,8 +87,7 @@ export default {
   data() {
     return {
       allTableData: [],
-      columnsValue: "",
-      columnsName: "",
+      columnsName: {},
       dateFormat: "",
       columnsList: [],
       loading: false,
@@ -117,8 +107,13 @@ export default {
         showType: "data"
       },
       chartData: {
-        columns: ["dateTime", "value"],
+        columns: ["dateTime"],
         rows: []
+      },
+      chartExtend: {
+        series: {
+          smooth: false
+        }
       }
     };
   },
@@ -129,9 +124,7 @@ export default {
         xAis: {
           inverse: true
         },
-        labelMap: {
-          value: this.columnsName
-        }
+        labelMap: this.columnsName
       };
     }
   },
@@ -143,31 +136,39 @@ export default {
   methods: {
     setCharData() {
       let tempData = [];
-      let columnsValue = this.columnsValue;
       this.allTableData.forEach(element => {
         if (this.formInline.type == 1) {
-          tempData.push({
-            dateTime: element["dataTime"],
-            value: element[columnsValue]["Rtd"]
-          });
+          let rowData = {
+            dateTime: element["dataTime"]
+          };
+          for (let object in element) {
+            if (object !== "dataTime" && object !== "overFlag") {
+              if (element[object]["Rtd"])
+                rowData[object] = element[object]["Rtd"];
+            }
+          }
+          tempData.push(rowData);
         } else {
-          tempData.push({
-            dateTime: element["dataTime"],
-            value: Number(element[columnsValue]["Avg"])
-          });
+          let rowData = {
+            dateTime: element["dataTime"]
+          };
+          for (let object in element) {
+            if (object !== "dataTime" && object !== "overFlag") {
+              if (element[object]["Avg"])
+                rowData[object] = element[object]["Avg"];
+            }
+          }
+          tempData.push(rowData);
         }
       });
+
+      for (let object in this.allTableData[0]) {
+        if (object !== "dataTime" && object !== "overFlag")
+          this.chartData.columns.push(object);
+      }
+
       tempData = tempData.reverse();
       this.chartData.rows = tempData;
-    },
-    onColumnsChange(value, option) {
-      this.columnsValue = value;
-      for (let i = 0; i < this.columnsList.length; i++) {
-        if (this.columnsList[i].value == option.key) {
-          this.columnsName = this.columnsList[i].name;
-        }
-      }
-      this.setCharData();
     },
     //时间改变事件
     onChange(date, dateString) {
@@ -288,8 +289,10 @@ export default {
             });
             this.columns = temp;
             this.columnsList = tempColumns;
-            this.columnsValue = tempColumns[0].value || "";
-            this.columnsName = tempColumns[0].name || "";
+            console.log(this.columnsList);
+            this.columnsList.forEach(item => {
+              this.columnsName[item.value] = item.name;
+            });
           }
         })
         .then(() => {
