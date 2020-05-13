@@ -154,6 +154,12 @@ const car = {
     return axios.get(base.api + "assetAifCost/deleteAssetVehicleCost", {
       params: data
     });
+  },
+  //统计
+  assetVehicleTotalCost(data) {
+    return axios.get(base.api + "assetVehicleCost/", {
+      params: data
+    });
   }
 };
 
