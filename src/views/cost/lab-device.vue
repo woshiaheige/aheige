@@ -47,7 +47,7 @@
             >
           </a-select>
         </a-form-item>
-        <a-form-item label="设备名称">
+        <a-form-item label="实验室设备名称">
           <!-- <a-input
             placeholder="请输入"
             v-model="list.devName"
@@ -92,7 +92,6 @@
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="出库详情">
           <a-table
-            bordered
             rowKey="id"
             size="middle"
             :columns="columns"
@@ -131,8 +130,8 @@
 </template>
 
 <script>
-import pieCharts from "./pie-charts";
-import lineCharts from "./line-charts";
+import pieCharts from "@/components/cost/pie-charts";
+import lineCharts from "@/components/cost/line-charts";
 export default {
   components: { pieCharts, lineCharts },
   data() {
@@ -153,7 +152,7 @@ export default {
           key: "pointName"
         },
         {
-          title: "设备名称",
+          title: "实验室设备名称",
           dataIndex: "name",
           key: "name"
         },

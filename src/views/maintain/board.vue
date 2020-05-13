@@ -58,7 +58,7 @@
             <span></span
             >{{
               getMonthData(value).count
-                ? `计划数：${getMonthData(value).count}`
+                ? `任务数：${getMonthData(value).count}`
                 : ""
             }}
           </div>

@@ -14,7 +14,7 @@
     >
       <a-form-model-item label="企业名称" prop="name">
         <a-input
-          v-model="formData.name"
+          v-model.trim="formData.name"
           :maxLength="30"
           placeholder="企业名称"
         />
@@ -28,27 +28,27 @@
       </a-form-model-item>
       <a-form-model-item label="企业地址" prop="address">
         <a-input
-          v-model="formData.address"
+          v-model.trim="formData.address"
           :maxLength="30"
           placeholder="企业地址"
         />
       </a-form-model-item>
       <a-form-model-item label="企业信用代码" prop="code">
         <a-input
-          v-model="formData.code"
+          v-model.trim="formData.code"
           :maxLength="30"
           placeholder="企业信用代码"
         />
       </a-form-model-item>
       <a-form-model-item label="环保负责人" prop="environmentPrincipal">
         <a-input
-          v-model="formData.environmentPrincipal"
+          v-model.trim="formData.environmentPrincipal"
           placeholder="环保负责人"
           :maxLength="30"
         />
       </a-form-model-item>
       <a-form-model-item label="联系电话" prop="phone">
-        <a-input v-model="formData.phone" placeholder="联系电话" />
+        <a-input v-model.trim="formData.phone" placeholder="联系电话" />
       </a-form-model-item>
       <a-form-model-item label="控制级别" prop="controlLevel">
         <a-select

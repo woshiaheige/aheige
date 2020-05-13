@@ -51,7 +51,6 @@
         <div class="title">数据报表</div>
       </div>
       <a-table
-        bordered
         :loading="loading"
         size="middle"
         :rowKey="(record, index) => index"

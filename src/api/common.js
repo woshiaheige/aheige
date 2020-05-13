@@ -60,7 +60,6 @@ const common = {
   listByIds(data) {
     return axios.post(base.api + "divisor/listByIds", data);
   },
-
   //所有小组下拉
   selectGroup(data) {
     return axios.get(base.api + "sysGroup/query", {
@@ -138,6 +137,7 @@ const common = {
   },
   uploadFileApi: base.api + "files/upload",
   fileViewOnline: base.api + "files/view/", //在线显示文件
+  uploadFileArr: base.api + "files/uploadFile", //在线显示文件
   fileDownload: base.api + "files/download/file/" //文件下载
 };
 

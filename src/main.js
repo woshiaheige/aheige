@@ -13,6 +13,9 @@ import "ant-design-vue/dist/antd.css";
 //progress
 import VueAwesomeProgress from "vue-awesome-progress";
 
+import vueDirectiveImagePreviewer from "vue-directive-image-previewer";
+import "vue-directive-image-previewer/dist/assets/style.css";
+
 //自定义样式
 import "@/assets/style/common.less";
 import "@/assets/style/home/home.less";
@@ -62,6 +65,15 @@ Vue.mixin(iconfont);
 
 Vue.use(Antd);
 Vue.use(VCharts);
+Vue.use(vueDirectiveImagePreviewer, {
+  animate: {
+    duration: 600
+  },
+  zIndex: 10000,
+  maxHeight: "100%",
+  maxWidth: "100%"
+});
+
 Vue.use(VueLazyLoad, {
   preLoad: 1.3,
   loading: require("@/assets/img/loading.png"),

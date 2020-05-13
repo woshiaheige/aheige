@@ -60,7 +60,6 @@
         </div>
       </div>
       <a-table
-        bordered
         rowKey="id"
         size="middle"
         :columns="columns"
@@ -208,11 +207,16 @@ export default {
       to.name === "customer-enterprise-factor" ||
       to.name === "customer-enterprise-device"
     ) {
-      let arr = [];
+      let arr = this.$store.state.includeArr;
       arr.push("station-enterprise");
       this.$store.dispatch("createIncludeArr", arr);
+    } else if (to.name === "customer-enterprise") {
+      let arr = this.$store.state.includeArr.filter(
+        item => item !== "station-enterprise"
+      );
+      this.$store.dispatch("createIncludeArr", arr);
     } else {
-      // this.$store.dispatch("createIncludeArr", []);
+      this.$store.dispatch("createIncludeArr", []);
     }
     next();
   },

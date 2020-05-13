@@ -51,7 +51,6 @@
         <div class="title">超标列表</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"

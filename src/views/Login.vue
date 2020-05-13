@@ -178,6 +178,9 @@
             </a-card>
           </a-col>
         </a-row>
+        <span class="copyright"
+          >Copyright © 2003-2020 Bocon. All Rights Reserved.</span
+        >
       </div>
     </div>
   </div>

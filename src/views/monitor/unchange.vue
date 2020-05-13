@@ -26,7 +26,7 @@
             @pressEnter="getTableData"
           />
         </a-form-model-item>
-        <a-form-model-item label="异常时间">
+        <a-form-model-item label="恒值时间">
           <a-range-picker
             :allowClear="false"
             v-model="formInline.range"
@@ -51,7 +51,6 @@
         <div class="title">恒值列表</div>
       </div>
       <a-table
-        bordered
         size="middle"
         :loading="loading"
         :rowKey="(record, index) => index"
@@ -60,10 +59,6 @@
         v-margin:top="16"
         :pagination="false"
       >
-        <template slot="dataType" slot-scope="dataType">
-          <a-tag color="green" v-if="dataType == '2051'">分钟数据</a-tag>
-          <a-tag color="blue" v-if="dataType == '2061'">小时数据</a-tag>
-        </template>
       </a-table>
 
       <a-pagination
@@ -138,6 +133,7 @@ export default {
         mn: "",
         range: [this.$moment(), this.$moment()]
       };
+      this.getTableData();
     },
     getTableData() {
       this.loading = true;
@@ -151,7 +147,7 @@ export default {
         pointName: this.formInline.pointName
       };
       this.$api.monitor
-        .getExData(data)
+        .getConstantData(data)
         .then(res => {
           if (res.data.state == 0) {
             this.total = res.data.data.total;

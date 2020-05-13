@@ -61,16 +61,20 @@
             <div class="title">运维车辆</div>
             <div class="value">{{ carList.length }}</div>
           </div>
-          <a-date-picker @change="onChange" class="select-time" />
+          <a-date-picker
+            @change="onChange"
+            class="select-time"
+            v-model="dateTime"
+          />
           <a-list itemLayout="horizontal" :dataSource="carList">
             <a-list-item
               slot="renderItem"
               slot-scope="item"
-              :class="item.id == activeId ? 'active-list' : ''"
+              :class="item.vehicleUseId == activeId ? 'active-list' : ''"
             >
               <a-list-item-meta
                 :description="item.number"
-                @click="goMarker(item.lng, item.lat, item.id)"
+                @click="goMarker(item.lng, item.lat, item.vehicleUseId)"
               >
               </a-list-item-meta>
             </a-list-item>
@@ -114,6 +118,7 @@ export default {
       activeId: "",
       map: null,
       markers: [],
+      polyline: [],
       active: 1,
       pointList: [],
       carList: [],
@@ -123,7 +128,8 @@ export default {
       deadline: Date.now() + 1000 * 60,
       pointLoading: false,
       showModelId: "",
-      lineArr: ""
+      lineArr: "",
+      dateTime: null
       // modelInfo: { show: false }
     };
   },
@@ -135,7 +141,7 @@ export default {
       this.map = new AMap.Map("map", {
         center: [114.412599, 23.079404],
         resizeEnable: true,
-        zoom: 12,
+        zoom: 10,
         mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18"
       });
       this.callback(1, "");
@@ -148,6 +154,7 @@ export default {
       if (key == 1) {
         await this.getPointData(value);
       } else if (key == 2) {
+        if (!value) this.dateTime = null;
         await this.getCarData(value);
       } else if (key == 3) {
         await this.getUserData();
@@ -195,6 +202,7 @@ export default {
     //获取运维车辆地标
     async getCarData(value) {
       this.carList = [];
+      this.markers = [];
       await this.$api.index.getCarData({ dateTime: value }).then(res => {
         if (res.data.state == 0) {
           let result = res.data.data;
@@ -265,15 +273,17 @@ export default {
         });
         this.map.add(this.markers);
       } else if (this.active == 2) {
+        this.map.remove(this.polyline);
         let params = {
           vehicleId: id
         };
         await this.$api.car.trajectory(params).then(res => {
           if (!(JSON.stringify(res.data.data) == "{}")) {
+            this.map.remove(this.markers);
             this.lineArr = res.data.data.arr;
-            // this.setCar();
-            // this.setPolyLine();
-            // this.map.setFitView();
+            this.setCar();
+            this.setPolyLine();
+            this.map.setFitView();
           }
         });
       }
@@ -293,12 +303,21 @@ export default {
           : "";
       this.callback(this.active, this.radioNum);
     },
-    onChange(_, dateString) {
+    onChange(moment, dateString) {
+      this.map.remove(this.polyline);
+      this.map.remove(this.markers);
+      this.dateTime = moment;
       this.callback(this.active, dateString);
     },
     onFinish() {
       this.deadline = Date.now() + 1000 * 60;
-      this.callback(this.active, this.radioNum);
+      let value = "";
+      if (this.active == 1) value = this.radioNum;
+      this.map.remove(this.polyline);
+      if (this.active == 2 && this.dateTime) {
+        value = this.$moment(this.dateTime).format("YYYY-MM-DD");
+      }
+      this.callback(this.active, value);
     },
     //设置车辆起点
     setCar() {
@@ -343,7 +362,7 @@ export default {
         "<div class='ant-col-12'><span>所属企业：</span>" +
           data.enterpriseName +
           "</div>",
-        "<div  class='ant-col-12'><span>MN号码：</span>" + data.mn + "</div>",
+        "<div  class='ant-col-12'><span>MN号：</span>" + data.mn + "</div>",
         "<div  class='ant-col-12'><span>监测因子数：</span>" +
           data.divisorCount +
           "</div>",

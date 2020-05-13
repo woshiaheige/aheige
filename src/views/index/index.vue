@@ -70,7 +70,7 @@
                 :percent="
                   item.count == 0
                     ? 100
-                    : (item.completeCount / item.count) * 100
+                    : ((item.completeCount / item.count) * 100).toFixed(2)
                 "
                 :width="120"
               >
@@ -95,10 +95,10 @@
               <customer-list ref="customerList"></customer-list>
             </a-tab-pane>
             <a-tab-pane tab="物资库存提醒" key="4">
-              <customer-list ref="customerList"></customer-list>
+              <goods-list ref="goodsList"></goods-list>
             </a-tab-pane>
             <a-tab-pane tab="车辆年检提醒" key="5">
-              <customer-list ref="customerList"></customer-list>
+              <car-list ref="carList"></car-list>
             </a-tab-pane>
           </a-tabs>
         </a-card>
@@ -131,8 +131,10 @@
 import pointList from "@/components/index/point-list.vue";
 import contractList from "@/components/index/contract-list.vue";
 import customerList from "@/components/index/customer-list.vue";
+import goodsList from "@/components/index/goods-list.vue";
+import carList from "@/components/index/car-list.vue";
 export default {
-  components: { pointList, contractList, customerList },
+  components: { pointList, contractList, customerList, goodsList, carList },
   data() {
     return {
       map: null,
@@ -224,6 +226,16 @@ export default {
         case "3":
           if (that.$refs.customerList) {
             that.$refs.customerList.getTableData();
+          }
+          break;
+        case "4":
+          if (that.$refs.goodsList) {
+            that.$refs.goodsList.getTableData();
+          }
+          break;
+        case "5":
+          if (that.$refs.carList) {
+            that.$refs.carList.getTableData();
           }
           break;
       }

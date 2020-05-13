@@ -72,6 +72,7 @@
 
 <script>
 export default {
+  name: "yearly-assessment",
   data() {
     return {
       current: 1,
@@ -140,6 +141,16 @@ export default {
   },
   mounted() {
     this.getTableData();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "yearly-assessment-detail") {
+      let arr = [];
+      arr.push("yearly-assessment");
+      this.$store.dispatch("createIncludeArr", arr);
+    } else {
+      this.$store.dispatch("createIncludeArr", []);
+    }
+    next();
   },
   methods: {
     reset() {
