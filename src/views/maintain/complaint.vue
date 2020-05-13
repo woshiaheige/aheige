@@ -41,7 +41,7 @@
       </template>
       <span slot="action" slot-scope="row">
         <a @click="onDetail(row)">查看</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical" v-show="row.state == 1" />
         <a @click="onEdit(row)" v-show="row.state == 1">处理</a>
       </span>
     </a-table>

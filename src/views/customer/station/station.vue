@@ -86,8 +86,8 @@
               :value="row.isStarted == 1 ? true : false"
               :before-change="handleBeforeChange"
             >
-              <span slot="open">开</span>
-              <span slot="close">关</span>
+              <span slot="open">正常</span>
+              <span slot="close">停运</span>
             </i-switch>
           </span>
           <a-popover v-if="!row.isStarted">

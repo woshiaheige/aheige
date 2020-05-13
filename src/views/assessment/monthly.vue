@@ -46,7 +46,7 @@
         :scroll="{ x: 1300 }"
       >
         <a slot="check" slot-scope="row">
-          <a @click="goDetail(row)">详情</a>
+          <a @click="goDetail(row)">分析</a>
         </a>
       </a-table>
 
@@ -221,6 +221,8 @@ export default {
       });
     },
     goDetail(row) {
+      this.chartData = [];
+
       this.columns[2].children[0].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {

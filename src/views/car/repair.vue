@@ -5,14 +5,14 @@
         <a-form-item label="车牌号码">
           <a-input
             placeholder="请输入"
-            v-model="list.devName"
+            v-model="list.number"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
         <a-form-item label="车辆品牌">
           <a-input
             placeholder="请输入"
-            v-model="list.brandName"
+            v-model="list.modal"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
@@ -39,7 +39,7 @@
       <div class="card-header">
         <div class="title">维修保养费用详情</div>
         <div class="extra">
-          <a-button type="primary" @click="add">
+          <a-button type="primary" @click="visible = true">
             <a-icon type="plus" />新建
           </a-button>
         </div>
@@ -57,6 +57,11 @@
           合计
           <span style="float: right">{{ costCount }}</span>
         </template>
+        <span slot="action" slot-scope="row">
+          <a @click="onEdit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(row)">删除</a>
+        </span>
       </a-table>
 
       <a-pagination
@@ -72,19 +77,24 @@
       />
     </a-card>
 
-    <add-fee v-model="modalInfo" @refresh="getTableData"></add-fee>
+    <repair-fee
+      :modalInfo="modalInfo"
+      :visible.sync="visible"
+      @updateTable="getTableData"
+    ></repair-fee>
   </div>
 </template>
 
 <script>
-import addFee from "@/components/car/add-fee";
+import repairFee from "@/components/car/fee/repair-fee";
 export default {
   components: {
-    addFee
+    repairFee
   },
   data() {
     return {
-      modalInfo: { show: false },
+      visible: false,
+      modalInfo: { type: 5 }, //1油费2过路费3保险费4年检费5维修保养费
       current: 1,
       pageSize: 10,
       total: 0,
@@ -92,29 +102,40 @@ export default {
       columns: [
         {
           title: "车牌号",
-          dataIndex: "enterpriseName",
-          key: "enterpriseName"
+          dataIndex: "number",
+          key: "number"
         },
         {
           title: "车辆品牌",
-          dataIndex: "pointName",
-          key: "pointName"
+          dataIndex: "model",
+          key: "model"
         },
         {
           title: "付款时间",
-          dataIndex: "name",
-          key: "name"
+          dataIndex: "gmtPayment",
+          key: "gmtPayment",
+          customRender: text => {
+            let content = "";
+            content = text ? this.$moment(text).format("YYYY-MM-DD") : "";
+            return content;
+          }
         },
         {
-          title: "付款价格",
-          dataIndex: "brand",
-          key: "brand"
+          title: "付款金额",
+          dataIndex: "payment",
+          key: "payment"
+        },
+        {
+          title: "操作",
+          key: "action",
+          align: "center",
+          scopedSlots: { customRender: "action" }
         }
       ],
       tableData: [],
       list: {
-        brandName: "",
-        devName: "",
+        modal: "",
+        number: "",
         range: [this.$moment().subtract(7, "days"), this.$moment()]
       },
       costCount: 0,
@@ -125,41 +146,46 @@ export default {
     this.getTableData();
   },
   methods: {
-    add() {
-      this.modalInfo = {
-        show: true
-      };
-    },
     reset() {
-      this.list = this.$options.data().list;
+      this.list = {
+        modal: "",
+        number: "",
+        range: [this.$moment().subtract(7, "days"), this.$moment()]
+      };
       this.onSubmit();
     },
     getTableData() {
       let data = {
         page: this.current,
         size: this.pageSize,
-        devName: this.list.devName,
-        brandName: this.list.brandName,
-        beginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
-        endTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD"),
-        type: 1 //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
+        number: this.list.number,
+        modal: this.list.modal,
+        payBeginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
+        payEndTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD")
       };
       this.loading = true;
-      this.$api.cost
-        .getCostList(data)
+      this.$api.car
+        .assetMaintenanceCost(data)
         .then(res => {
           if (res.data.state == 0) {
             this.loading = false;
             let result = res.data.data;
-            this.tableData = result.voIPage.records;
-            this.total = Number(result.voIPage.total);
-            this.costCount = result.totalAmount || 0;
+            this.tableData = result.records;
+            this.total = Number(result.total);
+            this.costCount = this.getCostCount();
           }
         })
         .catch(error => {
           console.log(error);
           this.loading = false;
         });
+    },
+    getCostCount() {
+      let costCount = 0;
+      this.tableData.forEach(item => {
+        costCount += Number(item.payment);
+      });
+      return costCount.toFixed(2);
     },
     handleChange(value) {
       this.diffDay = 0;
@@ -170,6 +196,32 @@ export default {
         this.$message.warn("时间不能超过一年，请重新选择时间");
       }
       this.getTableData();
+    },
+    onEdit(row) {
+      this.visible = true;
+      this.modalInfo = row;
+    },
+    onDelete(row) {
+      console.log(row);
+      let _this = this;
+      this.$confirm({
+        title: "删除",
+        content: `是否删除${row.number}的维修保养费用详情`,
+        onOk() {
+          console.log("OK");
+          _this.$api.car
+            .deleteAssetMaintenanceCost({ id: row.id })
+            .then(res => {
+              if (res.data.state == 0) {
+                _this.$message.success("删除成功");
+                _this.getTableData();
+              }
+            });
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
     }
   }
 };

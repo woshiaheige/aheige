@@ -7,23 +7,24 @@
     :maskClosable="false"
   >
     <a-form-model
-      :form="formData"
       ref="ruleForm"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 18 }"
+      :validateOnRuleChange="true"
+      :model="formData"
       :rules="rules"
+      :label-col="{ span: 6 }"
+      :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="车牌" prop="number">
+      <a-form-model-item label="车牌" prop="vehicleId">
         <a-select
           placeholder="请选择"
-          v-model="formData.number"
+          v-model="formData.vehicleId"
           showSearch
           :filterOption="filterOptions"
         >
           <a-select-option
             v-for="item in carOptions"
             :key="item.id"
-            :value="Number(item.id)"
+            :value="item.id"
           >
             {{ item.number }}
           </a-select-option>
@@ -65,16 +66,18 @@ export default {
   },
   data() {
     return {
-      id: "",
+      carId: "",
       formData: {
-        number: undefined,
+        vehicleId: undefined, //车辆id
         payment: "",
         gmtPayment: undefined,
-        type: "" ////1油费2过路费3保险费4年检费5维修保养费
+        type: "3" ////1油费2过路费3保险费4年检费5维修保养费
       },
       carOptions: [],
       rules: {
-        number: [{ required: true, trigger: "change", message: "请输入车牌" }],
+        vehicleId: [
+          { required: true, trigger: "change", message: "请选择车牌" }
+        ],
         payment: [
           { required: true, trigger: "change", message: "输入付款金额" }
         ],
@@ -85,16 +88,17 @@ export default {
     };
   },
   computed: {
-    carModal() {
-      return this.modalInfo;
+    title() {
+      let title = this.carId ? "编辑费用" : "新增费用";
+      return title;
     }
   },
   watch: {
     modalInfo(nval) {
       if (nval.id) {
-        this.id = nval.id;
+        this.carId = nval.id;
         this.formData = {
-          number: nval.number,
+          vehicleId: nval.vehicleId,
           payment: nval.payment,
           type: nval.type,
           gmtPayment: nval.gmtPayment
@@ -106,45 +110,47 @@ export default {
   },
   methods: {
     reset() {
-      this.id = "";
+      this.carId = undefined;
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
     },
     handleOk() {
-      this.$refs.ruleForm.validateFields(valid => {
+      this.$refs.ruleForm.validate(valid => {
         if (!valid) {
           console.log("error submit!!");
           return false;
         }
+        let values = JSON.parse(JSON.stringify(this.formData));
+        values.gmtPayment = this.$moment(values.gmtPayment).format(
+          "YYYY-MM-DD hh:mm:ss"
+        );
         if (this.carId) {
-          this.editAssetVehicleCost(this.formData);
+          this.editInsurancCost(values);
         } else {
-          this.addAssetVehicleCost(this.formData);
+          this.addInsurancCost(values);
         }
       });
     },
-    editAssetVehicleCost(values) {
+    editInsurancCost(values) {
       //修改
       values.id = this.carId;
-      this.$api.car.editAssetVehicleCost(values).then(res => {
+      this.$api.car.editInsurancCost(values).then(res => {
         if (res.data.state == 0) {
           this.$message.success("修改成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-          this.carId = undefined;
         }
       });
     },
-    addAssetVehicleCost(values) {
+    addInsurancCost(values) {
       //新建
-      this.$api.car.addAssetVehicleCost(values).then(res => {
+      this.$api.car.addInsurancCost(values).then(res => {
         if (res.data.state == 0) {
           this.$message.success("添加成功");
           this.$emit("update:visible", false);
           this.$emit("updateTable");
           this.reset();
-          this.carId = undefined;
         }
       });
     },

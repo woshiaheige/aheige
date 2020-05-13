@@ -71,8 +71,14 @@ Vue.mixin(iconfont);
 Vue.use(Antd);
 Vue.use(VCharts);
 Vue.use(vueDirectiveImagePreviewer, {
-  zIndex: 99999
+  animate: {
+    duration: 600
+  },
+  zIndex: 10000,
+  maxHeight: "100%",
+  maxWidth: "100%"
 });
+
 Vue.use(VueLazyLoad, {
   preLoad: 1.3,
   loading: require("@/assets/img/loading.png"),

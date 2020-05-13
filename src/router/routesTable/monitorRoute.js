@@ -35,7 +35,7 @@ const monitorRoute = [
     name: "monitor-exceed",
     key: "monitor-exceed",
     meta: {
-      title: "超标数据",
+      title: "超标预警",
       back: false
     },
     component: () =>
@@ -50,7 +50,7 @@ const monitorRoute = [
     name: "monitor-unusual",
     key: "monitor-unusual",
     meta: {
-      title: "异常数据",
+      title: "异常预警",
       back: false
     },
     component: () =>
@@ -65,7 +65,7 @@ const monitorRoute = [
     name: "monitor-unchange",
     key: "monitor-unchange",
     meta: {
-      title: "恒值数据",
+      title: "恒值预警",
       back: false
     },
     component: () =>
@@ -80,7 +80,7 @@ const monitorRoute = [
     name: "monitor-zero",
     key: "monitor-zero",
     meta: {
-      title: "零值数据",
+      title: "零值预警",
       back: false
     },
     component: () =>

@@ -11,6 +11,13 @@
             @change="handleChange"
           />
         </a-form-item>
+        <a-form-item label="车牌号码">
+          <a-input
+            placeholder="请输入"
+            v-model="list.number"
+            @pressEnter="getTableData"
+          ></a-input>
+        </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="getData()">
             查询
@@ -24,7 +31,33 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">成本统计分析</div>
+        <div class="title">趋势分析</div>
+      </div>
+      <a-table
+        rowKey="id"
+        size="middle"
+        :columns="columns"
+        :dataSource="tableData"
+        v-margin:top="16"
+        :pagination="false"
+        :loading="loading"
+      >
+      </a-table>
+      <a-pagination
+        size="small"
+        v-margin:top="16"
+        showSizeChanger
+        :current="current"
+        :pageSize.sync="pageSize"
+        :total="total"
+        :showTotal="total => `共 ${total} 条`"
+        @change="pagechange"
+        @showSizeChange="sizechange"
+      />
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
+      <div class="card-header">
+        <div class="title">统计分析</div>
       </div>
       <div class="loading" v-if="pieLoading">
         <a-spin size="large" />
@@ -38,7 +71,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">成本趋势分析</div>
+        <div class="title">列表</div>
       </div>
       <div class="loading" v-if="lineLoading">
         <a-spin size="large" />
@@ -58,6 +91,11 @@ export default {
   data() {
     return {
       mode: ["month", "month"],
+      list: {
+        number: "",
+        beginTime: "",
+        endTime: ""
+      },
       value: [],
       pieData: [
         { value: 0, name: "设备成本", key: 1 },
@@ -72,13 +110,86 @@ export default {
       pieLoading: false,
       isLineEmpty: false,
       lineLoading: false,
-      dateList: []
+      dateList: [],
+      current: 1,
+      tableData: [],
+      pageSize: 10,
+      total: 0,
+      loading: false,
+      columns: [
+        {
+          title: "车牌号",
+          dataIndex: "number",
+          key: "number"
+        },
+        {
+          title: "车辆品牌",
+          dataIndex: "model",
+          key: "model"
+        },
+        {
+          title: "加油费（元）",
+          dataIndex: "sumFuelPayment",
+          key: "sumFuelPayment"
+        },
+        {
+          title: "过路费（元）",
+          dataIndex: "sumTollsPayment",
+          key: "sumTollsPayment"
+        },
+        {
+          title: "保险费（元）",
+          dataIndex: "sumInsurancePayment",
+          key: "sumInsurancePayment"
+        },
+        {
+          title: "年检费（元）",
+          dataIndex: "payment",
+          key: "payment"
+        },
+        {
+          title: "维修保养费（元）",
+          dataIndex: "payment",
+          key: "payment"
+        },
+        {
+          title: "共计（元）",
+          dataIndex: "payment",
+          key: "payment"
+        }
+      ]
     };
   },
   mounted() {
     this.reset();
   },
   methods: {
+    getTableData() {
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        number: this.list.number,
+        modal: "",
+        beginTime: this.$moment(this.value[0]).format("YYYY-MM"),
+        endTime: this.$moment(this.value[1]).format("YYYY-MM")
+      };
+      this.loading = true;
+      this.$api.car
+        .assetVehicleTotalCost(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            let result = res.data.data;
+            this.tableData = result.records;
+            this.total = Number(result.total);
+            // this.costCount = this.getCostCount();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
     handleChange(value) {
       this.value = value;
     },
@@ -107,8 +218,12 @@ export default {
       if (!this.validTime(data)) {
         return;
       }
+      this.list.beginTime = data.beginTime;
+      this.list.endTime = data.endTime;
       this.getLine(data);
       this.getPie(data);
+
+      this.getTableData();
     },
     validTime(data) {
       this.dateList = this.getMonthBetween(data.beginTime, data.endTime);

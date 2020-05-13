@@ -45,6 +45,121 @@ const car = {
     return axios.get(base.api + "assetVehicle/query", {
       params: data
     });
+  },
+  //新增油费
+  addAssetVehicleCost(data) {
+    return axios.post(base.api + "assetFuelCost/addAssetVehicleCost", data);
+  },
+  //修改油费
+  editAssetVehicleCost(data) {
+    return axios.post(base.api + "assetFuelCost/editAssetVehicleCost", data);
+  },
+  //删除油费
+  deleteAssetVehicleCost(data) {
+    return axios.get(base.api + "assetFuelCost/deleteAssetVehicleCost", {
+      params: data
+    });
+  },
+
+  //新增过路费
+  addTollCost(data) {
+    return axios.post(base.api + "assetTollsCost/addAssetVehicleCost", data);
+  },
+  //修改过路费
+  editTollCost(data) {
+    return axios.post(base.api + "assetTollsCost/editAssetVehicleCost", data);
+  },
+  //删除过路费
+  deleteTollCost(data) {
+    return axios.get(base.api + "assetTollsCost/deleteAssetVehicleCost", {
+      params: data
+    });
+  },
+
+  //新增保险费
+  addInsurancCost(data) {
+    return axios.post(
+      base.api + "assetInsuranceCost/addAssetVehicleCost",
+      data
+    );
+  },
+  //修改保险费
+  editInsurancCost(data) {
+    return axios.post(
+      base.api + "assetInsuranceCost/editAssetVehicleCost",
+      data
+    );
+  },
+
+  //加油费
+  assetFuelCost(data) {
+    return axios.get(base.api + "assetFuelCost/", {
+      params: data
+    });
+  },
+  //过路费
+  assetTollsCost(data) {
+    return axios.get(base.api + "assetTollsCost/", {
+      params: data
+    });
+  },
+  //保险费
+  assetInsuranceCost(data) {
+    return axios.get(base.api + "assetInsuranceCost/", {
+      params: data
+    });
+  },
+  //维修保养
+  assetMaintenanceCost(data) {
+    return axios.get(base.api + "assetMaintenanceCost/", {
+      params: data
+    });
+  },
+  //新增维修保养
+  addAssetMaintenanceCost(data) {
+    return axios.post(
+      base.api + "assetMaintenanceCost/addAssetVehicleCost",
+      data
+    );
+  },
+  //修改维修保养
+  editAssetMaintenanceCost(data) {
+    return axios.post(
+      base.api + "assetMaintenanceCost/editAssetVehicleCost",
+      data
+    );
+  },
+  //删除维修保养
+  deleteAssetMaintenanceCost(data) {
+    return axios.get(base.api + "assetMaintenanceCost/deleteAssetVehicleCost", {
+      params: data
+    });
+  },
+  //年检
+  assetAifCost(data) {
+    return axios.get(base.api + "assetAifCost/", {
+      params: data
+    });
+  },
+  //新增年检
+  addAssetAifCost(data) {
+    return axios.post(base.api + "assetAifCost/addAssetVehicleCost", data);
+  },
+  //修改年检
+  editAssetAifCost(data) {
+    return axios.post(base.api + "assetAifCost/editAssetVehicleCost", data);
+  },
+  //删除年检
+  deleteAssetAifCost(data) {
+    return axios.get(base.api + "assetAifCost/deleteAssetVehicleCost", {
+      params: data
+    });
+  },
+  //统计
+  assetVehicleTotalCost(data) {
+    return axios.get(base.api + "assetVehicleCost/", {
+      params: data
+    });
   }
 };
 
