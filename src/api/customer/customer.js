@@ -196,6 +196,18 @@ const customer = {
     return axios.get(base.api + "cusContractFile/deleteCusContractFile", {
       params: data
     });
+  },
+  //启用
+  startPoint(data) {
+    return axios.get(base.api + "cusPoint/start", {
+      params: data
+    });
+  },
+  //停运
+  stopPoint(data) {
+    return axios.get(base.api + "cusPoint/stop", {
+      params: data
+    });
   }
 };
 

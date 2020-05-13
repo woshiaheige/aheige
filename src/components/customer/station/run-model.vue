@@ -71,25 +71,23 @@ export default {
           return false;
         }
         //验证通过
-        // let data = {
-        //   id: this.value.row.id,
-        //   desc: this.formData.desc
-        // };
-        // if (this.modelData.type == "edit") {
-        //   data.id = this.formData.id;
-        //   this.$api.customer
-        //     .editStation(data)
-        //     .then(res => {
-        //       if (res.data.state == 0) {
-        //         this.$message.success("编辑成功");
-        //         this.$emit("refresh");
-        //         this.handleCancel();
-        //       }
-        //     })
-        //     .catch(() => {
-        //       this.handleCancel();
-        //     });
-        // }
+        let data = {
+          cusPointId: this.value.row.id,
+          stopReason: this.formData.desc
+        };
+
+        this.$api.customer
+          .stopPoint(data)
+          .then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("停运成功");
+              this.$emit("refresh");
+              this.handleCancel();
+            }
+          })
+          .catch(() => {
+            this.handleCancel();
+          });
       });
     },
     handleCancel() {

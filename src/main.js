@@ -10,6 +10,11 @@ import "@/directive/index";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 
+//iview Switch
+import { Switch } from "view-design";
+import "view-design/dist/styles/iview.css";
+Vue.component("i-switch", Switch);
+
 //progress
 import VueAwesomeProgress from "vue-awesome-progress";
 

@@ -80,17 +80,19 @@
           <a-tag color="blue" v-if="transferType == 1">无线传输</a-tag>
           <a-tag color="green" v-if="transferType == 2">有线传输</a-tag>
         </template>
-        <template slot="isRun" slot-scope="row">
-          <a-switch
-            v-model="row.isRun"
-            checked-children="开"
-            un-checked-children="关"
-            @change="changeSwitch(row)"
-            @click="clickSwitch"
-          />
-          <a-popover v-if="!row.isRun">
+        <template slot="isStarted" slot-scope="row">
+          <span @click="clickRow(row)">
+            <i-switch
+              :value="row.isStarted == 1 ? true : false"
+              :before-change="handleBeforeChange"
+            >
+              <span slot="open">开</span>
+              <span slot="close">关</span>
+            </i-switch>
+          </span>
+          <a-popover v-if="!row.isStarted">
             <template slot="content">
-              <p>因为……所以关了</p>
+              <p>{{ row.stopReason }}</p>
             </template>
             <a-icon
               type="question-circle"
@@ -175,9 +177,9 @@ export default {
         },
         {
           title: "是否停运",
-          key: "isRun",
+          key: "isStarted",
           align: "center",
-          scopedSlots: { customRender: "isRun" },
+          scopedSlots: { customRender: "isStarted" },
           width: 100
         },
         {
@@ -203,7 +205,8 @@ export default {
       },
       loading: false,
       pointOptions: [],
-      switchInfo: {}
+      switchInfo: {},
+      visible: false
     };
   },
   mounted() {
@@ -253,26 +256,42 @@ export default {
           that.loading = false;
         });
     },
-    changeSwitch(row) {
+    clickRow(row) {
       this.switchInfo = row;
     },
-    clickSwitch(value) {
-      if (value) {
-        let that = this;
-        this.$confirm({
-          title: "启动",
-          content: "是否确定启动" + that.switchInfo.name + "？",
-          onOk() {},
-          onCancel() {
-            console.log("Cancel");
+    handleBeforeChange() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          if (!this.switchInfo.isStarted) {
+            this.$confirm({
+              title: this.switchInfo.isStarted == 1 ? "停运" : "启动",
+              content:
+                "您确认要" +
+                (this.switchInfo.isStarted == 1 ? "停运" : "启动") +
+                this.switchInfo.name +
+                "吗？",
+              onOk: () => {
+                this.$api.customer
+                  .startPoint({
+                    cusPointId: this.switchInfo.id
+                  })
+                  .then(res => {
+                    if (res.data.state == 0) {
+                      resolve();
+                      this.$message.success("启动成功");
+                      this.getTableData();
+                    }
+                  });
+              }
+            });
+          } else {
+            this.runInfo = {
+              show: true,
+              row: this.switchInfo
+            };
           }
-        });
-      } else {
-        this.runInfo = {
-          show: true,
-          row: this.switchInfo
-        };
-      }
+        }, 500);
+      });
     },
     //监测点类型下拉
     getPointSelect() {
