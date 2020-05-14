@@ -113,17 +113,17 @@
         </div>
       </div>
     </a-card>
-    <!-- <map-info v-model="modelInfo" /> -->
+    <map-info v-model="modelInfo" />
   </div>
 </template>
 
 <script>
 import AMap from "AMap";
-import AMapUI from "AMapUI";
+// import AMapUI from "AMapUI";
 import $ from "jquery";
-// import mapInfo from "@/components/index/map-info";
+import mapInfo from "@/components/index/map-info";
 export default {
-  // components: { mapInfo },
+  components: { mapInfo },
   data() {
     return {
       activeId: "",
@@ -140,8 +140,8 @@ export default {
       pointLoading: false,
       showModelId: "",
       lineArr: "",
-      dateTime: null
-      // modelInfo: { show: false }
+      dateTime: null,
+      modelInfo: { show: false }
     };
   },
   mounted() {
@@ -198,13 +198,13 @@ export default {
               id: result[i].id,
               anchor: "center"
             });
+            marker.on("click", e => {
+              that.showModelId = e.target.w.id;
+              this.showInfo(marker, e);
+            });
             if (result[i].errorType != "4") {
-              marker.on("click", e => {
-                that.showModelId = e.target.w.id;
-                this.showInfo(marker, e);
-              });
+              this.pointList.push(result[i]);
             }
-            this.pointList.push(result[i]);
             this.markers.push(marker);
           }
         }
@@ -319,6 +319,7 @@ export default {
       this.callback(this.active, dateString);
     },
     onFinish() {
+      this.modelInfo.show = false;
       this.deadline = Date.now() + 1000 * 60;
       let value = "";
       if (this.active == 1) value = this.radioNum;
@@ -360,59 +361,64 @@ export default {
           data = res.data.data;
         }
       });
-      let that = this;
-      let normalName = data.isNormal == 0 ? "正常" : "异常";
-      let linelName = data.state == 0 ? "在线" : "离线";
-      let bodyHtml = [
-        '<div class="content-window ant-row">',
-        '<div class="ant-col-12"><span>监控点名称：</span>' +
-          data.name +
-          "</div>",
-        "<div class='ant-col-12'><span>所属企业：</span>" +
-          data.enterpriseName +
-          "</div>",
-        "<div  class='ant-col-12'><span>MN号：</span>" + data.mn + "</div>",
-        "<div  class='ant-col-12'><span>监测因子数：</span>" +
-          data.divisorCount +
-          "</div>",
-        "<div  class='ant-col-12'><span>是否在线：</span>" +
-          linelName +
-          "</div>",
-        "<div  class='ant-col-12'><span>是否异常：</span>" +
-          normalName +
-          "</div>",
-        "<div class='ant-col-24'><span>最后通迅时间：</span>" +
-          data.communicationTime +
-          "</div>"
-      ];
-      if (!(JSON.stringify(data.realData) == "{}")) {
-        let res = data.realData;
-        let html = [
-          "<div class='ant-col-24'><span>监控数据：</span>" +
-            res.dataTime +
-            "</div>"
-        ];
-        res.list.forEach(item => {
-          html.push(
-            "<div class='ant-col-12'><span>" +
-              item.codeName +
-              "：</span>" +
-              item.Avg +
-              item.unit +
-              "</div>"
-          );
-        });
-        bodyHtml = bodyHtml.concat(html);
-      }
-      AMapUI.loadUI(["overlay/SimpleInfoWindow"], function(SimpleInfoWindow) {
-        var infoWindow = new SimpleInfoWindow({
-          infoTitle: data.name,
-          infoBody: bodyHtml.join(""),
-          // 基点指向marker的头部位置（信息窗体的具体位置）
-          offset: new AMap.Pixel(-20, -40)
-        });
-        infoWindow.open(that.map, e.target.getPosition());
-      });
+      this.modelInfo = {
+        show: true,
+        position: e.pixel,
+        data: data
+      };
+      // let that = this;
+      // let normalName = data.isNormal == 0 ? "正常" : "异常";
+      // let linelName = data.state == 0 ? "在线" : "离线";
+      // let bodyHtml = [
+      //   '<div class="content-window ant-row">',
+      //   '<div class="ant-col-12"><span>监控点名称：</span>' +
+      //     data.name +
+      //     "</div>",
+      //   "<div class='ant-col-12'><span>所属企业：</span>" +
+      //     data.enterpriseName +
+      //     "</div>",
+      //   "<div  class='ant-col-12'><span>MN号：</span>" + data.mn + "</div>",
+      //   "<div  class='ant-col-12'><span>监测因子数：</span>" +
+      //     data.divisorCount +
+      //     "</div>",
+      //   "<div  class='ant-col-12'><span>是否在线：</span>" +
+      //     linelName +
+      //     "</div>",
+      //   "<div  class='ant-col-12'><span>是否异常：</span>" +
+      //     normalName +
+      //     "</div>",
+      //   "<div class='ant-col-24'><span>最后通迅时间：</span>" +
+      //     data.communicationTime +
+      //     "</div>"
+      // ];
+      // if (!(JSON.stringify(data.realData) == "{}")) {
+      //   let res = data.realData;
+      //   let html = [
+      //     "<div class='ant-col-24'><span>数据时间：</span>" +
+      //       res.dataTime +
+      //       "</div>"
+      //   ];
+      //   res.list.forEach(item => {
+      //     html.push(
+      //       "<div class='ant-col-12'><span>" +
+      //         item.codeName +
+      //         "：</span>" +
+      //         item.Avg +
+      //         item.unit +
+      //         "</div>"
+      //     );
+      //   });
+      //   bodyHtml = bodyHtml.concat(html);
+      // }
+      // AMapUI.loadUI(["overlay/SimpleInfoWindow"], function(SimpleInfoWindow) {
+      //   var infoWindow = new SimpleInfoWindow({
+      //     infoTitle: data.name,
+      //     infoBody: bodyHtml.join(""),
+      //     // 基点指向marker的头部位置（信息窗体的具体位置）
+      //     offset: new AMap.Pixel(-20, -40)
+      //   });
+      //   infoWindow.open(that.map, e.target.getPosition());
+      // });
     }
   }
 };

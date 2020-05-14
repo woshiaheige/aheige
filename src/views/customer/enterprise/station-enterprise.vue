@@ -83,8 +83,8 @@
               <span slot="close">停运</span>
             </i-switch>
           </span>
-          <a-popover v-if="!row.isStarted">
-            <template slot="content">
+          <a-tooltip placement="top" v-if="!row.isStarted">
+            <template slot="title">
               <p>{{ row.stopReason }}</p>
             </template>
             <a-icon
@@ -97,7 +97,7 @@
                 color: 'rgba(0, 0, 0, 0.25)'
               }"
             />
-          </a-popover>
+          </a-tooltip>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="goFactor(row)">监测因子</a>
