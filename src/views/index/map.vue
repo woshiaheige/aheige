@@ -313,8 +313,6 @@ export default {
       this.callback(this.active, this.radioNum);
     },
     onChange(moment, dateString) {
-      console.log(1);
-      console.log(moment);
       this.map.remove(this.polyline);
       this.map.remove(this.markers);
       this.dateTime = moment;
