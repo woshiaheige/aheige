@@ -145,26 +145,6 @@ export default {
       };
 
       lineChart.setOption(option);
-    },
-    changeText(key) {
-      switch (key) {
-        case 1:
-          return "设备成本";
-        case 2:
-          return "实验室设备成本";
-        case 3:
-          return "部件成本";
-        case 4:
-          return "试剂成本";
-        case 5:
-          return "标气成本";
-        case 6:
-          return "劳保用品成本";
-        case 7:
-          return "车辆成本";
-        default:
-          return "其他成本";
-      }
     }
   }
 };
