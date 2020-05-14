@@ -83,6 +83,7 @@
         <template slot="isStarted" slot-scope="row">
           <span @click="clickRow(row)">
             <i-switch
+              size="large"
               :value="row.isStarted == 1 ? true : false"
               :before-change="handleBeforeChange"
             >
