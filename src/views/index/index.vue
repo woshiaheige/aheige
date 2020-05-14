@@ -70,6 +70,8 @@
                 :percent="
                   item.count == 0
                     ? 100
+                    : item.completeCount == 0
+                    ? 0
                     : ((item.completeCount / item.count) * 100).toFixed(2)
                 "
                 :width="120"

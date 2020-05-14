@@ -70,13 +70,24 @@
             <a-list-item
               slot="renderItem"
               slot-scope="item"
-              :class="item.vehicleUseId == activeId ? 'active-list' : ''"
+              :class="item.id == activeId ? 'active-list' : ''"
             >
               <a-list-item-meta
                 :description="item.number"
-                @click="goMarker(item.lng, item.lat, item.vehicleUseId)"
+                v-if="item.latitude == null || item.longitude == null"
+              />
+              <a-list-item-meta
+                v-else
+                :description="item.number"
+                @click="goMarker(item.lng, item.lat, item.id)"
               >
               </a-list-item-meta>
+              <a-tag
+                color="red"
+                v-if="item.latitude == null || item.longitude == null"
+              >
+                未激活
+              </a-tag>
             </a-list-item>
           </a-list>
         </div>
@@ -204,23 +215,25 @@ export default {
       this.carList = [];
       this.markers = [];
       await this.$api.index.getCarData({ dateTime: value }).then(res => {
-        if (res.data.state == 0) {
+        if (res.data.state == 0 && res.data.data.length > 0) {
           let result = res.data.data;
-          for (var i in result) {
-            let marker;
-            let content =
-              '<div class="marker-info marker-car"><a-icon class="car" />' +
-              result[i].number +
-              "</div>";
-            marker = new AMap.Marker({
-              position: new AMap.LngLat(result[i].lng, result[i].lat),
-              // title: result[i].number,
-              content: content,
-              anchor: "center"
-            });
-            this.carList.push(result[i]);
-            this.markers.push(marker);
-          }
+          result.forEach(item => {
+            this.carList.push(item);
+            if (item.latitude != null && item.longitude != null) {
+              let marker;
+              let content =
+                '<div class="marker-info marker-car"><a-icon class="car" />' +
+                item.number +
+                "</div>";
+              marker = new AMap.Marker({
+                position: new AMap.LngLat(item.longitude, item.latitude),
+                // title: result[i].number,
+                content: content,
+                anchor: "center"
+              });
+              this.markers.push(marker);
+            }
+          });
         }
       });
     },
@@ -254,18 +267,7 @@ export default {
       if (this.active == 1) {
         await this.callback(this.active, this.radioNum);
         this.map.remove(this.markers);
-        // var cache = [];
-        // let cloneMarkers = JSON.parse(
-        //   JSON.stringify(this.markers, function(key, value) {
-        //     if (typeof value === "object" && value !== null) {
-        //       if (cache.indexOf(value) !== -1) {
-        //         return;
-        //       }
-        //       cache.push(value);
-        //     }
-        //     return value;
-        //   })
-        // );
+
         this.markers.forEach(item => {
           if (item.w.id == id) {
             item.setAnimation("AMAP_ANIMATION_BOUNCE");
@@ -274,16 +276,23 @@ export default {
         this.map.add(this.markers);
       } else if (this.active == 2) {
         this.map.remove(this.polyline);
+
         let params = {
-          vehicleId: id
+          vehicleId: id,
+          dateTime: this.$moment(this.dateTime).format("YYYY-MM-DD")
         };
-        await this.$api.car.trajectory(params).then(res => {
+        if (this.dateTime == "undefined" || this.dateTime == null) {
+          params.dateTime = "";
+        }
+        this.$api.car.trajectory(params).then(res => {
           if (!(JSON.stringify(res.data.data) == "{}")) {
-            this.map.remove(this.markers);
             this.lineArr = res.data.data.arr;
-            this.setCar();
-            this.setPolyLine();
-            this.map.setFitView();
+            if (this.lineArr.length) {
+              this.map.remove(this.markers);
+              this.setCar();
+              this.setPolyLine();
+              this.map.setFitView();
+            }
           }
         });
       }
@@ -304,6 +313,8 @@ export default {
       this.callback(this.active, this.radioNum);
     },
     onChange(moment, dateString) {
+      console.log(1);
+      console.log(moment);
       this.map.remove(this.polyline);
       this.map.remove(this.markers);
       this.dateTime = moment;
