@@ -5,18 +5,22 @@
     @cancel="closeModal"
     :maskClosable="false"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="小组名称">
+    <a-form-model
+      ref="ruleForm"
+      :validateOnRuleChange="true"
+      :model="formData"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
+      <a-form-model-item label="小组名称" prop="name">
         <a-input
           :maxLength="30"
-          placeholder="请输入"
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入小组名称' }] }
-          ]"
+          placeholder="小组名称"
+          v-model.trim="formData.name"
         />
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+    </a-form-model>
     <template slot="footer">
       <a-button key="back" @click="closeModal">取消</a-button>
       <a-button key="go" type="primary" @click="handleOk" v-preventReClick
@@ -39,8 +43,19 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      groupId: ""
+      formData: {
+        name: ""
+      },
+      groupId: "",
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "请输入小组名称",
+            trigger: "change"
+          }
+        ]
+      }
     };
   },
   computed: {
@@ -57,9 +72,9 @@ export default {
       if (nval) {
         this.groupId = nval.id;
         setTimeout(() => {
-          this.form.setFieldsValue({
+          this.formData = {
             name: nval.name
-          });
+          };
         }, 50);
       }
     }
@@ -71,16 +86,19 @@ export default {
     },
     reset() {
       this.groupId = "";
-      this.form.resetFields();
+      this.$refs.ruleForm.clearValidate();
+      this.formData = this.$options.data().formData;
     },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.groupId) {
-            this.editGroup(values);
-          } else {
-            this.addGroup(values);
-          }
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        if (this.groupId) {
+          this.editGroup(this.formData);
+        } else {
+          this.addGroup(this.formData);
         }
       });
     },

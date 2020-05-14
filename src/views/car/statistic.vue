@@ -23,6 +23,7 @@
               v-for="item in carOptions"
               :key="item.id"
               :value="item.id"
+              clearable
             >
               {{ item.number }}
             </a-select-option>

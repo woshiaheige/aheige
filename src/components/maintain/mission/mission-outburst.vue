@@ -10,7 +10,7 @@
       v-margin:top="16"
     >
       <template slot="status" slot-scope="status">
-        <a-badge color="cyan" text="已创建" v-show="status == 1" />
+        <a-badge color="cyan" text="待处理" v-show="status == 1" />
         <a-badge status="processing" text="处理中" v-show="status == 2" />
         <a-badge status="success" text="已完成" v-show="status == 3" />
         <!-- <a-badge status="warning" text="已延期" v-show="status == 4" />
