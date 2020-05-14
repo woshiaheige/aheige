@@ -5,31 +5,26 @@
     @cancel="closeModal"
     :maskClosable="false"
   >
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="权限名称">
+    <a-form-model
+      ref="ruleForm"
+      :validateOnRuleChange="true"
+      :model="formData"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 18 }"
+    >
+      <a-form-model-item label="权限名称" prop="name">
         <a-input
           placeholder="请输入"
-          v-decorator="[
-            'name',
-            {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入权限名称,长度不能超过30位',
-                  max: 30
-                }
-              ]
-            }
-          ]"
+          v-model.trim="formData.name"
+          :maxLength="30"
+          prop="name"
         />
-      </a-form-item>
-      <a-form-item label="权限类型">
+      </a-form-model-item>
+      <a-form-model-item label="权限类型" prop="type">
         <a-select
           placeholder="请选择"
-          v-decorator="[
-            'type',
-            { rules: [{ required: true, message: '请选择权限类型' }] }
-          ]"
+          v-model="formData.type"
           showSearch
           :filterOption="filterOptions"
         >
@@ -40,8 +35,8 @@
             >{{ item.label }}</a-select-option
           >
         </a-select>
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+    </a-form-model>
     <a-tree
       checkable
       :autoExpandParent="autoExpandParent"
@@ -78,7 +73,26 @@ export default {
       replaceFields: {
         key: "id"
       },
-      form: this.$form.createForm(this),
+      formData: {
+        name: "",
+        type: ""
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "请输入权限名称",
+            trigger: "change"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择权限类型",
+            trigger: "change"
+          }
+        ]
+      },
       expandedKeys: [],
       autoExpandParent: true,
       dataList: [],
@@ -110,10 +124,10 @@ export default {
         if (this.roleDetail) {
           //编辑权限
           setTimeout(() => {
-            this.form.setFieldsValue({
+            this.formData = {
               name: this.roleDetail.name,
               type: `${this.roleDetail.type}`
-            });
+            };
           }, 50);
           this.roleId = this.roleDetail.id;
           this.getSysRoleById(this.roleId);
@@ -136,8 +150,8 @@ export default {
       this.roleId = "";
       this.userRoleId = "";
       this.resourceIdList = [];
-      // this.menuIds = [];
-      this.form.resetFields();
+      this.$refs.ruleForm.clearValidate();
+      this.formData = this.$options.data().formData;
     },
     initRole() {
       //添加默认权限
@@ -189,13 +203,15 @@ export default {
       });
     },
     handleOk() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.roleId) {
-            this.editRole(values);
-          } else {
-            this.addRole(values);
-          }
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        if (this.roleId) {
+          this.editRole(this.formData);
+        } else {
+          this.addRole(this.formData);
         }
       });
     },
