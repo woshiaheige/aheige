@@ -4,7 +4,7 @@
       style="width:200px"
       :value="value"
       @change="change"
-      :min="0"
+      :min="min"
       :formatter="formatter"
       :max="10000000"
     >
@@ -26,6 +26,10 @@ export default {
     step: {
       type: Number,
       default: 1
+    },
+    min: {
+      type: Number,
+      default: 0
     }
   },
   data() {
