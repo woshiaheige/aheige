@@ -12,11 +12,20 @@
           />
         </a-form-item>
         <a-form-item label="车牌号码">
-          <a-input
-            placeholder="请输入"
-            v-model="list.number"
-            @pressEnter="getTableData"
-          ></a-input>
+          <a-select
+            placeholder="请选择"
+            v-model="list.vehicleId"
+            showSearch
+            :filterOption="filterOptions"
+          >
+            <a-select-option
+              v-for="item in carOptions"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.number }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="getData()">
@@ -31,7 +40,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">趋势分析</div>
+        <div class="title">列表</div>
       </div>
       <a-table
         rowKey="id"
@@ -71,7 +80,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">列表</div>
+        <div class="title">趋势分析</div>
       </div>
       <div class="loading" v-if="lineLoading">
         <a-spin size="large" />
@@ -96,6 +105,7 @@ export default {
         beginTime: "",
         endTime: ""
       },
+      carOptions: [],
       value: [],
       pieData: [
         { value: 0, name: "设备成本", key: 1 },
@@ -161,9 +171,17 @@ export default {
     };
   },
   mounted() {
+    this.getAllCar();
     this.reset();
   },
   methods: {
+    getAllCar() {
+      this.$api.car.getAllCar().then(res => {
+        if (res.data.state == 0) {
+          this.carOptions = res.data.data;
+        }
+      });
+    },
     getTableData() {
       let data = {
         page: this.current,
