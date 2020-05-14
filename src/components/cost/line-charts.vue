@@ -96,9 +96,6 @@ export default {
                   });
                 }
               });
-              console.log("obj", obj);
-              console.log("legend", legend);
-              console.log("that.dateList", that.dateList);
               this.drawLineChart(obj, legend);
             } else {
               this.isLineEmpty = true;
