@@ -34,7 +34,7 @@
           <a-tag color="green" v-if="list.isNormal == 0">
             正常
           </a-tag>
-          <a-tag color="red" v-else>
+          <a-tag color="orange" v-else>
             异常
           </a-tag>
         </a-descriptions-item>
@@ -58,7 +58,12 @@
             :label="item.codeName"
           >
             <span v-if="item.Avg == '-'">{{ item.Avg }}</span>
-            <span v-else>
+            <span
+              v-else
+              :class="
+                item.Flag == 'T' ? 'red' : item.Flag == 'N' ? '' : 'orange'
+              "
+            >
               {{ item.Avg }}{{ item.unit }}
               <a-tooltip placement="top">
                 <template slot="title">
@@ -158,6 +163,12 @@ export default {
     height: 42px;
     line-height: 42px;
     color: #fff;
+  }
+  .red {
+    color: red;
+  }
+  .orange {
+    color: orange;
   }
 }
 </style>
