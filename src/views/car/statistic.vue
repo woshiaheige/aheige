@@ -288,6 +288,7 @@ export default {
     reset() {
       let data = this.getLast3Month();
       this.value = [this.$moment(data[0]), this.$moment(data[1])];
+      this.list.vehicleId = undefined;
       this.getData();
     },
     getData() {
