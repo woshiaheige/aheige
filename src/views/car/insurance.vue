@@ -54,8 +54,7 @@
         :loading="loading"
       >
         <template slot="footer">
-          合计
-          <span style="float: right">{{ costCount }}</span>
+          <span style="float: right">合计{{ costCount }}元</span>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>
@@ -77,19 +76,19 @@
       />
     </a-card>
 
-    <gas-fee
+    <insurance-fee
       :modalInfo="modalInfo"
       :visible.sync="visible"
       @updateTable="getTableData"
-    ></gas-fee>
+    ></insurance-fee>
   </div>
 </template>
 
 <script>
-import gasFee from "@/components/car/fee/gas-fee";
+import insuranceFee from "@/components/car/fee/insurance-fee";
 export default {
   components: {
-    gasFee
+    insuranceFee
   },
   data() {
     return {

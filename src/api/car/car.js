@@ -155,9 +155,21 @@ const car = {
       params: data
     });
   },
-  //统计
+  //车辆统计列表
   assetVehicleTotalCost(data) {
     return axios.get(base.api + "assetVehicleCost/", {
+      params: data
+    });
+  },
+  //统计分析
+  countVehicleCost(data) {
+    return axios.get(base.api + "assetVehicleCost/countVehicleCost", {
+      params: data
+    });
+  },
+  //趋势分析
+  analysisVehicleCost(data) {
+    return axios.get(base.api + "assetVehicleCost/analysisVehicleCost", {
       params: data
     });
   }
