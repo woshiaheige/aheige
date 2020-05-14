@@ -19,6 +19,24 @@ const cost = {
     return axios.get(base.api + "assetStock/countCostMap", {
       params: data
     });
+  },
+  //成本管理-根据成本类型统计饼状图数据
+  getTypeChartPie(data) {
+    return axios.get(base.api + "assetStock/countTypeCostMap", {
+      params: data
+    });
+  },
+  //成本管理-根据成本类型统计曲线图数据
+  getTypeChartLine(data) {
+    return axios.get(base.api + "assetStock/countTypeCostTrendCurveMap", {
+      params: data
+    });
+  },
+  //根据type查询物品下拉
+  getGoodsByType(data) {
+    return axios.get(base.api + "assetGoods/queryTypeAll", {
+      params: data
+    });
   }
 };
 

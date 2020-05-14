@@ -24,6 +24,7 @@
     "quill-image-resize-module": "^3.0.0",
     "terser-webpack-plugin": "^2.3.5",
     "v-charts": "^1.19.0",
+    "view-design": "^4.2.0",
     "vue": "^2.6.11",
     "vue-awesome-progress": "^1.9.0",
     "vue-circle-progress": "0.0.2",
