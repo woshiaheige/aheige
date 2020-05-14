@@ -319,6 +319,7 @@ export default {
       this.callback(this.active, dateString);
     },
     onFinish() {
+      this.modelInfo.show = false;
       this.deadline = Date.now() + 1000 * 60;
       let value = "";
       if (this.active == 1) value = this.radioNum;
