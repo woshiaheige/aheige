@@ -87,7 +87,8 @@ export default {
       initDetail: "", //编辑时的初始数据
       formData: {
         title: "",
-        classId: undefined
+        classId: undefined,
+        fileEntities: []
       },
       content: "",
       detailId: "",
@@ -120,6 +121,9 @@ export default {
     }
   },
   watch: {
+    fileList(nval) {
+      console.log(nval, 77);
+    },
     detail(nval) {
       if (nval) {
         this.initDetail = JSON.parse(JSON.stringify(nval));
@@ -200,6 +204,7 @@ export default {
       this.content = "";
       this.detailId = "";
       this.$refs.ruleForm.clearValidate();
+      this.fileList = [];
       this.formData = {
         title: "",
         classId: undefined
@@ -219,7 +224,7 @@ export default {
       });
     },
     editknowledge(values) {
-      let params = values;
+      let params = JSON.parse(JSON.stringify(values));
       params.content = this.content;
       params.id = this.detailId;
       this.$api.maintain.updateKnowledgeArticle(params).then(res => {
@@ -232,7 +237,7 @@ export default {
       });
     },
     addknowledge(values) {
-      let params = values;
+      let params = JSON.parse(JSON.stringify(values));
       params.content = this.content;
       this.$api.maintain.addKnowledgeArticle(params).then(res => {
         if (res.data.state == 0) {
@@ -253,7 +258,7 @@ export default {
       return isLt10M;
     },
     handleChange(info) {
-      console.log(info);
+      // console.log(info);
       let fileList = [...info.fileList];
       fileList = fileList.map(file => {
         if (file.response) {
@@ -267,11 +272,10 @@ export default {
       }
       this.fileList = fileList;
       if (info.file.status === "done") {
-        this.formData.files = [];
         let temp = {};
         temp.fileId = info.file.response.data;
         temp.fileName = info.file.name;
-        this.formData.files.push(temp);
+        this.formData.fileEntities.push(temp);
         this.$message.success("上传成功");
       } else if (info.file.status === "error") {
         this.$message.error("上传失败");
@@ -279,9 +283,9 @@ export default {
     },
     //删除文件
     handleRemove(file) {
-      this.formData.files.forEach((item, index) => {
+      this.formData.fileEntities.forEach((item, index) => {
         if (item.fileId == file.id) {
-          this.formData.files.splice(index, 1);
+          this.formData.fileEntities.splice(index, 1);
           // this.delFile(file.id);
         }
       });

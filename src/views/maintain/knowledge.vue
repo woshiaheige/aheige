@@ -68,10 +68,10 @@
               </template>
               <!-- <img slot="extra" width="220" alt="logo" :src="item.img" /> -->
               <a-list-item-meta>
-                <a slot="title">{{ item.title }}</a>
-                <div slot="description">
+                <a slot="title" @click="onDetail(item)">{{ item.title }}</a>
+                <!-- <div slot="description">
                   <a-tag color="blue">{{ item.className }}</a-tag>
-                </div>
+                </div> -->
               </a-list-item-meta>
               <div
                 v-html="item.content"

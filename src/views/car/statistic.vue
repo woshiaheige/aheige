@@ -43,7 +43,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">列表</div>
+        <div class="title">数据分析</div>
       </div>
       <a-table
         rowKey="number"

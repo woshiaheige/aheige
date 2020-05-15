@@ -16,6 +16,7 @@ instance.interceptors.request.use(
     if (JSON.parse(sessionStorage.getItem("userinfo"))) {
       let token = JSON.parse(sessionStorage.getItem("userinfo")).token;
       config.headers["token"] = token;
+      // config.headers["token"] = 8888;
     }
     if (config.method === "get") {
       config.paramsSerializer = function(params) {
