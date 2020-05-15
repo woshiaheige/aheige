@@ -3,56 +3,68 @@
     <a-row :gutter="16">
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic
-            title="运维企业"
-            :value="countList.enterpriseCount"
-            suffix="家"
-          ></a-statistic>
+          <router-link to="/customer/enterprise">
+            <a-statistic
+              title="运维企业"
+              :value="countList.enterpriseCount"
+              suffix="家"
+            ></a-statistic>
+          </router-link>
         </a-card>
       </a-col>
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic
-            title="运维站点"
-            :value="countList.pointCount"
-            suffix="个"
-          ></a-statistic>
+          <router-link to="/customer/station">
+            <a-statistic
+              title="运维站点"
+              :value="countList.pointCount"
+              suffix="个"
+            ></a-statistic>
+          </router-link>
         </a-card>
       </a-col>
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic
-            title="运维小组"
-            :value="countList.groupCount"
-            suffix="组"
-          ></a-statistic>
+          <router-link to="/organization/group">
+            <a-statistic
+              title="运维小组"
+              :value="countList.groupCount"
+              suffix="组"
+            ></a-statistic>
+          </router-link>
         </a-card>
       </a-col>
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic
-            title="运维人员"
-            :value="countList.userCount"
-            suffix="人"
-          ></a-statistic>
+          <router-link to="/assessment/monthly-assessment">
+            <a-statistic
+              title="运维人员"
+              :value="countList.userCount"
+              suffix="人"
+            ></a-statistic>
+          </router-link>
         </a-card>
       </a-col>
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic
-            title="运维车辆"
-            :value="countList.vehicleCount"
-            suffix="辆"
-          ></a-statistic>
+          <router-link to="/car/manage">
+            <a-statistic
+              title="运维车辆"
+              :value="countList.vehicleCount"
+              suffix="辆"
+            ></a-statistic>
+          </router-link>
         </a-card>
       </a-col>
       <a-col :span="4">
         <a-card :bordered="false">
-          <a-statistic
-            title="供应商"
-            :value="countList.supplierCount"
-            suffix="家"
-          ></a-statistic>
+          <router-link to="/customer/contract">
+            <a-statistic
+              title="供应商"
+              :value="countList.supplierCount"
+              suffix="家"
+            ></a-statistic>
+          </router-link>
         </a-card>
       </a-col>
     </a-row>

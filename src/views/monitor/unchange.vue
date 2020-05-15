@@ -108,13 +108,13 @@ export default {
           dataIndex: "rtd"
         },
         {
-          title: "时间",
+          title: "时间段",
           dataIndex: "dateTime",
           align: "center",
           width: 300
         },
         {
-          title: "时长",
+          title: "持续时间（h）",
           dataIndex: "longTime",
           align: "center",
           width: 100

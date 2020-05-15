@@ -199,7 +199,7 @@ export default {
       ],
       tableData: [],
       list: {
-        type: 2, //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
+        type: 2, //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.其他
         enterpriseId: "",
         pointId: undefined,
         goodsId: "",
@@ -246,7 +246,7 @@ export default {
         goodsId: this.list.goodsId,
         beginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
         endTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD"),
-        type: this.list.type //1.设备，2.实验室设备，3.部件，4.试剂，5.标气，6.劳保用品，7.车辆，8.其他
+        type: this.list.type
       };
       this.loading = true;
       this.$api.cost
