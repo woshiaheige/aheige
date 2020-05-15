@@ -69,7 +69,6 @@
                 <template slot="title">
                   <p>上限：{{ item.ceilval }}</p>
                   <p>下限：{{ item.floorval }}</p>
-                  <p>倍数：{{ item.multiple }}</p>
                 </template>
                 <a-icon
                   type="question-circle"
