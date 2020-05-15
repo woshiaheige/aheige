@@ -67,27 +67,35 @@ export default {
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
         if (!valid) {
-          console.log("error submit!!");
           return false;
         }
         //验证通过
         let data = {
-          cusPointId: this.value.row.id,
+          cusPointId: this.modelData.row.id,
           stopReason: this.formData.desc
         };
-
-        this.$api.customer
-          .stopPoint(data)
-          .then(res => {
+        if (this.modelData.type == "close") {
+          this.$api.customer
+            .stopPoint(data)
+            .then(res => {
+              if (res.data.state == 0) {
+                this.$message.success("停运成功");
+                this.$emit("refresh");
+                this.handleCancel();
+              }
+            })
+            .catch(() => {
+              this.handleCancel();
+            });
+        } else {
+          this.$api.customer.startPoint(data).then(res => {
             if (res.data.state == 0) {
-              this.$message.success("停运成功");
+              this.$message.success("启动成功");
               this.$emit("refresh");
               this.handleCancel();
             }
-          })
-          .catch(() => {
-            this.handleCancel();
           });
+        }
       });
     },
     handleCancel() {
@@ -98,8 +106,10 @@ export default {
   mounted() {},
   watch: {
     "value.show"() {
-      if (this.value.show == true) {
+      if (this.value.type == "close") {
         this.title = "停运" + this.value.row.name;
+      } else {
+        this.title = "启动" + this.value.row.name;
       }
     }
   }
