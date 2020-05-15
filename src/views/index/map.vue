@@ -50,7 +50,7 @@
             >
               <a-list-item-meta
                 :description="item.enterpriseName + '  |  ' + item.name"
-                @click="goMarker(item.longitude, item.latitude, item.id)"
+                @click="goPointMarker(item.longitude, item.latitude, item.id)"
               >
               </a-list-item-meta>
             </a-list-item>
@@ -79,7 +79,7 @@
               <a-list-item-meta
                 v-else
                 :description="item.number"
-                @click="goMarker(item.lng, item.lat, item.id)"
+                @click="goMarker(item.longitude, item.latitude, item.id)"
               >
               </a-list-item-meta>
               <a-tag
@@ -264,20 +264,23 @@ export default {
         }
       });
     },
-    async goMarker(lng, lat, id) {
-      if (this.active == 1) {
-        await this.callback(this.active, this.radioNum);
-        this.map.remove(this.markers);
+    //监测点点击
+    async goPointMarker(lng, lat, id) {
+      await this.callback(this.active, this.radioNum);
+      this.map.remove(this.markers);
 
-        this.markers.forEach(item => {
-          if (item.w.id == id) {
-            item.setAnimation("AMAP_ANIMATION_BOUNCE");
-          }
-        });
-        this.map.add(this.markers);
-      } else if (this.active == 2) {
+      this.markers.forEach(item => {
+        if (item.w.id == id) {
+          item.setAnimation("AMAP_ANIMATION_BOUNCE");
+        }
+      });
+      this.map.add(this.markers);
+      this.map.setCenter([lng, lat]); //设置地图中心点
+      this.activeId = id;
+    },
+    goMarker(lng, lat, id) {
+      if (this.active == 2) {
         this.map.remove(this.polyline);
-
         let params = {
           vehicleId: id,
           dateTime: this.$moment(this.dateTime).format("YYYY-MM-DD")
