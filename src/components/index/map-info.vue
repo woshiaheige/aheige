@@ -26,7 +26,7 @@
           <a-tag color="green" v-if="list.state == 0">
             在线
           </a-tag>
-          <a-tag color="red" v-else>
+          <a-tag v-else>
             离线
           </a-tag>
         </a-descriptions-item>
@@ -69,7 +69,6 @@
                 <template slot="title">
                   <p>上限：{{ item.ceilval }}</p>
                   <p>下限：{{ item.floorval }}</p>
-                  <p>倍数：{{ item.multiple }}</p>
                 </template>
                 <a-icon
                   type="question-circle"

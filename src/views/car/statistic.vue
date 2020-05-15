@@ -54,7 +54,8 @@
         :loading="loading"
       >
         <template slot="footer">
-          <span style="float: right">合计{{ costCount }}元</span>
+          合计
+          <span style="float: right">￥{{ costCount }}</span>
         </template>
       </a-table>
       <a-pagination
@@ -177,38 +178,75 @@ export default {
           key: "model"
         },
         {
-          title: "加油费（元）",
+          title: "加油费元）",
           dataIndex: "sumFuelPayment",
-          key: "sumFuelPayment"
+          key: "sumFuelPayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
-          title: "过路费（元）",
+          title: "过路费元）",
           dataIndex: "sumTollsPayment",
-          key: "sumTollsPayment"
+          key: "sumTollsPayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
-          title: "保险费（元）",
+          title: "保险费元）",
           dataIndex: "sumInsurancePayment",
-          key: "sumInsurancePayment"
+          key: "sumInsurancePayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
-          title: "年检费（元）",
+          title: "年检费元）",
           dataIndex: "sumAifPayment",
-          key: "sumAifPayment"
+          key: "sumAifPayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
-          title: "维修保养费（元）",
+          title: "维修保养费元）",
           dataIndex: "sumMaintenancePayment",
-          key: "sumMaintenancePayment"
+          key: "sumMaintenancePayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
-          title: "共计（元）",
+          title: "共计元）",
           dataIndex: "sumPayment",
           key: "sumPayment",
           customRender: text => {
-            let contain = null;
-            contain = !text ? 0 : text;
-            return contain;
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
           }
         }
       ]
@@ -435,7 +473,8 @@ export default {
         },
         series: [
           {
-            name: "统计分析",
+            // name: "统计分析",
+            name: "",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
