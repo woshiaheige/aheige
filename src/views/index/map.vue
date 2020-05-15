@@ -160,6 +160,7 @@ export default {
     //切换tabs
     async callback(key, value) {
       this.active = key;
+      this.map.remove(this.polyline);
       this.map.remove(this.markers);
       this.markers = [];
       if (key == 1) {
