@@ -40,7 +40,7 @@
             >
           </a-select>
         </a-form-item>
-        <a-form-item label="其他设备名称">
+        <a-form-item label="其他物资名称">
           <a-select
             v-model="list.goodsId"
             placeholder="请选择"
@@ -143,7 +143,7 @@ export default {
           key: "pointName"
         },
         {
-          title: "其他设备名称",
+          title: "其他物资名称",
           dataIndex: "goodsName",
           key: "goodsName"
         },

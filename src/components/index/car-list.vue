@@ -4,7 +4,7 @@
       <a-list-item slot="renderItem" slot-scope="item">
         <a slot="actions" @click="closeReminds(item.id)">关闭提醒</a>
         <div>
-          <a-avatar :src="require('@/assets/img/contract.png')" />
+          <a-avatar :src="require('@/assets/img/iconcheliangjian.png')" />
           <span v-color="'#424242'" v-margin:left="8">{{ item.content }}</span>
         </div>
       </a-list-item>
