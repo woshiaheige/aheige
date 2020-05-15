@@ -65,6 +65,11 @@ export default {
               return text;
             }
           }
+        },
+        {
+          title: "备注",
+          dataIndex: "remark",
+          align: "center"
         }
       ],
       tableData: []

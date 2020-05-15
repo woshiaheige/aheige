@@ -227,7 +227,6 @@ export default {
             "试剂成本",
             "标气成本",
             "劳保用品成本",
-            "车辆成本",
             "其他成本"
           ]
         },
@@ -302,8 +301,6 @@ export default {
         case 6:
           return "劳保用品成本";
         case 7:
-          return "车辆成本";
-        default:
           return "其他成本";
       }
     },
