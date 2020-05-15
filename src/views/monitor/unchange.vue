@@ -117,7 +117,7 @@ export default {
           title: "持续时间（h）",
           dataIndex: "longTime",
           align: "center",
-          width: 100
+          width: 150
         }
       ],
       formInline: {
