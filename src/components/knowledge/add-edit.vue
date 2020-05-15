@@ -44,6 +44,7 @@
           :multiple="true"
           :action="serverUrl"
           :fileList="fileList"
+          :defaultFileList="defaultList"
           @change="handleChange"
           :remove="handleRemove"
           :beforeUpload="beforeUpload"
@@ -108,6 +109,7 @@ export default {
       },
       serverUrl: this.$api.common.uploadFileArr, // 上传图片服务器地址
       fileList: [],
+      defaultList: [],
       token: JSON.parse(sessionStorage.getItem("userinfo")).token
     };
   },
@@ -121,9 +123,9 @@ export default {
     }
   },
   watch: {
-    fileList(nval) {
-      console.log(nval, 77);
-    },
+    // fileList(nval) {
+    //   console.log(nval, 77);
+    // },
     detail(nval) {
       if (nval) {
         this.initDetail = JSON.parse(JSON.stringify(nval));
@@ -133,8 +135,11 @@ export default {
         this.$nextTick(() => {
           this.formData = {
             title: nval.title,
-            classId: nval.classId
+            classId: nval.classId,
+            fileEntities: nval.fileEntities
           };
+          this.defaultList = nval.fileEntities;
+          // this.fileList = nval.fileEntities;
         });
       }
     },
