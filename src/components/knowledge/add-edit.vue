@@ -38,7 +38,7 @@
           >
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="合同附件">
+      <a-form-model-item label="上传附件">
         <a-upload
           name="file"
           :multiple="true"
