@@ -91,7 +91,7 @@
               <span slot="close">停运</span>
             </i-switch>
           </span>
-          <a-tooltip placement="top" v-if="!row.isStarted">
+          <a-tooltip placement="top">
             <template slot="title">
               <p>{{ row.stopReason }}</p>
             </template>
@@ -261,35 +261,30 @@ export default {
       this.switchInfo = row;
     },
     handleBeforeChange() {
-      return new Promise(resolve => {
+      return new Promise(() => {
         setTimeout(() => {
           if (!this.switchInfo.isStarted) {
             this.$confirm({
-              title: this.switchInfo.isStarted == 1 ? "停运" : "启动",
-              content:
-                "您确认要" +
-                (this.switchInfo.isStarted == 1 ? "停运" : "启动") +
-                this.switchInfo.name +
-                "吗？",
+              content: "若恢复停运该检测点，将重新生成任务，次日起生效",
               onOk: () => {
-                this.$api.customer
-                  .startPoint({
-                    cusPointId: this.switchInfo.id
-                  })
-                  .then(res => {
-                    if (res.data.state == 0) {
-                      resolve();
-                      this.$message.success("启动成功");
-                      this.getTableData();
-                    }
-                  });
+                this.runInfo = {
+                  show: true,
+                  row: this.switchInfo,
+                  type: "open"
+                };
               }
             });
           } else {
-            this.runInfo = {
-              show: true,
-              row: this.switchInfo
-            };
+            this.$confirm({
+              content: "若停运该检测点，将不再生成任务，次日起生效",
+              onOk: () => {
+                this.runInfo = {
+                  show: true,
+                  row: this.switchInfo,
+                  type: "close"
+                };
+              }
+            });
           }
         }, 500);
       });
