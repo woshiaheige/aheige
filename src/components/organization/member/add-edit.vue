@@ -88,7 +88,8 @@
           >
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="审核权限" v-if="roleId == 2" prop="approvalIds">
+      <!-- 运维主管的审核权限暂时先隐藏 -->
+      <!-- <a-form-model-item label="审核权限" v-if="roleId == 2" prop="approvalIds">
         <a-select
           placeholder="请选择"
           v-model="formData.approvalIds"
@@ -102,7 +103,7 @@
             >{{ item.name }}</a-select-option
           >
         </a-select>
-      </a-form-model-item>
+      </a-form-model-item> -->
     </a-form-model>
     <template slot="footer">
       <a-button key="back" @click="closeModal">取消</a-button>
