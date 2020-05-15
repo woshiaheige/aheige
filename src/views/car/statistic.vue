@@ -24,6 +24,7 @@
               :key="item.id"
               :value="item.id"
               clearable
+              @click="onCarChange(item)"
             >
               {{ item.number }}
             </a-select-option>
@@ -112,6 +113,7 @@ export default {
         endTime: ""
       },
       carOptions: [],
+      carNumber: "",
       value: [],
       pieData: [
         { value: 0, name: "加油费", key: 1, nameMap: "sumFuelPayment" },
@@ -153,6 +155,13 @@ export default {
           data: [],
           key: "4",
           nameMap: "sumAifPayment"
+        },
+        {
+          type: "line",
+          name: "维修保养费",
+          key: 5,
+          data: [],
+          nameMap: "sumMaintenancePayment"
         }
       ],
       isPieEmpty: false,
@@ -257,6 +266,9 @@ export default {
     this.reset();
   },
   methods: {
+    onCarChange(e) {
+      this.carNumber = e.number;
+    },
     getAllCar() {
       this.$api.car.getAllCar().then(res => {
         if (res.data.state == 0) {
@@ -462,6 +474,12 @@ export default {
         pieChart.resize();
       });
       let option = {
+        title: {
+          show: true, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
+          text: this.carNumber ? this.carNumber : "全部车辆",
+          x: "center",
+          top: 0
+        },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -503,16 +521,23 @@ export default {
         lineChart.resize();
       });
       let option = {
+        title: {
+          show: true, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
+          text: this.carNumber ? this.carNumber : "全部车辆",
+          x: "center",
+          top: 0
+        },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["加油费", "过路费", "保险费", "年检费", "维修保养费"]
+          data: ["加油费", "过路费", "保险费", "年检费", "维修保养费"],
+          top: 30
         },
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom: "0%",
           containLabel: true
         },
         xAxis: {

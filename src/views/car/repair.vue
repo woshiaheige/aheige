@@ -12,7 +12,7 @@
         <a-form-item label="车辆品牌">
           <a-input
             placeholder="请输入"
-            v-model="list.modal"
+            v-model="list.model"
             @pressEnter="getTableData"
           ></a-input>
         </a-form-item>
@@ -141,7 +141,7 @@ export default {
       ],
       tableData: [],
       list: {
-        modal: "",
+        model: "",
         number: "",
         range: [this.$moment().subtract(7, "days"), this.$moment()]
       },
@@ -155,7 +155,7 @@ export default {
   methods: {
     reset() {
       this.list = {
-        modal: "",
+        model: "",
         number: "",
         range: [this.$moment().subtract(7, "days"), this.$moment()]
       };
@@ -166,7 +166,7 @@ export default {
         page: this.current,
         size: this.pageSize,
         number: this.list.number,
-        modal: this.list.modal,
+        model: this.list.model,
         payBeginTime: this.$moment(this.list.range[0]).format("YYYY-MM-DD"),
         payEndTime: this.$moment(this.list.range[1]).format("YYYY-MM-DD")
       };
