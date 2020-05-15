@@ -18,7 +18,7 @@ const car = [
     name: "car-usage",
     key: "usage",
     meta: {
-      title: "车辆使用记录",
+      title: "使用记录",
       back: false
     },
     component: () =>
@@ -32,7 +32,7 @@ const car = [
     name: "car-gas",
     key: "car-gas",
     meta: {
-      title: "油费管理",
+      title: "加油费管理",
       back: false
     },
     component: () =>
@@ -88,7 +88,7 @@ const car = [
     name: "car-repair",
     key: "car-repair",
     meta: {
-      title: "维修保养费",
+      title: "维修费管理",
       back: false
     },
     component: () =>
