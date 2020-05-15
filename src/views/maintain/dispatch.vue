@@ -39,7 +39,7 @@
                     <a-badge
                       v-margin:left="5"
                       status="default"
-                      text="已创建"
+                      text="待处理"
                       v-if="item.status == 1"
                     />
                     <a-badge

@@ -108,10 +108,16 @@ export default {
           dataIndex: "rtd"
         },
         {
-          title: "时间",
+          title: "时间段",
           dataIndex: "dateTime",
           align: "center",
           width: 300
+        },
+        {
+          title: "持续时间（h）",
+          dataIndex: "longTime",
+          align: "center",
+          width: 100
         }
       ],
       formInline: {
@@ -150,8 +156,15 @@ export default {
         .getConstantData(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.total = res.data.data.total;
-            this.tableData = res.data.data.list;
+            let result = res.data.data;
+            this.total = result.total;
+            result.list.forEach(item => {
+              let arr = item.dateTime.split("~");
+              let start = this.$moment(arr[0].split(/[ ]|:|-/));
+              let end = this.$moment(arr[1].split(/[ ]|:|-/));
+              item.longTime = end.diff(start, "hours");
+            });
+            this.tableData = result.list;
           }
         })
         .catch(err => {

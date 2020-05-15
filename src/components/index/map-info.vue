@@ -51,6 +51,7 @@
         </a-descriptions-item>
       </a-descriptions>
       <div v-if="!(JSON.stringify(realData) == '{}')">
+        <a-divider />
         <a-descriptions :title="'数据时间：' + realData.dataTime" :column="2">
           <a-descriptions-item
             v-for="(item, index) in realData.list"
@@ -65,10 +66,22 @@
               "
             >
               {{ item.Avg }}{{ item.unit }}
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" v-if="item.Flag != 'N'">
                 <template slot="title">
-                  <p>上限：{{ item.ceilval }}</p>
-                  <p>下限：{{ item.floorval }}</p>
+                  <p v-if="item.Flag == 'T'">上限：{{ item.ceilval }}</p>
+                  <p v-if="item.Flag == 'T'">下限：{{ item.floorval }}</p>
+                  <p v-if="item.Flag == 'F'">在线监控（监测）仪器仪表停运</p>
+                  <p v-if="item.Flag == 'M'">
+                    在线监控（监测）仪器仪表处于维护期间产生的数据
+                  </p>
+                  <p v-if="item.Flag == 'S'">手工输入的设定值</p>
+                  <p v-if="item.Flag == 'D'">在线监控（监测）仪器仪表故障</p>
+                  <p v-if="item.Flag == 'C'">
+                    在线监控（监测）仪器仪表处于校准状态
+                  </p>
+                  <p v-if="item.Flag == 'B'">
+                    在线监控（监测）仪器仪表与数采仪通讯异常
+                  </p>
                 </template>
                 <a-icon
                   type="question-circle"
@@ -128,7 +141,7 @@ export default {
           let num = Math.ceil(this.realData.list.length / 2) + 1;
           this.style =
             "top:" +
-            (this.value.position.y - num * 35) +
+            (this.value.position.y - num * 35 - 15) +
             "px;left:" +
             (this.value.position.x - 330) +
             "px";
@@ -162,6 +175,9 @@ export default {
     height: 42px;
     line-height: 42px;
     color: #fff;
+  }
+  .ant-divider-horizontal {
+    margin: 0 0 14px 0;
   }
   .red {
     color: red;
