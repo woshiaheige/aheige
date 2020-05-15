@@ -55,7 +55,7 @@
       >
         <template slot="footer">
           合计
-          <span style="float: right">{{ costCount }}</span>
+          <span style="float: right">￥{{ costCount }}</span>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>
@@ -121,9 +121,16 @@ export default {
           }
         },
         {
-          title: "付款金额",
+          title: "付款金额（元）",
           dataIndex: "payment",
-          key: "payment"
+          key: "payment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "操作",

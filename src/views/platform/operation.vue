@@ -110,7 +110,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="签到范围">
-                <counter v-model="formValue.range.value">
+                <counter v-model="formValue.range.value" :min="30">
                   <span slot="uni">米</span>
                 </counter>
                 <a-tooltip v-margin:left="16">
@@ -272,7 +272,7 @@ export default {
         range: { id: "", value: "" }, //签到范围
         carRemindAnnualSurvey: { id: "", value: "" }, //车辆年检到期提醒天数
         zeroValue: { id: "", value: "" }, //零值判定时限
-        constantValue: { id: "", value: "" } //恒值判定时限
+        constantValue: { id: "", value: "6" } //恒值判定时限
       },
       verifyList: [
         {

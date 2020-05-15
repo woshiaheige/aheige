@@ -40,7 +40,7 @@
           v-decorator="['gmtPurchase']"
         />
       </a-form-item>
-      <a-form-item label="上次年检时间">
+      <a-form-item label="下次年检时间”">
         <a-date-picker
           v-width="350"
           placeholder="请选择"

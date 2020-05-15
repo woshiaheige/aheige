@@ -54,7 +54,8 @@
         :loading="loading"
       >
         <template slot="footer">
-          <span style="float: right">合计{{ costCount }}元</span>
+          合计
+          <span style="float: right">￥{{ costCount }}</span>
         </template>
       </a-table>
       <a-pagination
@@ -179,36 +180,73 @@ export default {
         {
           title: "加油费（元）",
           dataIndex: "sumFuelPayment",
-          key: "sumFuelPayment"
+          key: "sumFuelPayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "过路费（元）",
           dataIndex: "sumTollsPayment",
-          key: "sumTollsPayment"
+          key: "sumTollsPayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "保险费（元）",
           dataIndex: "sumInsurancePayment",
-          key: "sumInsurancePayment"
+          key: "sumInsurancePayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "年检费（元）",
           dataIndex: "sumAifPayment",
-          key: "sumAifPayment"
+          key: "sumAifPayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "维修保养费（元）",
           dataIndex: "sumMaintenancePayment",
-          key: "sumMaintenancePayment"
+          key: "sumMaintenancePayment",
+          customRender: text => {
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
+          }
         },
         {
           title: "共计（元）",
           dataIndex: "sumPayment",
           key: "sumPayment",
           customRender: text => {
-            let contain = null;
-            contain = !text ? 0 : text;
-            return contain;
+            if (text) {
+              return "￥" + text;
+            } else {
+              return "-";
+            }
           }
         }
       ]
