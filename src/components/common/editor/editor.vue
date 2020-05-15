@@ -25,50 +25,6 @@
   </div>
 </template>
 <script>
-//中文提示
-const titleConfig = {
-  "ql-bold": "加粗",
-  "ql-color": "颜色",
-  "ql-font": "字体",
-  "ql-code": "插入代码",
-  "ql-italic": "斜体",
-  "ql-link": "添加链接",
-  "ql-background": "背景颜色",
-  "ql-size": "字体大小",
-  "ql-strike": "删除线",
-  "ql-script": "上标/下标",
-  "ql-underline": "下划线",
-  "ql-blockquote": "引用",
-  "ql-header": "标题",
-  "ql-indent": "缩进",
-  "ql-list": "列表",
-  "ql-align": "文本对齐",
-  "ql-direction": "文本方向",
-  "ql-code-block": "代码块",
-  "ql-formula": "公式",
-  "ql-image": "图片",
-  "ql-video": "视频",
-  "ql-clean": "清除字体样式"
-};
-function addQuillTitle() {
-  const oToolBar = document.querySelector(".ql-toolbar"),
-    aButton = oToolBar.querySelectorAll("button"),
-    aSelect = oToolBar.querySelectorAll("select");
-  aButton.forEach(function(item) {
-    if (item.className === "ql-script") {
-      item.value === "sub" ? (item.title = "下标") : (item.title = "上标");
-    } else if (item.className === "ql-indent") {
-      item.value === "+1"
-        ? (item.title = "向右缩进")
-        : (item.title = "向左缩进");
-    } else {
-      item.title = titleConfig[item.classList[0]];
-    }
-  });
-  aSelect.forEach(function(item) {
-    item.parentNode.title = titleConfig[item.classList[0]];
-  });
-}
 // 工具栏配置
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
@@ -93,8 +49,15 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import Quill from "quill";
+import addQuillTitle from "./editor-tip";
 import ImageResize from "quill-image-resize-module";
+// 粘贴图片上传
+import { ImageExtend } from "quill-image-paste-module";
+// 拖拽上传
+import { ImageDrop } from "quill-image-drop-module";
+Quill.register("modules/imageDrop", ImageDrop);
 Quill.register("modules/imageResize", ImageResize);
+Quill.register("modules/ImageExtend", ImageExtend);
 
 // import editorPrev from "./editor-prev"; //模拟移动端弹窗
 
@@ -127,6 +90,8 @@ export default {
       content: this.value,
       quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
       editorOption: {
+        // 拖拽上传
+        imageDrop: true,
         theme: "snow", // or 'bubble'
         placeholder: "您想说点什么？",
         modules: {
@@ -139,6 +104,23 @@ export default {
               color: "white"
             },
             modules: ["Resize", "DisplaySize", "Toolbar"] //添加
+          },
+          // 截屏上传
+          ImageExtend: {
+            loading: true,
+            name: "file",
+            // 设置上传参数，token
+            change: (xhr, FormData) => {
+              FormData.append(
+                "token",
+                JSON.parse(sessionStorage.getItem("userinfo")).token
+              );
+            },
+            action: this.$api.common.uploadFileApi,
+            response: res => {
+              console.log(res, "response");
+              return res.data.uri;
+            }
           },
           toolbar: {
             container: toolbarOptions,
@@ -240,6 +222,7 @@ export default {
     }
   },
   mounted() {
+    console.log(addQuillTitle);
     addQuillTitle();
   }
 };
