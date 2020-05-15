@@ -54,8 +54,7 @@
         :loading="loading"
       >
         <template slot="footer">
-          合计
-          <span style="float: right">{{ costCount }}</span>
+          <span style="float: right">合计{{ costCount }}元</span>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onEdit(row)">编辑</a>

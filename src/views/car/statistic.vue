@@ -12,11 +12,22 @@
           />
         </a-form-item>
         <a-form-item label="车牌号码">
-          <a-input
-            placeholder="请输入"
-            v-model="list.number"
-            @pressEnter="getTableData"
-          ></a-input>
+          <a-select
+            placeholder="请选择"
+            v-model="list.vehicleId"
+            showSearch
+            style="width: 200px"
+            :filterOption="filterOptions"
+          >
+            <a-select-option
+              v-for="item in carOptions"
+              :key="item.id"
+              :value="item.id"
+              clearable
+            >
+              {{ item.number }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="getData()">
@@ -31,10 +42,10 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">趋势分析</div>
+        <div class="title">列表</div>
       </div>
       <a-table
-        rowKey="id"
+        rowKey="number"
         size="middle"
         :columns="columns"
         :dataSource="tableData"
@@ -42,6 +53,9 @@
         :pagination="false"
         :loading="loading"
       >
+        <template slot="footer">
+          <span style="float: right">合计{{ costCount }}元</span>
+        </template>
       </a-table>
       <a-pagination
         size="small"
@@ -71,7 +85,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">列表</div>
+        <div class="title">趋势分析</div>
       </div>
       <div class="loading" v-if="lineLoading">
         <a-spin size="large" />
@@ -92,19 +106,53 @@ export default {
     return {
       mode: ["month", "month"],
       list: {
-        number: "",
+        vehicleId: undefined,
         beginTime: "",
         endTime: ""
       },
+      carOptions: [],
       value: [],
       pieData: [
-        { value: 0, name: "设备成本", key: 1 },
-        { value: 0, name: "实验室设备成本", key: 2 },
-        { value: 0, name: "部件成本", key: 3 },
-        { value: 0, name: "试剂成本", key: 4 },
-        { value: 0, name: "标气成本", key: 5 },
-        { value: 0, name: "劳保用品成本", key: 6 },
-        { value: 0, name: "其他成本", key: 7 }
+        { value: 0, name: "加油费", key: 1, nameMap: "sumFuelPayment" },
+        { value: 0, name: "过路费", key: 2, nameMap: "sumTollsPayment" },
+        { value: 0, name: "保险费", key: 3, nameMap: "sumInsurancePayment" },
+        { value: 0, name: "年检费", key: 4, nameMap: "sumAifPayment" },
+        {
+          value: 0,
+          name: "维修保养费",
+          key: 5,
+          nameMap: "sumMaintenancePayment"
+        }
+      ],
+      lineData: [
+        {
+          type: "line",
+          name: "加油费",
+          data: [],
+          key: "1",
+          nameMap: "sumFuelPayment"
+        },
+        {
+          type: "line",
+          name: "过路费",
+          data: [],
+          key: "2",
+          nameMap: "sumTollsPayment"
+        },
+        {
+          type: "line",
+          name: "保险费",
+          data: [],
+          key: "3",
+          nameMap: "sumInsurancePayment"
+        },
+        {
+          type: "line",
+          name: "年检费",
+          data: [],
+          key: "4",
+          nameMap: "sumAifPayment"
+        }
       ],
       isPieEmpty: false,
       pieLoading: false,
@@ -116,6 +164,7 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
+      costCount: 0,
       columns: [
         {
           title: "车牌号",
@@ -144,34 +193,50 @@ export default {
         },
         {
           title: "年检费（元）",
-          dataIndex: "payment",
-          key: "payment"
+          dataIndex: "sumAifPayment",
+          key: "sumAifPayment"
         },
         {
           title: "维修保养费（元）",
-          dataIndex: "payment",
-          key: "payment"
+          dataIndex: "sumMaintenancePayment",
+          key: "sumMaintenancePayment"
         },
         {
           title: "共计（元）",
-          dataIndex: "payment",
-          key: "payment"
+          dataIndex: "sumPayment",
+          key: "sumPayment",
+          customRender: text => {
+            let contain = null;
+            contain = !text ? 0 : text;
+            return contain;
+          }
         }
       ]
     };
   },
   mounted() {
+    this.getAllCar();
     this.reset();
   },
   methods: {
+    getAllCar() {
+      this.$api.car.getAllCar().then(res => {
+        if (res.data.state == 0) {
+          this.carOptions = res.data.data;
+        }
+      });
+    },
     getTableData() {
       let data = {
         page: this.current,
         size: this.pageSize,
-        number: this.list.number,
-        modal: "",
-        beginTime: this.$moment(this.value[0]).format("YYYY-MM"),
-        endTime: this.$moment(this.value[1]).format("YYYY-MM")
+        vehicleId: this.list.vehicleId,
+        payBeginTime: this.$moment(this.value[0])
+          .startOf("month")
+          .format("YYYY-MM-DD"),
+        payEndTime: this.$moment(this.value[1])
+          .endOf("month")
+          .format("YYYY-MM-DD")
       };
       this.loading = true;
       this.$api.car
@@ -180,15 +245,31 @@ export default {
           if (res.data.state == 0) {
             this.loading = false;
             let result = res.data.data;
-            this.tableData = result.records;
+            this.tableData = result.records.map(item => {
+              item.sumPayment = (
+                Number(item.sumFuelPayment) +
+                Number(item.sumTollsPayment) +
+                Number(item.sumInsurancePayment) +
+                Number(item.sumAifPayment) +
+                Number(item.sumMaintenancePayment)
+              ).toFixed(2);
+              return item;
+            });
             this.total = Number(result.total);
-            // this.costCount = this.getCostCount();
+            this.costCount = this.getCostCount();
           }
         })
         .catch(error => {
           console.log(error);
           this.loading = false;
         });
+    },
+    getCostCount() {
+      let costCount = 0;
+      this.tableData.forEach(item => {
+        costCount += Number(item.sumPayment);
+      });
+      return costCount.toFixed(2);
     },
     handleChange(value) {
       this.value = value;
@@ -208,6 +289,7 @@ export default {
     reset() {
       let data = this.getLast3Month();
       this.value = [this.$moment(data[0]), this.$moment(data[1])];
+      this.list.vehicleId = undefined;
       this.getData();
     },
     getData() {
@@ -220,8 +302,8 @@ export default {
       }
       this.list.beginTime = data.beginTime;
       this.list.endTime = data.endTime;
-      this.getLine(data);
-      this.getPie(data);
+      this.getLine();
+      this.getPie();
 
       this.getTableData();
     },
@@ -238,45 +320,48 @@ export default {
       return true;
     },
     //曲线图
-    getLine(data) {
+    getLine() {
       this.isLineEmpty = false;
       this.lineLoading = true;
-      this.$api.cost
-        .getChartLine(data)
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        vehicleId: this.list.vehicleId,
+        payBeginTime: this.$moment(this.value[0])
+          .startOf("month")
+          .format("YYYY-MM-DD"),
+        payEndTime: this.$moment(this.value[1])
+          .endOf("month")
+          .format("YYYY-MM-DD")
+      };
+      this.$api.car
+        .analysisVehicleCost(data)
         .then(res => {
           if (res.data.state == 0) {
             this.lineLoading = false;
             let result = res.data.data;
+            let data = JSON.parse(JSON.stringify(this.lineData));
+            data = data.map(item => {
+              //填充0
+              item.data = new Array(this.dateList.length).fill(0);
+              return item;
+            });
             if (result.length > 0) {
-              let legend = [this.changeText(Number(result[0].type))];
-              let temp = [
-                {
-                  type: "line",
-                  name: this.changeText(Number(result[0].type)),
-                  data: [],
-                  // stack: "总量",
-                  key: result[0].type
-                }
-              ];
-              result.forEach(item => {
-                let isHas = true;
-                temp.forEach(element => {
-                  if (element.key == item.type) {
-                    element.data.push(item.totalAmount);
-                    isHas = false;
+              data.forEach(item => {
+                for (var i in result) {
+                  if (result[i].type == item.key) {
+                    let dataIndex = this.dateList.findIndex(date => {
+                      //对应月份填充相应值
+                      return (
+                        this.$moment(date).format("YYYY-MM") ==
+                        this.$moment(result[i].gmtPayment).format("YYYY-MM")
+                      );
+                    });
+                    item.data[dataIndex] = result[i][item.nameMap];
                   }
-                });
-                if (isHas) {
-                  legend.push(this.changeText(Number(item.type)));
-                  temp.push({
-                    type: "line",
-                    name: this.changeText(Number(item.type)),
-                    data: [item.totalAmount],
-                    key: item.type
-                  });
                 }
               });
-              this.drawLineChart(temp, legend);
+              this.drawLineChart(data);
             } else {
               this.isLineEmpty = true;
             }
@@ -288,11 +373,22 @@ export default {
         });
     },
     //饼状图
-    getPie(data) {
+    getPie() {
       this.isPieEmpty = false;
       this.pieLoading = true;
-      this.$api.cost
-        .getChartPie(data)
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        vehicleId: this.list.vehicleId,
+        payBeginTime: this.$moment(this.value[0])
+          .startOf("month")
+          .format("YYYY-MM-DD"),
+        payEndTime: this.$moment(this.value[1])
+          .endOf("month")
+          .format("YYYY-MM-DD")
+      };
+      this.$api.car
+        .countVehicleCost(data)
         .then(res => {
           if (res.data.state == 0) {
             this.pieLoading = false;
@@ -302,7 +398,7 @@ export default {
               for (var i in result) {
                 data.forEach(item => {
                   if (result[i].type == item.key) {
-                    item.value = result[i].totalAmount;
+                    item.value = result[i][item.nameMap];
                   }
                 });
               }
@@ -335,20 +431,11 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          data: [
-            "设备成本",
-            "实验室设备成本",
-            "部件成本",
-            "试剂成本",
-            "标气成本",
-            "劳保用品成本",
-            "车辆成本",
-            "其他成本"
-          ]
+          data: ["加油费", "过路费", "保险费", "年检费", "维修保养费"]
         },
         series: [
           {
-            name: "成本统计",
+            name: "统计分析",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
@@ -366,7 +453,7 @@ export default {
 
       pieChart.setOption(option);
     },
-    drawLineChart(data, legend) {
+    drawLineChart(data) {
       let lineChart = this.$echarts.init(document.getElementById("lineChart"));
 
       this.$nextTick(() => {
@@ -381,7 +468,7 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: legend
+          data: ["加油费", "过路费", "保险费", "年检费", "维修保养费"]
         },
         grid: {
           left: "3%",
@@ -401,26 +488,6 @@ export default {
       };
 
       lineChart.setOption(option);
-    },
-    changeText(key) {
-      switch (key) {
-        case 1:
-          return "设备成本";
-        case 2:
-          return "实验室设备成本";
-        case 3:
-          return "部件成本";
-        case 4:
-          return "试剂成本";
-        case 5:
-          return "标气成本";
-        case 6:
-          return "劳保用品成本";
-        case 7:
-          return "车辆成本";
-        default:
-          return "其他成本";
-      }
     },
     //获取当前月的前二个月
     getLast3Month() {
@@ -459,7 +526,7 @@ export default {
         var str = curr.getFullYear() + "-" + month;
         var y = curr.getFullYear() + "-0";
         if (str == y) {
-          str = curr.getFullYear() + "-12";
+          str = curr.getFullYear() - 1 + "-12";
         }
         result.push(str);
         curr.setMonth(month + 1);

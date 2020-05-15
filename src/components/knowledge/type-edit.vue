@@ -15,7 +15,11 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="分类名称" prop="name">
-        <a-input placeholder="请输入" v-model="formData.name" :maxLength="30" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.name"
+          :maxLength="30"
+        />
       </a-form-model-item>
     </a-form-model>
   </a-modal>

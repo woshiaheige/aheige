@@ -69,7 +69,11 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="任务名称" prop="name">
-        <a-input placeholder="请输入" v-model="formData.name" :maxLength="30" />
+        <a-input
+          placeholder="请输入"
+          v-model.trim="formData.name"
+          :maxLength="30"
+        />
       </a-form-model-item>
       <a-form-model-item label="运维时间" prop="gmtExecution">
         <a-date-picker
@@ -83,7 +87,7 @@
       </a-form-model-item>
       <a-form-model-item label="任务说明" prop="content">
         <a-input
-          v-model="formData.content"
+          v-model.trim="formData.content"
           type="textarea"
           placeholder="请输入"
           :maxLength="300"

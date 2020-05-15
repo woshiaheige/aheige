@@ -38,6 +38,23 @@
           >
         </a-select>
       </a-form-model-item>
+      <a-form-model-item label="合同附件">
+        <a-upload
+          name="file"
+          :multiple="true"
+          :action="serverUrl"
+          :fileList="fileList"
+          @change="handleChange"
+          :remove="handleRemove"
+          :beforeUpload="beforeUpload"
+          :headers="{
+            token: token
+          }"
+        >
+          <a-button> <a-icon type="upload" /> 选择文件 </a-button>
+          <span v-margin:left="10">上传文件大小不能超过10MB</span>
+        </a-upload>
+      </a-form-model-item>
       <editor v-model="content" v-if="showEditor" />
     </a-form-model>
   </a-modal>
@@ -87,7 +104,10 @@ export default {
         title: [
           { required: true, trigger: "change", message: "请输入文章标题" }
         ]
-      }
+      },
+      serverUrl: this.$api.common.uploadFileArr, // 上传图片服务器地址
+      fileList: [],
+      token: JSON.parse(sessionStorage.getItem("userinfo")).token
     };
   },
   computed: {
@@ -180,7 +200,10 @@ export default {
       this.content = "";
       this.detailId = "";
       this.$refs.ruleForm.clearValidate();
-      this.formData = this.$options.data().formData;
+      this.formData = {
+        title: "",
+        classId: undefined
+      };
     },
     handleOk() {
       this.$refs.ruleForm.validate(valid => {
@@ -219,6 +242,66 @@ export default {
           this.reset();
         }
       });
+    },
+    beforeUpload(file) {
+      this.isError = false;
+      const isLt10M = file.size / 1024 / 1024 < 10;
+      if (!isLt10M) {
+        this.$message.error("上传文件大小不能超过 10MB!");
+        this.isError = true;
+      }
+      return isLt10M;
+    },
+    handleChange(info) {
+      console.log(info);
+      let fileList = [...info.fileList];
+      //只允许上传一个文件 start
+      fileList = fileList.slice(-1);
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+      //只允许上传一个文件 end
+
+      if (this.isError) {
+        return;
+      }
+      this.fileList = fileList;
+      if (info.file.status === "done") {
+        //只允许上传一个文件 start
+        if (this.detailId == "edit") {
+          if (this.formData.files && this.formData.files.length > 0) {
+            this.delFile(this.formData.files[0].fileId);
+          }
+        }
+        this.formData.files = [];
+        //只允许上传一个文件 end
+        let temp = {};
+        temp.fileId = info.file.response.data;
+        temp.fileName = info.file.name;
+        this.formData.files.push(temp);
+        this.$message.success("上传成功");
+      } else if (info.file.status === "error") {
+        this.$message.error("上传失败");
+      }
+    },
+    //删除文件
+    handleRemove(file) {
+      this.formData.files.forEach((item, index) => {
+        if (item.fileId == file.id) {
+          this.formData.files.splice(index, 1);
+          // this.delFile(file.id);
+        }
+      });
+    },
+    delFile(id) {
+      let data = {
+        contractId: this.modelData.row.id || "", //合同ID
+        fileId: id //文件ID
+      };
+      this.$api.customer.delContractFile(data).then(() => {});
     }
   },
   mounted() {}

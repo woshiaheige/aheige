@@ -15,7 +15,7 @@
     >
       <a-form-model-item label="方案名称" prop="name">
         <a-input
-          v-model="form.name"
+          v-model.trim="form.name"
           placeholder="请输入"
           :maxLength="30"
         ></a-input>
