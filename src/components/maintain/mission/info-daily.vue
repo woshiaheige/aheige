@@ -6,7 +6,7 @@
     @cancel="closeModal"
   >
     <a-steps :current="missionStatus" size="small" v-margin:bottom="40">
-      <a-step title="已创建" :description="detail.gmtCreate" />
+      <a-step title="待处理" :description="detail.gmtCreate" />
       <a-step title="处理中" />
       <a-step title="已完成" :description="detail.gmtModified" />
       <!-- <a-step title="已延期" v-if="missionStatus == 3" />
