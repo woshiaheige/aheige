@@ -111,7 +111,7 @@ export default {
           title: "时间",
           dataIndex: "dateTime",
           align: "center",
-          width: 200
+          width: 300
         }
       ],
       formInline: {
