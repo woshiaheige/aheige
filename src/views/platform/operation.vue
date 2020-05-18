@@ -52,7 +52,7 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <a-row>
+          <!-- <a-row>
             <a-col :span="12">
               <a-form-item label="周报表推送时间">
                 <a-select
@@ -106,7 +106,7 @@
                 </a-tooltip>
               </a-form-item>
             </a-col>
-          </a-row>
+          </a-row> -->
           <a-row>
             <a-col :span="12">
               <a-form-item label="签到范围">
