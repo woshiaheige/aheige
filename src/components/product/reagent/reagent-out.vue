@@ -109,7 +109,8 @@ export default {
         {
           title: "备注",
           dataIndex: "remark",
-          align: "center"
+          align: "center",
+          ellipsis: true
         }
       ],
       tableData: []
