@@ -206,6 +206,9 @@ export default {
             })
             .then(res => {
               if (res.data.state == 0) {
+                if (that.tableData.length == 1) {
+                  if (that.current > 1) that.current--;
+                }
                 that.$message.success("删除成功");
                 that.getTableData();
               }
