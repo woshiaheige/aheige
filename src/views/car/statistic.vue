@@ -268,6 +268,7 @@ export default {
   methods: {
     onCarChange(e) {
       this.carNumber = e.number;
+      this.getData();
     },
     getAllCar() {
       this.$api.car.getAllCar().then(res => {
@@ -341,6 +342,7 @@ export default {
       let data = this.getLast3Month();
       this.value = [this.$moment(data[0]), this.$moment(data[1])];
       this.list.vehicleId = undefined;
+      this.carNumber = "";
       this.getData();
     },
     getData() {
