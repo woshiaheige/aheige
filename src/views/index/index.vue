@@ -84,7 +84,7 @@
                     ? 100
                     : item.completeCount == 0
                     ? 0
-                    : ((item.completeCount / item.count) * 100).toFixed(2)
+                    : Math.round((item.completeCount / item.count) * 100)
                 "
                 :width="120"
               >
