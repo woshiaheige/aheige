@@ -34,6 +34,7 @@
         <a-input-number
           :maxLength="30"
           :min="0"
+          :precision="2"
           style="width:100%"
           placeholder="请输入"
           v-model.trim="formData.payment"

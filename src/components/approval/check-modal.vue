@@ -10,16 +10,21 @@
       <a-step title="审批中" />
       <a-step title="审批完成" :description="approvalTime" />
     </a-steps>
-    <a-descriptions :column="1" bordered>
-      <a-descriptions-item label="审批标题">{{ title }}</a-descriptions-item>
-      <a-descriptions-item label="审批内容">{{ content }}</a-descriptions-item>
-      <a-descriptions-item label="审批人" v-if="approvalName">{{
-        approvalName
-      }}</a-descriptions-item>
-      <a-descriptions-item label="审批结果" v-if="stateStr">{{
-        stateStr
-      }}</a-descriptions-item>
-    </a-descriptions>
+    <div class="description-wrapper">
+      <a-descriptions :column="1" bordered>
+        <a-descriptions-item label="审批标题"></a-descriptions-item>
+        <a-descriptions-item label="审批内容">{{
+          content
+        }}</a-descriptions-item>
+        <a-descriptions-item label="审批人" v-if="approvalName">{{
+          approvalName
+        }}</a-descriptions-item>
+        <a-descriptions-item label="审批结果" v-if="stateStr">{{
+          stateStr
+        }}</a-descriptions-item>
+      </a-descriptions>
+    </div>
+
     <div slot="footer">
       <a-button @click="cancel">关闭</a-button>
       <a-button
@@ -156,5 +161,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped></style>

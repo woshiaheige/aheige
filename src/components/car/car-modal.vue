@@ -5,52 +5,56 @@
     @cancel="handleCancel"
     :maskClosable="false"
   >
-    <a-form
-      :form="form"
+    <a-form-model
       ref="ruleForm"
-      :label-col="{ span: 5 }"
+      :rules="rules"
+      :model="formData"
+      :label-col="{ span: 6 }"
       :wrapper-col="{ span: 18 }"
-      @submit="handleOk"
-      v-if="carModal.show"
     >
-      <a-form-item label="车牌">
+      <a-form-model-item label="车牌" prop="number">
         <a-input
           placeholder="请输入"
           :maxLength="30"
-          v-decorator="[
-            'number',
-            { rules: [{ required: true, message: '请输入车牌' }] }
-          ]"
+          v-model.trim="formData.number"
         />
-      </a-form-item>
-      <a-form-item label="车辆品牌">
-        <a-input :maxLength="30" placeholder="请输入" v-decorator="['model']" />
-      </a-form-item>
-      <a-form-item label="车架号">
+      </a-form-model-item>
+      <a-form-model-item label="车辆品牌" prop="model">
         <a-input
           :maxLength="30"
           placeholder="请输入"
-          v-decorator="['frameNumber']"
+          v-model.trim="formData.model"
         />
-      </a-form-item>
-      <a-form-item label="购置时间">
+      </a-form-model-item>
+      <a-form-model-item label="车架号" prop="frameNumber">
+        <a-input
+          :maxLength="30"
+          placeholder="请输入"
+          v-model.trim="formData.frameNumber"
+        />
+      </a-form-model-item>
+      <a-form-model-item label="购置时间" prop="gmtPurchase">
         <a-date-picker
           v-width="350"
           placeholder="请选择"
-          v-decorator="['gmtPurchase']"
+          v-model="formData.gmtPurchase"
         />
-      </a-form-item>
-      <a-form-item label="下次年检时间”">
+      </a-form-model-item>
+      <a-form-model-item label="下次年检时间" prop="gmtInspection">
         <a-date-picker
           v-width="350"
           placeholder="请选择"
-          v-decorator="['gmtInspection']"
+          v-model="formData.gmtInspection"
         />
-      </a-form-item>
-      <a-form-item label="GPS设备号">
-        <a-input :maxLength="30" placeholder="请输入" v-decorator="['gps']" />
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+      <a-form-model-item label="GPS设备号" prop="gps">
+        <a-input
+          :maxLength="30"
+          placeholder="请输入"
+          v-model.trim="formData.gps"
+        />
+      </a-form-model-item>
+    </a-form-model>
     <template slot="footer">
       <a-button @click="handleCancel">取消</a-button>
       <a-button type="primary" html-type="submit" @click="handleOk">
@@ -68,7 +72,17 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this, "carModal")
+      formData: {
+        number: "",
+        model: "",
+        frameNumber: "",
+        gmtPurchase: undefined,
+        gmtInspection: undefined,
+        gps: ""
+      },
+      rules: {
+        number: [{ required: true, trigger: "change", message: "请输入车牌" }]
+      }
     };
   },
   computed: {
@@ -81,7 +95,7 @@ export default {
       if (nval.detail) {
         let detail = nval.detail;
         this.carId = nval.detail.id;
-        this.form.setFieldsValue({
+        this.formData = {
           number: detail.number,
           model: detail.model,
           frameNumber: detail.frameNumber,
@@ -92,13 +106,18 @@ export default {
             ? this.$moment(detail.gmtInspection, "YYYY-MM-DD")
             : "",
           gps: detail.gps
-        });
+        };
       }
     }
   },
   methods: {
     handleOk() {
-      this.form.validateFields((err, values) => {
+      this.$refs.ruleForm.validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          return false;
+        }
+        let values = JSON.parse(JSON.stringify(this.formData));
         values.gmtPurchase = values.gmtPurchase
           ? this.$moment(values.gmtPurchase).format("YYYY-MM-DD hh:mm:ss")
           : "";
@@ -106,12 +125,10 @@ export default {
           ? this.$moment(values.gmtInspection).format("YYYY-MM-DD hh:mm:ss")
           : "";
 
-        if (!err) {
-          if (this.carId) {
-            this.editAssetVehicle(values);
-          } else {
-            this.addAssetVehicle(values);
-          }
+        if (this.carId) {
+          this.editAssetVehicle(values);
+        } else {
+          this.addAssetVehicle(values);
         }
       });
     },
@@ -141,6 +158,8 @@ export default {
     handleCancel() {
       this.carModal.show = false;
       this.carId = undefined;
+      this.$refs.ruleForm.clearValidate();
+      this.formData = this.$options.data().formData;
     }
   },
   mounted() {}

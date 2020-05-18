@@ -269,9 +269,9 @@ export default {
         spaceMin: { id: "", value: "" }, //最小间隔时间
         remind: { id: "", value: "" }, //到期提醒天数
         mission: { id: "", value: "" },
-        range: { id: "", value: "" }, //签到范围
+        range: { id: "", value: "200" }, //签到范围
         carRemindAnnualSurvey: { id: "", value: "" }, //车辆年检到期提醒天数
-        zeroValue: { id: "", value: "" }, //零值判定时限
+        zeroValue: { id: "", value: "6" }, //零值判定时限
         constantValue: { id: "", value: "6" } //恒值判定时限
       },
       verifyList: [
