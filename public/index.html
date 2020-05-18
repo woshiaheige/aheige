@@ -12,6 +12,13 @@
     <!-- UI组件库 1.0 -->
     <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <style>
+      @font-face {
+        font-family: "TengXiangXiChaoHeiJian";
+        src: url("fonts/TengXiangXiChaoHeiJian-2.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
       #loader-wrapper {
         position: fixed;
         top: 0;
@@ -220,6 +227,48 @@
         line-height: 30px;
       }
 
+      #loader-wrapper .website_title {
+        font-family: "TengXiangXiChaoHeiJian";
+        color: #333333;
+        font-size: 72px;
+        width: 100%;
+        text-align: center;
+        z-index: 9999999999999;
+        position: absolute;
+        top: 35%;
+        opacity: 1;
+        line-height: 30px;
+      }
+
+      #loader-wrapper .logo {
+        font-family: "Open Sans";
+        width: 100%;
+        text-align: center;
+        z-index: 9999999999999;
+        position: absolute;
+        top: 60%;
+        opacity: 1;
+        /* line-height: 30px; */
+      }
+
+      #loader-wrapper .copyright {
+        font-family: "Open Sans";
+        color: #333333;
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        z-index: 9999999999999;
+        position: absolute;
+        bottom: 0;
+        opacity: 1;
+        line-height: 16px;
+      }
+
+      #loader-wrapper .logo img {
+        width: 80px;
+        height: 80px;
+      }
+
       #loader-wrapper .load_title span {
         font-weight: normal;
         font-style: italic;
@@ -241,9 +290,15 @@
     <div id="app">
       <div id="loader-wrapper">
         <div id="loader"></div>
+        <div class="website_title">博控智维云</div>
         <div class="loader-section section-left"></div>
         <div class="loader-section section-right"></div>
-        <div class="load_title">正在加载,请耐心等待</div>
+        <div class="logo">
+          <img src="img/logo.png" />
+        </div>
+        <div class="copyright">
+          Copyright © 2003-2020 Bocon. All Rights Reserved.
+        </div>
       </div>
     </div>
     <!-- built files will be auto injected -->

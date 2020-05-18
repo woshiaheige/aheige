@@ -271,7 +271,7 @@ export default {
                           "createRouterTable",
                           res.data.data
                         );
-                        that.setLoading("正在登录中，请稍等");
+                        that.setLoading();
                         that.$router.push("/");
                       } else {
                         that.$message.warning("此用户暂无权限");

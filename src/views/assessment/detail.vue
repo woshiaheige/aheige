@@ -137,7 +137,13 @@ export default {
                   .month(11)
                   .date(31)
                   .valueOf(),
-          boundaryGap: false
+          boundaryGap: false,
+          interval:
+            this.$route.query.type == 1
+              ? 3600 * 24 * 1000
+              : this.$route.query.type == 2
+              ? 3600 * 24 * 1000 * 4
+              : 3600 * 24 * 1000 * 30
         },
         yAxis: {
           type: "value"
