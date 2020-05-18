@@ -11,11 +11,11 @@
       <a-step
         title="已完成"
         :description="detail.gmtModified"
-        v-if="missionStatus != 3"
+        v-if="statusType == 'finish'"
       />
       <a-step
         title="已关闭"
-        v-if="missionStatus == 3"
+        v-if="statusType == 'close'"
         :description="detail.gmtModified"
       />
     </a-steps>
@@ -69,7 +69,29 @@ export default {
   },
   computed: {
     missionStatus() {
-      return this.detail.status - 1;
+      if (this.detail.status == 3) {
+        //已完成
+        return this.detail.status + 1;
+      } else if (this.detail.status == 4) {
+        //已关闭
+        return this.detail.status - 1;
+      } else {
+        //待处理，处理中
+        return this.detail.status - 1;
+      }
+    },
+    statusType() {
+      //关闭流程还是正常的完成流程
+      if (this.detail.status == 3) {
+        //已完成
+        return "finish";
+      } else if (this.detail.status == 4) {
+        //已关闭
+        return "close";
+      } else {
+        //待处理，处理中
+        return "finish";
+      }
     }
   },
   data() {
