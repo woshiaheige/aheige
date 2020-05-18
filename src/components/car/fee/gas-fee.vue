@@ -33,6 +33,7 @@
       <a-form-model-item label="付款金额" prop="payment">
         <a-input-number
           :maxLength="30"
+          :precision="2"
           :min="0"
           style="width:100%"
           placeholder="请输入"

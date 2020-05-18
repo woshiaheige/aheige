@@ -36,6 +36,7 @@
           :min="0"
           style="width:100%"
           placeholder="请输入"
+          :precision="2"
           v-model.trim="formData.payment"
         />
       </a-form-model-item>
