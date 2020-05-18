@@ -187,7 +187,7 @@ export default {
           key: "model"
         },
         {
-          title: "加油费元）",
+          title: "加油费（元）",
           dataIndex: "sumFuelPayment",
           key: "sumFuelPayment",
           customRender: text => {
@@ -199,7 +199,7 @@ export default {
           }
         },
         {
-          title: "过路费元）",
+          title: "过路费（元）",
           dataIndex: "sumTollsPayment",
           key: "sumTollsPayment",
           customRender: text => {
@@ -211,7 +211,7 @@ export default {
           }
         },
         {
-          title: "保险费元）",
+          title: "保险费（元）",
           dataIndex: "sumInsurancePayment",
           key: "sumInsurancePayment",
           customRender: text => {
@@ -223,7 +223,7 @@ export default {
           }
         },
         {
-          title: "年检费元）",
+          title: "年检费（元）",
           dataIndex: "sumAifPayment",
           key: "sumAifPayment",
           customRender: text => {
@@ -235,7 +235,7 @@ export default {
           }
         },
         {
-          title: "维修保养费元）",
+          title: "维修保养费（元）",
           dataIndex: "sumMaintenancePayment",
           key: "sumMaintenancePayment",
           customRender: text => {
@@ -247,7 +247,7 @@ export default {
           }
         },
         {
-          title: "共计元）",
+          title: "共计（元）",
           dataIndex: "sumPayment",
           key: "sumPayment",
           customRender: text => {

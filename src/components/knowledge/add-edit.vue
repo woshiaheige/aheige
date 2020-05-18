@@ -108,6 +108,7 @@ export default {
       },
       serverUrl: this.$api.common.uploadFileArr, // 上传图片服务器地址
       fileList: [],
+      deleteFileIds: [], //编辑状态下，删除文件
       token: JSON.parse(sessionStorage.getItem("userinfo")).token
     };
   },
@@ -121,9 +122,9 @@ export default {
     }
   },
   watch: {
-    fileList(nval) {
-      console.log(nval, 77);
-    },
+    // fileList(nval) {
+    //   console.log(nval, 77);
+    // },
     detail(nval) {
       if (nval) {
         this.initDetail = JSON.parse(JSON.stringify(nval));
@@ -133,8 +134,20 @@ export default {
         this.$nextTick(() => {
           this.formData = {
             title: nval.title,
-            classId: nval.classId
+            classId: nval.classId,
+            fileEntities: nval.fileEntities ? nval.fileEntities : []
           };
+          if (nval.fileEntities != null) {
+            for (var i in nval.fileEntities) {
+              let temp = {};
+              temp.uid = i;
+              temp.id = nval.fileEntities[i].fileId;
+              temp.name = nval.fileEntities[i].fileName;
+              temp.status = "done";
+              temp.url = "";
+              this.fileList.push(temp);
+            }
+          }
         });
       }
     },
@@ -205,9 +218,11 @@ export default {
       this.detailId = "";
       this.$refs.ruleForm.clearValidate();
       this.fileList = [];
+      this.deleteFileIds = [];
       this.formData = {
         title: "",
-        classId: undefined
+        classId: undefined,
+        fileEntities: []
       };
     },
     handleOk() {
@@ -227,6 +242,9 @@ export default {
       let params = JSON.parse(JSON.stringify(values));
       params.content = this.content;
       params.id = this.detailId;
+      if (this.deleteFileIds.length != 0) {
+        params.deleteFileIds = this.deleteFileIds;
+      }
       this.$api.maintain.updateKnowledgeArticle(params).then(res => {
         if (res.data.state == 0) {
           this.$message.success("修改文章成功");
@@ -286,16 +304,12 @@ export default {
       this.formData.fileEntities.forEach((item, index) => {
         if (item.fileId == file.id) {
           this.formData.fileEntities.splice(index, 1);
-          // this.delFile(file.id);
+          if (this.detailId) {
+            //编辑状态下,删除文件
+            this.deleteFileIds.push(item);
+          }
         }
       });
-    },
-    delFile(id) {
-      let data = {
-        contractId: this.modelData.row.id || "", //合同ID
-        fileId: id //文件ID
-      };
-      this.$api.customer.delContractFile(data).then(() => {});
     }
   },
   mounted() {}

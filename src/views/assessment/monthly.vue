@@ -90,30 +90,23 @@ export default {
           width: 120
         },
         {
-          title: "运维活动",
-          dataIndex: "movement",
-          key: "movement",
-          children: [
-            {
-              title: "气类",
-              dataIndex: "gas",
-              key: "gas",
-              children: []
-            },
-            {
-              title: "水类",
-              dataIndex: "water",
-              key: "water",
-              children: []
-            },
-            {
-              title: "合计",
-              dataIndex: "total",
-              key: "total",
-              width: 120,
-              align: "center"
-            }
-          ]
+          title: "气类运维",
+          dataIndex: "gas",
+          key: "gas",
+          children: []
+        },
+        {
+          title: "水类运维",
+          dataIndex: "water",
+          key: "water",
+          children: []
+        },
+        {
+          title: "合计",
+          dataIndex: "total",
+          key: "total",
+          width: 120,
+          align: "center"
         },
         {
           title: "操作",
@@ -178,8 +171,8 @@ export default {
         });
     },
     async getTitle() {
-      this.columns[2].children[0].children = [];
-      this.columns[2].children[1].children = [];
+      this.columns[2].children = [];
+      this.columns[3].children = [];
 
       let data = {
         groupName: this.list.group,
@@ -197,7 +190,7 @@ export default {
               item.childs.forEach(children => {
                 if (children.title !== "合计") {
                   if (children.type === 31) {
-                    this.columns[2].children[0].children.push({
+                    this.columns[2].children.push({
                       title: children.title,
                       dataIndex: children.id,
                       key: children.id,
@@ -205,7 +198,7 @@ export default {
                       align: "center"
                     });
                   } else if (children.type === 32) {
-                    this.columns[2].children[1].children.push({
+                    this.columns[3].children.push({
                       title: children.title,
                       dataIndex: children.id,
                       key: children.id,
@@ -223,7 +216,7 @@ export default {
     goDetail(row) {
       this.chartData = [];
 
-      this.columns[2].children[0].children.forEach(item => {
+      this.columns[2].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
             this.chartData.push({ value: row[key], name: item.title });
@@ -231,7 +224,7 @@ export default {
         }
       });
 
-      this.columns[2].children[1].children.forEach(item => {
+      this.columns[3].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
             this.chartData.push({ value: row[key], name: item.title });

@@ -14,9 +14,9 @@ instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.interceptors.request.use(
   config => {
     if (JSON.parse(sessionStorage.getItem("userinfo"))) {
-      let token = JSON.parse(sessionStorage.getItem("userinfo")).token;
-      config.headers["token"] = token;
-      // config.headers["token"] = 8888;
+      // let token = JSON.parse(sessionStorage.getItem("userinfo")).token;
+      // config.headers["token"] = token;
+      config.headers["token"] = 8888;
     }
     if (config.method === "get") {
       config.paramsSerializer = function(params) {

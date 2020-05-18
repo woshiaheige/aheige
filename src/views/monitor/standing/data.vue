@@ -136,6 +136,7 @@ export default {
   methods: {
     setCharData() {
       let tempData = [];
+      this.chartData.columns = ["dateTime"];
       this.allTableData.forEach(element => {
         if (this.formInline.type == 1) {
           let rowData = {
