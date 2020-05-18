@@ -58,7 +58,7 @@
       </a-col>
       <a-col :span="4">
         <a-card :bordered="false">
-          <router-link to="/customer/contract">
+          <router-link to="/product/supplier">
             <a-statistic
               title="供应商"
               :value="countList.supplierCount"
