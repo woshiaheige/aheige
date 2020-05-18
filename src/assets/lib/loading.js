@@ -15,16 +15,16 @@ const loading = {
       logoImg.setAttribute("src", "img/logo.png");
       let websiteTitle = document.createElement("div");
       websiteTitle.setAttribute("class", "website_title");
-      let copyright = document.createElement("div");
-      copyright.setAttribute("class", "copyright");
-      let copyrightContent = document.createTextNode(
-        "Copyright © 2003-2020 Bocon. All Rights Reserved."
-      );
+      // let copyright = document.createElement("div");
+      // copyright.setAttribute("class", "copyright");
+      // let copyrightContent = document.createTextNode(
+      //   "Copyright © 2003-2020 Bocon. All Rights Reserved."
+      // );
       let websiteTitleContent = document.createTextNode("博控智维云");
       logo.appendChild(logoImg);
-      copyright.appendChild(copyrightContent);
+      // copyright.appendChild(copyrightContent);
       websiteTitle.appendChild(websiteTitleContent);
-      loaderWrapper.appendChild(copyright);
+      // loaderWrapper.appendChild(copyright);
       loaderWrapper.appendChild(websiteTitle);
       loaderWrapper.appendChild(loader);
       loaderWrapper.appendChild(loaderSectionLeft);

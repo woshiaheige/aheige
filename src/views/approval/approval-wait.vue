@@ -70,9 +70,9 @@
         :pagination="false"
       >
         <template slot="type" slot-scope="type">
-          <a-tag color="red" v-if="type == 3">关闭</a-tag>
-          <a-tag color="green" v-if="type == 2">延迟</a-tag>
-          <a-tag color="blue" v-if="type == 1">转交</a-tag>
+          <a-tag color="red" v-if="type == 3">任务关闭</a-tag>
+          <a-tag color="green" v-if="type == 2">任务延迟</a-tag>
+          <a-tag color="blue" v-if="type == 1">任务转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
           <a-badge color="orange" text="待处理" v-if="state == 1" />
@@ -167,6 +167,11 @@ export default {
           scopedSlots: { customRender: "state" }
         },
         {
+          title: "申请时间",
+          width: 200,
+          dataIndex: "applyTime"
+        },
+        {
           title: "审批人",
           dataIndex: "approvalName",
           ellipsis: true,
@@ -177,11 +182,6 @@ export default {
               return text;
             }
           }
-        },
-        {
-          title: "申请时间",
-          width: 200,
-          dataIndex: "applyTime"
         },
         {
           title: "审核时间",
