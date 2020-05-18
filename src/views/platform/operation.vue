@@ -31,7 +31,7 @@
                 </a-select>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置生成下周任务的时间。既设置星期一，则每周星期一生成下周任务
+                    设置生成下周任务的时间。如设置星期一，则每周星期一生成下周任务
                   </template>
                   <a-icon type="question-circle" />
                 </a-tooltip>
@@ -45,7 +45,7 @@
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
                     运维人员提交任务至少需要完成的时间，
-                    即设置30，则运维人员必须超过30分钟才可提交
+                    如设置30，则运维人员必须超过30分钟才可提交
                   </template>
                   <a-icon type="question-circle" />
                 </a-tooltip>
@@ -72,7 +72,7 @@
                 </a-select>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置周报表推送至企业的时间，即设置星期一，
+                    设置周报表推送至企业的时间，如设置星期一，
                     则企业将在星期一收到上周周报表
                   </template>
                   <a-icon type="question-circle" />
@@ -98,7 +98,7 @@
                 ><span v-margin:left="10">号</span>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置月报表推送至企业的时间，即设置1号，
+                    设置月报表推送至企业的时间，如设置1号，
                     则企业将在星1号收到上月月报表，如某些月份不存在29，30或31号，
                     则在该月最后一天推送
                   </template>
@@ -115,7 +115,7 @@
                 </counter>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置运维人员签到的最小范围，即设置100米，
+                    设置运维人员签到的最小范围，如设置100米，
                     则运维人员可在任务地点100米范围内签到
                   </template>
                   <a-icon type="question-circle" />
@@ -154,7 +154,7 @@
                 </counter>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置判定数据为恒指的时限，即设置6小时，
+                    设置判定数据为恒指的时限，如设置6小时，
                     则数据持续6小时无产生变化即被判定为恒值
                   </template>
                   <a-icon type="question-circle" />
@@ -168,7 +168,7 @@
                 </counter>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置判定数据为零指的时限，即设置6小时，
+                    设置判定数据为零指的时限，如设置6小时，
                     则数据持续6小时数值为0即被判定为零值
                   </template>
                   <a-icon type="question-circle" />
@@ -207,7 +207,7 @@
                 </counter>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置车辆年检到期提前提醒天数，即设置30天，
+                    设置车辆年检到期提前提醒天数，如设置30天，
                     则离车辆年检到期还有30天时提醒
                   </template>
                   <a-icon type="question-circle" />
@@ -221,7 +221,7 @@
                 </counter>
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
-                    设置合同到期提前提醒天数，即设置30天，
+                    设置合同到期提前提醒天数，如设置30天，
                     则离合同到期还有30天时提醒
                   </template>
                   <a-icon type="question-circle" />
