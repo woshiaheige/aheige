@@ -130,15 +130,15 @@ export default {
           title: "小时数据数",
           children: [
             {
-              title: "应收条数",
-              dataIndex: "hourOughtCount",
-              key: "hourOughtCount",
-              align: "center"
-            },
-            {
               title: "实收条数",
               dataIndex: "hourRealCount",
               key: "hourRealCount",
+              align: "center"
+            },
+            {
+              title: "应收条数",
+              dataIndex: "hourOughtCount",
+              key: "hourOughtCount",
               align: "center"
             },
             {
@@ -153,15 +153,15 @@ export default {
           title: "日数据数",
           children: [
             {
-              title: "应收条数",
-              dataIndex: "dayOughtCount",
-              key: "dayOughtCount",
-              align: "center"
-            },
-            {
               title: "实收条数",
               dataIndex: "dayRealCount",
               key: "dayRealCount",
+              align: "center"
+            },
+            {
+              title: "应收条数",
+              dataIndex: "dayOughtCount",
+              key: "dayOughtCount",
               align: "center"
             },
             {
