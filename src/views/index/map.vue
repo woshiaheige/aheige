@@ -335,13 +335,13 @@ export default {
     },
     //设置车辆起点
     setCar() {
+      let content =
+        '<div class="marker-info marker-car"><a-icon class="car" /></div>';
       this.markers = new AMap.Marker({
         map: this.map,
         position: this.lineArr[0],
-        icon: "https://webapi.amap.com/images/car.png",
-        offset: new AMap.Pixel(-26, -13),
-        autoRotation: true,
-        angle: -90
+        content: content,
+        offset: new AMap.Pixel(-13, -13)
       });
     },
     // 绘制轨迹

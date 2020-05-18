@@ -119,8 +119,8 @@
       </a-col>
       <a-col :span="6">
         <a-card :bordered="false" title="今日任务完成情况">
-          <ve-ring :data="chartData"></ve-ring>
-          <a-empty v-if="isEmpty" :image="simpleImage" />
+          <ve-ring :data="chartData" v-if="!isEmpty"></ve-ring>
+          <a-empty v-else :image="simpleImage" />
         </a-card>
         <a-card :bordered="false" title="本周运维人员TOP10">
           <a-list itemLayout="horizontal" :dataSource="rankingList">
@@ -155,17 +155,10 @@ export default {
       place: null,
       colors: ["#1890ff", "orange", "#cf1322"],
       chartData: {},
-      chartData2: {
-        columns: ["name", "value"],
-        rows: [
-          { name: "例行", value: 50 },
-          { name: "突发", value: 8 }
-        ]
-      },
       rankingList: [],
       completionList: [],
       countList: {},
-      isEmpty: true
+      isEmpty: false
     };
   },
 
@@ -206,21 +199,28 @@ export default {
     },
     //任务完成情况
     getTaskData() {
-      this.$api.index.taskCount().then(res => {
-        if (res.data.state == 0) {
-          let result = res.data.data;
-          this.chartData = {
-            columns: ["name", "value"],
-            rows: [
-              { name: "已完成", value: result.completeCount },
-              { name: "未完成", value: result.count - result.completeCount }
-            ]
-          };
-          if (result) {
-            this.isEmpty = false;
+      this.isEmpty = false;
+      this.$api.index
+        .taskCount()
+        .then(res => {
+          if (res.data.state == 0) {
+            let result = res.data.data;
+            let finish = result.completeCount;
+            if (result.completeCount == 0) {
+              finish = 100; //任务数为0时，完成率为100%
+            }
+            this.chartData = {
+              columns: ["name", "value"],
+              rows: [
+                { name: "已完成", value: finish },
+                { name: "未完成", value: result.count - result.completeCount }
+              ]
+            };
           }
-        }
-      });
+        })
+        .catch(() => {
+          this.isEmpty = true;
+        });
     },
     //消息提醒列表
     changeTabs(key) {
