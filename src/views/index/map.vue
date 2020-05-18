@@ -105,9 +105,20 @@
             >
               <a-list-item-meta
                 :description="item.groupName + '  |  ' + item.username"
-                @click="goMarker(item.lng, item.lat, item.id)"
+                v-if="item.latitude == null || item.longitude == null"
+              />
+              <a-list-item-meta
+                v-else
+                :description="item.groupName + '  |  ' + item.username"
+                @click="goMarker(item.longitude, item.latitude, item.id)"
               >
               </a-list-item-meta>
+              <a-tag
+                color="red"
+                v-if="item.latitude == null || item.longitude == null"
+              >
+                未定位
+              </a-tag>
             </a-list-item>
           </a-list>
         </div>
@@ -242,25 +253,27 @@ export default {
     async getUserData() {
       this.userList = [];
       await this.$api.index.getUserData().then(res => {
-        if (res.data.state == 0) {
+        if (res.data.state == 0 && res.data.data.length > 0) {
           let result = res.data.data;
-          for (var i in result) {
-            let marker;
-            let content =
-              '<div class="marker-info marker-man"><a-icon class="man" />' +
-              result[i].groupName +
-              "  |  " +
-              result[i].username +
-              "</div>";
-            marker = new AMap.Marker({
-              position: new AMap.LngLat(result[i].lng, result[i].lat),
-              title: result[i].groupName + "  |  " + result[i].username,
-              content: content,
-              anchor: "center"
-            });
-            this.userList.push(result[i]);
-            this.markers.push(marker);
-          }
+          result.forEach(item => {
+            this.userList.push(item);
+            if (item.latitude != null && item.longitude != null) {
+              let marker;
+              let content =
+                '<div class="marker-info marker-man"><a-icon class="man" />' +
+                item.groupName +
+                "  |  " +
+                item.username +
+                "</div>";
+              marker = new AMap.Marker({
+                position: new AMap.LngLat(item.longitude, item.latitude),
+                title: item.groupName + "  |  " + item.username,
+                content: content,
+                anchor: "center"
+              });
+              this.markers.push(marker);
+            }
+          });
         }
       });
     },
