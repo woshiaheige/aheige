@@ -143,7 +143,7 @@ export default {
       list: {
         model: "",
         number: "",
-        range: [this.$moment().subtract(7, "days"), this.$moment()]
+        range: [this.$moment().subtract(6, "days"), this.$moment()]
       },
       costCount: 0,
       diffDay: 0

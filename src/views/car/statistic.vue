@@ -272,6 +272,7 @@ export default {
     getAllCar() {
       this.$api.car.getAllCar().then(res => {
         if (res.data.state == 0) {
+          res.data.data.unshift({ number: "全部", id: "" });
           this.carOptions = res.data.data;
         }
       });
