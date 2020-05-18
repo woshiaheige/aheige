@@ -8,6 +8,13 @@
           <a-tag color="blue">{{ articleDetail.className }}</a-tag>
         </div>
       </div>
+      <div
+        class="fileList"
+        v-for="(file, index) of articleDetail.fileEntities"
+        :key="index"
+      >
+        <a @click="onDown(file)">{{ file.fileName }}</a>
+      </div>
       <div class="ql-snow ql-editor" v-html="articleDetail.content" />
     </a-card>
   </div>
@@ -32,6 +39,16 @@ export default {
             this.articleDetail = res.data.data;
           }
         });
+    },
+    onDown(row) {
+      if (row.fileId == null) {
+        this.$message.warn("没有附件");
+        return;
+      }
+      this.$api.customer.downloadFile({ id: row.fileId }).then(() => {
+        window.location.href =
+          this.$api.base.api + "files/download/file/" + row.fileId;
+      });
     }
   }
 };

@@ -169,7 +169,7 @@
                 <a-tooltip v-margin:left="16">
                   <template slot="title">
                     设置判定数据为零指的时限，如设置6小时，
-                    则数据持续6小时数值为0如被判定为零值
+                    则数据持续6小时数值为0即被判定为零值
                   </template>
                   <a-icon type="question-circle" />
                 </a-tooltip>

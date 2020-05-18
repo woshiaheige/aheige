@@ -119,7 +119,15 @@ export default {
             action: this.$api.common.uploadFileApi,
             response: res => {
               console.log(res, "response");
-              return res.data.uri;
+              // 获取光标所在位置
+              let quill = this.$refs.myQuillEditor.quill;
+              console.log(quill);
+              let length = quill.getSelection().index;
+              // 插入图片  res.url为服务器返回的图片地址
+              quill.insertEmbed(length, "image", res.data.uri);
+              // 调整光标到最后
+              quill.setSelection(length + 1);
+              // return res.data.uri;
             }
           },
           toolbar: {
