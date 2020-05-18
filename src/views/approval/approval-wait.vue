@@ -54,6 +54,7 @@
                 @change="getTableData"
               >
                 <a-radio-button value="">全部</a-radio-button>
+                <a-radio-button value="0">审批中</a-radio-button>
                 <a-radio-button value="1">通过</a-radio-button>
                 <a-radio-button value="2">驳回</a-radio-button>
               </a-radio-group>

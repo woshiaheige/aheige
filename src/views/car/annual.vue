@@ -6,14 +6,14 @@
           <a-input
             placeholder="请输入"
             v-model="list.number"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="车辆品牌">
           <a-input
             placeholder="请输入"
             v-model="list.model"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="付款时间">

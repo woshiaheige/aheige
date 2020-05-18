@@ -8,9 +8,12 @@
     <a-steps :current="missionStatus" size="small" v-margin:bottom="40">
       <a-step title="待处理" :description="detail.gmtCreate" />
       <a-step title="处理中" />
-      <a-step title="已完成" :description="detail.gmtModified" />
-      <!-- <a-step title="已延期" v-if="missionStatus == 3" />
-      <a-step title="已关闭" /> -->
+      <a-step
+        title="已完成"
+        :description="detail.gmtModified"
+        v-if="missionStatus != 3"
+      />
+      <a-step title="已关闭" v-if="missionStatus == 3" />
     </a-steps>
     <div class="description-wrapper">
       <a-descriptions :column="1" bordered>
