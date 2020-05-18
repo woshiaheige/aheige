@@ -12,7 +12,7 @@
     </a-steps>
     <div class="description-wrapper">
       <a-descriptions :column="1" bordered>
-        <a-descriptions-item label="审批标题"></a-descriptions-item>
+        <a-descriptions-item label="审批标题">{{ title }}</a-descriptions-item>
         <a-descriptions-item label="审批内容">{{
           content
         }}</a-descriptions-item>
