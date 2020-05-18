@@ -13,7 +13,11 @@
         :description="detail.gmtModified"
         v-if="missionStatus != 3"
       />
-      <a-step title="已关闭" v-if="missionStatus == 3" />
+      <a-step
+        title="已关闭"
+        v-if="missionStatus == 3"
+        :description="detail.gmtModified"
+      />
     </a-steps>
     <div class="description-wrapper">
       <a-descriptions :column="1" bordered>
