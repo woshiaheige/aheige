@@ -263,7 +263,10 @@ export default {
       this.columns[2].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
-            this.chartData.push({ value: row[key], name: item.title });
+            this.chartData.push({
+              value: row[key],
+              name: item.title + "（气）"
+            });
           }
         }
       });
@@ -271,7 +274,10 @@ export default {
       this.columns[3].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
-            this.chartData.push({ value: row[key], name: item.title });
+            this.chartData.push({
+              value: row[key],
+              name: item.title + "（水）"
+            });
           }
         }
       });

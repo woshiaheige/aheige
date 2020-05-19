@@ -68,7 +68,7 @@ export default {
         },
         series: [
           {
-            name: "成本统计",
+            name: "运维活动统计",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
@@ -127,7 +127,7 @@ export default {
           max:
             this.$route.query.type == 1
               ? this.$moment(this.$route.query.beginTime)
-                  .date(31)
+                  .endOf("month")
                   .valueOf()
               : this.$route.query.type == 2
               ? this.$moment(this.$route.query.endTime)

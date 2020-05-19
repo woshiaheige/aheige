@@ -52,60 +52,52 @@
             slot-scope="text, row"
           >
             <div v-if="row[item.key].Rtd || row[item.key].Avg">
-              <div v-if="formInline.type === 3">
-                <span v-color="'#CB343F'" v-if="row[item.key].Flag === 'T'"
-                  >{{ row[item.key].Avg }}
-                  <a-tooltip placement="top">
-                    <template slot="title">
-                      <p>超标</p>
-                      <p>上限：{{ row[item.key].ceilval }}</p>
-                      <p>下限：{{ row[item.key].floorval }}</p>
-                    </template>
-                    <a-icon
-                      type="question-circle"
-                      theme="filled"
-                      style="color: rgba(0, 0, 0, 0.25);"
-                    />
-                  </a-tooltip>
-                </span>
-                <span v-else-if="row[item.key].Flag === 'N'">{{
-                  row[item.key].Avg
-                }}</span>
-                <span v-color="'#EBBF0E'" v-else
-                  >{{ row[item.key].Avg }}
-                  <a-tooltip placement="top">
-                    <template slot="title">
-                      <p v-if="row[item.key].Flag == 'F'">
-                        在线监控（监测）仪器仪表停运
-                      </p>
-                      <p v-if="row[item.key].Flag == 'M'">
-                        在线监控（监测）仪器仪表处于维护期间产生的数据
-                      </p>
-                      <p v-if="row[item.key].Flag == 'S'">手工输入的设定值</p>
-                      <p v-if="row[item.key].Flag == 'D'">
-                        在线监控（监测）仪器仪表故障
-                      </p>
-                      <p v-if="row[item.key].Flag == 'C'">
-                        在线监控（监测）仪器仪表处于校准状态
-                      </p>
-                      <p v-if="row[item.key].Flag == 'B'">
-                        在线监控（监测）仪器仪表与数采仪通讯异常
-                      </p>
-                    </template>
-                    <a-icon
-                      type="question-circle"
-                      theme="filled"
-                      style="color: rgba(0, 0, 0, 0.25);"
-                    />
-                  </a-tooltip>
-                </span>
-              </div>
-              <div v-else-if="formInline.type === 1">
-                <span>{{ row[item.key].Rtd }}</span>
-              </div>
-              <div v-else>
-                <span>{{ row[item.key].Avg }}</span>
-              </div>
+              <span v-color="'#CB343F'" v-if="row[item.key].Flag === 'T'"
+                >{{ row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg }}
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <p>超标</p>
+                    <p>上限：{{ row[item.key].ceilval }}</p>
+                    <p>下限：{{ row[item.key].floorval }}</p>
+                  </template>
+                  <a-icon
+                    type="question-circle"
+                    theme="filled"
+                    style="color: rgba(0, 0, 0, 0.25);"
+                  />
+                </a-tooltip>
+              </span>
+              <span v-else-if="row[item.key].Flag === 'N'">{{
+                row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg
+              }}</span>
+              <span v-color="'#EBBF0E'" v-else
+                >{{ row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg }}
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <p v-if="row[item.key].Flag == 'F'">
+                      在线监控（监测）仪器仪表停运
+                    </p>
+                    <p v-if="row[item.key].Flag == 'M'">
+                      在线监控（监测）仪器仪表处于维护期间产生的数据
+                    </p>
+                    <p v-if="row[item.key].Flag == 'S'">手工输入的设定值</p>
+                    <p v-if="row[item.key].Flag == 'D'">
+                      在线监控（监测）仪器仪表故障
+                    </p>
+                    <p v-if="row[item.key].Flag == 'C'">
+                      在线监控（监测）仪器仪表处于校准状态
+                    </p>
+                    <p v-if="row[item.key].Flag == 'B'">
+                      在线监控（监测）仪器仪表与数采仪通讯异常
+                    </p>
+                  </template>
+                  <a-icon
+                    type="question-circle"
+                    theme="filled"
+                    style="color: rgba(0, 0, 0, 0.25);"
+                  />
+                </a-tooltip>
+              </span>
             </div>
             <div v-else>
               <span>-</span>
