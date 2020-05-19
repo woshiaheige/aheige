@@ -22,7 +22,7 @@
             >
           </a-select>
         </a-form-item>
-        <a-form-item label="监控点名称">
+        <a-form-item label="监测点名称">
           <a-select
             v-model="list.pointId"
             placeholder="请选择"
@@ -138,7 +138,7 @@ export default {
           key: "enterpriseName"
         },
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "pointName",
           key: "pointName"
         },

@@ -10,7 +10,7 @@
             @pressEnter="getTableData"
           />
         </a-form-item>
-        <a-form-item label="监控点名称">
+        <a-form-item label="监测点名称">
           <a-input
             placeholder="请输入"
             v-model="formInline.pointName"

@@ -38,7 +38,7 @@
             <a-form-model-item prop="user">
               <a-input
                 v-model="formValidate.user"
-                placeholder="用户名"
+                placeholder="账号/手机号码"
                 @pressEnter="handleSubmit('login')"
                 @on-focus="onFocus('username')"
                 @on-blur="onBlur('username')"

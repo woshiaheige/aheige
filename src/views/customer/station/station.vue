@@ -10,7 +10,7 @@
             :maxLength="30"
           ></a-input>
         </a-form-item>
-        <a-form-item label="监控点名称">
+        <a-form-item label="监测点名称">
           <a-input
             placeholder="请输入"
             v-model="list.pointName"
@@ -26,7 +26,7 @@
             :maxLength="30"
           ></a-input>
         </a-form-item>
-        <a-form-item label="监控点类型">
+        <a-form-item label="监测点类型">
           <a-select
             placeholder="请选择"
             v-width="150"
@@ -154,7 +154,7 @@ export default {
       total: 1,
       columns: [
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "name",
           key: "name"
         },
