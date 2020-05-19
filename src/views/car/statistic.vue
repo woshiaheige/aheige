@@ -268,7 +268,9 @@ export default {
   methods: {
     onCarChange(e) {
       this.carNumber = e.number;
-      this.getData();
+      this.$nextTick(() => {
+        this.getData();
+      });
     },
     getAllCar() {
       this.$api.car.getAllCar().then(res => {
