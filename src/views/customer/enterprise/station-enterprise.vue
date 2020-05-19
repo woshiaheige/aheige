@@ -259,27 +259,17 @@ export default {
       return new Promise(() => {
         setTimeout(() => {
           if (!this.switchInfo.isStarted) {
-            this.$confirm({
-              content: "若恢复停运该检测点，将重新生成任务，次日起生效",
-              onOk: () => {
-                this.runInfo = {
-                  show: true,
-                  row: this.switchInfo,
-                  type: "open"
-                };
-              }
-            });
+            this.runInfo = {
+              show: true,
+              row: this.switchInfo,
+              type: "open"
+            };
           } else {
-            this.$confirm({
-              content: "若停运该检测点，将不再生成任务，次日起生效",
-              onOk: () => {
-                this.runInfo = {
-                  show: true,
-                  row: this.switchInfo,
-                  type: "close"
-                };
-              }
-            });
+            this.runInfo = {
+              show: true,
+              row: this.switchInfo,
+              type: "close"
+            };
           }
         }, 500);
       });
