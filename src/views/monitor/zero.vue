@@ -162,7 +162,7 @@ export default {
               let arr = item.dateTime.split("~");
               let start = this.$moment(arr[0].split(/[ ]|:|-/));
               let end = this.$moment(arr[1].split(/[ ]|:|-/));
-              item.longTime = end.diff(start, "hours");
+              item.longTime = end.diff(start, "hours") + 1;
             });
             this.tableData = result.list;
           }

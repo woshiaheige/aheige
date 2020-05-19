@@ -8,9 +8,16 @@
     <a-steps :current="missionStatus" size="small" v-margin:bottom="40">
       <a-step title="待处理" :description="detail.gmtCreate" />
       <a-step title="处理中" />
-      <a-step title="已完成" :description="detail.gmtModified" />
-      <!-- <a-step title="已延期" v-if="missionStatus == 3" />
-      <a-step title="已关闭" /> -->
+      <a-step
+        title="已完成"
+        :description="detail.gmtModified"
+        v-if="statusType == 'finish'"
+      />
+      <a-step
+        title="已关闭"
+        v-if="statusType == 'close'"
+        :description="detail.gmtModified"
+      />
     </a-steps>
     <div class="description-wrapper">
       <a-descriptions :column="1" bordered>
@@ -71,7 +78,29 @@ export default {
   },
   computed: {
     missionStatus() {
-      return this.detail.status - 1;
+      if (this.detail.status == 3) {
+        //已完成
+        return this.detail.status + 1;
+      } else if (this.detail.status == 4) {
+        //已关闭
+        return this.detail.status - 1;
+      } else {
+        //待处理，处理中
+        return this.detail.status - 1;
+      }
+    },
+    statusType() {
+      //关闭流程还是正常的完成流程
+      if (this.detail.status == 3) {
+        //已完成
+        return "finish";
+      } else if (this.detail.status == 4) {
+        //已关闭
+        return "close";
+      } else {
+        //待处理，处理中
+        return "finish";
+      }
     }
   },
   data() {
