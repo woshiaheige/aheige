@@ -68,6 +68,7 @@
               {{ item.Avg }}{{ item.unit }}
               <a-tooltip placement="top" v-if="item.Flag != 'N'">
                 <template slot="title">
+                  <p v-if="item.Flag == 'T'">超标</p>
                   <p v-if="item.Flag == 'T'">上限：{{ item.ceilval }}</p>
                   <p v-if="item.Flag == 'T'">下限：{{ item.floorval }}</p>
                   <p v-if="item.Flag == 'F'">在线监控（监测）仪器仪表停运</p>

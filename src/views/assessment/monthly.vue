@@ -80,14 +80,14 @@ export default {
           dataIndex: "groupName",
           key: "groupName",
           fixed: "left",
-          width: 120
+          width: 150
         },
         {
           title: "运维人员",
           dataIndex: "username",
           key: "username",
           fixed: "left",
-          width: 120
+          width: 150
         },
         {
           title: "气类运维",
@@ -113,7 +113,7 @@ export default {
           key: "check",
           fixed: "right",
           align: "center",
-          width: 80,
+          width: 100,
           scopedSlots: { customRender: "check" }
         }
       ],
@@ -219,7 +219,10 @@ export default {
       this.columns[2].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
-            this.chartData.push({ value: row[key], name: item.title });
+            this.chartData.push({
+              value: row[key],
+              name: item.title + "（气）"
+            });
           }
         }
       });
@@ -227,7 +230,10 @@ export default {
       this.columns[3].children.forEach(item => {
         for (let key in row) {
           if (item.key == key) {
-            this.chartData.push({ value: row[key], name: item.title });
+            this.chartData.push({
+              value: row[key],
+              name: item.title + "（水）"
+            });
           }
         }
       });

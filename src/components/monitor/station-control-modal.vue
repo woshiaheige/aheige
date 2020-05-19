@@ -406,6 +406,7 @@ export default {
   },
   data() {
     return {
+      timeLength: 3000,
       spinning: false,
       devList: [], //获取所有参数列表
       divisorList: [], //监测站房信息因子
@@ -608,43 +609,25 @@ export default {
   },
   methods: {
     // 根据QN号查询反控结果日志信息
-    getResultByQn(qn, command) {
-      debugger;
+    getResultByQn(qn, command, timeLength) {
       let _this = this;
+      _this.timeLength = timeLength;
       _this.$api.monitor.getResultByQn(qn, command).then(rey => {
-        // _this.$Spin.show({
-        //   render: h => {
-        //     return h("div", [
-        //       h("Icon", {
-        //         class: "demo-spin-icon-load",
-        //         props: {
-        //           type: "ios-loading",
-        //           size: 18
-        //         }
-        //       }),
-        //       h("div", "正在请求数据，请耐心等待...")
-        //     ]);
-        //   }
-        // });
         this.spinning = true;
         if (rey.data.state == 0) {
           // 1:执行成功 2:执行失败，但不知道原因 3:命令请求条件错误 4:通讯超时 5:系统繁忙不能执行 6:系统故障 100:没有数据
           var timerResult;
-          debugger;
-          if (rey.data.data == "" || rey.data.data == null) {
+          if (!rey.data.data.status) {
             _this.try++;
             if (_this.try == 0) {
-              _this.getResultByQn(qn, command);
-            } else if (_this.try <= 30) {
+              _this.getResultByQn(qn, command, _this.timeLength);
+            } else if (_this.try <= 3) {
               timerResult = setTimeout(() => {
-                _this.getResultByQn(qn, command);
-              }, 2000);
+                _this.getResultByQn(qn, command, _this.timeLength);
+              }, _this.timeLength);
             } else {
               _this.try = 0;
               _this.spinning = false;
-              // _this.$Notice.error({
-              //   title: this.monitor.operate + "失败"
-              // });
               this.$notification.error({
                 message: _this.monitor.operate + "失败"
               });
@@ -652,41 +635,20 @@ export default {
             }
           } else if (rey.data.data.status == "1") {
             _this.spinning = false;
-            // _this.$Notice.success({
-            //   title: _this.monitor.operate + "成功啦~~"
-            // });
-            this.$notification.success({
-              message: _this.monitor.operate + "成功啦~~"
-            });
-            clearTimeout(timerResult);
-            _this.monitor.isShow = true;
-            if (
-              _this.monitor.formIndex == 19 &&
-              _this.monitor.command == "1011"
-            ) {
-              _this.show = {
-                time: ""
-              };
-              let SystemTime = rey.data.data.systemTime;
-              _this.show.time =
-                SystemTime.substr(0, 4) +
-                "/" +
-                SystemTime.substr(4, 2) +
-                "/" +
-                SystemTime.substr(6, 2) +
-                " " +
-                SystemTime.substr(8, 2) +
-                ":" +
-                SystemTime.substr(10, 2) +
-                ":" +
-                SystemTime.substr(12, 2);
+            if (rey.data.data.result) {
+              this.$notification.success({
+                message:
+                  _this.monitor.operate + "成功（" + rey.data.data.result + "）"
+              });
+            } else {
+              this.$notification.success({
+                message: _this.monitor.operate + "成功"
+              });
             }
+            clearTimeout(timerResult);
+            this.$emit("cancel");
           } else {
-            // this.$Spin.hide();
             _this.spinning = false;
-            // _this.$Notice.error({
-            //   title: this.monitor.operate + "失败"
-            // });
             this.$notification.error({
               message: _this.monitor.operate + "失败"
             });
@@ -705,12 +667,15 @@ export default {
         .getSend3017(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("设置成功");
+            // this.$message.success("设置成功");
+            if (res.data.data && res.data.data != "") {
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
+            }
           }
         })
         .finally(() => {
           this.$refs["formValidate15"].resetFields();
-          this.$emit("cancel");
+          // this.$emit("cancel");
         });
     },
     //设置采样时间周期 3016
@@ -725,12 +690,15 @@ export default {
         .getSend3016(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("设置成功");
+            // this.$message.success("设置成功");
+            if (res.data.data && res.data.data != "") {
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
+            }
           }
         })
         .finally(() => {
           this.$refs["formValidate15"].resetFields();
-          this.$emit("cancel");
+          // this.$emit("cancel");
         });
     },
     //设置启动清洗 3013
@@ -743,12 +711,15 @@ export default {
         .getSend3013(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("设置成功");
+            // this.$message.success("设置成功");
+            if (res.data.data && res.data.data != "") {
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
+            }
           }
         })
         .finally(() => {
           this.$refs["formValidate10"].resetFields();
-          this.$emit("cancel");
+          // this.$emit("cancel");
         });
     },
     //设置即时采样 3012
@@ -761,16 +732,13 @@ export default {
         .getSend3012(data)
         .then(res => {
           if (res.data.state == 0) {
-            // this.$message.success("设置成功");
             if (res.data.data && res.data.data != "") {
-              // debugger;
-              this.getResultByQn(res.data.data.qn, res.data.data.command);
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
             }
           }
         })
         .finally(() => {
           this.$refs["formValidate10"].resetFields();
-          // this.$emit("cancel");
         });
     },
     //提取污染物历史数据 2051
@@ -785,31 +753,40 @@ export default {
         .getReissue(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("提取成功");
+            // this.$message.success("提取成功");
+            if (res.data.data && res.data.data != "") {
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 6000);
+            }
           }
         })
         .finally(() => {
           this.$refs["formValidate9"].resetFields();
-          this.$emit("cancel");
+          // this.$emit("cancel");
         });
     },
     //设置现场机时间 1012
     getSend1012() {
       let data = {
         pointId: this.monitor.pointId,
-        divisorId: this.formValidate2.pollCode,
+        divisorId:
+          this.formValidate2.pollCode == "数采仪"
+            ? ""
+            : this.formValidate2.pollCode,
         time: this.formValidate2.time.format("YYYY-MM-DD HH:mm:ss")
       };
       this.$api.monitor
         .getSend1012(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("设置成功");
+            // this.$message.success("设置成功");
+            if (res.data.data && res.data.data != "") {
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
+            }
           }
         })
         .finally(() => {
           this.$refs["formValidate2"].resetFields();
-          this.$emit("cancel");
+          // this.$emit("cancel");
         });
     },
     //现场机时间提取 1011
@@ -825,12 +802,14 @@ export default {
         .getSend1011(data)
         .then(res => {
           if (res.data.state == 0) {
-            this.$message.success("提取成功");
+            if (res.data.data && res.data.data != "") {
+              this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
+            }
           }
         })
         .finally(() => {
           this.$refs["formValidate2"].resetFields();
-          this.$emit("cancel");
+          // this.$emit("cancel");
         });
     },
     getPollCodeList() {

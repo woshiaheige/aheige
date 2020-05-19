@@ -68,7 +68,7 @@ export default {
         },
         series: [
           {
-            name: "成本统计",
+            name: "运维活动统计",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
@@ -127,7 +127,7 @@ export default {
           max:
             this.$route.query.type == 1
               ? this.$moment(this.$route.query.beginTime)
-                  .date(31)
+                  .endOf("month")
                   .valueOf()
               : this.$route.query.type == 2
               ? this.$moment(this.$route.query.endTime)
@@ -143,7 +143,7 @@ export default {
               ? 3600 * 24 * 1000
               : this.$route.query.type == 2
               ? 3600 * 24 * 1000 * 4
-              : 3600 * 24 * 1000 * 30
+              : 3600 * 24 * 1000 * 31
         },
         yAxis: {
           type: "value"
@@ -176,7 +176,7 @@ export default {
           for (let key in res.data.data[0].statistic) {
             let singleData = [];
             res.data.data[0].statistic[key].forEach(item => {
-              singleData.push([item.executionTimeStamp * 1000, item.countTask]);
+              singleData.push([item.completeTimeStamp * 1000, item.countTask]);
             });
 
             this.lineData.push({
