@@ -12,7 +12,7 @@ const loading = {
       let logo = document.createElement("div");
       logo.setAttribute("class", "logo");
       let logoImg = document.createElement("img");
-      logoImg.setAttribute("src", "img/logo.png");
+      logoImg.setAttribute("src", "favicon.ico");
       let websiteTitle = document.createElement("div");
       websiteTitle.setAttribute("class", "website_title");
       // let copyright = document.createElement("div");
