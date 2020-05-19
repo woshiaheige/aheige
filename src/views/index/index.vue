@@ -120,7 +120,9 @@
       <a-col :span="6">
         <a-card :bordered="false" title="今日任务完成情况">
           <ve-ring :data="chartData" v-if="!isEmpty"></ve-ring>
-          <a-empty v-else :image="simpleImage" />
+          <a-empty v-else :image="simpleImage">
+            <span slot="description">今日暂无任务</span>
+          </a-empty>
         </a-card>
         <a-card :bordered="false" title="本周运维人员TOP10">
           <a-list itemLayout="horizontal" :dataSource="rankingList">
@@ -205,17 +207,17 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             let result = res.data.data;
-            let finish = result.completeCount;
-            if (result.completeCount == 0) {
-              finish = 100; //任务数为0时，完成率为100%
+            if (result.count == 0) {
+              this.isEmpty = true;
+            } else {
+              this.chartData = {
+                columns: ["name", "value"],
+                rows: [
+                  { name: "已完成", value: result.completeCount },
+                  { name: "未完成", value: result.count - result.completeCount }
+                ]
+              };
             }
-            this.chartData = {
-              columns: ["name", "value"],
-              rows: [
-                { name: "已完成", value: finish },
-                { name: "未完成", value: result.count - result.completeCount }
-              ]
-            };
           }
         })
         .catch(() => {
