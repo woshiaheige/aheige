@@ -28,7 +28,7 @@ export default {
     return {
       columns: [
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "pointName",
           key: "pointName"
         },

@@ -27,7 +27,7 @@
           >
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="调度小组">
+      <!-- <a-form-model-item label="调度小组">
         <a-select
           v-model="form.group"
           placeholder="请选择"
@@ -39,7 +39,7 @@
             item.name
           }}</a-select-option>
         </a-select>
-      </a-form-model-item>
+      </a-form-model-item> -->
       <a-form-model-item label="调度人员">
         <a-select
           v-model="form.member"
@@ -47,9 +47,9 @@
           showSearch
           :filterOption="filterOptions"
         >
-          <a-select-option v-for="item in memberList" :key="item.id">{{
-            item.name
-          }}</a-select-option>
+          <a-select-option v-for="item in memberList" :key="item.id"
+            >{{ item.groupName }}-{{ item.name }}</a-select-option
+          >
         </a-select>
       </a-form-model-item>
     </a-form-model>
@@ -116,10 +116,8 @@ export default {
   watch: {
     async visible(newVal) {
       if (newVal) {
-        await this.getAllGroup();
-        await this.getMemberByGroup(this.missionDetail.groupId);
+        await this.getMembers();
         this.form.date = this.day;
-        this.form.group = this.missionDetail.groupId;
         this.form.member = this.missionDetail.handleId;
       }
     }
@@ -129,30 +127,18 @@ export default {
       this.$refs.form.resetFields();
       this.$emit("close");
     },
-    async getMemberByGroup(groupId) {
-      let data = {
-        groupId
-      };
-      await this.$api.organization.getUserByGroupId(data).then(res => {
+    async getMembers() {
+      await this.$api.common.selectUser().then(res => {
         this.memberList = res.data.data;
         this.form.member =
           this.memberList.length > 0 ? this.memberList[0].id : "";
       });
     },
-    async getAllGroup() {
-      await this.$api.common.selectGroup().then(res => {
-        if (res.data.state == 0) {
-          this.groupList = res.data.data;
-        }
-      });
-    },
-    changeGroup(value) {
-      this.form.group = value;
-      this.getMemberByGroup(value);
-    },
     handleOk() {
       let data = {
-        groupId: this.form.group,
+        groupId: this.memberList.filter(item => {
+          return item.id === this.form.member;
+        })[0].groupId,
         id: this.missionDetail.id,
         dateTime: "",
         userId: this.form.member

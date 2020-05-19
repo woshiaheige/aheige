@@ -2,11 +2,11 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item label="监控点名称">
+        <a-form-item label="监测点名称">
           <a-input
             placeholder="请输入"
             v-model="list.pointName"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
@@ -14,18 +14,18 @@
           <a-input
             placeholder="请输入"
             v-model="list.mn"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
-        <a-form-item label="监控点类型">
+        <a-form-item label="监测点类型">
           <a-select
             placeholder="请选择"
             v-width="150"
             v-model="list.type"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option value="">
               全部
@@ -52,7 +52,7 @@
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
       <div class="card-header">
-        <div class="title">监控点列表</div>
+        <div class="title">监测点列表</div>
         <div class="extra">
           <a-button type="primary" @click="onEdit('add')">
             <a-icon type="plus" />新建
@@ -146,7 +146,7 @@ export default {
       total: 1,
       columns: [
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "name",
           key: "name"
         },
@@ -259,27 +259,17 @@ export default {
       return new Promise(() => {
         setTimeout(() => {
           if (!this.switchInfo.isStarted) {
-            this.$confirm({
-              content: "若恢复停运该检测点，将重新生成任务，次日起生效",
-              onOk: () => {
-                this.runInfo = {
-                  show: true,
-                  row: this.switchInfo,
-                  type: "open"
-                };
-              }
-            });
+            this.runInfo = {
+              show: true,
+              row: this.switchInfo,
+              type: "open"
+            };
           } else {
-            this.$confirm({
-              content: "若停运该检测点，将不再生成任务，次日起生效",
-              onOk: () => {
-                this.runInfo = {
-                  show: true,
-                  row: this.switchInfo,
-                  type: "close"
-                };
-              }
-            });
+            this.runInfo = {
+              show: true,
+              row: this.switchInfo,
+              type: "close"
+            };
           }
         }, 500);
       });

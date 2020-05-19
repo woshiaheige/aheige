@@ -6,21 +6,21 @@
           <a-input
             placeholder="请输入"
             v-model="list.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="生产厂家">
           <a-input
             placeholder="请输入"
             v-model="list.manufacturer"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="设备型号">
           <a-input
             placeholder="请输入"
             v-model="list.number"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-model-item style="float: right">

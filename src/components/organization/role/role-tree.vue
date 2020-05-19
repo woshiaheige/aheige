@@ -13,7 +13,7 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 18 }"
     >
-      <a-form-model-item label="权限名称" prop="name">
+      <a-form-model-item label="角色名称" prop="name">
         <a-input
           placeholder="请输入"
           v-model.trim="formData.name"
@@ -81,14 +81,14 @@ export default {
         name: [
           {
             required: true,
-            message: "请输入权限名称",
+            message: "请输入角色名称",
             trigger: "change"
           }
         ],
         type: [
           {
             required: true,
-            message: "请选择权限类型",
+            message: "请选择角色类型",
             trigger: "change"
           }
         ]
