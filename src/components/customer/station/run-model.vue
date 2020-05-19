@@ -78,7 +78,7 @@ export default {
         this.handleCancel();
         if (this.modelData.type == "close") {
           this.$confirm({
-            content: "若停运该检测点，将不再生成任务，次日起生效",
+            content: "若停运该监测点，将不再生成任务，次日起生效",
             onOk: () => {
               that.$api.customer.stopPoint(data).then(res => {
                 if (res.data.state == 0) {
@@ -90,7 +90,7 @@ export default {
           });
         } else {
           this.$confirm({
-            content: "若将监测点停运状态恢复正常，则重新生成任务，次日起生效",
+            content: "若恢复该监测点，则重新生成任务，次日起生效",
             onOk: () => {
               that.$api.customer.startPoint(data).then(res => {
                 if (res.data.state == 0) {
