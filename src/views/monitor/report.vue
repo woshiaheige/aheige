@@ -10,7 +10,7 @@
             @pressEnter="onSubmit"
           />
         </a-form-model-item>
-        <a-form-model-item label="监控点名称">
+        <a-form-model-item label="监测点名称">
           <a-input
             v-model="formInline.pointName"
             :maxLength="30"
@@ -94,7 +94,7 @@ export default {
           key: "enterpriseName"
         },
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "poiName",
           key: "poiName"
         },

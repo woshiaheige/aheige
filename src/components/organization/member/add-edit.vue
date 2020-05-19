@@ -56,7 +56,7 @@
       <!-- <a-form-model-item label="微信ID" prop="wechatId">
         <a-input placeholder="请输入" v-model="formData.wechatId" />
       </a-form-model-item> -->
-      <a-form-model-item label="选择权限" prop="roleId" v-if="memberId != 1">
+      <a-form-model-item label="选择角色" prop="roleId" v-if="memberId != 1">
         <a-select
           placeholder="请选择"
           :disabled="memberId == 1"
@@ -221,7 +221,7 @@ export default {
             validator: validatePhone
           }
         ],
-        roleId: [{ required: true, message: "请选择权限" }],
+        roleId: [{ required: true, message: "请选择角色" }],
         groupId: [
           { required: true, message: "请选择运维小组", trigger: "change" }
         ],

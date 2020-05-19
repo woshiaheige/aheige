@@ -85,7 +85,7 @@
           <a-tag color="purple" v-if="controlLevel == 4">县控</a-tag>
         </template>
         <span slot="action" slot-scope="row">
-          <a @click="goPoint(row)">监控点管理</a>
+          <a @click="goPoint(row)">监测点管理</a>
           <a-divider type="vertical" />
           <a @click="goUser(row)">企业用户</a>
           <a-divider type="vertical" />

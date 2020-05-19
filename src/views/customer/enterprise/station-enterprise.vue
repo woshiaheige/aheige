@@ -2,7 +2,7 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item label="监控点名称">
+        <a-form-item label="监测点名称">
           <a-input
             placeholder="请输入"
             v-model="list.pointName"
@@ -18,7 +18,7 @@
             :maxLength="30"
           ></a-input>
         </a-form-item>
-        <a-form-item label="监控点类型">
+        <a-form-item label="监测点类型">
           <a-select
             placeholder="请选择"
             v-width="150"
@@ -52,7 +52,7 @@
     </a-card>
     <a-card :bordered="false" class="enterprise" v-margin:top="16">
       <div class="card-header">
-        <div class="title">监控点列表</div>
+        <div class="title">监测点列表</div>
         <div class="extra">
           <a-button type="primary" @click="onEdit('add')">
             <a-icon type="plus" />新建
@@ -146,7 +146,7 @@ export default {
       total: 1,
       columns: [
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "name",
           key: "name"
         },
