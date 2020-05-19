@@ -10,13 +10,13 @@
       <a-step title="处理中" />
       <a-step
         title="已完成"
-        :description="detail.gmtModified"
+        :description="detail.gmtComplete"
         v-if="statusType == 'finish'"
       />
       <a-step
         title="已关闭"
         v-if="statusType == 'close'"
-        :description="detail.gmtModified"
+        :description="detail.gmtClose"
       />
     </a-steps>
     <div class="description-wrapper">

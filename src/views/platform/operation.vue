@@ -310,8 +310,8 @@ export default {
       let data = {
         code: [
           "SYS_PARAMETER_WEEK_TASK_GENERATE",
-          "SYS_PARAMETER_WEEK_TASK_PUSH",
-          "SYS_PARAMETER_MONTH_TASK_PUSH",
+          // "SYS_PARAMETER_WEEK_TASK_PUSH",
+          // "SYS_PARAMETER_MONTH_TASK_PUSH",
           "SYS_PARAMETER_WARN_INTERVAL",
           "SYS_PARAMETER_CONTRACT_REMINDER",
           "SYS_PARAMETER_TASK_COMPLETION",
@@ -331,18 +331,18 @@ export default {
                 value: item.value
               };
               break;
-            case "SYS_PARAMETER_WEEK_TASK_PUSH":
-              this.formValue.missionWeekPush = {
-                id: item.id,
-                value: item.value
-              };
-              break;
-            case "SYS_PARAMETER_MONTH_TASK_PUSH":
-              this.formValue.missionMonthPush = {
-                id: item.id,
-                value: item.value
-              };
-              break;
+            // case "SYS_PARAMETER_WEEK_TASK_PUSH":
+            //   this.formValue.missionWeekPush = {
+            //     id: item.id,
+            //     value: item.value
+            //   };
+            //   break;
+            // case "SYS_PARAMETER_MONTH_TASK_PUSH":
+            //   this.formValue.missionMonthPush = {
+            //     id: item.id,
+            //     value: item.value
+            //   };
+            //   break;
 
             case "SYS_PARAMETER_WARN_INTERVAL":
               this.formValue.spaceMin = { id: item.id, value: item.value };
