@@ -38,7 +38,7 @@
                 defaultValue="all"
                 style="width: 120px"
                 v-model="formInline.type"
-                @change="getTableData"
+                @change="onSubmit"
                 showSearch
                 :filterOption="filterOptions"
               >
@@ -51,7 +51,7 @@
               <a-radio-group
                 v-model="formInline.state"
                 buttonStyle="solid"
-                @change="getTableData"
+                @change="onSubmit"
               >
                 <a-radio-button value="">全部</a-radio-button>
                 <a-radio-button value="1">通过</a-radio-button>

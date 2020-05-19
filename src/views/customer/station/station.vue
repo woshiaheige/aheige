@@ -6,7 +6,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
@@ -14,7 +14,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.pointName"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
@@ -22,7 +22,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.mn"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
@@ -33,7 +33,7 @@
             v-model="list.type"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option value="">
               全部

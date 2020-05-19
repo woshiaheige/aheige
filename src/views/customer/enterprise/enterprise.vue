@@ -6,7 +6,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="控制级别">
@@ -16,7 +16,7 @@
             v-model="list.level"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option value="">
               全部
@@ -35,7 +35,7 @@
             placeholder="请选择"
             v-width="150"
             v-model="list.type"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option value="">
               全部

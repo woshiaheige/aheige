@@ -12,7 +12,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
@@ -20,7 +20,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.manufacturer"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>
@@ -28,7 +28,7 @@
           <a-input
             placeholder="请输入"
             v-model="list.number"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
         </a-form-item>

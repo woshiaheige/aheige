@@ -25,10 +25,7 @@
               </a-radio-group>
             </a-form-model-item>
             <a-form-model-item style="float:right">
-              <a-radio-group
-                v-model="formInline.showType"
-                @change="getTableData"
-              >
+              <a-radio-group v-model="formInline.showType" @change="onSubmit">
                 <a-radio-button value="data">数据</a-radio-button>
                 <a-radio-button value="chart">图表</a-radio-button>
               </a-radio-group>

@@ -7,7 +7,7 @@
             placeholder="请输入"
             v-model="formInline.enterpriseName"
             :maxLength="30"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-item>
         <a-form-item label="监控点名称">
@@ -15,7 +15,7 @@
             placeholder="请输入"
             v-model="formInline.pointName"
             :maxLength="30"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-item>
         <a-form-item label="任务状态">
@@ -25,7 +25,7 @@
             v-model="formInline.isComplete"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="1">已完成</a-select-option>

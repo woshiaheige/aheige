@@ -6,14 +6,14 @@
           <a-input
             placeholder="请输入"
             v-model="list.group"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="运维人员">
           <a-input
             placeholder="请输入"
             v-model="list.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="考评时间">
