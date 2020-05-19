@@ -143,7 +143,7 @@ export default {
               ? 3600 * 24 * 1000
               : this.$route.query.type == 2
               ? 3600 * 24 * 1000 * 4
-              : 3600 * 24 * 1000 * 30
+              : 3600 * 24 * 1000 * 31
         },
         yAxis: {
           type: "value"
@@ -176,7 +176,7 @@ export default {
           for (let key in res.data.data[0].statistic) {
             let singleData = [];
             res.data.data[0].statistic[key].forEach(item => {
-              singleData.push([item.executionTimeStamp * 1000, item.countTask]);
+              singleData.push([item.completeTimeStamp * 1000, item.countTask]);
             });
 
             this.lineData.push({

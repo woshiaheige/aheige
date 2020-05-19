@@ -10,7 +10,7 @@
   >
     <div v-margin:bottom="25">
       <a-descriptions :column="2">
-        <a-descriptions-item label="监控点名称">
+        <a-descriptions-item label="监测点名称">
           {{ list.name }}
         </a-descriptions-item>
         <a-descriptions-item label="所属企业">
@@ -68,6 +68,7 @@
               {{ item.Avg }}{{ item.unit }}
               <a-tooltip placement="top" v-if="item.Flag != 'N'">
                 <template slot="title">
+                  <p v-if="item.Flag == 'T'">超标</p>
                   <p v-if="item.Flag == 'T'">上限：{{ item.ceilval }}</p>
                   <p v-if="item.Flag == 'T'">下限：{{ item.floorval }}</p>
                   <p v-if="item.Flag == 'F'">在线监控（监测）仪器仪表停运</p>
@@ -132,7 +133,10 @@ export default {
         this.title = this.value.data.name;
         this.list = this.value.data;
         $(".ant-modal").css("top", this.value.position.y + 10);
-        $(".ant-modal").css("left", this.value.position.x - 330);
+        $(".ant-modal").css(
+          "left",
+          this.value.position.x - Math.ceil(window.innerWidth / 4)
+        );
         // 以下代码测试环境无效
         // this.style =
         //   "top:" +

@@ -74,25 +74,30 @@ export default {
           cusPointId: this.modelData.row.id,
           stopReason: this.formData.desc
         };
+        let that = this;
+        this.handleCancel();
         if (this.modelData.type == "close") {
-          this.$api.customer
-            .stopPoint(data)
-            .then(res => {
-              if (res.data.state == 0) {
-                this.$message.success("停运成功");
-                this.$emit("refresh");
-                this.handleCancel();
-              }
-            })
-            .catch(() => {
-              this.handleCancel();
-            });
+          this.$confirm({
+            content: "若停运该监测点，将不再生成任务，次日起生效",
+            onOk: () => {
+              that.$api.customer.stopPoint(data).then(res => {
+                if (res.data.state == 0) {
+                  that.$message.success("停运成功");
+                  that.$emit("refresh");
+                }
+              });
+            }
+          });
         } else {
-          this.$api.customer.startPoint(data).then(res => {
-            if (res.data.state == 0) {
-              this.$message.success("启动成功");
-              this.$emit("refresh");
-              this.handleCancel();
+          this.$confirm({
+            content: "若恢复该监测点，则重新生成任务，次日起生效",
+            onOk: () => {
+              that.$api.customer.startPoint(data).then(res => {
+                if (res.data.state == 0) {
+                  that.$message.success("启动成功");
+                  that.$emit("refresh");
+                }
+              });
             }
           });
         }

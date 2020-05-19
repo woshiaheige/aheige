@@ -7,15 +7,15 @@
             v-model="formInline.enterpriseName"
             :maxLength="30"
             placeholder="请输入"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-model-item>
-        <a-form-model-item label="监控点名称">
+        <a-form-model-item label="监测点名称">
           <a-input
             v-model="formInline.pointName"
             placeholder="请输入"
             :maxLength="30"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-model-item>
         <a-form-model-item label="MN号">
@@ -23,7 +23,7 @@
             v-model="formInline.mn"
             placeholder="请输入"
             :maxLength="30"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-model-item>
         <a-form-model-item label="零值时间">
@@ -95,7 +95,7 @@ export default {
           dataIndex: "enterpriseName"
         },
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "pointName"
         },
         {

@@ -6,14 +6,14 @@
           <a-input
             placeholder="请输入"
             v-model="list.group"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="运维人员">
           <a-input
             placeholder="请输入"
             v-model="list.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="考评时间">
@@ -85,14 +85,14 @@ export default {
           dataIndex: "groupName",
           key: "groupName",
           fixed: "left",
-          width: 120
+          width: 150
         },
         {
           title: "运维人员",
           dataIndex: "username",
           key: "username",
           fixed: "left",
-          width: 120
+          width: 150
         },
         {
           title: "气类运维",
@@ -118,7 +118,7 @@ export default {
           key: "check",
           fixed: "right",
           align: "center",
-          width: 80,
+          width: 100,
           scopedSlots: { customRender: "check" }
         }
       ],

@@ -6,14 +6,14 @@
           <a-input
             v-model="formInline.enterpriseName"
             placeholder="请输入"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-model-item>
-        <a-form-model-item label="监控点名称">
+        <a-form-model-item label="监测点名称">
           <a-input
             v-model="formInline.pointName"
             placeholder="请输入"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-model-item>
         <a-form-item label="报表类型">
@@ -24,7 +24,7 @@
             v-model="formInline.reportType"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option
               v-for="item in rportTypeList"
@@ -123,7 +123,7 @@ export default {
           key: "enterpriseName"
         },
         {
-          title: "监控点名称",
+          title: "监测点名称",
           dataIndex: "pointName",
           key: "pointName"
         },
