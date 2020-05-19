@@ -67,7 +67,9 @@
               />
               <p>
                 <a-button-group>
-                  <a-button @click="getSend3015">设置</a-button>
+                  <a-button @click="getSend3015" :loading="loading"
+                    >设置</a-button
+                  >
                 </a-button-group>
               </p></a-col
             >
@@ -201,6 +203,9 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      try: 0,
+      timeLength: 3000,
       subVisible: false,
       controlImg,
       controlObj: {},
@@ -231,6 +236,57 @@ export default {
     };
   },
   methods: {
+    // 根据QN号查询反控结果日志信息
+    getResultByQn(qn, command, timeLength) {
+      let _this = this;
+      _this.timeLength = timeLength;
+      _this.$api.monitor.getResultByQn(qn, command).then(rey => {
+        this.loading = true;
+        if (rey.data.state == 0) {
+          // 1:执行成功 2:执行失败，但不知道原因 3:命令请求条件错误 4:通讯超时 5:系统繁忙不能执行 6:系统故障 100:没有数据
+          var timerResult;
+          if (!rey.data.data.status) {
+            _this.try++;
+            if (_this.try == 0) {
+              _this.getResultByQn(qn, command, _this.timeLength);
+            } else if (_this.try <= 3) {
+              timerResult = setTimeout(() => {
+                _this.getResultByQn(qn, command, _this.timeLength);
+              }, _this.timeLength);
+            } else {
+              _this.try = 0;
+              _this.loading = false;
+              this.$notification.error({
+                message: "设置失败"
+              });
+              clearTimeout(timerResult);
+            }
+          } else if (rey.data.data.status == "1") {
+            _this.loading = false;
+            // this.$notification.success({
+            //   message: "设置成功啦~~"
+            // });
+            if (rey.data.data.result) {
+              this.$notification.success({
+                message:
+                  _this.monitor.operate + "成功（" + rey.data.data.result + "）"
+              });
+            } else {
+              this.$notification.success({
+                message: _this.monitor.operate + "成功"
+              });
+            }
+            clearTimeout(timerResult);
+          } else {
+            _this.loading = false;
+            this.$notification.error({
+              message: "设置失败"
+            });
+            clearTimeout(timerResult);
+          }
+        }
+      });
+    },
     getSend3015() {
       // this.$message.success("设置成功");
       let data = {
@@ -238,7 +294,10 @@ export default {
       };
       this.$api.monitor.getSend3015(data).then(res => {
         if (res.data.state == 0) {
-          this.$message.success("设置成功");
+          // this.$message.success("设置成功");
+          if (res.data.data && res.data.data != "") {
+            this.getResultByQn(res.data.data.qn, res.data.data.command, 3000);
+          }
         }
       });
     },

@@ -93,7 +93,7 @@ const monitor = {
   //查询反控结果
   getResultByQn(qn, command) {
     return axios.get(
-      base.api + "monitor/send17/getResultByQn/ + " + qn + "/" + command
+      base.api + "monitor/send17/getResultByQn/" + qn + "/" + command
     );
   },
   //获取零值数据列表
