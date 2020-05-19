@@ -132,7 +132,10 @@ export default {
         this.title = this.value.data.name;
         this.list = this.value.data;
         $(".ant-modal").css("top", this.value.position.y + 10);
-        $(".ant-modal").css("left", this.value.position.x - 330);
+        $(".ant-modal").css(
+          "left",
+          this.value.position.x - Math.ceil(window.innerWidth / 4)
+        );
         // 以下代码测试环境无效
         // this.style =
         //   "top:" +
