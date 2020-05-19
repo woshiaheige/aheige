@@ -5,7 +5,7 @@
         <a-form-model-item label="企业名称">
           <a-input
             v-model.trim="formInline.enterpriseName"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
             :maxLength="30"
             placeholder="请输入"
           />
@@ -15,7 +15,7 @@
             :maxLength="30"
             v-model="formInline.pointName"
             placeholder="请输入"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           />
         </a-form-model-item>
         <a-form-item label="控制级别">
@@ -26,7 +26,7 @@
             v-model="formInline.level"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option
               v-for="item in controlOptions"

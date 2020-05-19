@@ -6,21 +6,21 @@
           <a-input
             placeholder="请输入"
             v-model="formInline.name"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="用户账号">
           <a-input
             placeholder="请输入"
             v-model="formInline.username"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="手机号码">
           <a-input
             placeholder="请输入"
             v-model="formInline.phone"
-            @pressEnter="getTableData"
+            @pressEnter="onSubmit"
           ></a-input>
         </a-form-item>
         <a-form-item label="用户状态">
@@ -30,7 +30,7 @@
             style="width:100px"
             showSearch
             :filterOption="filterOptions"
-            @change="getTableData"
+            @change="onSubmit"
           >
             <a-select-option value="all">全部</a-select-option>
             <a-select-option value="0">正常</a-select-option>
