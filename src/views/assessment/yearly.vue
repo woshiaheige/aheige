@@ -231,7 +231,7 @@ export default {
           if (item.key == key) {
             this.chartData.push({
               value: row[key],
-              name: item.title + "（气）"
+              name: item.title + "(气类)"
             });
           }
         }
@@ -242,7 +242,7 @@ export default {
           if (item.key == key) {
             this.chartData.push({
               value: row[key],
-              name: item.title + "（水）"
+              name: item.title + "(水类)"
             });
           }
         }

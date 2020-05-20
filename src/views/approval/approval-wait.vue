@@ -76,7 +76,7 @@
           <a-tag color="blue" v-if="type == 1">任务转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
-          <a-badge color="orange" text="待处理" v-if="state == 1" />
+          <a-badge color="orange" text="审批中" v-if="state == 1" />
           <a-badge color="blue" text="处理中" v-if="state == 2" />
           <a-badge color="green" text="通过" v-if="state == 3" />
           <a-badge color="red" text="未通过" v-if="state == 4" />

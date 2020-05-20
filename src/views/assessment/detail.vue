@@ -175,9 +175,14 @@ export default {
 
           for (let key in res.data.data[0].statistic) {
             let singleData = [];
-            res.data.data[0].statistic[key].forEach(item => {
-              singleData.push([item.completeTimeStamp * 1000, item.countTask]);
-            });
+            if (res.data.data[0].statistic[key] !== null) {
+              res.data.data[0].statistic[key].forEach(item => {
+                singleData.push([
+                  item.completeTimeStamp * 1000,
+                  item.countTask
+                ]);
+              });
+            }
 
             this.lineData.push({
               name: key,
