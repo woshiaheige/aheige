@@ -219,6 +219,9 @@ export default {
           _this.$api.car.deleteAssetAifCost({ id: row.id }).then(res => {
             if (res.data.state == 0) {
               _this.$message.success("删除成功");
+              if (_this.tableData.length == 1) {
+                if (_this.current > 1) _this.current--;
+              }
               _this.getTableData();
             }
           });
