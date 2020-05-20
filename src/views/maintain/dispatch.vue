@@ -116,13 +116,6 @@ export default {
     }
   },
   watch: {
-    selectedDay() {
-      if (this.week === "this") {
-        this.getMissionThisWeek();
-      } else {
-        this.getMissionNextWeek();
-      }
-    },
     editModal(newVal) {
       if (!newVal) {
         if (this.week === "this") {
@@ -130,13 +123,6 @@ export default {
         } else {
           this.getMissionNextWeek();
         }
-      }
-    },
-    week(newVal) {
-      if (newVal === "this") {
-        this.selectedDay = this.today;
-      } else {
-        this.selectedDay = 0;
       }
     }
   },
@@ -148,15 +134,25 @@ export default {
       this.editModal = true;
       this.selectedMission = item;
     },
-    changeWeek() {
-      if (this.week == "this") {
+    async changeWeek(e) {
+      if (e.target.value == "this") {
+        this.selectedDay = this.today;
+        await this.selectedDay;
         this.getMissionThisWeek();
       } else {
+        this.selectedDay = 0;
+        await this.selectedDay;
         this.getMissionNextWeek();
       }
     },
     changeDay(activeKey) {
       this.selectedDay = activeKey;
+
+      if (this.week === "this") {
+        this.getMissionThisWeek();
+      } else {
+        this.getMissionNextWeek();
+      }
     },
     getMissionThisWeek() {
       this.loading = true;

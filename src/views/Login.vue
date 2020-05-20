@@ -24,16 +24,17 @@
               type="arrow-left"
               id="toLogin"
               style="cursor: pointer"
-              v-if="forgetFlag"
+              v-if="loginStatus === 'resetCode' || loginStatus === 'resetPwd'"
               v-margin:right="5"
-            />{{ forgetFlag ? "找回密码" : "登录" }}
+              @click="rebackLogin"
+            />{{ loginTitle }}
           </div>
           <!-- <div class="title-line"></div> -->
           <a-form-model
             ref="login"
             :model="formValidate"
             :rules="ruleValidate"
-            v-if="!forgetFlag"
+            v-if="loginStatus == 'login'"
           >
             <a-form-model-item prop="user">
               <a-input
@@ -58,7 +59,9 @@
               </a-input-password>
             </a-form-model-item>
             <div class="link">
-              <span id="forgetPass">忘记密码？</span>
+              <span id="forgetPass" @click="loginStatus = 'resetCode'"
+                >忘记密码？</span
+              >
             </div>
             <a-form-model-item>
               <a-button
@@ -74,7 +77,7 @@
             ref="login"
             :model="formValidate"
             :rules="ruleValidate"
-            v-if="forgetFlag"
+            v-if="loginStatus == 'resetCode'"
           >
             <a-form-model-item prop="user">
               <a-input
@@ -110,9 +113,61 @@
               <a-button
                 type="primary"
                 class="login-button"
-                @click="handleSubmit('login')"
+                @click="resetPassword('resetCode')"
                 :disabled="disable"
                 >找回密码</a-button
+              >
+            </a-form-model-item>
+          </a-form-model>
+          <!-- 重设密码 -->
+          <a-form-model
+            ref="resetPwd"
+            :model="formValidate"
+            :rules="ruleValidate"
+            v-if="loginStatus == 'resetPwd'"
+          >
+            <a-form-model-item prop="resetPwdFirst">
+              <a-input
+                type="password"
+                password
+                v-model="formValidate.resetPwdFirst"
+                placeholder="请输入密码"
+                @on-enter="handleSubmit('login')"
+                @on-focus="onFocus('password')"
+                @on-blur="onBlur('password')"
+              >
+                <a-icon
+                  class="iconfont iconi-suo"
+                  slot="prefix"
+                  id="password"
+                ></a-icon>
+              </a-input>
+              <Icon type="md-arrow-dropright" id="password-arrow" />
+            </a-form-model-item>
+            <a-form-model-item prop="resetPwdSecond">
+              <a-input
+                type="password"
+                password
+                v-model="formValidate.resetPwdSecond"
+                placeholder="请再次输入密码"
+                @on-enter="handleSubmit('login')"
+                @on-focus="onFocus('password')"
+                @on-blur="onBlur('password')"
+              >
+                <a-icon
+                  class="iconfont iconi-suo"
+                  slot="prefix"
+                  id="password"
+                ></a-icon>
+              </a-input>
+              <a-icon type="md-arrow-dropright" id="password-arrow" />
+            </a-form-model-item>
+            <a-form-model-item class="login-button-form">
+              <a-button
+                type="primary"
+                @click="getBackPassword('resetPwd')"
+                class="login-button"
+                >确认</a-button
               >
             </a-form-model-item>
           </a-form-model>
@@ -197,7 +252,8 @@ export default {
       ruleValidate: {},
       disable: false,
       countdown: 60,
-      forgetFlag: false
+      forgetFlag: false,
+      loginStatus: "login"
     };
   },
 
@@ -207,6 +263,15 @@ export default {
         return this.countdown + "s后重新发送";
       } else {
         return "发送验证码";
+      }
+    },
+    loginTitle() {
+      if (this.loginStatus === "login") {
+        return "登录";
+      } else if (this.loginStatus === "resetCode") {
+        return "忘记密码";
+      } else {
+        return "修改密码";
       }
     }
   },
@@ -240,6 +305,16 @@ export default {
     this.setForgetPassword();
   },
   methods: {
+    resetPassword(ref) {
+      //显示重设密码弹窗
+      this.$refs[ref].validate(valid => {
+        if (valid) {
+          this.loginStatus = "resetPwd";
+        } else {
+          this.$Message.warning("请填写正确的手机或验证码");
+        }
+      });
+    },
     handleSubmit(ref) {
       let that = this;
       if (
@@ -325,6 +400,10 @@ export default {
     },
     onBlur(input) {
       document.getElementById(input).style.color = "#808695";
+    },
+    rebackLogin() {
+      this.loginStatus = "login";
+      this.initFormValidate();
     }
   }
 };

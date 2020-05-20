@@ -4,7 +4,7 @@
       <div class="card-header">
         <div class="title">完成情况考评</div>
       </div>
-      <ve-histogram :data="chartData"></ve-histogram>
+      <ve-histogram :data="chartData" :extend="chartExtend"></ve-histogram>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
@@ -30,6 +30,14 @@ export default {
       chartData: {
         columns: ["运维项目", "已完成", "未完成"],
         rows: []
+      },
+      chartExtend: {
+        xAxis: {
+          axisLabel: {
+            interval: 0,
+            rotate: 40
+          }
+        }
       },
       schemeList: [],
       timeList: [],
@@ -175,9 +183,14 @@ export default {
 
           for (let key in res.data.data[0].statistic) {
             let singleData = [];
-            res.data.data[0].statistic[key].forEach(item => {
-              singleData.push([item.completeTimeStamp * 1000, item.countTask]);
-            });
+            if (res.data.data[0].statistic[key] !== null) {
+              res.data.data[0].statistic[key].forEach(item => {
+                singleData.push([
+                  item.completeTimeStamp * 1000,
+                  item.countTask
+                ]);
+              });
+            }
 
             this.lineData.push({
               name: key,
