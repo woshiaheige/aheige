@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       contentLength: 0,
+      QUILL: "",
       headers: {
         token: sessionStorage.getItem("userinfo")
           ? JSON.parse(sessionStorage.getItem("userinfo")).token
@@ -118,16 +119,16 @@ export default {
             },
             action: this.$api.common.uploadFileApi,
             response: res => {
-              console.log(res, "response");
+              // console.log(res, "response");
               // 获取光标所在位置
-              let quill = this.$refs.myQuillEditor.quill;
-              console.log(quill);
-              let length = quill.getSelection().index;
+              let length = this.QUILL.getSelection().index;
               // 插入图片  res.url为服务器返回的图片地址
-              quill.insertEmbed(length, "image", res.data.uri);
-              // 调整光标到最后
-              quill.setSelection(length + 1);
-              // return res.data.uri;
+              this.QUILL.insertEmbed(length, "image", res.data.uri);
+              // // 调整光标到图片之后
+              this.$nextTick(() => {
+                this.QUILL.setSelection(length + 2);
+              });
+              return ""; //否则富文本会多出image
             }
           },
           toolbar: {
@@ -230,8 +231,11 @@ export default {
     }
   },
   mounted() {
-    console.log(addQuillTitle);
+    // console.log(addQuillTitle);
     addQuillTitle();
+    this.$nextTick(() => {
+      this.QUILL = this.$refs.myQuillEditor.quill;
+    });
   }
 };
 </script>
