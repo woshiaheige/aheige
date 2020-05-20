@@ -20,7 +20,8 @@ export default {
   methods: {
     initData() {
       let params = {
-        vehicleId: this.vehicleId
+        vehicleId: this.vehicleId,
+        dataTime: this.$route.query.dataTime
       };
       this.initMap();
       this.$api.car.trajectory(params).then(res => {
