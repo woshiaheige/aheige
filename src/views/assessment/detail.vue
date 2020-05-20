@@ -4,7 +4,7 @@
       <div class="card-header">
         <div class="title">完成情况考评</div>
       </div>
-      <ve-histogram :data="chartData"></ve-histogram>
+      <ve-histogram :data="chartData" :extend="chartExtend"></ve-histogram>
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
@@ -30,6 +30,14 @@ export default {
       chartData: {
         columns: ["运维项目", "已完成", "未完成"],
         rows: []
+      },
+      chartExtend: {
+        xAxis: {
+          axisLabel: {
+            interval: 0,
+            rotate: 40
+          }
+        }
       },
       schemeList: [],
       timeList: [],
