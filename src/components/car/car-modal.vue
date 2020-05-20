@@ -138,9 +138,8 @@ export default {
       this.$api.car.editAssetVehicle(values).then(res => {
         if (res.data.state == 0) {
           this.$message.success("修改成功");
-          this.carModal.show = false;
           this.$emit("refresh");
-          this.carId = undefined;
+          this.handleCancel();
         }
       });
     },
@@ -149,17 +148,15 @@ export default {
       this.$api.car.addAssetVehicle(values).then(res => {
         if (res.data.state == 0) {
           this.$message.success("添加成功");
-          this.carModal.show = false;
           this.$emit("refresh");
-          this.carId = undefined;
+          this.handleCancel();
         }
       });
     },
     handleCancel() {
       this.carModal.show = false;
       this.carId = undefined;
-      this.$refs.ruleForm.clearValidate();
-      this.formData = this.$options.data().formData;
+      this.$refs.ruleForm.resetFields();
     }
   },
   mounted() {}
