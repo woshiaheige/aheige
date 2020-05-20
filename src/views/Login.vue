@@ -81,7 +81,7 @@
           >
             <a-form-model-item prop="user">
               <a-input
-                v-model="formValidate.user"
+                v-model="formValidate.phone"
                 placeholder="请输入手机号"
                 @pressEnter="handleSubmit('login')"
               >
@@ -90,7 +90,7 @@
             </a-form-model-item>
             <a-form-model-item prop="code">
               <a-input
-                :maxlength="4"
+                :maxLength="4"
                 v-model="formValidate.code"
                 placeholder="验证码"
                 class="verify-code"
@@ -114,7 +114,6 @@
                 type="primary"
                 class="login-button"
                 @click="resetPassword('resetCode')"
-                :disabled="disable"
                 >找回密码</a-button
               >
             </a-form-model-item>
@@ -247,16 +246,16 @@ export default {
     return {
       formValidate: {
         user: "",
-        password: ""
+        password: "",
+        phone: "",
+        code: ""
       },
-      ruleValidate: {},
       disable: false,
       countdown: 60,
       forgetFlag: false,
       loginStatus: "login"
     };
   },
-
   computed: {
     buttonText() {
       if (this.disable) {
@@ -273,37 +272,32 @@ export default {
       } else {
         return "修改密码";
       }
-    }
-  },
-  watch: {
-    forgetFlag(newVal) {
-      let that = this;
-      if (newVal) {
-        console.log(newVal);
-        this.$nextTick(() => {
-          document
-            .getElementById("toLogin")
-            .addEventListener("click", function() {
-              console.log("click");
-              that.forgetFlag = false;
-            });
-        });
-      } else {
-        console.log(newVal);
-        this.$nextTick(() => {
-          document
-            .getElementById("forgetPass")
-            .addEventListener("click", function() {
-              console.log("click");
-              that.forgetFlag = true;
-            });
-        });
+    },
+    ruleValidate() {
+      let rules = {};
+      if (this.loginStatus === "login") {
+        rules = {
+          user: [
+            {
+              required: true,
+              message: "请输入用户名",
+              trigger: "blur"
+            }
+          ],
+          password: [
+            {
+              required: true,
+              message: "请输入密码",
+              trigger: "blur"
+            }
+          ]
+        };
       }
+
+      return rules;
     }
   },
-  mounted() {
-    this.setForgetPassword();
-  },
+  mounted() {},
   methods: {
     resetPassword(ref) {
       //显示重设密码弹窗
@@ -364,36 +358,27 @@ export default {
     },
     getVerifyCode() {
       let data = {
-        phone: this.formValidate.user
+        phone: this.formValidate.phone
       };
       let that = this;
-      if (data.phone != "") {
-        this.$api.common.getVerifyCode(data).then(res => {
-          console.log(res);
-          that.disable = true;
-
-          let clock = window.setInterval(() => {
-            that.countdown--;
-            if (that.countdown < 0) {
-              //当倒计时小于0时清除定时器
-              window.clearInterval(clock);
-              that.disable = false;
-              that.countdown = 60;
-            }
-          }, 1000);
+      if (this.formValidate.phone.trim !== "") {
+        this.$api.login.getVerifyCode(data).then(res => {
+          if (res.data.state == 0) {
+            that.disable = true;
+            let clock = window.setInterval(() => {
+              that.countdown--;
+              if (that.countdown < 0) {
+                //当倒计时小于0时清除定时器
+                window.clearInterval(clock);
+                that.disable = false;
+                that.countdown = 60;
+              }
+            }, 1000);
+          }
         });
       } else {
         this.$message.warning("请填写手机");
       }
-    },
-    setForgetPassword() {
-      let that = this;
-
-      document
-        .getElementById("forgetPass")
-        .addEventListener("click", function() {
-          that.forgetFlag = true;
-        });
     },
     onFocus(input) {
       document.getElementById(input).style.color = "#0970BB";
@@ -403,7 +388,7 @@ export default {
     },
     rebackLogin() {
       this.loginStatus = "login";
-      this.initFormValidate();
+      this.formValidate = this.$options.data().formValidate;
     }
   }
 };
