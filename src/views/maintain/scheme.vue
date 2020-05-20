@@ -242,6 +242,9 @@ export default {
           that.$api.maintain.deleteSchemeList(data).then(res => {
             if (res.data.state == 0) {
               that.$message.success("删除成功");
+              if (that.tableData.length == 1) {
+                if (that.current > 1) that.current--;
+              }
               that.getTableData();
             }
           });
