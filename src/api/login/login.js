@@ -15,6 +15,18 @@ const login = {
       base.api + "verification/getRetrievePasswordVerificationCode",
       { params: data }
     );
+  },
+  //检查验证码
+  checkVerifyCode(data) {
+    return axios.get(base.api + "verification/checkVerificationCode", {
+      params: data
+    });
+  },
+  //修改密码
+  updatePassword(data) {
+    return axios.get(base.api + "sysUser/updateUserPassword", {
+      params: data
+    });
   }
 };
 

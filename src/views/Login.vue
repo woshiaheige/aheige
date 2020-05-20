@@ -41,10 +41,8 @@
                 v-model="formValidate.user"
                 placeholder="账号/手机号码"
                 @pressEnter="handleSubmit('login')"
-                @on-focus="onFocus('username')"
-                @on-blur="onBlur('username')"
               >
-                <a-icon slot="prefix" type="user" id="username" />
+                <a-icon slot="prefix" type="user" />
               </a-input>
             </a-form-model-item>
             <a-form-model-item prop="password">
@@ -52,10 +50,8 @@
                 v-model="formValidate.password"
                 placeholder="密码"
                 @pressEnter="handleSubmit('login')"
-                @on-focus="onFocus('password')"
-                @on-blur="onBlur('password')"
               >
-                <a-icon slot="prefix" type="lock" id="password" />
+                <a-icon slot="prefix" type="lock" />
               </a-input-password>
             </a-form-model-item>
             <div class="link">
@@ -74,7 +70,7 @@
             </a-form-model-item>
           </a-form-model>
           <a-form-model
-            ref="login"
+            ref="resetCode"
             :model="formValidate"
             :rules="ruleValidate"
             v-if="loginStatus == 'resetCode'"
@@ -90,13 +86,11 @@
             </a-form-model-item>
             <a-form-model-item prop="code">
               <a-input
-                :maxLength="4"
+                :maxLength="6"
                 v-model="formValidate.code"
                 placeholder="验证码"
                 class="verify-code"
                 v-width="128"
-                @on-focus="onFocus('code')"
-                @on-blur="onBlur('code')"
               >
                 <a-icon type="barcode" slot="prefix" />
               </a-input>
@@ -110,10 +104,7 @@
               >
             </a-form-model-item>
             <a-form-model-item class="login-button-form">
-              <a-button
-                type="primary"
-                class="login-button"
-                @click="resetPassword('resetCode')"
+              <a-button type="primary" class="login-button" @click="checkCode"
                 >找回密码</a-button
               >
             </a-form-model-item>
@@ -126,46 +117,29 @@
             v-if="loginStatus == 'resetPwd'"
           >
             <a-form-model-item prop="resetPwdFirst">
-              <a-input
-                type="password"
-                password
+              <a-input-password
                 v-model="formValidate.resetPwdFirst"
-                placeholder="请输入密码"
-                @on-enter="handleSubmit('login')"
-                @on-focus="onFocus('password')"
-                @on-blur="onBlur('password')"
+                placeholder="密码"
+                @pressEnter="handleSubmit('login')"
               >
-                <a-icon
-                  class="iconfont iconi-suo"
-                  slot="prefix"
-                  id="password"
-                ></a-icon>
-              </a-input>
-              <Icon type="md-arrow-dropright" id="password-arrow" />
+                <a-icon slot="prefix" type="lock" />
+              </a-input-password>
             </a-form-model-item>
             <a-form-model-item prop="resetPwdSecond">
-              <a-input
-                type="password"
-                password
+              <a-input-password
                 v-model="formValidate.resetPwdSecond"
-                placeholder="请再次输入密码"
-                @on-enter="handleSubmit('login')"
-                @on-focus="onFocus('password')"
-                @on-blur="onBlur('password')"
+                placeholder="再次输入密码"
+                @pressEnter="handleSubmit('login')"
               >
-                <a-icon
-                  class="iconfont iconi-suo"
-                  slot="prefix"
-                  id="password"
-                ></a-icon>
-              </a-input>
-              <a-icon type="md-arrow-dropright" id="password-arrow" />
+                <a-icon slot="prefix" type="lock" />
+              </a-input-password>
             </a-form-model-item>
             <a-form-model-item class="login-button-form">
               <a-button
                 type="primary"
-                @click="getBackPassword('resetPwd')"
+                @click="resetPassword()"
                 class="login-button"
+                v-preventReClick
                 >确认</a-button
               >
             </a-form-model-item>
@@ -248,8 +222,11 @@ export default {
         user: "",
         password: "",
         phone: "",
-        code: ""
+        code: "",
+        resetPwdFirst: "",
+        resetPwdSecond: ""
       },
+      ruleValidate: {},
       disable: false,
       countdown: 60,
       forgetFlag: false,
@@ -272,42 +249,60 @@ export default {
       } else {
         return "修改密码";
       }
-    },
-    ruleValidate() {
-      let rules = {};
-      if (this.loginStatus === "login") {
-        rules = {
-          user: [
-            {
-              required: true,
-              message: "请输入用户名",
-              trigger: "blur"
-            }
-          ],
-          password: [
-            {
-              required: true,
-              message: "请输入密码",
-              trigger: "blur"
-            }
-          ]
-        };
-      }
-
-      return rules;
     }
   },
   mounted() {},
   methods: {
-    resetPassword(ref) {
+    resetPassword() {
       //显示重设密码弹窗
-      this.$refs[ref].validate(valid => {
-        if (valid) {
-          this.loginStatus = "resetPwd";
+      if (
+        this.formValidate.resetPwdFirst.trim() !== "" &&
+        this.formValidate.resetPwdSecond.trim() !== ""
+      ) {
+        if (
+          this.formValidate.resetPwdFirst.trim() !==
+          this.formValidate.resetPwdSecond.trim()
+        ) {
+          this.$message.warning("密码不一致！");
         } else {
-          this.$Message.warning("请填写正确的手机或验证码");
+          let data = {
+            password: this.$md5(this.formValidate.resetPwdFirst),
+            phone: this.formValidate.phone
+          };
+          this.$api.login.updatePassword(data).then(res => {
+            if (res.data.state == 0) {
+              this.$message.success("修改密码成功");
+              this.loginStatus = "login";
+            }
+          });
         }
-      });
+      } else {
+        this.$message.warning("请输入密码！");
+      }
+    },
+    checkCode() {
+      if (
+        this.formValidate.phone.trim() !== "" &&
+        this.formValidate.code.trim() !== ""
+      ) {
+        let data = {
+          phone: this.formValidate.phone,
+          verifyCode: this.formValidate.code
+        };
+        this.$api.login
+          .checkVerifyCode(data)
+          .then(async res => {
+            if (res.data.state == 0) {
+              console.log(res);
+              this.loginStatus = "resetPwd";
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        this.$message.warning("请输入手机和验证码！");
+      }
     },
     handleSubmit(ref) {
       let that = this;
@@ -361,7 +356,8 @@ export default {
         phone: this.formValidate.phone
       };
       let that = this;
-      if (this.formValidate.phone.trim !== "") {
+
+      if (this.formValidate.phone.trim() !== "") {
         this.$api.login.getVerifyCode(data).then(res => {
           if (res.data.state == 0) {
             that.disable = true;
@@ -379,12 +375,6 @@ export default {
       } else {
         this.$message.warning("请填写手机");
       }
-    },
-    onFocus(input) {
-      document.getElementById(input).style.color = "#0970BB";
-    },
-    onBlur(input) {
-      document.getElementById(input).style.color = "#808695";
     },
     rebackLogin() {
       this.loginStatus = "login";
