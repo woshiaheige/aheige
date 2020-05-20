@@ -8,6 +8,13 @@ const login = {
   //获取权限
   getResource() {
     return axios.get(base.api + "sysResource/queryUserResource");
+  },
+  //获取验证码
+  getVerifyCode(data) {
+    return axios.get(
+      base.api + "verification/getRetrievePasswordVerificationCode",
+      { params: data }
+    );
   }
 };
 
