@@ -19,6 +19,14 @@
         <a-descriptions-item label="审批人" v-if="approvalName">{{
           approvalName
         }}</a-descriptions-item>
+        <a-descriptions-item label="被转交人" v-if="type == 1 && deliverName">{{
+          deliverName
+        }}</a-descriptions-item>
+        <a-descriptions-item
+          label="任务延期时间"
+          v-if="type == 2 && gmtDelay"
+          >{{ gmtDelay }}</a-descriptions-item
+        >
         <a-descriptions-item label="审批结果" v-if="stateStr">{{
           stateStr
         }}</a-descriptions-item>
@@ -53,7 +61,9 @@ export default {
       wrapperCol: { span: 12 },
       number: {
         value: 11
-      }
+      },
+      gmtDelay: "",
+      deliverName: ""
     };
   },
   computed: {
@@ -115,6 +125,10 @@ export default {
           this.gmtCreate = res.data.data.gmtCreate;
           this.gmtModified = res.data.data.gmtModified;
           this.type = res.data.data.type;
+          this.gmtDelay = res.data.data.gmtDelay
+            ? this.$moment(res.data.data.gmtDelay).format("YYYY-MM-DD")
+            : "";
+          this.deliverName = res.data.data.deliverName;
         })
         .catch(err => {
           console.log(err);
