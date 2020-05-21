@@ -99,6 +99,38 @@ const scale = Vue.directive("scale", {
   }
 });
 
+const translate = Vue.directive("translate", {
+  inserted: function(el, binding) {
+    switch (binding.arg) {
+      case "x":
+        el.style.transform = "translateX(" + binding.value + "px)";
+        break;
+      case "y":
+        el.style.transform = "translateY(" + binding.value + "px)";
+        break;
+      case "z":
+        el.style.transform = "translateZ(" + binding.value + "px)";
+        break;
+    }
+  }
+});
+
+const rotate = Vue.directive("rotate", {
+  inserted: function(el, binding) {
+    switch (binding.arg) {
+      case "x":
+        el.style.transform = "rotateX(" + binding.value + "deg)";
+        break;
+      case "y":
+        el.style.transform = "rotateY(" + binding.value + "deg)";
+        break;
+      case "z":
+        el.style.transform = "rotateZ(" + binding.value + "deg)";
+        break;
+    }
+  }
+});
+
 const prevent = Vue.directive("preventReClick", {
   inserted(el, binding) {
     el.addEventListener("click", () => {
@@ -133,5 +165,7 @@ export default {
   scale,
   prevent,
   focus,
-  fontWeight
+  fontWeight,
+  translate,
+  rotate
 };
