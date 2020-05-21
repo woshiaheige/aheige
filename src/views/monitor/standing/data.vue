@@ -24,11 +24,21 @@
                 <a-radio-button :value="4">日数据</a-radio-button>
               </a-radio-group>
             </a-form-model-item>
-            <a-form-model-item style="float:right">
+            <a-form-model-item>
               <a-radio-group v-model="formInline.showType" @change="onSubmit">
                 <a-radio-button value="data">数据</a-radio-button>
                 <a-radio-button value="chart">图表</a-radio-button>
               </a-radio-group>
+            </a-form-model-item>
+            <a-form-model-item>
+              <a-button
+                type="danger"
+                ghost
+                @click="getLogDownload"
+                :disabled="formInline.showType == 'chart'"
+              >
+                导出
+              </a-button>
             </a-form-model-item>
           </a-form-model>
         </div>
@@ -330,6 +340,25 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 报表监测数据导出
+    getLogDownload() {
+      console.log(this.tableData);
+      if (this.tableData.length > 0) {
+        const _data = {
+          beginTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
+          endTime: this.formInline.range[1].format("YYYY-MM-DD HH:mm:ss"),
+          pointId: this.formInline.pointId,
+          cn: this.formInline.type
+        };
+
+        this.$api.monitor.getExportmonitor(_data).then(res => {
+          let urls = res.request.responseURL;
+          window.location.href = urls;
+        });
+      } else {
+        this.$message.warn("没有数据！");
+      }
     }
   }
 };

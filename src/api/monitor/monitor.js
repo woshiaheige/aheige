@@ -107,6 +107,12 @@ const monitor = {
     return axios.get(base.api + "monitor/constantData/", {
       params: data
     });
+  },
+  // 报表监测数据导出
+  getExportmonitor(data) {
+    return axios.get(base.api + "monitor/data/export", {
+      params: data
+    });
   }
 };
 

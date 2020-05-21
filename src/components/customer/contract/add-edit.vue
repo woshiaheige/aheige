@@ -62,6 +62,7 @@
       <a-form-model-item label="合同金额" prop="money">
         <a-input-number
           placeholder="合同金额"
+          :precision="2"
           v-model="formData.money"
           v-width="350"
           :min="1"
@@ -197,7 +198,7 @@ export default {
           files: this.formData.files,
           enterpriseId: this.formData.enterpriseId,
           id: this.formData.id,
-          money: this.formData.money,
+          money: this.formData.money * 100,
           number: this.formData.number,
           state: this.formData.state,
           userName: this.formData.userName,
@@ -268,6 +269,7 @@ export default {
               this.$moment(result.gmtEnd)
             ];
             result.gmtSign = this.$moment(result.gmtSign);
+            result.money = result.money / 100;
             this.formData = result;
           }
         });

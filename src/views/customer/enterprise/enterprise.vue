@@ -35,6 +35,7 @@
             placeholder="请选择"
             v-width="150"
             v-model="list.type"
+            :filterOption="filterOptions"
             @change="onSubmit"
           >
             <a-select-option value="">
