@@ -1,5 +1,6 @@
 import base from "../base";
 import axios from "../axios";
+import qs from "qs";
 
 const login = {
   login(data) {
@@ -24,8 +25,13 @@ const login = {
   },
   //修改密码
   updatePassword(data) {
-    return axios.get(base.api + "sysUser/updateUserPassword", {
-      params: data
+    return axios({
+      url: base.api + "sysUser/updateUserPassword",
+      method: "post",
+      data: qs.stringify(data),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
     });
   }
 };

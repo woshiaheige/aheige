@@ -19,6 +19,7 @@
         <a-select
           showSearch
           v-model="formData.enterpriseId"
+          :filterOption="filterOptions"
           placeholder="请选择"
           v-width="350"
         >
@@ -35,6 +36,7 @@
           :disabled="
             formData.enterpriseId == '' || formData.enterpriseId == undefined
           "
+          :filterOption="filterOptions"
           showSearch
           :value="formData.pointId"
           placeholder="请选择"
