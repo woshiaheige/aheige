@@ -8,7 +8,7 @@
             style="color:#31a2f2;font-size:80px"
           ></icon-font>
         </div>
-        <div class="logo-text">博控智维云</div>
+        <div class="logo-text">智维云</div>
       </div>
     </div>
     <div class="login-content">
@@ -198,7 +198,7 @@
                       width="172"
                       :src="require('@/assets/img/official_account_qrcode.png')"
                     />
-                    即刻关注博控智维云微信公众号，可实时获取包括数据报警，任务通知，
+                    即刻关注智维云微信公众号，可实时获取包括数据报警，任务通知，
                     审批通知，报表推送等信息提醒
                   </a-list-item>
                 </a-list>

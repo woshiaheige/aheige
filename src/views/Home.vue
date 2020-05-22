@@ -12,7 +12,7 @@
     >
       <div class="logo">
         <img :src="require('@/assets/img/logo.png')" alt="" />
-        <span>博控智维云</span>
+        <span>智维云</span>
       </div>
       <a-menu
         theme="dark"

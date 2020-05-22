@@ -20,7 +20,7 @@ const loading = {
       // let copyrightContent = document.createTextNode(
       //   "Copyright © 2003-2020 Bocon. All Rights Reserved."
       // );
-      let websiteTitleContent = document.createTextNode("博控智维云");
+      let websiteTitleContent = document.createTextNode("智维云");
       logo.appendChild(logoImg);
       // copyright.appendChild(copyrightContent);
       websiteTitle.appendChild(websiteTitleContent);
