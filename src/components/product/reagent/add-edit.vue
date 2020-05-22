@@ -178,7 +178,14 @@ export default {
             trigger: "blur"
           }
         ],
-        cordon: [{ validator: validNum, trigger: "blur" }],
+        cordon: [
+          {
+            required: true,
+            message: "请输入库存警戒线",
+            trigger: "blur"
+          },
+          { validator: validNum, trigger: "blur" }
+        ],
         price: [
           {
             required: true,

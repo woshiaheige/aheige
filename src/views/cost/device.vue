@@ -255,8 +255,8 @@ export default {
           if (res.data.state == 0) {
             this.loading = false;
             let result = res.data.data;
-            this.tableData = result.voIPage.records;
-            this.total = Number(result.voIPage.total);
+            this.tableData = result.voPage.records;
+            this.total = Number(result.voPage.total);
             this.costCount = result.totalAmount || 0;
           }
         })
