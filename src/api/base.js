@@ -12,7 +12,7 @@ if (process.env.NODE_ENV == "development") {
 } else if (process.env.NODE_ENV == "exam") {
   base.api = "http://192.168.10.101:3102/api/";
 } else if (process.env.NODE_ENV == "production") {
-  base.api = "http://183.6.114.72:3102/api/";
+  base.api = "https://api.bocon.cn/api/";
 }
 
 export default base;
