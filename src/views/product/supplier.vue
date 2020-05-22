@@ -90,12 +90,14 @@ export default {
         {
           title: "评级",
           dataIndex: "level",
+          width: 150,
           scopedSlots: { customRender: "star" }
         },
         {
           title: "操作",
           key: "action",
           align: "center",
+          width: 120,
           scopedSlots: { customRender: "action" }
         }
       ],
