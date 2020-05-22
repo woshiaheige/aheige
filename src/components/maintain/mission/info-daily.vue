@@ -35,7 +35,7 @@
             <div
               v-for="(item, index) of detail.taskItemVos"
               :key="index"
-              v-margin.bottom="5"
+              v-margin.bottom="10"
             >
               <span
                 >{{ item.name }}
