@@ -225,6 +225,7 @@ export default {
     },
     goDetail(row) {
       this.chartData = [];
+      console.log(this.list.year);
 
       this.columns[2].children.forEach(item => {
         for (let key in row) {
@@ -252,7 +253,7 @@ export default {
         path: "/assessment/yearly-assessment/detail",
         query: {
           memberId: row.id,
-          beginTime: this.$moment(this.list.month).format("YYYY"),
+          beginTime: this.$moment(this.list.year).format("YYYY"),
           type: 3,
           chartData: JSON.stringify(this.chartData)
         }
