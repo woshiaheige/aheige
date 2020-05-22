@@ -114,7 +114,7 @@ export default {
               res +=
                 "<br>故障率：" +
                 (
-                  (params[i - 1].data[1] /
+                  (params[i].data[1] /
                     (params[i - 1].data[1] + params[i].data[1])) *
                   100
                 ).toFixed(2) +
