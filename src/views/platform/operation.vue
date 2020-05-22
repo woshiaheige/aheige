@@ -8,8 +8,8 @@
         <a-form
           ref="formModal"
           :form="form"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 18 }"
+          :label-col="{ span: 8 }"
+          :wrapper-col="{ span: 16 }"
         >
           <a-row>
             <a-col :span="12">
@@ -143,8 +143,8 @@
         <a-form
           ref="formModal"
           :form="form"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 18 }"
+          :label-col="{ span: 8 }"
+          :wrapper-col="{ span: 16 }"
         >
           <a-row>
             <a-col :span="12">
@@ -196,8 +196,8 @@
         <a-form
           ref="formModal"
           :form="form"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 18 }"
+          :label-col="{ span: 8 }"
+          :wrapper-col="{ span: 16 }"
         >
           <a-row>
             <a-col :span="12">
