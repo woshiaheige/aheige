@@ -19,7 +19,7 @@
         <a-descriptions-item label="审批人" v-if="approvalName">{{
           approvalName
         }}</a-descriptions-item>
-        <a-descriptions-item label="被转交人" v-if="type == 1 && deliverName">{{
+        <a-descriptions-item label="转交人" v-if="type == 1 && deliverName">{{
           deliverName
         }}</a-descriptions-item>
         <a-descriptions-item
