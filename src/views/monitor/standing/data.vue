@@ -35,6 +35,7 @@
                 type="danger"
                 ghost
                 @click="getLogDownload"
+                v-preventReClick
                 :disabled="formInline.showType == 'chart'"
               >
                 导出
@@ -178,7 +179,8 @@ export default {
         series: {
           smooth: false
         }
-      }
+      },
+      downLoading: false
     };
   },
   computed: {
@@ -343,7 +345,7 @@ export default {
     },
     // 报表监测数据导出
     getLogDownload() {
-      console.log(this.tableData);
+      this.downLoading = true;
       if (this.tableData.length > 0) {
         const _data = {
           beginTime: this.formInline.range[0].format("YYYY-MM-DD HH:mm:ss"),
@@ -353,10 +355,12 @@ export default {
         };
 
         this.$api.monitor.getExportmonitor(_data).then(res => {
+          this.downLoading = false;
           let urls = res.request.responseURL;
           window.location.href = urls;
         });
       } else {
+        this.downLoading = false;
         this.$message.warn("没有数据！");
       }
     }
