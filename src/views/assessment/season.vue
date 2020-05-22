@@ -143,11 +143,48 @@ export default {
   computed: {
     season() {
       return this.$moment().quarter();
+    },
+    seasonStart() {
+      if (this.list.range == 1) {
+        return this.$moment()
+          .month(0)
+          .format("YYYY-MM");
+      } else if (this.list.range == 2) {
+        return this.$moment()
+          .month(3)
+          .format("YYYY-MM");
+      } else if (this.list.range == 3) {
+        return this.$moment()
+          .month(6)
+          .format("YYYY-MM");
+      } else {
+        return this.$moment()
+          .month(9)
+          .format("YYYY-MM");
+      }
+    },
+    seasonEnd() {
+      if (this.list.range == 1) {
+        return this.$moment()
+          .month(2)
+          .format("YYYY-MM");
+      } else if (this.list.range == 2) {
+        return this.$moment()
+          .month(5)
+          .format("YYYY-MM");
+      } else if (this.list.range == 3) {
+        return this.$moment()
+          .month(8)
+          .format("YYYY-MM");
+      } else {
+        return this.$moment()
+          .month(11)
+          .format("YYYY-MM");
+      }
     }
   },
   mounted() {
     this.list.range = this.season;
-    console.log(this.season);
     this.getTableData();
   },
   beforeRouteLeave(to, from, next) {
@@ -171,38 +208,8 @@ export default {
     async getTableData() {
       let data = {
         groupName: this.list.group,
-        startMonth:
-          this.list.range == 1
-            ? this.$moment()
-                .month(0)
-                .format("YYYY-MM")
-            : this.list.range == 2
-            ? this.$moment()
-                .month(3)
-                .format("YYYY-MM")
-            : this.list.range == 3
-            ? this.$moment()
-                .month(6)
-                .format("YYYY-MM")
-            : this.$moment()
-                .month(9)
-                .format("YYYY-MM"),
-        endMonth:
-          this.list.range == 1
-            ? this.$moment()
-                .month(2)
-                .format("YYYY-MM")
-            : this.list.range == 2
-            ? this.$moment()
-                .month(5)
-                .format("YYYY-MM")
-            : this.list.range == 3
-            ? this.$moment()
-                .month(8)
-                .format("YYYY-MM")
-            : this.$moment()
-                .month(11)
-                .format("YYYY-MM"),
+        startMonth: this.seasonStart,
+        endMonth: this.seasonEnd,
         name: this.list.name,
         page: this.current,
         size: this.pageSize
@@ -229,38 +236,8 @@ export default {
 
       let data = {
         groupName: this.list.group,
-        startMonth:
-          this.list.range == 1
-            ? this.$moment()
-                .month(0)
-                .format("YYYY-MM")
-            : this.list.range == 2
-            ? this.$moment()
-                .month(3)
-                .format("YYYY-MM")
-            : this.list.range == 3
-            ? this.$moment()
-                .month(6)
-                .format("YYYY-MM")
-            : this.$moment()
-                .month(9)
-                .format("YYYY-MM"),
-        endMonth:
-          this.list.range == 1
-            ? this.$moment()
-                .month(2)
-                .format("YYYY-MM")
-            : this.list.range == 2
-            ? this.$moment()
-                .month(5)
-                .format("YYYY-MM")
-            : this.list.range == 3
-            ? this.$moment()
-                .month(8)
-                .format("YYYY-MM")
-            : this.$moment()
-                .month(11)
-                .format("YYYY-MM"),
+        startMonth: this.seasonStart,
+        endMonth: this.seasonEnd,
         name: this.list.name
       };
 
@@ -322,38 +299,8 @@ export default {
         path: "/assessment/season-assessment/detail",
         query: {
           memberId: row.id,
-          beginTime:
-            this.list.range == 1
-              ? this.$moment()
-                  .month(0)
-                  .format("YYYY-MM")
-              : this.list.range == 2
-              ? this.$moment()
-                  .month(3)
-                  .format("YYYY-MM")
-              : this.list.range == 3
-              ? this.$moment()
-                  .month(6)
-                  .format("YYYY-MM")
-              : this.$moment()
-                  .month(9)
-                  .format("YYYY-MM"),
-          endTime:
-            this.list.range == 1
-              ? this.$moment()
-                  .month(2)
-                  .format("YYYY-MM")
-              : this.list.range == 2
-              ? this.$moment()
-                  .month(5)
-                  .format("YYYY-MM")
-              : this.list.range == 3
-              ? this.$moment()
-                  .month(8)
-                  .format("YYYY-MM")
-              : this.$moment()
-                  .month(11)
-                  .format("YYYY-MM"),
+          beginTime: this.seasonStart,
+          endTime: this.seasonEnd,
           type: 2,
           chartData: JSON.stringify(this.chartData)
         }
