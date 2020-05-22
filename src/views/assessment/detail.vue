@@ -109,7 +109,8 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: this.schemeList
+          data: this.schemeList,
+          type: "scroll"
         },
         grid: {
           left: "3%",

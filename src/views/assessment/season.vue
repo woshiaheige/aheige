@@ -17,12 +17,20 @@
           ></a-input>
         </a-form-item>
         <a-form-item label="考评时间">
-          <a-range-picker
-            format="YYYY-MM"
-            :mode="mode"
-            v-model="list.range"
-            @panelChange="handlePanelChange"
-          />
+          <a-radio-group v-model="list.range" @change="getTableData">
+            <a-radio-button :value="1">
+              第一季度
+            </a-radio-button>
+            <a-radio-button :value="2">
+              第二季度
+            </a-radio-button>
+            <a-radio-button :value="3">
+              第三季度
+            </a-radio-button>
+            <a-radio-button :value="4">
+              第四季度
+            </a-radio-button>
+          </a-radio-group>
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
@@ -134,14 +142,44 @@ export default {
   },
   computed: {
     season() {
-      if (this.$moment().month() <= 2) {
-        return [this.$moment().month(0), this.$moment().month(2)];
-      } else if (this.$moment().month() > 2 && this.$moment().month() <= 5) {
-        return [this.$moment().month(3), this.$moment().month(5)];
-      } else if (this.$moment().month() > 5 && this.$moment().month() <= 8) {
-        return [this.$moment().month(6), this.$moment().month(8)];
+      return this.$moment().quarter();
+    },
+    seasonStart() {
+      if (this.list.range == 1) {
+        return this.$moment()
+          .month(0)
+          .format("YYYY-MM");
+      } else if (this.list.range == 2) {
+        return this.$moment()
+          .month(3)
+          .format("YYYY-MM");
+      } else if (this.list.range == 3) {
+        return this.$moment()
+          .month(6)
+          .format("YYYY-MM");
       } else {
-        return [this.$moment().month(9), this.$moment().month(11)];
+        return this.$moment()
+          .month(9)
+          .format("YYYY-MM");
+      }
+    },
+    seasonEnd() {
+      if (this.list.range == 1) {
+        return this.$moment()
+          .month(2)
+          .format("YYYY-MM");
+      } else if (this.list.range == 2) {
+        return this.$moment()
+          .month(5)
+          .format("YYYY-MM");
+      } else if (this.list.range == 3) {
+        return this.$moment()
+          .month(8)
+          .format("YYYY-MM");
+      } else {
+        return this.$moment()
+          .month(11)
+          .format("YYYY-MM");
       }
     }
   },
@@ -167,27 +205,11 @@ export default {
         range: this.season
       };
     },
-    handlePanelChange(value, mode) {
-      value[1] = this.$moment(value[0]).add(2, "M");
-      this.list.range = value;
-      this.mode = [
-        mode[0] === "date" ? "month" : mode[0],
-        mode[1] === "date" ? "month" : mode[1]
-      ];
-    },
     async getTableData() {
       let data = {
         groupName: this.list.group,
-        startMonth:
-          this.list.range[0] == ""
-            ? this.$moment()
-                .subtract(2, "M")
-                .format("YYYY-MM")
-            : this.$moment(this.list.range[0]).format("YYYY-MM"),
-        endMonth:
-          this.list.range[1] == ""
-            ? this.$moment().format("YYYY-MM")
-            : this.$moment(this.list.range[1]).format("YYYY-MM"),
+        startMonth: this.seasonStart,
+        endMonth: this.seasonEnd,
         name: this.list.name,
         page: this.current,
         size: this.pageSize
@@ -214,16 +236,8 @@ export default {
 
       let data = {
         groupName: this.list.group,
-        startMonth:
-          this.list.range[0] == ""
-            ? this.$moment()
-                .subtract(2, "M")
-                .format("YYYY-MM")
-            : this.$moment(this.list.range[0]).format("YYYY-MM"),
-        endMonth:
-          this.list.range[1] == ""
-            ? this.$moment().format("YYYY-MM")
-            : this.$moment(this.list.range[1]).format("YYYY-MM"),
+        startMonth: this.seasonStart,
+        endMonth: this.seasonEnd,
         name: this.list.name
       };
 
@@ -285,8 +299,8 @@ export default {
         path: "/assessment/season-assessment/detail",
         query: {
           memberId: row.id,
-          beginTime: this.$moment(this.list.range[0]).format("YYYY-MM"),
-          endTime: this.$moment(this.list.range[1]).format("YYYY-MM"),
+          beginTime: this.seasonStart,
+          endTime: this.seasonEnd,
           type: 2,
           chartData: JSON.stringify(this.chartData)
         }
