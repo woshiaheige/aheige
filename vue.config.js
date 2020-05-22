@@ -2,6 +2,7 @@ const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const productionGzipExtensions = ["js", "css"];
 const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
+const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 module.exports = {
   // 基本路径
   publicPath: "/",
@@ -47,6 +48,14 @@ module.exports = {
       new webpack.ProvidePlugin({
         "window.Quill": "quill/dist/quill.js",
         Quill: "quill/dist/quill.js"
+      }),
+      // To strip all locales except “en”
+      new MomentLocalesPlugin(),
+
+      // Or: To strip all locales except “en”, “es-us” and “ru”
+      // (“en” is built into Moment and can’t be removed)
+      new MomentLocalesPlugin({
+        localesToKeep: ["es-us", "ru"]
       })
     ],
     optimization: {
