@@ -96,7 +96,7 @@ export default {
   },
   data() {
     return {
-      fileDownload: this.$api.common.fileDownload
+      fileViewOnline: this.$api.common.fileViewOnline
     };
   },
   methods: {

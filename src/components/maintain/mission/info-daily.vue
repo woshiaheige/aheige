@@ -35,15 +35,15 @@
             <div
               v-for="(item, index) of detail.taskItemVos"
               :key="index"
-              v-margin.bottom="5"
+              v-margin.bottom="10"
             >
               <span
                 >{{ item.name }}
-                <a-icon
-                  type="check"
-                  style="color:green"
-                  v-if="item.isState == 1"
-              /></span>
+                <span v-if="statusType == 'finish'" style="float:right">
+                  <a-tag color="green" v-if="item.isState == 1">是</a-tag>
+                  <a-tag v-if="item.isState == 0">否</a-tag>
+                </span>
+              </span>
             </div>
           </template>
         </a-descriptions-item>
