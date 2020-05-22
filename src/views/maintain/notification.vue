@@ -19,7 +19,6 @@
         <a-form-item label="报表类型">
           <a-select
             placeholder="请选择"
-            allowClear
             v-width="150"
             v-model="formInline.reportType"
             showSearch
