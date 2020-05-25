@@ -21,7 +21,7 @@
         经度:{{ lnglat[0] }}<br />纬度:{{ lnglat[1] }}<br />地址:{{ address }}
       </div>
       <a-button @click="cancel()">取消</a-button>
-      <a-button type="primary" @click="Submit()">确定</a-button>
+      <a-button type="primary" @click="submit()">确定</a-button>
     </div>
   </a-modal>
 </template>
@@ -158,7 +158,7 @@ export default {
       // marker.setAnimation("AMAP_ANIMATION_BOUNCE");
       map.setCenter([lng, lat]); //重新设置地图中心点
     },
-    Submit() {
+    submit() {
       let data = {
         lnglat: this.lnglat,
         address: this.address
