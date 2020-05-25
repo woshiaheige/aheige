@@ -49,72 +49,26 @@ export default {
   watch: {
     "obj.show"() {
       if (this.obj.show == true) {
-        if (this.obj.lnglat && this.obj.lnglat.length > 0) {
-          this.handleInitMap();
-        } else {
-          this.$nextTick(function() {
-            this.initMap();
-          });
-        }
+        this.$nextTick(function() {
+          this.initMap();
+        });
       }
     }
   },
   methods: {
-    handleInitMap() {
-      this.lnglat = this.obj.lnglat;
-      this.address = this.obj.address;
-      this.$nextTick(function() {
-        this.initMap(this.obj.lnglat, this.obj.address);
-      });
-    },
-    // 创建点标记
-    setPoint(map, lng, lat) {
-      this.lnglat = [lng, lat];
-      map.clearMap(); //清除地图上所有覆盖物
-      let marker = new AMap.Marker({
-        position: [lng, lat],
-        icon:
-          "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-        offset: new AMap.Pixel(-20, -50),
-        // 设置是否可拖拽
-        draggable: true,
-        cursor: "move"
-      });
-      marker.setMap(map);
-      // 设置点标记的动画效果，此处为弹跳效果
-      // marker.setAnimation("AMAP_ANIMATION_BOUNCE");
-      map.setCenter([lng, lat]); //重新设置地图中心点
-    },
     // 创建地图
-    initMap(lnglat, address) {
-      //lnglat:传进来的点的经纬度[113.538754,22.792099]，address:传进来的点的地址，不传则为空，没有点标记
-      let _this = this;
-      let point = [];
+    initMap() {
+      console.log("初始化地图");
+      this.address = "";
+      this.lnglat = [];
       let map = "";
-      if (lnglat) {
-        // 传入点时
-        point = lnglat;
-        _this.lnglat = lnglat;
-        _this.address = address;
-        map = new AMap.Map("myChart", {
-          resizeEnable: true,
-          zoom: 12,
-          mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18",
-          center: point
-        });
-      } else {
-        // 未传入点时，根据用户IP自动匹配地图中心点
-        map = new AMap.Map("myChart", {
-          resizeEnable: true,
-          zoom: 12,
-          mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18"
-        });
-        _this.lnglat = {
-          lng: map.getCenter().lng,
-          lat: map.getCenter().lat
-        };
-        _this.address = "";
-      }
+      map = new AMap.Map("myChart", {
+        resizeEnable: true,
+        zoom: 12,
+        mapStyle: "amap://styles/87458463341edbb88bf74018802e9e18"
+      });
+
+      let _this = this;
       $("#tipinput").val("");
       //搜索功能，输入提示
       AMap.plugin("AMap.Autocomplete", function() {
@@ -150,9 +104,12 @@ export default {
         }
       });
 
-      // 创建点标记
-      if (lnglat) {
-        _this.setPoint(map, lnglat[0], lnglat[1]);
+      // 判断是否有值，并创建点标记
+      if (this.modalInfo.lnglat.length > 0) {
+        map.setCenter(this.modalInfo.lnglat);
+        _this.address = this.modalInfo.address;
+        _this.lnglat = this.modalInfo.lnglat;
+        _this.setPoint(map, this.modalInfo.lnglat[0], this.modalInfo.lnglat[1]);
       }
 
       // 点击地图获取经纬度
@@ -183,6 +140,24 @@ export default {
       });
     },
 
+    // 创建点标记
+    setPoint(map, lng, lat) {
+      this.lnglat = [lng, lat];
+      map.clearMap(); //清除地图上所有覆盖物
+      let marker = new AMap.Marker({
+        position: [lng, lat],
+        icon:
+          "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+        offset: new AMap.Pixel(-20, -50),
+        // 设置是否可拖拽
+        draggable: true,
+        cursor: "move"
+      });
+      marker.setMap(map);
+      // 设置点标记的动画效果，此处为弹跳效果
+      // marker.setAnimation("AMAP_ANIMATION_BOUNCE");
+      map.setCenter([lng, lat]); //重新设置地图中心点
+    },
     Submit() {
       let data = {
         lnglat: this.lnglat,

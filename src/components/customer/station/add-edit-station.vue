@@ -330,7 +330,7 @@ export default {
       if (this.formData.lngandlat) {
         this.mapModel.lnglat = this.formData.lngandlat.split(",");
       } else {
-        this.mapModel.lnglat = {};
+        this.mapModel.lnglat = [];
       }
     },
     getModal(data) {
