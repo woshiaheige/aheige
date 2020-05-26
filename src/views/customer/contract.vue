@@ -149,7 +149,7 @@ export default {
           width: 110
         },
         {
-          title: "合同材料",
+          title: "合同附件",
           key: "downLoad",
           scopedSlots: { customRender: "downLoad" },
           align: "center",
