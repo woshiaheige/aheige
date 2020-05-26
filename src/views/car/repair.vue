@@ -91,6 +91,13 @@ export default {
   components: {
     repairFee
   },
+  watch: {
+    visible(nval) {
+      if (nval == false) {
+        this.modalInfo = { type: 5 };
+      }
+    }
+  },
   data() {
     return {
       visible: false,

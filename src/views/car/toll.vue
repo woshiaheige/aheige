@@ -91,6 +91,13 @@ export default {
   components: {
     tollFee
   },
+  watch: {
+    visible(nval) {
+      if (nval == false) {
+        this.modalInfo = { type: 2 };
+      }
+    }
+  },
   data() {
     return {
       visible: false,

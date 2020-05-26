@@ -91,6 +91,13 @@ export default {
   components: {
     gasFee
   },
+  watch: {
+    visible(nval) {
+      if (nval == false) {
+        this.modalInfo = { type: 1 };
+      }
+    }
+  },
   data() {
     return {
       visible: false,

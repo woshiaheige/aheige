@@ -91,6 +91,13 @@ export default {
   components: {
     annualFee
   },
+  watch: {
+    visible(nval) {
+      if (nval == false) {
+        this.modalInfo = { type: 4 };
+      }
+    }
+  },
   data() {
     return {
       visible: false,

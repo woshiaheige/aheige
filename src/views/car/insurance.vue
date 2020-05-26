@@ -91,6 +91,13 @@ export default {
   components: {
     insuranceFee
   },
+  watch: {
+    visible(nval) {
+      if (nval == false) {
+        this.modalInfo = { type: 3 };
+      }
+    }
+  },
   data() {
     return {
       visible: false,
