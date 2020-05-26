@@ -7,7 +7,12 @@
           <span>本日任务数：{{ this.data.length }}</span>
         </div>
       </div>
-      <a-radio-group v-model="week" v-margin:bottom="16" @change="changeWeek">
+      <a-radio-group
+        v-model="week"
+        v-margin:bottom="16"
+        @change="changeWeek"
+        buttonStyle="solid"
+      >
         <a-radio-button value="this">本周任务</a-radio-button>
         <a-radio-button value="next">下周任务</a-radio-button>
       </a-radio-group>
@@ -56,15 +61,9 @@
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="warning"
-                      text="已延期"
-                      v-if="item.status == 4"
-                    />
-                    <a-badge
-                      v-margin:left="5"
                       status="success"
                       text="已关闭"
-                      v-if="item.status == 5"
+                      v-if="item.status == 4"
                     />
                   </p>
                 </div>

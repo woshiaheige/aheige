@@ -83,7 +83,7 @@
               <span slot="close">停运</span>
             </i-switch>
           </span>
-          <a-tooltip placement="top">
+          <a-tooltip placement="top" v-if="row.stopReason !== null">
             <template slot="title">
               <p>{{ row.stopReason }}</p>
             </template>
