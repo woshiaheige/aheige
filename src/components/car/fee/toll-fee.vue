@@ -87,19 +87,16 @@ export default {
         gmtPayment: [
           { required: true, trigger: "change", message: "输入付款时间" }
         ]
-      }
+      },
+      title: "新增费用"
     };
   },
-  computed: {
-    title() {
-      let title = this.carId ? "编辑费用" : "新增费用";
-      return title;
-    }
-  },
+  computed: {},
   watch: {
     modalInfo(nval) {
       if (nval.id) {
         this.carId = nval.id;
+        this.title = "编辑费用";
         this.formData = {
           vehicleId: nval.vehicleId,
           payment: nval.payment,
@@ -114,6 +111,7 @@ export default {
   methods: {
     reset() {
       this.carId = undefined;
+      this.title = "新增费用";
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
     },
