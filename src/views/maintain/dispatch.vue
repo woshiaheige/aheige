@@ -61,15 +61,9 @@
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="warning"
-                      text="已延期"
-                      v-if="item.status == 4"
-                    />
-                    <a-badge
-                      v-margin:left="5"
                       status="success"
                       text="已关闭"
-                      v-if="item.status == 5"
+                      v-if="item.status == 4"
                     />
                   </p>
                 </div>
