@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="新增费用"
+    :title="title"
     :visible="visible"
     @ok="handleOk"
     @cancel="handleCancel"
