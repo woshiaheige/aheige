@@ -59,6 +59,13 @@ require("echarts/lib/chart/line");
 require("echarts/lib/chart/bar");
 require("echarts/lib/chart/pie");
 
+//视频播放器
+import VideoPlayer from "vue-video-player";
+import "video.js/dist/video-js.css";
+import "vue-video-player/src/custom-theme.css";
+import "videojs-flash";
+import "videojs-contrib-hls";
+
 // 引入提示框和title组件，图例
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
@@ -85,6 +92,7 @@ Vue.mixin(iconfont);
 
 Vue.use(Antd);
 Vue.use(VCharts);
+Vue.use(VideoPlayer);
 Vue.use(vueDirectiveImagePreviewer, {
   animate: {
     duration: 600
