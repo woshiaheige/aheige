@@ -14,7 +14,9 @@ const login = {
   getVerifyCode(data) {
     return axios.get(
       base.api + "verification/getRetrievePasswordVerificationCode",
-      { params: data }
+      {
+        params: data
+      }
     );
   },
   //检查验证码
@@ -32,6 +34,12 @@ const login = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
+    });
+  },
+  //页头修改密码
+  changePsw(data) {
+    return axios.get(base.api + "sysUser/updatePassword", {
+      params: data
     });
   }
 };

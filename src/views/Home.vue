@@ -86,13 +86,26 @@
             <a-icon type="qrcode" :style="{ fontSize: '24px' }" />
           </a-popover>
           <!-- <a-icon type="bell" :style="{ fontSize: '24px' }" /> -->
-          <div v-margin:left="16">
-            <a-avatar
-              style="backgroundColor:#2db7f5"
-              icon="user"
-              v-margin:right="5"
-            /><span>{{ username }}</span>
-          </div>
+          <a-dropdown>
+            <div
+              v-margin:left="16"
+              style="cursor: pointer;"
+              @click="e => e.preventDefault()"
+            >
+              <a-avatar
+                style="backgroundColor:#2db7f5"
+                icon="user"
+                v-margin:right="5"
+              /><span>{{ username }}</span>
+            </div>
+
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a @click="changePsw">修改密码</a>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+
           <a-icon
             type="logout"
             :style="{ fontSize: '24px', marginLeft: '16px' }"
@@ -126,11 +139,14 @@
         </keep-alive>
       </a-layout-content>
     </a-layout>
+    <psw-modal :visible.sync="visible"></psw-modal>
   </div>
 </template>
 <script>
 import routeTable from "@/router/routerTable";
+import pswModal from "@/components/home/psw-modal";
 export default {
+  components: { pswModal },
   data() {
     return {
       routes: [
@@ -141,7 +157,8 @@ export default {
       ],
       collapsed: false,
       openKeys: [],
-      selectedKeys: []
+      selectedKeys: [],
+      visible: false
     };
   },
   computed: {
@@ -308,6 +325,9 @@ export default {
         },
         onCancel() {}
       });
+    },
+    changePsw() {
+      this.visible = true;
     },
     changeMenu(object) {
       for (let i in routeTable[1].children) {
