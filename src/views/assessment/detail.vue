@@ -4,7 +4,12 @@
       <div class="card-header">
         <div class="title">完成情况考评</div>
       </div>
-      <ve-histogram :data="chartData" :extend="chartExtend"></ve-histogram>
+      <ve-histogram
+        :data="chartData"
+        :extend="chartExtend"
+        v-if="chartData.rows.length > 0"
+      ></ve-histogram>
+      <a-empty v-else :image="simpleImage" />
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
@@ -16,7 +21,12 @@
       <div class="card-header">
         <div class="title">运维活动统计</div>
       </div>
-      <div id="pieChart" style="width:100%; height: 400px"></div>
+      <div
+        id="pieChart"
+        style="width:100%; height: 400px"
+        v-if="$route.query.chartData.length > 0"
+      ></div>
+      <a-empty v-else :image="simpleImage" />
     </a-card>
   </div>
 </template>

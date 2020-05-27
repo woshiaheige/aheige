@@ -107,10 +107,11 @@ export default {
           if (res.data.state == 0) {
             this.$message.success("修改密码成功，请重新登录");
             this.handleCancel();
+            sessionStorage.removeItem("userinfo");
+            this.$router.push("/login");
             setTimeout(() => {
-              sessionStorage.removeItem("userinfo");
-              this.$router.push("/login");
-            }, 1000);
+              location.reload();
+            }, 500);
           }
         });
       });
