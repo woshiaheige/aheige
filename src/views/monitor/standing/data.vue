@@ -239,19 +239,25 @@ export default {
     },
     //时间改变事件
     onChange(date, dateString) {
+      let num = 1;
+      let type = "months";
+      if (this.formInline.type == "1") {
+        num = 2;
+        type = "days";
+      }
       if (
         this.$moment(
           dateString[1] + " 23:59:59",
           "YYYY-MM-DD HH:mm:ss"
         ).valueOf() >
         this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-          .add(2, "days")
+          .add(num, type)
           .valueOf()
       ) {
         this.formInline.range[1] = this.$moment(
           dateString[0] + " 23:59:59",
           "YYYY-MM-DD HH:mm:ss"
-        ).add(2, "days");
+        ).add(num, type);
       } else {
         this.formInline.range[1] = date[1];
       }
@@ -293,6 +299,12 @@ export default {
     },
     //获取实时数据表头
     getRealDataTitle() {
+      if (this.formInline.type == "1") {
+        this.formInline.range = [
+          this.$moment(this.$moment().format("YYYY-MM-DD") + " 00:00:00"),
+          this.$moment(this.$moment().format("YYYY-MM-DD") + " 23:59:59")
+        ];
+      }
       this.current = 1;
       let data = {
         cn: this.formInline.type
