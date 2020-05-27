@@ -107,7 +107,7 @@ export default {
       this.$router.push({
         path: "/car/usage/detail",
         query: {
-          vehicleId: row.id,
+          vehicleId: row.vehicleId,
           dataTime: this.$moment(row.gmtDrive).format("YYYY-MM-DD")
         }
       });
