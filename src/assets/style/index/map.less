@@ -21,11 +21,26 @@
       left: 30px;
       width: 300px;
       min-height: 50px;
-      height: calc(100% - 60px);
       background: rgba(255, 255, 255, 0.8);
       padding: 16px;
       border-radius: 15px;
-      overflow: auto;
+      height: 99%;
+
+      .ant-radio-button-wrapper {
+        padding: 0 17px;
+      }
+
+      &.point .ant-list,
+      &.car .ant-list {
+        height: calc(100% - 110px);
+        overflow: auto;
+      }
+
+      &.user .ant-list {
+        height: calc(100% - 60px);
+        overflow: auto;
+      }
+
 
       .active-list {
         background-color: #e6f7ff;

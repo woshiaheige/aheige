@@ -209,16 +209,17 @@ export default {
           "YYYY-MM-DD HH:mm:ss"
         ).valueOf() >
         this.$moment(dateString[0] + " 23:59:59", "YYYY-MM-DD HH:mm:ss")
-          .add(2, "days")
+          .add(1, "months")
           .valueOf()
       ) {
         this.formInline.range[1] = this.$moment(
           dateString[0] + " 23:59:59",
           "YYYY-MM-DD HH:mm:ss"
-        ).add(2, "days");
+        ).add(1, "months");
       } else {
         this.formInline.range[1] = date[1];
       }
+      this.onSubmit();
     },
     //获取报表数据
     getTableData() {

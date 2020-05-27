@@ -21,7 +21,7 @@
           <a-tag color="#87d068">正常</a-tag>
           <a-tag color="#f50">报警</a-tag>
         </div>
-        <div class="alarm-list" v-if="active == 1">
+        <div class="alarm-list point" v-if="active == 1">
           <div class="header">
             <div class="title">预警监测点</div>
             <div class="value">{{ pointList.length }}</div>
@@ -56,7 +56,7 @@
             </a-list-item>
           </a-list>
         </div>
-        <div class="alarm-list" v-if="active == 2">
+        <div class="alarm-list car" v-if="active == 2">
           <div class="header">
             <div class="title">运维车辆</div>
             <div class="value">{{ carList.length }}</div>
@@ -91,7 +91,7 @@
             </a-list-item>
           </a-list>
         </div>
-        <div class="alarm-list" v-if="active == 3">
+        <div class="alarm-list user" v-if="active == 3">
           <div class="header">
             <div class="title">运维人员</div>
             <div class="value">{{ userList.length }}</div>
