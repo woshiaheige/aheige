@@ -15,7 +15,12 @@
       <div class="card-header">
         <div class="title">运维活动统计次数走势分析</div>
       </div>
-      <div id="lineChart" style="width:100%; height: 400px"></div>
+      <div
+        id="lineChart"
+        style="width:100%; height: 400px"
+        v-if="schemeList.length > 0"
+      ></div>
+      <a-empty v-else :image="simpleImage" />
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
