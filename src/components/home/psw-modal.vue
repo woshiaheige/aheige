@@ -15,22 +15,22 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="旧密码" prop="oldPassword">
-        <a-input
+        <a-input-password
           placeholder="旧密码"
           :maxLength="30"
           v-model.trim="formData.oldPassword"
         />
       </a-form-model-item>
       <a-form-model-item label="新密码" prop="newPassword">
-        <a-input
+        <a-input-password
           placeholder="新密码"
           :maxLength="30"
           v-model.trim="formData.newPassword"
         />
       </a-form-model-item>
-      <a-form-model-item label="再次输入新密码" prop="secondPwd">
-        <a-input
-          placeholder="新密码"
+      <a-form-model-item label="再次输入密码" prop="secondPwd">
+        <a-input-password
+          placeholder="再次输入密码"
           :maxLength="30"
           v-model.trim="formData.secondPwd"
         />
@@ -56,7 +56,7 @@ export default {
   data() {
     let that = this;
     const validatePwd = (rule, value, callback) => {
-      if (that.formData.newPassword.trim() !== value) {
+      if (value.trim() !== that.formData.newPassword.trim()) {
         callback("密码不一致！");
       } else {
         callback();
@@ -105,8 +105,12 @@ export default {
 
         this.$api.login.changePsw(data).then(res => {
           if (res.data.state == 0) {
-            this.$message.success("修改密码成功");
+            this.$message.success("修改密码成功，请重新登录");
             this.handleCancel();
+            setTimeout(() => {
+              sessionStorage.removeItem("userinfo");
+              this.$router.push("/login");
+            }, 1000);
           }
         });
       });
