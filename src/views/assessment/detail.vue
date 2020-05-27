@@ -24,7 +24,7 @@
       <div
         id="pieChart"
         style="width:100%; height: 400px"
-        v-if="$route.query.chartData.length > 0"
+        v-if="schemeList.length > 0"
       ></div>
       <a-empty v-else :image="simpleImage" />
     </a-card>
