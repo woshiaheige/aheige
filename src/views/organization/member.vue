@@ -180,13 +180,20 @@ export default {
           this.loading = false;
         });
     },
-    onEdit(row) {
-      this.$api.organization.getSysUserById({ id: row.id }).then(res => {
+    async onEdit(row) {
+      let data;
+      await this.$api.organization.getSysUserById({ id: row.id }).then(res => {
         if (res.data.state == 0) {
-          this.memberDetail = res.data.data;
-          this.visible = true;
+          data = res.data.data;
         }
       });
+      await this.$api.organization
+        .getSysRoleById({ id: data.roleId })
+        .then(res => {
+          data.roleType = res.data.data.type;
+        });
+      this.memberDetail = data;
+      this.visible = true;
     },
 
     onDelete(row) {
