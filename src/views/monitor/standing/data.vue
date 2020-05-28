@@ -63,7 +63,7 @@
             slot-scope="text, row"
           >
             <div v-if="row[item.key].Rtd || row[item.key].Avg">
-              <span v-color="'#CB343F'" v-if="row[item.key].Flag === 'T'"
+              <span v-if="row[item.key].Flag === 'T'" style="color: #CB343F"
                 >{{ row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg }}
                 <a-tooltip placement="top">
                   <template slot="title">
@@ -81,7 +81,7 @@
               <span v-else-if="row[item.key].Flag === 'N'">{{
                 row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg
               }}</span>
-              <span v-color="'#EBBF0E'" v-else
+              <span style="color: #EBBF0E" v-else
                 >{{ row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg }}
                 <a-tooltip placement="top">
                   <template slot="title">
