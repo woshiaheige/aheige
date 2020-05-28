@@ -61,19 +61,19 @@
           placeholder="请选择"
           :disabled="memberId == 1"
           v-model="formData.roleId"
-          @select="roleSelect"
           showSearch
           :filterOption="filterOptions"
         >
           <a-select-option
             :value="item.id"
+            @click="roleSelect(item)"
             v-for="(item, index) of roleList"
             :key="index"
             >{{ item.name }}</a-select-option
           >
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="运维小组" v-if="roleId == 3" prop="groupId">
+      <a-form-model-item label="运维小组" v-if="roleType == 3" prop="groupId">
         <a-select
           placeholder="请选择"
           v-model="formData.groupId"
@@ -89,7 +89,7 @@
         </a-select>
       </a-form-model-item>
       <!-- 运维主管的审核权限暂时先隐藏 -->
-      <!-- <a-form-model-item label="审核权限" v-if="roleId == 2" prop="approvalIds">
+      <!-- <a-form-model-item label="审核权限" v-if="roleType == 2" prop="approvalIds">
         <a-select
           placeholder="请选择"
           v-model="formData.approvalIds"
@@ -196,6 +196,7 @@ export default {
         wechatId: "",
         roleId: undefined
       },
+      roleType: "", //角色类型
       rules: {
         enterpriseId: [
           {
@@ -260,9 +261,10 @@ export default {
       if (nval) {
         this.memberId = nval.id;
         this.roleId = nval.roleId;
-        if (nval.roleId == 2) {
+        this.roleType = nval.roleType;
+        if (nval.roleType == 2) {
           this.getDictBySysUserApproval(); //获取审批权限
-        } else if (nval.roleId == 3) {
+        } else if (nval.roleType == 3) {
           this.gellAllSysGroup(); //获取小组
         }
         this.initPassword = nval.password;
@@ -274,10 +276,10 @@ export default {
           // wechatId: nval.wechatId,
           roleId: nval.roleId
         };
-        if (nval.roleId == 3) {
+        if (nval.roleType == 3) {
           //设置运维小组
           this.$set(this.formData, "groupId", nval.groupId);
-        } else if (nval.roleId == 2) {
+        } else if (nval.roleType == 2) {
           //审核权限
           this.$set(this.formData, "approvalIds", nval.approvalIds);
         }
@@ -285,11 +287,13 @@ export default {
     }
   },
   methods: {
-    roleSelect(e) {
-      this.roleId = e;
-      if (e == 3) {
+    roleSelect(item) {
+      this.roleId = item.id;
+      this.roleType = item.type;
+      console.log(item, 11111);
+      if (item.type == 3) {
         this.gellAllSysGroup(); //获取小组
-      } else if (e == 2) {
+      } else if (item.type == 2) {
         this.getDictBySysUserApproval(); //获取审批权限
       }
     },
@@ -323,6 +327,7 @@ export default {
       this.initPassword = "";
       this.memberId = "";
       this.roleId = undefined;
+      this.roleType = "";
       this.$refs.ruleForm.clearValidate();
       this.formData = this.$options.data().formData;
       this.removeFlag = true;
@@ -333,7 +338,7 @@ export default {
           console.log("error submit!!");
           return false;
         }
-        if (this.formData.roleId != 3) {
+        if (this.roleType != 3) {
           this.formData.groupId = "";
         }
         if (this.memberId) {
