@@ -634,6 +634,7 @@ export default {
               clearTimeout(timerResult);
             }
           } else if (rey.data.data.status == "1") {
+            _this.try = 0;
             _this.spinning = false;
             if (rey.data.data.result) {
               this.$notification.success({
@@ -648,6 +649,7 @@ export default {
             clearTimeout(timerResult);
             this.$emit("cancel");
           } else {
+            _this.try = 0;
             _this.spinning = false;
             this.$notification.error({
               message: _this.monitor.operate + "失败"
