@@ -142,6 +142,7 @@ export default {
       this.getTableData();
     },
     getTableData() {
+      this.tableData = [];
       this.loading = true;
       let data = {
         page: this.current,
