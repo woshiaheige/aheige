@@ -104,12 +104,12 @@
               :class="item.id == activeId ? 'active-list' : ''"
             >
               <a-list-item-meta
-                :description="item.groupName + '  |  ' + item.username"
+                :description="item.groupName + '  |  ' + item.name"
                 v-if="item.latitude == null || item.longitude == null"
               />
               <a-list-item-meta
                 v-else
-                :description="item.groupName + '  |  ' + item.username"
+                :description="item.groupName + '  |  ' + item.name"
                 @click="goMarker(item.longitude, item.latitude, item.id)"
               >
               </a-list-item-meta>
