@@ -210,8 +210,11 @@ export default {
           };
           for (let object in element) {
             if (object !== "dataTime" && object !== "overFlag") {
-              if (element[object]["Rtd"])
+              if (element[object]["Rtd"]) {
                 rowData[object] = element[object]["Rtd"];
+              } else {
+                rowData[object] = "-";
+              }
             }
           }
           tempData.push(rowData);
@@ -221,8 +224,11 @@ export default {
           };
           for (let object in element) {
             if (object !== "dataTime" && object !== "overFlag") {
-              if (element[object]["Avg"])
+              if (element[object]["Avg"]) {
                 rowData[object] = element[object]["Avg"];
+              } else {
+                rowData[object] = "-";
+              }
             }
           }
           tempData.push(rowData);
