@@ -52,7 +52,11 @@
       </a-descriptions>
       <div v-if="!(JSON.stringify(realData) == '{}')">
         <a-divider />
-        <a-descriptions :title="'数据时间：' + realData.dataTime" :column="2">
+        <a-descriptions
+          class="data-detail"
+          :title="'数据时间：' + realData.dataTime"
+          :column="2"
+        >
           <a-descriptions-item
             v-for="(item, index) in realData.list"
             :key="index"
@@ -147,7 +151,11 @@ export default {
         if (!(JSON.stringify(this.value.data.realData) == "{}")) {
           this.realData = this.list.realData;
           let num = Math.ceil(this.realData.list.length / 2) + 1;
-          $(".ant-modal").css("top", this.value.position.y - num * 35 - 15);
+          if (num > 4) {
+            $(".ant-modal").css("top", this.value.position.y - 200);
+          } else {
+            $(".ant-modal").css("top", this.value.position.y - num * 40);
+          }
           // this.style =
           //   "top:" +
           //   (this.value.position.y - num * 35 - 15) +
@@ -193,6 +201,12 @@ export default {
   }
   .orange {
     color: orange;
+  }
+  .data-detail {
+    .ant-descriptions-view {
+      max-height: 150px;
+      overflow: auto;
+    }
   }
 }
 </style>
