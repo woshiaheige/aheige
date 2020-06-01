@@ -136,33 +136,35 @@ export default {
       if (this.value.show == true) {
         this.title = this.value.data.name;
         this.list = this.value.data;
-        $(".ant-modal").css("top", this.value.position.y + 10);
-        $(".ant-modal").css(
-          "left",
-          this.value.position.x - Math.ceil(window.innerWidth / 4)
-        );
-        // 以下代码测试环境无效
-        // this.style =
-        //   "top:" +
-        //   (this.value.position.y + 10) +
-        //   "px;left:" +
-        //   (this.value.position.x - 330) +
-        //   "px";
-        if (!(JSON.stringify(this.value.data.realData) == "{}")) {
-          this.realData = this.list.realData;
-          let num = Math.ceil(this.realData.list.length / 2) + 1;
-          if (num > 4) {
-            $(".ant-modal").css("top", this.value.position.y - 200);
-          } else {
-            $(".ant-modal").css("top", this.value.position.y - num * 40);
-          }
+        this.$nextTick(() => {
+          $(".ant-modal").css("top", this.value.position.y + 10);
+          $(".ant-modal").css(
+            "left",
+            this.value.position.x - Math.ceil(window.innerWidth / 4)
+          );
+          // 以下代码测试环境无效
           // this.style =
           //   "top:" +
-          //   (this.value.position.y - num * 35 - 15) +
+          //   (this.value.position.y + 10) +
           //   "px;left:" +
           //   (this.value.position.x - 330) +
           //   "px";
-        }
+          if (!(JSON.stringify(this.value.data.realData) == "{}")) {
+            this.realData = this.list.realData;
+            let num = Math.ceil(this.realData.list.length / 2) + 1;
+            if (num > 4) {
+              $(".ant-modal").css("top", this.value.position.y - 200);
+            } else {
+              $(".ant-modal").css("top", this.value.position.y - num * 40);
+            }
+            // this.style =
+            //   "top:" +
+            //   (this.value.position.y - num * 35 - 15) +
+            //   "px;left:" +
+            //   (this.value.position.x - 330) +
+            //   "px";
+          }
+        });
       }
     }
   }
