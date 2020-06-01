@@ -37,6 +37,7 @@ import "@/assets/style/approval.less";
 import "@/assets/style/login/login.less";
 import "@/assets/style/maintain/dispatch.less";
 import "@/assets/style/monitor/monitor.less";
+import "@/assets/style/customer.less";
 
 //字体
 import "@/assets/font/font.css";
