@@ -870,7 +870,10 @@ export default {
         });
     },
     getPollCodeList() {
-      let data = this.monitor.pointId;
+      let data = {
+        pointId: this.monitor.pointId,
+        isFilter: true
+      };
       this.$api.monitor.getPollCodeList(data).then(res => {
         this.divisorList = res.data.data;
       });
