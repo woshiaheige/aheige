@@ -26,7 +26,7 @@
           <a-tag color="green" v-if="list.state == 0">
             在线
           </a-tag>
-          <a-tag v-else>
+          <a-tag color="red" v-else>
             离线
           </a-tag>
         </a-descriptions-item>
@@ -34,7 +34,7 @@
           <a-tag color="green" v-if="list.isNormal == 0">
             正常
           </a-tag>
-          <a-tag color="orange" v-else>
+          <a-tag color="red" v-else>
             异常
           </a-tag>
         </a-descriptions-item>

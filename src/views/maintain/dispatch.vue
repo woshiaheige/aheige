@@ -61,7 +61,7 @@
                     />
                     <a-badge
                       v-margin:left="5"
-                      status="success"
+                      status="warning"
                       text="已关闭"
                       v-if="item.status == 4"
                     />

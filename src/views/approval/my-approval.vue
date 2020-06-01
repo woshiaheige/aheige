@@ -76,10 +76,10 @@
           <a-tag color="blue" v-if="type == 1">任务转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
-          <a-badge color="orange" text="审批中" v-if="state == 1" />
+          <a-badge status="processing" text="审批中" v-if="state == 1" />
           <a-badge color="blue" text="处理中" v-if="state == 2" />
-          <a-badge color="green" text="通过" v-if="state == 3" />
-          <a-badge color="red" text="未通过" v-if="state == 4" />
+          <a-badge status="success" text="通过" v-if="state == 3" />
+          <a-badge status="error" text="驳回" v-if="state == 4" />
         </template>
         <span slot="action" slot-scope="row">
           <a @click="check(row)">查看</a>

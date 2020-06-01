@@ -301,7 +301,7 @@ export default {
     }
   },
   created() {
-    this.removeLoading();
+    // this.removeLoading();
   },
   mounted() {
     this.setMenu();

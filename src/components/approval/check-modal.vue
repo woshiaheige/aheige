@@ -86,7 +86,7 @@ export default {
       } else if (this.obj.info.state == 3) {
         return "通过";
       } else {
-        return "未通过";
+        return "驳回";
       }
     },
     approvalName() {
