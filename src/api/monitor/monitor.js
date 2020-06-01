@@ -90,6 +90,10 @@ const monitor = {
       params: data
     });
   },
+  //查询污染物历史数据反控结果
+  getLogByQn(qn) {
+    return axios.get(base.api + "monitor/send17/getLogByQn/" + qn);
+  },
   //查询反控结果
   getResultByQn(qn, command) {
     return axios.get(

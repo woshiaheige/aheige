@@ -609,6 +609,61 @@ export default {
   },
   methods: {
     // 根据QN号查询反控结果日志信息
+    getLogByQn(qn, timeLength) {
+      // debugger;
+      let _this = this;
+      _this.timeLength = timeLength;
+      _this.$api.monitor.getLogByQn(qn).then(rey => {
+        this.spinning = true;
+        if (rey.data.state == 0) {
+          // 1:执行成功 2:执行失败，但不知道原因 3:命令请求条件错误 4:通讯超时 5:系统繁忙不能执行 6:系统故障 100:没有数据
+          var timerResult;
+          if (rey.data.data.status == "1" || rey.data.data.status == "2") {
+            _this.try++;
+            if (_this.try == 0) {
+              _this.getLogByQn(qn, _this.timeLength);
+            } else if (_this.try <= 3) {
+              timerResult = setTimeout(() => {
+                _this.getLogByQn(qn, _this.timeLength);
+              }, _this.timeLength);
+            } else {
+              _this.try = 0;
+              _this.spinning = false;
+              this.$notification.error({
+                message: _this.monitor.operate + "失败"
+              });
+              clearTimeout(timerResult);
+            }
+          } else if (
+            rey.data.data.status == "3" ||
+            rey.data.data.status == "4"
+          ) {
+            _this.try = 0;
+            _this.spinning = false;
+            if (rey.data.data.result) {
+              this.$notification.success({
+                message:
+                  _this.monitor.operate + "成功（" + rey.data.data.result + "）"
+              });
+            } else {
+              this.$notification.success({
+                message: _this.monitor.operate + "成功"
+              });
+            }
+            clearTimeout(timerResult);
+            this.$emit("cancel");
+          } else {
+            _this.try = 0;
+            _this.spinning = false;
+            this.$notification.error({
+              message: _this.monitor.operate + "失败"
+            });
+            clearTimeout(timerResult);
+          }
+        }
+      });
+    },
+    // 根据QN号查询反控结果日志信息
     getResultByQn(qn, command, timeLength) {
       let _this = this;
       _this.timeLength = timeLength;
@@ -757,7 +812,7 @@ export default {
           if (res.data.state == 0) {
             // this.$message.success("提取成功");
             if (res.data.data && res.data.data != "") {
-              this.getResultByQn(res.data.data.qn, res.data.data.command, 6000);
+              this.getLogByQn(res.data.data.qn, 6000);
             }
           }
         })
