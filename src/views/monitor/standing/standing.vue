@@ -10,7 +10,7 @@
             placeholder="请输入"
           />
         </a-form-model-item>
-        <a-form-model-item label="监测点名称">
+        <a-form-model-item label="站点名称">
           <a-input
             :maxLength="30"
             v-model="formInline.pointName"
@@ -51,7 +51,7 @@
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
       <div class="card-header">
-        <div class="title">企业监测点</div>
+        <div class="title">企业站点</div>
       </div>
       <a-table
         size="middle"
@@ -142,7 +142,7 @@ export default {
           align: "center"
         },
         {
-          title: "监测点名称",
+          title: "站点名称",
           dataIndex: "name"
         },
         {

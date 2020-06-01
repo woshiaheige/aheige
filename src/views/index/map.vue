@@ -2,7 +2,7 @@
   <div class="map">
     <a-card :bordered="false">
       <a-tabs defaultActiveKey="1" @change="callback">
-        <a-tab-pane tab="监测点位" key="1"></a-tab-pane>
+        <a-tab-pane tab="站点位" key="1"></a-tab-pane>
         <a-tab-pane tab="运维车辆" key="2"></a-tab-pane>
         <a-tab-pane tab="运维人员" key="3"></a-tab-pane>
         <div slot="tabBarExtraContent">
@@ -23,7 +23,7 @@
         </div>
         <div class="alarm-list point" v-if="active == 1">
           <div class="header">
-            <div class="title">预警监测点</div>
+            <div class="title">预警站点</div>
             <div class="value">{{ pointList.length }}</div>
           </div>
           <a-radio-group
@@ -188,7 +188,7 @@ export default {
       this.map.add(this.markers);
       this.map.setFitView();
     },
-    //获取监测点地标
+    //获取站点地标
     async getPointData(num) {
       $(".amap-info").remove();
       this.pointLoading = true;
@@ -279,7 +279,7 @@ export default {
         }
       });
     },
-    //监测点点击
+    //站点点击
     async goPointMarker(lng, lat, id) {
       await this.callback(this.active, this.radioNum);
       this.map.remove(this.markers);
@@ -407,7 +407,7 @@ export default {
       // let linelName = data.state == 0 ? "在线" : "离线";
       // let bodyHtml = [
       //   '<div class="content-window ant-row">',
-      //   '<div class="ant-col-12"><span>监测点名称：</span>' +
+      //   '<div class="ant-col-12"><span>站点名称：</span>' +
       //     data.name +
       //     "</div>",
       //   "<div class='ant-col-12'><span>所属企业：</span>" +

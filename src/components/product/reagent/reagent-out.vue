@@ -63,7 +63,7 @@ export default {
           dataIndex: "enterpriseName"
         },
         {
-          title: "监测点",
+          title: "站点",
           dataIndex: "pointName"
         },
         {

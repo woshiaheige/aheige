@@ -70,7 +70,7 @@ const customer = {
       params: data
     });
   },
-  //根据监测点获取设备列表
+  //根据站点获取设备列表
   getDeviceListByPointId(data) {
     return axios.get(base.api + "cusPointInstrument/pageByPointId", {
       params: data
@@ -101,7 +101,7 @@ const customer = {
       }
     );
   },
-  //根据监测点获取设备下拉
+  //根据站点获取设备下拉
   selectDeviceByPointId(data) {
     return axios.get(base.api + "cusPointInstrument/query", {
       params: data

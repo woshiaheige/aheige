@@ -18,7 +18,7 @@ const customer = [
     name: "customer-station",
     key: "station",
     meta: {
-      title: "监测点管理",
+      title: "站点管理",
       back: false
     },
     component: () =>
@@ -60,7 +60,7 @@ const customer = [
     name: "customer-enterprise-station",
     key: "customer-enterprise-station",
     meta: {
-      title: "企业监测点",
+      title: "企业站点",
       back: true
     },
     component: () =>

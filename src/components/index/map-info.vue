@@ -10,7 +10,7 @@
   >
     <div v-margin:bottom="25">
       <a-descriptions :column="2">
-        <a-descriptions-item label="监测点名称">
+        <a-descriptions-item label="站点名称">
           {{ list.name }}
         </a-descriptions-item>
         <a-descriptions-item label="所属企业">

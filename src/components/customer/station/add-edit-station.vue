@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="title + '监测点'"
+    :title="title + '站点'"
     :visible="modelData.show"
     @ok="handleOk"
     @cancel="handleCancel"
@@ -32,11 +32,11 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="监测点名称" prop="name">
+      <a-form-model-item label="站点名称" prop="name">
         <a-input
           v-model.trim="formData.name"
           :maxLength="30"
-          placeholder="监测点名称"
+          placeholder="站点名称"
         />
       </a-form-model-item>
       <a-form-model-item label="MN号" prop="mn">
@@ -74,9 +74,9 @@
           </a-tooltip>
         </a-input>
       </a-form-model-item>
-      <a-form-model-item label="监测点类型" prop="type">
+      <a-form-model-item label="站点类型" prop="type">
         <a-select
-          placeholder="监测点类型"
+          placeholder="站点类型"
           v-model="formData.type"
           showSearch
           :filterOption="filterOptions"
@@ -196,7 +196,7 @@ export default {
         name: [
           {
             required: true,
-            message: "请输入监测点名称",
+            message: "请输入站点名称",
             trigger: "blur"
           }
         ],
@@ -231,7 +231,7 @@ export default {
         type: [
           {
             required: true,
-            message: "请选择监测点类型",
+            message: "请选择站点类型",
             trigger: "change"
           }
         ]
