@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bordered="false" class="station">
+    <a-card :bordered="false" class="customer">
       <div class="card-header">
         <div class="title">
           {{ $route.query.enterpriseName + " / " + $route.query.pointName }}

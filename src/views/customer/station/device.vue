@@ -1,10 +1,7 @@
 <template>
   <div>
-    <a-card :bordered="false">
-      <div
-        class="title"
-        style="font-size:16px;color:#333;padding:0 0 15px;font-weight: bold;"
-      >
+    <a-card :bordered="false" class="customer">
+      <div class="title">
         {{ $route.query.enterpriseName + " / " + $route.query.pointName }}
       </div>
       <a-form layout="inline">

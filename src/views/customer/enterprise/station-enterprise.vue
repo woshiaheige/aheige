@@ -1,6 +1,9 @@
 <template>
   <div>
-    <a-card :bordered="false">
+    <a-card :bordered="false" class="customer">
+      <div class="title">
+        {{ $route.query.enterpriseName }}
+      </div>
       <a-form layout="inline">
         <a-form-item label="站点名称">
           <a-input

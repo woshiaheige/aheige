@@ -277,7 +277,7 @@ export default {
     goUser(row) {
       this.$router.push({
         path: "/customer/enterprise/user",
-        query: { id: row.id }
+        query: { id: row.id, enterpriseName: row.name }
       });
     },
     goPoint(row) {
