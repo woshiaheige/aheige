@@ -54,7 +54,7 @@ const index = {
   closeMsg(data) {
     return axios.post(base.api + "sysMsg/editSysMsg", data);
   },
-  //预警监测点
+  //预警站点
   getWarnData(data) {
     return axios.get(base.api + "operation/monitor/earlyWarning", {
       params: data

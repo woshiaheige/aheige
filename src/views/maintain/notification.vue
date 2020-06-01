@@ -9,7 +9,7 @@
             @pressEnter="onSubmit"
           />
         </a-form-model-item>
-        <a-form-model-item label="监测点名称">
+        <a-form-model-item label="站点名称">
           <a-input
             v-model="formInline.pointName"
             placeholder="请输入"
@@ -122,7 +122,7 @@ export default {
           key: "enterpriseName"
         },
         {
-          title: "监测点名称",
+          title: "站点名称",
           dataIndex: "pointName",
           key: "pointName"
         },

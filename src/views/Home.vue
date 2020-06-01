@@ -11,7 +11,7 @@
       }"
     >
       <div class="logo">
-        <img :src="require('@/assets/img/logo.png')" alt="" />
+        <img :src="require('@/assets/img/icon.png')" alt="" />
         <span>智维云</span>
       </div>
       <a-menu

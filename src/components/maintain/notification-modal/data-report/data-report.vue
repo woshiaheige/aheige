@@ -126,7 +126,7 @@ export default {
       });
     },
     getReportPushDataRateWarnAndOverProofCurve() {
-      //根据监测点获取季度/月/周的超标、异常曲线图数据
+      //根据站点获取季度/月/周的超标、异常曲线图数据
       let notification = this.$bus.$data.notification;
       let params = {
         beginTime: notification.beginTime,

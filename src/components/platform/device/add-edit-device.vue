@@ -315,7 +315,7 @@ export default {
           this.searchDivisor();
         });
     },
-    //监测点下拉
+    //站点下拉
     getStation() {
       this.$api.common.selectStation().then(res => {
         if (res.data.state == 0) {

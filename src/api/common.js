@@ -78,7 +78,7 @@ const common = {
       params: data
     });
   },
-  //所有监测点下拉
+  //所有站点下拉
   selectStation(data) {
     return axios.get(base.api + "cusPoint/query", {
       params: data
@@ -90,21 +90,21 @@ const common = {
       params: data
     });
   },
-  //根据企业id查询监测点下拉
+  //根据企业id查询站点下拉
   selectStationByEnterpriseId(data) {
     //传参名:enterpriseId
     return axios.get(base.api + "cusPoint/listByEnterpriseId", {
       params: data
     });
   },
-  //根据监测点id查询设备下拉
+  //根据站点id查询设备下拉
   selectStationByStationId(data) {
     //传参名:cusPointId
     return axios.get(base.api + "cusPointInstrument/listByPointId", {
       params: data
     });
   },
-  //根据监测点id查询因子下拉
+  //根据站点id查询因子下拉
   selectFactorByPointId(data) {
     //传参名:pointId
     return axios.get(base.api + "divisor/listAllByPointId", {

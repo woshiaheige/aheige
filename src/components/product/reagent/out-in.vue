@@ -54,12 +54,12 @@
       </a-form-model-item>
       <a-form-model-item
         v-if="modelData.type == 'out'"
-        label="监测点"
+        label="站点"
         prop="pointId"
       >
         <a-select
           v-model="formData.pointId"
-          placeholder="监测点"
+          placeholder="站点"
           showSearch
           :filterOption="filterOptions"
           @change="changeStation"
@@ -208,7 +208,7 @@ export default {
         pointId: [
           {
             required: true,
-            message: "请选择监测点",
+            message: "请选择站点",
             trigger: "change"
           }
         ],
@@ -282,7 +282,7 @@ export default {
       this.formData.pointId = undefined;
       this.getStation(value);
     },
-    //监测点下拉
+    //站点下拉
     getStation(value) {
       this.stationOptions = [];
       this.$api.common
