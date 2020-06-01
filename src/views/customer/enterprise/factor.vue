@@ -213,7 +213,7 @@ export default {
       this.obj.row = row;
     },
     getFactor(pointId) {
-      this.$api.monitor.getPollCodeList(pointId).then(res => {
+      this.$api.monitor.getPollCodeList({ pointId: pointId }).then(res => {
         this.factorOptions = res.data.data;
       });
     }
