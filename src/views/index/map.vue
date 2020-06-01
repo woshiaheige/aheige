@@ -214,7 +214,7 @@ export default {
             });
             marker.on("click", e => {
               that.showModelId = e.target.w.id;
-              this.showInfo(marker, e);
+              this.showInfo(marker, e.target.w.id, e.pixel);
             });
             if (result[i].errorType != "4") {
               this.pointList.push(result[i]);
@@ -287,6 +287,10 @@ export default {
       this.markers.forEach(item => {
         if (item.w.id == id) {
           item.setAnimation("AMAP_ANIMATION_BOUNCE");
+
+          let lnglat = new AMap.LngLat(lng, lat);
+          let pixel = this.map.lngLatToContainer(lnglat); // 获得 Pixel 对象
+          this.showInfo(item, id, pixel);
         }
       });
       this.map.add(this.markers);
@@ -386,9 +390,8 @@ export default {
       });
     },
     //自定义窗体
-    async showInfo(marker, e) {
+    async showInfo(marker, id, pixel) {
       let data = {};
-      let id = e.target.w.id;
       await this.$api.index.getPointData({ id }).then(res => {
         if (res.data.state == 0) {
           data = res.data.data;
@@ -396,7 +399,7 @@ export default {
       });
       this.modelInfo = {
         show: true,
-        position: e.pixel,
+        position: pixel,
         data: data
       };
       // let that = this;
