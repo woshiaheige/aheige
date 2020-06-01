@@ -72,7 +72,7 @@
       >
         <template slot="type" slot-scope="type">
           <a-tag color="red" v-if="type == 3">任务关闭</a-tag>
-          <a-tag color="green" v-if="type == 2">任务延迟</a-tag>
+          <a-tag color="green" v-if="type == 2">任务延期</a-tag>
           <a-tag color="blue" v-if="type == 1">任务转交</a-tag>
         </template>
         <template slot="state" slot-scope="state">
