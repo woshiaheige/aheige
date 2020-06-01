@@ -54,15 +54,14 @@
           v-margin:top="16"
           :pagination="false"
         >
-          <span
+          <template
             v-for="item in columns.filter(columnItem => {
               return columnItem.key !== 'dataTime';
             })"
             :slot="item.key"
-            :key="item.key"
             slot-scope="text, row"
           >
-            <div v-if="row[item.key].Rtd || row[item.key].Avg">
+            <div v-if="row[item.key].Rtd || row[item.key].Avg" :key="item.key">
               <span v-if="row[item.key].Flag === 'T'" style="color: #CB343F"
                 >{{ row[item.key].Rtd ? row[item.key].Rtd : row[item.key].Avg }}
                 <a-tooltip placement="top">
@@ -110,10 +109,10 @@
                 </a-tooltip>
               </span>
             </div>
-            <div v-else>
+            <div v-else :key="item.key">
               <span>-</span>
             </div>
-          </span>
+          </template>
         </a-table>
         <a-pagination
           size="small"
