@@ -283,18 +283,20 @@ export default {
     async goPointMarker(lng, lat, id) {
       await this.callback(this.active, this.radioNum);
       this.map.remove(this.markers);
+      this.map.setCenter([lng, lat]); //设置地图中心点
 
       this.markers.forEach(item => {
         if (item.w.id == id) {
           item.setAnimation("AMAP_ANIMATION_BOUNCE");
 
-          let lnglat = new AMap.LngLat(lng, lat);
-          let pixel = this.map.lngLatToContainer(lnglat); // 获得 Pixel 对象
+          let pixel = {
+            x: (window.innerWidth - 340) / 2,
+            y: (window.innerHeight - 320) / 2
+          };
           this.showInfo(item, id, pixel);
         }
       });
       this.map.add(this.markers);
-      this.map.setCenter([lng, lat]); //设置地图中心点
       this.activeId = id;
     },
     goMarker(lng, lat, id, number) {
@@ -391,6 +393,7 @@ export default {
     },
     //自定义窗体
     async showInfo(marker, id, pixel) {
+      console.log(pixel);
       let data = {};
       await this.$api.index.getPointData({ id }).then(res => {
         if (res.data.state == 0) {
