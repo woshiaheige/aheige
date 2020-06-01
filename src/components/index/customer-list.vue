@@ -11,6 +11,10 @@
         </div>
       </a-list-item>
     </a-list>
+    <a-divider />
+    <a-button type="danger" ghost v-if="warnList.length > 0" @click="closeAll">
+      关闭所有
+    </a-button>
     <a-pagination
       size="small"
       :showTotal="total => `共 ${total} 条`"
@@ -86,6 +90,29 @@ export default {
               that.getTableData();
             }
           });
+        },
+        onCancel() {}
+      });
+    },
+    closeAll() {
+      let that = this;
+
+      this.$confirm({
+        title: "确认关闭",
+        content: "确认关闭所有的警告吗？",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          that.$api.index
+            .closeAllMsg({
+              type: 3 //1： 站点预警提醒，2：合同提醒 3：客户投诉  4:审批通知   5:任务通知  6:报表推送 7 出库警戒提醒 8 年检提醒',
+            })
+            .then(res => {
+              if (res.data.state == 0) {
+                that.getTableData();
+              }
+            });
         },
         onCancel() {}
       });
