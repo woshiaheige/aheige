@@ -4,9 +4,7 @@
       <a-list-item slot="renderItem" slot-scope="item">
         <div>
           <a-avatar :src="require('@/assets/img/alarm.png')" />
-          <span v-color="'#424242'" v-margin:left="8"
-            >{{ item.gmtCreate }} {{ item.content }}</span
-          >
+          <span v-color="'#424242'" v-margin:left="8">{{ item.content }}</span>
         </div>
         <a slot="actions" @click="closeReminds(item.id)">关闭提醒</a>
       </a-list-item>

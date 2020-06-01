@@ -142,6 +142,7 @@ export default {
       this.getTableData();
     },
     getTableData() {
+      this.tableData = [];
       this.loading = true;
       let data = {
         page: this.current,
@@ -160,9 +161,8 @@ export default {
             this.total = result.total;
             result.list.forEach(item => {
               let arr = item.dateTime.split("~");
-              let start = this.$moment(arr[0].split(/[ ]|:|-/));
-              let end = this.$moment(arr[1].split(/[ ]|:|-/));
-              item.longTime = end.diff(start, "hours") + 1;
+              item.longTime =
+                this.$moment(arr[1]).diff(this.$moment(arr[0]), "hours") + 1;
             });
             this.tableData = result.list;
           }

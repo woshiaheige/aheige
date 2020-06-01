@@ -79,7 +79,9 @@
               <a-list-item-meta
                 v-else
                 :description="item.number"
-                @click="goMarker(item.longitude, item.latitude, item.id)"
+                @click="
+                  goMarker(item.longitude, item.latitude, item.id, item.number)
+                "
               >
               </a-list-item-meta>
               <a-tag
@@ -104,12 +106,12 @@
               :class="item.id == activeId ? 'active-list' : ''"
             >
               <a-list-item-meta
-                :description="item.groupName + '  |  ' + item.username"
+                :description="item.groupName + '  |  ' + item.name"
                 v-if="item.latitude == null || item.longitude == null"
               />
               <a-list-item-meta
                 v-else
-                :description="item.groupName + '  |  ' + item.username"
+                :description="item.groupName + '  |  ' + item.name"
                 @click="goMarker(item.longitude, item.latitude, item.id)"
               >
               </a-list-item-meta>
@@ -291,7 +293,7 @@ export default {
       this.map.setCenter([lng, lat]); //设置地图中心点
       this.activeId = id;
     },
-    goMarker(lng, lat, id) {
+    goMarker(lng, lat, id, number) {
       if (this.active == 2) {
         this.map.remove(this.polyline);
         let params = {
@@ -304,12 +306,26 @@ export default {
         this.$api.car.trajectory(params).then(res => {
           if (!(JSON.stringify(res.data.data) == "{}")) {
             this.lineArr = res.data.data.arr;
+            this.map.remove(this.markers);
+            this.markers = [];
             if (this.lineArr.length) {
-              this.map.remove(this.markers);
               this.setCar();
               this.setPolyLine();
-              this.map.setFitView();
+            } else {
+              let marker;
+              let content =
+                '<div class="marker-info marker-car"><a-icon class="car" />' +
+                number +
+                "</div>";
+              marker = new AMap.Marker({
+                position: new AMap.LngLat(lng, lat),
+                content: content,
+                anchor: "center"
+              });
+              this.markers.push(marker);
+              this.map.add(this.markers);
             }
+            this.map.setFitView();
           }
         });
       }

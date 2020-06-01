@@ -56,7 +56,9 @@
         v-margin:top="16"
         :pagination="false"
         :loading="loading"
-        :scroll="{ x: 1300 }"
+        :scroll="{
+          x: 1300
+        }"
       >
         <a slot="check" slot-scope="row">
           <a @click="goDetail(row)">分析</a>
@@ -106,12 +108,14 @@ export default {
           title: "气类运维",
           dataIndex: "gas",
           key: "gas",
+          align: "center",
           children: []
         },
         {
           title: "水类运维",
           dataIndex: "water",
           key: "water",
+          align: "center",
           children: []
         },
         {
@@ -252,7 +256,6 @@ export default {
                       title: children.title,
                       dataIndex: children.id,
                       key: children.id,
-                      width: 120,
                       align: "center"
                     });
                   } else if (children.type === 32) {
@@ -260,7 +263,6 @@ export default {
                       title: children.title,
                       dataIndex: children.id,
                       key: children.id,
-                      width: 120,
                       align: "center"
                     });
                   }
@@ -268,6 +270,25 @@ export default {
               });
             }
           });
+
+          if (
+            this.columns[2].children.length + this.columns[3].children.length >=
+            10
+          ) {
+            if (this.columns[2].children.length > 0)
+              this.columns[2].children.forEach(item => {
+                item.width = 120;
+              });
+
+            if (this.columns[3].children.length > 0)
+              this.columns[3].children.forEach(item => {
+                item.width = 120;
+              });
+          }
+
+          if (this.columns[2].children.length <= 0) this.columns[2].colSpan = 0;
+
+          if (this.columns[3].children.length <= 0) this.columns[3].colSpan = 0;
         }
       });
     },

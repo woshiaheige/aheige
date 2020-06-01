@@ -108,7 +108,7 @@ export default {
         path: "/car/usage/detail",
         query: {
           vehicleId: row.vehicleId,
-          dataTime: this.$moment(row.gmtDrive).format("YYYY-MM-DD")
+          dateTime: this.$moment(row.gmtDrive).format("YYYY-MM-DD")
         }
       });
     }

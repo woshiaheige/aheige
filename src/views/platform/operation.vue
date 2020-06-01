@@ -264,8 +264,8 @@ export default {
         // verify: 0,
         // distance: 0, //验证距离
         missionWeekCreate: { id: "", value: "1" }, //任务生成时间
-        missionWeekPush: { id: "", value: "1" }, //周任务推送时间
-        missionMonthPush: { id: "", value: "1" }, //月任务推送时间
+        // missionWeekPush: { id: "", value: "1" }, //周任务推送时间
+        // missionMonthPush: { id: "", value: "1" }, //月任务推送时间
         spaceMin: { id: "", value: "" }, //最小间隔时间
         remind: { id: "", value: "" }, //到期提醒天数
         mission: { id: "", value: "" },
