@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-empty v-if="notificationData.length == 0" />
+    <a-empty v-if="notificationData.length == 0" :image="simpleImage" />
     <a-descriptions layout="vertical" bordered size="small" v-else>
       <a-descriptions-item
         :span="3"
