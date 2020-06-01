@@ -32,7 +32,17 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="下限" prop="floorval">
+      <a-form-model-item label="是否判定超标">
+        <a-radio-group v-model="isTrue">
+          <a-radio :value="1">
+            是
+          </a-radio>
+          <a-radio :value="2">
+            否
+          </a-radio>
+        </a-radio-group>
+      </a-form-model-item>
+      <a-form-model-item label="下限" prop="floorval" v-if="isTrue == 1">
         <a-input-number
           v-model="formData.floorval"
           placeholder="下限"
@@ -40,7 +50,7 @@
           v-width="350"
         />
       </a-form-model-item>
-      <a-form-model-item label="上限" prop="ceilval">
+      <a-form-model-item label="上限" prop="ceilval" v-if="isTrue == 1">
         <a-input-number
           v-model="formData.ceilval"
           placeholder="上限"
@@ -66,11 +76,9 @@ export default {
     let that = this;
     const validateNum = (rule, value, callback) => {
       value = that.formData.ceilval;
-      if (
-        value &&
-        that.formData.floorval &&
-        Number(value) < Number(that.formData.floorval)
-      ) {
+      if (value == 0 && that.formData.floorval == 0) {
+        callback("上、下限值不能同时为0");
+      } else if (Number(value) <= Number(that.formData.floorval)) {
         callback("上限值必须大于下限值");
       } else {
         callback();
@@ -78,6 +86,7 @@ export default {
     };
     return {
       title: "添加",
+      isTrue: 1,
       factorOptions: [],
       formData: {
         pointId: this.$route.query.id,
@@ -127,6 +136,10 @@ export default {
           console.log("error submit!!");
           return false;
         }
+        if (this.isTrue == 2) {
+          this.formData.floorval = 0;
+          this.formData.ceilval = 0;
+        }
         //验证通过
         if (this.modelData.type == "edit") {
           this.$api.customer
@@ -159,6 +172,7 @@ export default {
     },
     handleCancel() {
       this.modelData.show = false;
+      this.isTrue = 1;
       this.$refs.ruleForm.resetFields();
     },
     getEditData() {
@@ -167,6 +181,9 @@ export default {
         .then(res => {
           if (res.data.state == 0) {
             this.formData = res.data.data;
+            if (this.formData.floorval == 0 && this.formData.ceilval == 0) {
+              this.isTrue = 2;
+            }
           }
         });
     },
