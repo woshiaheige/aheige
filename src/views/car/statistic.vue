@@ -320,9 +320,11 @@ export default {
     },
     getCostCount() {
       let costCount = 0;
-      this.tableData.forEach(item => {
-        costCount += Number(item.sumPayment);
-      });
+      if (this.tableData.length != 0) {
+        costCount = this.tableData[0].totalAmount;
+      } else {
+        costCount = 0;
+      }
       return costCount.toFixed(2);
     },
     handleChange(value) {
