@@ -21,7 +21,7 @@ export default {
     initData() {
       let params = {
         vehicleId: this.vehicleId,
-        dataTime: this.$route.query.dataTime
+        dateTime: this.$route.query.dateTime
       };
       this.initMap();
       this.$api.car.trajectory(params).then(res => {
