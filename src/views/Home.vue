@@ -34,6 +34,11 @@
               subItem.title
             }}</a-menu-item>
           </a-sub-menu>
+          <a-menu-item v-else :key="item.key"
+            ><a-icon :type="item.icon" /><span>{{
+              item.title
+            }}</span></a-menu-item
+          >
         </template>
       </a-menu>
     </a-layout-sider>
@@ -190,6 +195,13 @@ export default {
       let permissionArr = JSON.parse(sessionStorage.getItem("permission"));
       let menuArr = [
         {
+          title: "首页",
+          id: 9,
+          key: "dashboard",
+          icon: "appstore",
+          children: []
+        },
+        {
           title: "运维一览",
           id: 10,
           key: "index",
@@ -330,6 +342,7 @@ export default {
       this.visible = true;
     },
     changeMenu(object) {
+      console.log(object);
       for (let i in routeTable[1].children) {
         if (routeTable[1].children[i].key === object.key) {
           this.$router.push(routeTable[1].children[i].path);
@@ -348,10 +361,10 @@ export default {
       this.selectedKeys = this.selectedMenu;
     },
     setBreadcrumbName() {
-      if (this.$route.path === "/index/data") {
+      if (this.$route.path === "/dashboard") {
         this.routes = [
           {
-            path: "/index/data",
+            path: "/dashboard",
             breadcrumbName: "首页"
           }
         ];
@@ -359,7 +372,7 @@ export default {
         if (!this.$route.meta.back) {
           this.routes = [
             {
-              path: "/index/data",
+              path: "/dashboard",
               breadcrumbName: "首页"
             },
             {

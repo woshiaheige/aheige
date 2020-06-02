@@ -1,3 +1,4 @@
+import dashboardRoute from "../router/routesTable/dashboardRoute"; //运维一览
 import indexRoutes from "../router/routesTable/indexRoute"; //运维一览
 import approvalRoute from "../router/routesTable/approvalRoute"; //审批管理
 import maintainRoutes from "../router/routesTable/maintainRoute"; //运维管理
@@ -13,13 +14,14 @@ import assessmentRoute from "../router/routesTable/assessmentRoute"; //监控中
 const RouterTable = [
   {
     path: "/",
-    redirect: "/index/data"
+    redirect: "/dashboard"
   },
   {
     path: "/",
     component: () =>
       import(/* webpackChunkName: "view-home" */ "@/views/Home.vue"),
     children: [
+      ...dashboardRoute,
       ...indexRoutes,
       ...approvalRoute,
       ...maintainRoutes,

@@ -155,8 +155,8 @@ export default {
     },
     initRole() {
       //添加默认权限
-      if (this.resourceIdList.indexOf("1001") == -1) {
-        this.resourceIdList.push("1001");
+      if (this.resourceIdList.indexOf("9") == -1) {
+        this.resourceIdList.push("9");
       }
     },
     queryResourceTree() {
@@ -196,8 +196,8 @@ export default {
           this.treeDispose(item.children);
           //console.log(item);
         }
-        if (item.id == "1001") {
-          //设置运维监控为默认值
+        if (item.id == "9") {
+          //设置首页为默认值
           this.$set(item, "disabled", true);
         }
       });

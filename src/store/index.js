@@ -29,7 +29,7 @@ export default new Vuex.Store({
       let allRoute = [
         {
           path: "/",
-          redirect: "/index/data"
+          redirect: "/dashboard"
         },
         {
           path: "/",
