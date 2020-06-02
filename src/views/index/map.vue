@@ -370,13 +370,19 @@ export default {
     },
     //设置车辆起点
     setCar() {
-      let content =
-        '<div class="marker-info marker-car"><a-icon class="car" /></div>';
-      this.markers = new AMap.Marker({
+      // let content =
+      //   '<div class="marker-info marker-car"><a-icon class="car" /></div>';
+      this.markers[0] = new AMap.Marker({
         map: this.map,
         position: this.lineArr[0],
-        content: content,
-        offset: new AMap.Pixel(-13, -13)
+        // content: content,
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/start.png"
+        // offset: new AMap.Pixel(-13, -13)
+      });
+      this.markers[1] = new AMap.Marker({
+        map: this.map,
+        position: this.lineArr[this.lineArr.length - 1],
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/end.png"
       });
     },
     // 绘制轨迹
