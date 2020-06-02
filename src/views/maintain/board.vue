@@ -12,6 +12,14 @@
           slot-scope="value"
           v-if="planList.length != 0"
         >
+          <div
+            v-for="item in getListCount(value)"
+            :key="item.gmt_execution"
+            class="count"
+          >
+            <a-tag color="#87d068">任务:{{ item.task_count }}</a-tag>
+            <a-tag color="#87d068">站点:{{ item.point_count }}</a-tag>
+          </div>
           <li v-for="(item, index) in getListData(value)" :key="index">
             <a-popover
               @click="getDetail(item)"
@@ -28,23 +36,6 @@
               <a-tag color="#2db7f5" v-margin="5">{{
                 item.enterpriseName
               }}</a-tag>
-              <!-- <a-badge
-                status="default"
-                :text="item.enterpriseName"
-                :title="item.enterpriseName"
-              /> -->
-              <!-- <a-badge
-                v-show="item.status == 2"
-                status="success"
-                :text="item.enterpriseName"
-                :title="item.enterpriseName"
-              />
-              <a-badge
-                v-show="item.status == 3"
-                status="warning"
-                :text="item.enterpriseName"
-                :title="item.enterpriseName"
-              /> -->
             </a-popover>
           </li>
         </ul>
@@ -61,6 +52,13 @@
                 ? `任务数：${getMonthData(value).count}`
                 : ""
             }}
+            <div>
+              {{
+                getMonthData(value).pointCount
+                  ? `站点数：${getMonthData(value).pointCount}`
+                  : ""
+              }}
+            </div>
           </div>
         </template>
       </a-calendar>
@@ -75,6 +73,7 @@ export default {
     return {
       nowDay: this.$moment(),
       planList: [], //计划
+      planListCount: [], //计划统计数
       taskList: [], //任务
       monthList: [] //月数量统计
     };
@@ -113,6 +112,19 @@ export default {
       });
       return listData || [];
     },
+    getListCount(value) {
+      let listData = [];
+      this.planListCount.forEach(item => {
+        if (
+          this.$moment(item.gmt_execution).format("YYYY") == value.year() &&
+          this.$moment(item.gmt_execution).format("DD") == value.date() &&
+          this.$moment(item.gmt_execution).format("M") == value.month() + 1
+        ) {
+          listData.push(item);
+        }
+      });
+      return listData || [];
+    },
     getMonthPlanBoard(time) {
       //获取当月计划
       let params = {
@@ -121,7 +133,8 @@ export default {
       };
       this.$api.maintain.getMonthPlanBoard(params).then(res => {
         if (res.data.state == 0) {
-          this.planList = res.data.data;
+          this.planList = res.data.data.PlanBoardDataVo;
+          this.planListCount = res.data.data.pointAndTaskCount; //当天的站点统计数
         }
       });
     },
@@ -180,5 +193,14 @@ export default {
 }
 .notes-month section {
   font-size: 28px;
+}
+
+.count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // font-size: 16px;
+  // font-weight: 600;
+  // color: red;
 }
 </style>
