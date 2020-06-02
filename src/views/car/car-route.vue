@@ -44,13 +44,15 @@ export default {
 
     setCar() {
       //设置车辆起点
-      let content =
-        '<div class="marker-info marker-car"><a-icon class="car" /></div>';
-      this.marker = new AMap.Marker({
+      new AMap.Marker({
         map: this.map,
         position: this.lineArr[0],
-        content: content,
-        offset: new AMap.Pixel(-26, -13)
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/start.png"
+      });
+      new AMap.Marker({
+        map: this.map,
+        position: this.lineArr[this.lineArr.length - 1],
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/end.png"
       });
     },
     setPolyLine() {
