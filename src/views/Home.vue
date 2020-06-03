@@ -265,6 +265,13 @@ export default {
           children: []
         },
         {
+          title: "日志管理",
+          id: 21,
+          key: "log",
+          icon: "book",
+          children: []
+        },
+        {
           title: "基础数据",
           id: 17,
           key: "platform",
