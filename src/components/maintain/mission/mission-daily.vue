@@ -37,6 +37,19 @@ import infoDaily from "@/components/maintain/mission/info-daily";
 
 export default {
   components: { infoDaily },
+  props: {
+    execFormInline: {
+      type: Object,
+      default: function() {
+        return {
+          group: undefined,
+          member: "",
+          type: "1",
+          isComplete: "all"
+        };
+      }
+    }
+  },
   data() {
     return {
       pointId: "",
@@ -79,20 +92,12 @@ export default {
           width: 100
         }
       ],
-      tableData: [
-        // {
-        //   id: "1",
-        //   name: "方案1",
-        //   team: "A小组",
-        //   status: 1,
-        //   handleName: "张三",
-        //   gmtCreate: "2020-04-22"
-        // }
-      ]
+      tableData: []
     };
   },
   methods: {
     getTableData() {
+      console.log(this.execFormInline);
       let params = {
         type: 1,
         page: this.current,
@@ -122,11 +127,11 @@ export default {
         }
       });
     }
-  },
-  mounted() {
-    this.pointId = this.$route.query.pointId || "";
-    this.getTableData();
   }
+  // mounted() {
+  //   this.pointId = this.$route.query.pointId || "";
+  //   this.getTableData();
+  // }
 };
 </script>
 <style lang="less" scoped></style>

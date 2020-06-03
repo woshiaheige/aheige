@@ -1,6 +1,28 @@
 <template>
   <div>
     <a-card :bordered="false">
+      <a-row>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>停运站点</span>
+            <p>{{ countData.stop }}</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>站点</span>
+            <p>{{ countData.point }}</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>停运率</span>
+            <p>{{ countData.complate }}%</p>
+          </div>
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card :bordered="false" v-margin:top="16">
       <a-form layout="inline">
         <a-form-item label="企业名称">
           <a-input
@@ -207,7 +229,12 @@ export default {
       loading: false,
       pointOptions: [],
       switchInfo: {},
-      visible: false
+      visible: false,
+      countData: {
+        stop: 0,
+        point: 0,
+        complate: 0
+      }
     };
   },
   mounted() {
