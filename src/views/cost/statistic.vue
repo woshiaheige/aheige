@@ -418,12 +418,12 @@ export default {
             name: "",
             type: "bar",
             tooltip: { show: false },
-            barMinHeight: 30, //最小柱高
+            // barMinHeight: 30, //最小柱高
             barWidth: 25, //柱宽度
             data: _data,
             itemStyle: {
               normal: {
-                barBorderRadius: 5,
+                barBorderRadius: 3,
                 //柱状图颜色
                 color: function(params) {
                   console.log(params);
