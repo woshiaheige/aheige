@@ -5,7 +5,9 @@ const customer = [
     key: "enterprise",
     meta: {
       title: "企业信息",
-      back: false
+      back: false,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const customer = [
     key: "station",
     meta: {
       title: "站点管理",
-      back: false
+      back: false,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const customer = [
     key: "contract",
     meta: {
       title: "合同管理",
-      back: false
+      back: false,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -47,7 +53,9 @@ const customer = [
     key: "customer-enterprise-user",
     meta: {
       title: "企业用户",
-      back: true
+      back: true,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -61,7 +69,9 @@ const customer = [
     key: "customer-enterprise-station",
     meta: {
       title: "企业站点",
-      back: true
+      back: true,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -75,7 +85,9 @@ const customer = [
     key: "customer-enterprise-factor",
     meta: {
       title: "监测因子",
-      back: true
+      back: true,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -89,7 +101,9 @@ const customer = [
     key: "customer-enterprise-device",
     meta: {
       title: "监测设备",
-      back: true
+      back: true,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -103,7 +117,9 @@ const customer = [
     key: "customer-station-factor",
     meta: {
       title: "监测因子",
-      back: true
+      back: true,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(
@@ -117,7 +133,9 @@ const customer = [
     key: "customer-station-device",
     meta: {
       title: "监测设备",
-      back: true
+      back: true,
+      icon: "team",
+      color: "#CD796B"
     },
     component: () =>
       import(

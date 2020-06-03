@@ -5,7 +5,9 @@ const maintainRoutes = [
     key: "approval-wait",
     meta: {
       title: "审批审核",
-      back: false
+      back: false,
+      icon: "audit",
+      color: "#EC4949"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const maintainRoutes = [
     key: "my-approval",
     meta: {
       title: "我的审批",
-      back: false
+      back: false,
+      icon: "audit",
+      color: "#EC4949"
     },
     component: () =>
       import(
