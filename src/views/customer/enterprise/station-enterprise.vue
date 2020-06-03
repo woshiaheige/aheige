@@ -1,6 +1,28 @@
 <template>
   <div>
-    <a-card :bordered="false" class="customer">
+    <a-card :bordered="false">
+      <a-row>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>停运站点</span>
+            <p>{{ countData.stop }}</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>站点</span>
+            <p>{{ countData.point }}</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>停运率</span>
+            <p>{{ countData.complate }}%</p>
+          </div>
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card :bordered="false" class="customer" v-margin:top="16">
       <div class="title">
         {{ $route.query.enterpriseName }}
       </div>
@@ -201,7 +223,12 @@ export default {
       runInfo: {
         show: false
       },
-      switchInfo: {}
+      switchInfo: {},
+      countData: {
+        stop: 0,
+        point: 0,
+        complate: 0
+      }
     };
   },
   mounted() {

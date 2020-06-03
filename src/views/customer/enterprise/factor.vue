@@ -37,7 +37,7 @@
         </div>
       </div>
       <a-table
-        rowKey="id"
+        :rowKey="(record, index) => index"
         size="middle"
         :columns="columns"
         :dataSource="tableData"

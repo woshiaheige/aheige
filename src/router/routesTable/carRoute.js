@@ -5,7 +5,9 @@ const car = [
     key: "manage",
     meta: {
       title: "车辆管理",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const car = [
     key: "usage",
     meta: {
       title: "使用记录",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const car = [
     key: "car-gas",
     meta: {
       title: "加油费管理",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -47,7 +53,9 @@ const car = [
     key: "car-toll",
     meta: {
       title: "过路费管理",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -61,7 +69,9 @@ const car = [
     key: "car-insurance",
     meta: {
       title: "保险费管理",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -75,7 +85,9 @@ const car = [
     key: "car-annual",
     meta: {
       title: "年检费管理",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -89,7 +101,9 @@ const car = [
     key: "car-repair",
     meta: {
       title: "维修费管理",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -103,7 +117,9 @@ const car = [
     key: "car-statistic",
     meta: {
       title: "车辆成本分析",
-      back: false
+      back: false,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
@@ -117,7 +133,9 @@ const car = [
     key: "usage-detail",
     meta: {
       title: "行驶路径",
-      back: true
+      back: true,
+      icon: "car",
+      color: "#B05E1D"
     },
     component: () =>
       import(
