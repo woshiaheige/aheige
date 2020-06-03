@@ -5,7 +5,9 @@ const indexRoutes = [
     key: "index-data",
     meta: {
       title: "运维监控",
-      back: false
+      back: false,
+      icon: "home",
+      color: "#41C966"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const indexRoutes = [
     key: "index-map",
     meta: {
       title: "地图监控",
-      back: false
+      back: false,
+      icon: "home",
+      color: "#41C966"
     },
     component: () =>
       import(

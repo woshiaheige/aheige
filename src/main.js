@@ -23,6 +23,7 @@ import "vue-directive-image-previewer/dist/assets/style.css";
 
 //自定义样式
 import "@/assets/style/common.less";
+import "@/assets/style/dashboard.less";
 import "@/assets/style/home/home.less";
 import "@/assets/style/i-maintain/plan.less";
 import "@/assets/style/i-maintain/scheme.less";

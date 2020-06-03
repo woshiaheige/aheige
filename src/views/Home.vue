@@ -307,7 +307,8 @@ export default {
     }
   },
   watch: {
-    $route() {
+    $route(newVal) {
+      this.setHistory(newVal);
       this.setMenu();
       this.setBreadcrumbName();
     }
@@ -342,7 +343,6 @@ export default {
       this.visible = true;
     },
     changeMenu(object) {
-      console.log(object);
       for (let i in routeTable[1].children) {
         if (routeTable[1].children[i].key === object.key) {
           this.$router.push(routeTable[1].children[i].path);
@@ -356,10 +356,41 @@ export default {
       );
       this.openKeys = latestOpenKey ? [latestOpenKey] : [];
     },
+    //左侧菜单
     setMenu() {
       this.openKeys = this.openMenu;
       this.selectedKeys = this.selectedMenu;
     },
+    //浏览记录
+    setHistory(route) {
+      let arr = [];
+      if (localStorage.getItem("history")) {
+        arr = JSON.parse(localStorage.getItem("history"));
+      }
+      //删除重复路径
+      for (let i in arr) {
+        if (arr[i].path === route.path) {
+          arr.splice(i, 1);
+          break;
+        }
+      }
+
+      if (route.path !== "/dashboard" && !route.meta.back) {
+        arr.push({
+          path: route.path,
+          name: route.meta.title,
+          icon: route.meta.icon,
+          bgcolor: route.meta.color
+        });
+      }
+
+      //不得超于10个历史记录
+      if (arr.length > 10) {
+        arr.splice(0, 1);
+      }
+      localStorage.setItem("history", JSON.stringify(arr));
+    },
+    //面包屑
     setBreadcrumbName() {
       if (this.$route.path === "/dashboard") {
         this.routes = [
