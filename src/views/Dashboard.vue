@@ -36,6 +36,7 @@
           <p class="title">{{ item.name }}</p>
         </div>
       </div>
+      <a-empty v-if="!historyList.length" :image="simpleImage" />
     </a-card>
     <img :src="require('@/assets/img/index.png')" class="index-img" />
   </div>
@@ -45,8 +46,12 @@
 export default {
   data() {
     return {
-      username: JSON.parse(sessionStorage.getItem("userinfo")).username,
-      historyList: JSON.parse(localStorage.getItem("history")).reverse()
+      username: sessionStorage.getItem("userinfo")
+        ? JSON.parse(sessionStorage.getItem("userinfo")).username
+        : "智维云用户",
+      historyList: localStorage.getItem("history")
+        ? JSON.parse(localStorage.getItem("history")).reverse()
+        : []
     };
   },
   computed: {
