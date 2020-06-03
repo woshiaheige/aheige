@@ -7,7 +7,7 @@ const logRoutes = [
       title: "登录日志",
       back: false,
       icon: "book",
-      color: "#EC4949"
+      color: "#639EC3"
     },
     component: () =>
       import(
@@ -23,7 +23,7 @@ const logRoutes = [
       title: "操作日志",
       back: false,
       icon: "book",
-      color: "#EC4949"
+      color: "#639EC3"
     },
     component: () =>
       import(
@@ -39,7 +39,7 @@ const logRoutes = [
       title: "报文日志",
       back: false,
       icon: "book",
-      color: "#EC4949"
+      color: "#639EC3"
     },
     component: () =>
       import(
@@ -55,7 +55,7 @@ const logRoutes = [
       title: "反控日志",
       back: false,
       icon: "book",
-      color: "#EC4949"
+      color: "#639EC3"
     },
     component: () =>
       import(
