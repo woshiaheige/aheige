@@ -42,20 +42,22 @@
           </a-radio>
         </a-radio-group>
       </a-form-model-item>
-      <a-form-model-item label="下限" prop="floorval" v-if="isTrue == 1">
+      <a-form-model-item label="下限" prop="floorval">
         <a-input-number
           v-model="formData.floorval"
           placeholder="下限"
           @change="changeFloor"
           v-width="350"
+          :disabled="isTrue == 2"
         />
       </a-form-model-item>
-      <a-form-model-item label="上限" prop="ceilval" v-if="isTrue == 1">
+      <a-form-model-item label="上限" prop="ceilval">
         <a-input-number
           v-model="formData.ceilval"
           placeholder="上限"
           @change="changeCeil"
           v-width="350"
+          :disabled="isTrue == 2"
         />
       </a-form-model-item>
     </a-form-model>
@@ -76,9 +78,13 @@ export default {
     let that = this;
     const validateNum = (rule, value, callback) => {
       value = that.formData.ceilval;
-      if (value == 0 && that.formData.floorval == 0) {
+
+      if (value == 0 && that.formData.floorval == 0 && that.isTrue == 1) {
         callback("上、下限值不能同时为0");
-      } else if (Number(value) <= Number(that.formData.floorval)) {
+      } else if (
+        Number(value) <= Number(that.formData.floorval) &&
+        that.isTrue == 1
+      ) {
         callback("上限值必须大于下限值");
       } else {
         callback();
@@ -136,10 +142,7 @@ export default {
           console.log("error submit!!");
           return false;
         }
-        if (this.isTrue == 2) {
-          this.formData.floorval = 0;
-          this.formData.ceilval = 0;
-        }
+
         //验证通过
         if (this.modelData.type == "edit") {
           this.$api.customer
@@ -195,6 +198,7 @@ export default {
       });
     },
     handleChange(value) {
+      this.isTrue = 1;
       this.factorOptions.forEach(item => {
         if (item.id == value) {
           this.formData.floorval =
@@ -229,7 +233,18 @@ export default {
           this.title = "添加";
         }
       }
-    }
+    },
+    isTrue: {
+      handler: function(n) {
+        this.formData.floorval = "";
+        this.formData.ceilval = "";
+        if (n == 2) {
+          this.formData.floorval = 0;
+          this.formData.ceilval = 0;
+        }
+      }
+    },
+    deep: true
   }
 };
 </script>
