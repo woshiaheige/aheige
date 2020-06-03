@@ -221,6 +221,7 @@ export default {
   },
   mounted() {
     this.reset();
+    this.getEnterprise();
   },
   methods: {
     handleChange(value) {
