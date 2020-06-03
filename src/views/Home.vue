@@ -122,6 +122,7 @@
         @back="() => $router.go(-1)"
         v-margin:top="66"
         :class="$route.meta.back ? 'back-show' : 'back-hide'"
+        v-if="$route.name !== 'dashboard'"
       >
         <a-breadcrumb :routes="routes">
           <template slot="itemRender" slot-scope="{ route, params, routes }">
@@ -137,6 +138,26 @@
           <a-icon type="arrow-left" v-show="$route.meta.back" />
         </template>
         <template slot="title">{{ $route.meta.title }}</template>
+      </a-page-header>
+      <a-page-header
+        v-margin:top="66"
+        style="padding-top: 72px"
+        v-if="$route.name === 'dashboard'"
+      >
+        <a-list item-layout="horizontal">
+          <a-list-item>
+            <a-list-item-meta description="上次登录时间：2020-5-30 16:30:00">
+              <a slot="title" style="font-size: 18px; font-weight: 400"
+                >{{ username }}, {{ welcomeLine }}~</a
+              >
+              <a-avatar
+                :size="48"
+                slot="avatar"
+                :src="require('@/assets/img/people.png')"
+              />
+            </a-list-item-meta>
+          </a-list-item>
+        </a-list>
       </a-page-header>
       <a-layout-content class="main-content" v-padding="16">
         <keep-alive :include="includeArr">
@@ -167,6 +188,17 @@ export default {
     };
   },
   computed: {
+    welcomeLine() {
+      if (this.$moment().hour() >= 6 && this.$moment().hour() < 12) {
+        return "早上好";
+      } else if (this.$moment().hour() >= 12 && this.$moment().hour() < 18) {
+        return "下午好";
+      } else if (this.$moment().hour() >= 18 && this.$moment().hour() < 24) {
+        return "晚上好";
+      } else {
+        return "很晚了，快休息吧！";
+      }
+    },
     selectedMenu() {
       let selectedMenuArr = [];
       for (let i in routeTable[1].children) {
@@ -194,13 +226,13 @@ export default {
     menuList() {
       let permissionArr = JSON.parse(sessionStorage.getItem("permission"));
       let menuArr = [
-        {
-          title: "首页",
-          id: 9,
-          key: "dashboard",
-          icon: "appstore",
-          children: []
-        },
+        // {
+        //   title: "首页",
+        //   id: 9,
+        //   key: "dashboard",
+        //   icon: "appstore",
+        //   children: []
+        // },
         {
           title: "运维一览",
           id: 10,
