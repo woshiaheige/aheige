@@ -1,6 +1,6 @@
 <template>
   <div class="dispatch">
-    <a-card v-margin:top="16">
+    <a-card>
       <div class="card-header">
         <div class="title">任务列表</div>
         <div class="extra">

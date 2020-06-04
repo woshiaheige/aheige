@@ -1,9 +1,6 @@
 <template>
   <div>
     <a-card :bordered="false" v-margin:top="16">
-      <div class="card-header">
-        <div class="title">成本趋势分析</div>
-      </div>
       <div class="loading" v-if="lineLoading">
         <a-spin size="large" />
       </div>

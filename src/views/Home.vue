@@ -34,11 +34,13 @@
               subItem.title
             }}</a-menu-item>
           </a-sub-menu>
-          <a-menu-item v-else :key="item.key"
+          <!-- <a-menu-item
+            v-if="item.children.length <= 0 && item.id == 9"
+            :key="item.key"
             ><a-icon :type="item.icon" /><span>{{
               item.title
             }}</span></a-menu-item
-          >
+          > -->
         </template>
       </a-menu>
     </a-layout-sider>

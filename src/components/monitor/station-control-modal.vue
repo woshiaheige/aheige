@@ -667,19 +667,47 @@ export default {
     getResultByQn(qn, command, timeLength) {
       let _this = this;
       _this.timeLength = timeLength;
-      _this.$api.monitor.getResultByQn(qn, command).then(rey => {
-        this.spinning = true;
-        if (rey.data.state == 0) {
-          // 1:执行成功 2:执行失败，但不知道原因 3:命令请求条件错误 4:通讯超时 5:系统繁忙不能执行 6:系统故障 100:没有数据
-          var timerResult;
-          if (!rey.data.data.status) {
-            _this.try++;
-            if (_this.try == 0) {
-              _this.getResultByQn(qn, command, _this.timeLength);
-            } else if (_this.try <= 3) {
-              timerResult = setTimeout(() => {
+      _this.$api.monitor
+        .getResultByQn({ qn: qn, command: command })
+        .then(rey => {
+          this.spinning = true;
+          if (rey.data.state == 0) {
+            // 1:执行成功 2:执行失败，但不知道原因 3:命令请求条件错误 4:通讯超时 5:系统繁忙不能执行 6:系统故障 100:没有数据
+            var timerResult;
+            if (!rey.data.data.status) {
+              _this.try++;
+              if (_this.try == 0) {
                 _this.getResultByQn(qn, command, _this.timeLength);
-              }, _this.timeLength);
+              } else if (_this.try <= 3) {
+                timerResult = setTimeout(() => {
+                  _this.getResultByQn(qn, command, _this.timeLength);
+                }, _this.timeLength);
+              } else {
+                _this.try = 0;
+                _this.spinning = false;
+                this.$notification.error({
+                  message: _this.monitor.operate + "失败"
+                });
+                clearTimeout(timerResult);
+              }
+            } else if (rey.data.data.status == "1") {
+              _this.try = 0;
+              _this.spinning = false;
+              if (rey.data.data.result) {
+                this.$notification.success({
+                  message:
+                    _this.monitor.operate +
+                    "成功（" +
+                    rey.data.data.result +
+                    "）"
+                });
+              } else {
+                this.$notification.success({
+                  message: _this.monitor.operate + "成功"
+                });
+              }
+              clearTimeout(timerResult);
+              this.$emit("cancel");
             } else {
               _this.try = 0;
               _this.spinning = false;
@@ -688,37 +716,15 @@ export default {
               });
               clearTimeout(timerResult);
             }
-          } else if (rey.data.data.status == "1") {
-            _this.try = 0;
-            _this.spinning = false;
-            if (rey.data.data.result) {
-              this.$notification.success({
-                message:
-                  _this.monitor.operate + "成功（" + rey.data.data.result + "）"
-              });
-            } else {
-              this.$notification.success({
-                message: _this.monitor.operate + "成功"
-              });
-            }
-            clearTimeout(timerResult);
-            this.$emit("cancel");
-          } else {
-            _this.try = 0;
-            _this.spinning = false;
-            this.$notification.error({
-              message: _this.monitor.operate + "失败"
-            });
-            clearTimeout(timerResult);
           }
-        }
-      });
+        });
     },
     //提取采样时间周期 3017
     getSend3017() {
       let data = {
         divisorId: this.formValidate15.pollCode,
-        pointId: this.monitor.pointId
+        pointId: this.monitor.pointId,
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getSend3017(data)
@@ -741,7 +747,8 @@ export default {
         hour: this.formValidate15.time,
         divisorId: this.formValidate15.pollCode,
         pointId: this.monitor.pointId,
-        cstartTime: this.formValidate15.beginTime.format("HH:mm:ss")
+        cstartTime: this.formValidate15.beginTime.format("HH:mm:ss"),
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getSend3016(data)
@@ -762,7 +769,8 @@ export default {
     getSend3013() {
       let data = {
         pointId: this.monitor.pointId,
-        divisorId: this.formValidate10.pollCode
+        divisorId: this.formValidate10.pollCode,
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getSend3013(data)
@@ -783,7 +791,8 @@ export default {
     getSend3012() {
       let data = {
         pointId: this.monitor.pointId,
-        divisorId: this.formValidate10.pollCode
+        divisorId: this.formValidate10.pollCode,
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getSend3012(data)
@@ -804,7 +813,8 @@ export default {
         beginTime: this.formValidate9.time[0].format("YYYY-MM-DD HH:mm:ss"),
         cn: this.formValidate9.timetype,
         endTime: this.formValidate9.time[1].format("YYYY-MM-DD HH:mm:ss"),
-        pointId: this.monitor.pointId
+        pointId: this.monitor.pointId,
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getReissue(data)
@@ -829,7 +839,8 @@ export default {
           this.formValidate2.pollCode == "数采仪"
             ? ""
             : this.formValidate2.pollCode,
-        time: this.formValidate2.time.format("YYYY-MM-DD HH:mm:ss")
+        time: this.formValidate2.time.format("YYYY-MM-DD HH:mm:ss"),
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getSend1012(data)
@@ -853,7 +864,8 @@ export default {
         divisorId:
           this.formValidate2.pollCode == "数采仪"
             ? ""
-            : this.formValidate2.pollCode
+            : this.formValidate2.pollCode,
+        name: this.monitor.operate + "-" + this.monitor.title
       };
       this.$api.monitor
         .getSend1011(data)

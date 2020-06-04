@@ -5,7 +5,7 @@
         <div class="logo">
           <icon-font
             type="iconweibiaoti-1"
-            style="color:#31a2f2;font-size:80px"
+            style="color:#31a2f2;font-size:50px"
           ></icon-font>
         </div>
         <div class="logo-text">智维云</div>

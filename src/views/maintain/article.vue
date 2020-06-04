@@ -17,6 +17,7 @@
       </div>
       <div class="ql-snow ql-editor" v-html="articleDetail.content" />
     </a-card>
+    <a-back-top />
   </div>
 </template>
 
