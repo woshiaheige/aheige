@@ -87,6 +87,7 @@
       :stationList="stationList"
       :enterpriseList="enterpriseList"
       @cancel="cancel"
+      @refresh="resetFormInLine"
     ></add-edit>
   </div>
 </template>
@@ -183,8 +184,12 @@ export default {
       this.getTableData();
     },
     resetFormInLine() {
+      this.show = false;
+      this.current = 1;
+      this.size = 10;
       this.formInline = this.$options.data().formInline;
       this.getTableData();
+      this.$emit("refresh"); //更新父组件mission中的统计数
     },
     goDetail(row) {
       this.$router.push({

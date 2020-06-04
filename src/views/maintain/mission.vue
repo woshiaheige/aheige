@@ -37,7 +37,7 @@
         <a-tabs v-model="activeKey" style="width:100%">
           <a-tab-pane key="1" tab="站点列表">
             <template v-if="activeKey == '1'">
-              <mission-station ref="missionStation" />
+              <mission-station ref="missionStation" @refresh="getCountTask" />
             </template>
           </a-tab-pane>
           <a-tab-pane key="2" tab="任务列表">
