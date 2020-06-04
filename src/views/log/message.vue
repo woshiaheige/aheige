@@ -68,13 +68,14 @@ export default {
       columns: [
         {
           title: "报文时间",
-          dataIndex: "enterpriseName",
-          key: "enterpriseName"
+          dataIndex: "gmtCreate",
+          key: "gmtCreate",
+          width: 160
         },
         {
           title: "报文内容",
-          dataIndex: "number",
-          key: "number"
+          dataIndex: "text",
+          key: "text"
         }
       ],
       tableData: []
@@ -91,27 +92,26 @@ export default {
       this.onSubmit();
     },
     getTableData() {
-      //   let data = {
-      //     page: this.current,
-      //     size: this.pageSize,
-      //     enterpriseName: this.list.name,
-      //     number: this.list.number,
-      //     state: this.list.state
-      //   };
-      //   this.loading = true;
-      //   this.$api.customer
-      //     .getContractList(data)
-      //     .then(res => {
-      //       if (res.data.state == 0) {
-      //         this.loading = false;
-      //         this.tableData = res.data.data.records;
-      //         this.total = Number(res.data.data.total);
-      //       }
-      //     })
-      //     .catch(error => {
-      //       console.log(error);
-      //       this.loading = false;
-      //     });
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        beginTime: this.list.range[0].format("YYYY-MM-DD HH:mm:ss"),
+        endTime: this.list.range[1].format("YYYY-MM-DD HH:mm:ss")
+      };
+      this.loading = true;
+      this.$api.log
+        .getMsgList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     handleChange(date, dateString) {
       if (

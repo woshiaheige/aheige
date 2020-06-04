@@ -18,6 +18,7 @@ import product from "./product/product";
 import index from "./index/index";
 import cost from "./cost/cost";
 import assessment from "./assessment/assessment";
+import log from "./log/log";
 
 // 导出接口
 export default {
@@ -35,5 +36,6 @@ export default {
   product,
   index,
   cost,
-  assessment
+  assessment,
+  log
 };
