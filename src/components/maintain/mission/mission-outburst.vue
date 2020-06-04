@@ -40,6 +40,19 @@ import infoOutburst from "@/components/maintain/mission/info-outburst";
 
 export default {
   components: { infoOutburst },
+  props: {
+    execFormInline: {
+      type: Object,
+      default: function() {
+        return {
+          group: undefined,
+          member: "",
+          type: "1",
+          isComplete: "all"
+        };
+      }
+    }
+  },
   data() {
     return {
       pointId: "",
@@ -116,11 +129,11 @@ export default {
         }
       });
     }
-  },
-  mounted() {
-    this.pointId = this.$route.query.pointId || "";
-    this.getTableData();
   }
+  // mounted() {
+  //   this.pointId = this.$route.query.pointId || "";
+  //   this.getTableData();
+  // }
 };
 </script>
 <style lang="less" scoped></style>
