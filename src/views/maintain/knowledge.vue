@@ -104,10 +104,18 @@
             :detail="knowledgeTypeDetail"
             @updateTable="knowledgeClass"
           />
+
+          <!-- 文章详情 -->
           <article-modal
             :visible.sync="articleDetailVisible"
             :detail="articleModalDetail"
           ></article-modal>
+
+          <!-- 删除弹窗 -->
+          <delete-modal
+            :visible.sync="deleteDetailVisible"
+            :detail="deleteModalDetail"
+          ></delete-modal>
         </a-col>
       </a-row>
     </a-card>
@@ -117,9 +125,10 @@
 import addEdit from "@/components/knowledge/add-edit";
 import typeEdit from "@/components/knowledge/type-edit";
 import articleModal from "@/components/knowledge/article-modal";
+import deleteModal from "@/components/knowledge/delete-modal";
 export default {
   name: "knowledge",
-  components: { addEdit, typeEdit, articleModal },
+  components: { addEdit, typeEdit, articleModal, deleteModal },
   data() {
     return {
       listData: [],
@@ -142,7 +151,9 @@ export default {
       },
       typeObj: {
         show: false
-      }
+      },
+      deleteModalDetail: "",
+      deleteDetailVisible: false
     };
   },
   watch: {
@@ -227,17 +238,19 @@ export default {
     },
     onDeleteKnowledgeType(row) {
       let _this = this;
+      console.log(row);
       this.$confirm({
-        title: "删除" + row.name,
-        content: `将删除该分类下所有文章，确定删除吗?`,
+        title: "删除知识库",
+        content: `将这个知识库彻底删除，注意这是不可逆操作，该知识库下的所有数据将会删除。`,
         onOk() {
           console.log("OK");
-          _this.$api.maintain.deleteKnowledgeClass({ id: row.id }).then(res => {
-            if (res.data.state == 0) {
-              _this.$message.success("删除成功");
-              _this.knowledgeClass();
-            }
-          });
+          // _this.$api.maintain.deleteKnowledgeClass({ id: row.id }).then(res => {
+          //   if (res.data.state == 0) {
+          //     _this.$message.success("删除成功");
+          //     _this.knowledgeClass();
+          //   }
+          // });
+          _this.deleteDetailVisible = true;
         },
         onCancel() {
           console.log("Cancel");
