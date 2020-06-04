@@ -43,21 +43,18 @@ const maintain = {
       params: data
     });
   },
-
   //系统平台
   getAnnouncementList(data) {
     return axios.get(base.mock + "announcement/list", {
       params: data
     });
   },
-
   //部门管理列表
   getDepartmentList(data) {
     return axios.get(base.mock + "department/list", {
       params: data
     });
   },
-
   //成员管理列表
   getMemberList(data) {
     return axios.get(base.mock + "member/list", {
@@ -78,7 +75,6 @@ const maintain = {
       params: data
     });
   },
-
   //修改知识库分类
   updateKnowledgeClass(data) {
     return axios.post(base.api + "knowledgeClass/update", data);
