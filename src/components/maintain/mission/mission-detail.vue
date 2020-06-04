@@ -1,89 +1,88 @@
 <template>
   <div>
-    <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item label="运维小组">
-          <a-select
-            defaultValue="all"
-            style="width: 120px"
-            v-model="formInline.groupId"
-            showSearch
-            :filterOption="filterOptions"
-            @change="onSubmit"
+    <a-form layout="inline">
+      <a-form-item label="运维小组">
+        <a-select
+          defaultValue="all"
+          style="width: 120px"
+          v-model="formInline.groupId"
+          showSearch
+          :filterOption="filterOptions"
+          @change="onSubmit"
+        >
+          <a-select-option
+            :value="item.id"
+            v-for="(item, index) of groupOptions"
+            :key="index"
+            >{{ item.name }}</a-select-option
           >
-            <a-select-option
-              :value="item.id"
-              v-for="(item, index) of groupOptions"
-              :key="index"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
-        </a-form-item>
-        <a-form-item label="运维人员">
-          <a-input
-            placeholder="请输入"
-            v-model="formInline.userName"
-            :maxLength="30"
-            @pressEnter="onSubmit"
-          />
-        </a-form-item>
-        <a-form-item label="任务状态">
-          <a-select
-            defaultValue="all"
-            style="width: 120px"
-            v-model="formInline.isComplete"
-            showSearch
-            :filterOption="filterOptions"
-            @change="onSubmit"
-          >
-            <a-select-option
-              :value="item.value"
-              v-for="(item, index) of stationStatus"
-              :key="index"
-              >{{ item.name }}</a-select-option
-            >
-          </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-form-item label="任务类型">
-            <a-select
-              defaultValue="1"
-              style="width: 120px"
-              v-model="formInline.type"
-              showSearch
-              :filterOption="filterOptions"
-              @change="onSubmit"
-            >
-              <a-select-option value="1">例行任务</a-select-option>
-              <a-select-option value="2">突发任务</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-form-item>
-        <a-form-item label="时间范围">
-          <a-range-picker @change="onChange" v-model="formInline.range" />
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit">
-            查询
-          </a-button>
-          <a-button @click="resetFormInLine" v-margin:left="16">
-            重置
-          </a-button>
-        </a-form-item>
-      </a-form>
-      <!-- 例行任务 -->
-      <template v-if="formInline.type == 1">
-        <mission-daily :execFormInline="execFormInline" ref="missionDaily" />
-      </template>
-
-      <!-- 突发任务 -->
-      <template v-if="formInline.type == 2">
-        <mission-outburst
-          :execFormInline="execFormInline"
-          ref="missionOutburst"
+        </a-select>
+      </a-form-item>
+      <a-form-item label="运维人员">
+        <a-input-search
+          placeholder="请输入"
+          v-model="formInline.userName"
+          :maxLength="30"
+          @pressEnter="onSubmit"
+          @search="onSubmit"
         />
-      </template>
-    </a-card>
+      </a-form-item>
+      <a-form-item label="任务状态">
+        <a-select
+          defaultValue="all"
+          style="width: 120px"
+          v-model="formInline.isComplete"
+          showSearch
+          :filterOption="filterOptions"
+          @change="onSubmit"
+        >
+          <a-select-option
+            :value="item.value"
+            v-for="(item, index) of stationStatus"
+            :key="index"
+            >{{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-item>
+      <a-form-item>
+        <a-form-item label="任务类型">
+          <a-select
+            defaultValue="1"
+            style="width: 120px"
+            v-model="formInline.type"
+            showSearch
+            :filterOption="filterOptions"
+            @change="onSubmit"
+          >
+            <a-select-option value="1">例行任务</a-select-option>
+            <a-select-option value="2">突发任务</a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form-item>
+      <a-form-item label="时间范围">
+        <a-range-picker @change="onChange" v-model="formInline.range" />
+      </a-form-item>
+      <a-form-item style="float: right">
+        <!-- <a-button type="primary" @click="onSubmit">
+          查询
+        </a-button> -->
+        <a-button @click="resetFormInLine" v-margin:left="16">
+          重置
+        </a-button>
+      </a-form-item>
+    </a-form>
+    <!-- 例行任务 -->
+    <template v-if="formInline.type == 1">
+      <mission-daily :execFormInline="execFormInline" ref="missionDaily" />
+    </template>
+
+    <!-- 突发任务 -->
+    <template v-if="formInline.type == 2">
+      <mission-outburst
+        :execFormInline="execFormInline"
+        ref="missionOutburst"
+      />
+    </template>
   </div>
 </template>
 <script>

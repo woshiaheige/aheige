@@ -2,18 +2,20 @@
   <div>
     <a-form layout="inline">
       <a-form-item label="企业名称">
-        <a-input
+        <a-input-search
           placeholder="请输入"
           v-model="formInline.enterpriseName"
           :maxLength="30"
+          @search="onSubmit"
           @pressEnter="onSubmit"
         />
       </a-form-item>
       <a-form-item label="站点名称">
-        <a-input
+        <a-input-search
           placeholder="请输入"
           v-model="formInline.pointName"
           :maxLength="30"
+          @search="onSubmit"
           @pressEnter="onSubmit"
         />
       </a-form-item>
@@ -32,9 +34,9 @@
         </a-select>
       </a-form-item>
       <a-form-item style="float: right">
-        <a-button type="primary" @click="onSubmit">
+        <!-- <a-button type="primary" @click="onSubmit">
           查询
-        </a-button>
+        </a-button> -->
         <a-button @click="resetFormInLine" v-margin:left="16">
           重置
         </a-button>
