@@ -208,6 +208,12 @@ const customer = {
     return axios.get(base.api + "cusPoint/stop", {
       params: data
     });
+  },
+  //获取站点的总数、停运站点数、停运站点百分率
+  getCountNum(data) {
+    return axios.get(base.api + "cusPoint/getCusPointCountNumber", {
+      params: data
+    });
   }
 };
 
