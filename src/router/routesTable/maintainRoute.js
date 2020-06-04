@@ -16,22 +16,6 @@ const maintainRoutes = [
       )
   },
   {
-    path: "/maintain/mission/detail",
-    name: "maintain-mission-detail",
-    key: "maintain-mission-detail",
-    meta: {
-      title: "站点任务",
-      back: true,
-      icon: "control",
-      color: "#3387B3"
-    },
-    component: () =>
-      import(
-        /* webpackChunkName: "view-maintain" */
-        "@/views/maintain/mission-detail.vue"
-      )
-  },
-  {
     path: "/maintain/dispatch",
     name: "maintain-dispatch",
     key: "dispatch",

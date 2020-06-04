@@ -40,7 +40,7 @@
           </a-select>
         </a-form-item>
         <a-form-item label="时间范围">
-          <a-range-picker @change="onChange" />
+          <a-range-picker @change="onChange" v-model="formInline.range" />
         </a-form-item>
 
         <a-form-item style="float: right">
@@ -72,6 +72,11 @@
         <template slot="state" slot-scope="state, row">
           <a-badge status="success" :text="row.stateName" v-show="state != 1" />
           <a-badge status="warning" :text="row.stateName" v-show="state == 1" />
+        </template>
+        <template slot="type" slot-scope="type">
+          <a-tag color="#f50" v-show="type == 1">投诉</a-tag>
+          <a-tag color="#2db7f5" v-show="type == 2">建议</a-tag>
+          <a-tag color="#87d068" v-show="type == 3">反馈</a-tag>
         </template>
         <span slot="action" slot-scope="row">
           <a @click="onDetail(row)">查看</a>
@@ -114,7 +119,9 @@ export default {
         enterpriseName: undefined,
         state: "all",
         complaintType: "all", //投诉类型
-        range: []
+        range: [],
+        beginTime: "",
+        endTime: ""
       },
       visible: false,
       current: 1,
@@ -130,6 +137,12 @@ export default {
           dataIndex: "state",
           align: "center",
           scopedSlots: { customRender: "state" }
+        },
+        {
+          title: "投诉类型",
+          dataIndex: "type",
+          align: "center",
+          scopedSlots: { customRender: "type" }
         },
         {
           title: "上报时间",
@@ -149,17 +162,36 @@ export default {
   },
   methods: {
     onChange(e) {
-      console.log(e);
+      if (e.length != 0) {
+        this.formInline.beginTime = this.$moment(e[0]).format(
+          "YYYY-MM-DD 00:00:00"
+        );
+        this.formInline.endTime = this.$moment(e[1]).format(
+          "YYYY-MM-DD 23:59:59"
+        );
+      } else {
+        this.formInline.beginTime = "";
+        this.formInline.endTime = "";
+      }
+      this.onSubmit();
     },
     resetFormInLine() {
       this.formInline = this.$options.data().formInline;
+      this.size = 10;
+      this.current = 1;
       this.getTableData();
     },
     getTableData() {
       let params = {
         size: this.size,
         page: this.current,
+        beginTime: this.formInline.beginTime,
+        endTime: this.formInline.endTime,
         enterpriseName: this.formInline.enterpriseName,
+        type:
+          this.formInline.complaintType == "all"
+            ? ""
+            : this.formInline.complaintType,
         state: this.formInline.state == "all" ? "" : this.formInline.state
       };
       this.loading = true;

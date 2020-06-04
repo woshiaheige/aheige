@@ -78,11 +78,15 @@
       <div class="loading" v-if="pieLoading">
         <a-spin size="large" />
       </div>
-      <div
+      <!-- <div
         v-if="!isPieEmpty"
         id="pieChart"
         style="width:100%; height: 400px"
-      ></div>
+      ></div> -->
+      <div v-if="!isPieEmpty">
+        <div id="pieChart" style="width:50%; height: 400px; float:left;"></div>
+        <div id="barChart" style="width:50%; height: 400px;float:right;"></div>
+      </div>
       <a-empty v-else :image="simpleImage" />
     </a-card>
     <a-card :bordered="false" v-margin:top="16">
@@ -460,6 +464,7 @@ export default {
                 });
               }
               this.drawPieChart(data);
+              this.drawBarChart(data);
             } else {
               this.isPieEmpty = true;
             }
@@ -469,6 +474,102 @@ export default {
           this.isPieEmpty = true;
           this.pieLoading = false;
         });
+    },
+    //条状图
+    drawBarChart(data) {
+      const legend = [];
+      const _data = [];
+      data.forEach(item => {
+        legend.push(item.name);
+        _data.push(item.value);
+      });
+      let barChart = this.$echarts.init(document.getElementById("barChart"));
+
+      this.$nextTick(() => {
+        barChart.resize();
+      });
+
+      window.addEventListener("resize", () => {
+        barChart.resize();
+      });
+      let option = {
+        tooltip: {
+          trigger: "item" //悬浮提示框不显示
+        },
+        grid: {
+          //绘图区调整
+          x: 120, //左留白
+          y: 10, //上留白
+          x2: 50 //右留白
+        },
+        xAxis: [
+          {
+            show: false,
+            type: "value",
+            boundaryGap: [0, 0],
+            position: "top"
+          }
+        ],
+        yAxis: [
+          {
+            type: "category",
+            data: legend,
+            axisLine: { show: false }, //坐标轴
+            axisTick: [
+              {
+                //坐标轴小标记
+                show: false
+              }
+            ],
+
+            axisLabel: {
+              textStyle: {
+                fontSize: 14
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "",
+            type: "bar",
+            tooltip: { show: false },
+            // barMinHeight: 30, //最小柱高
+            barWidth: 25, //柱宽度
+            data: _data,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 3,
+                //柱状图颜色
+                color: function(params) {
+                  // console.log(params);
+                  // build a color map as your need.
+                  var colorList = [
+                    "#C23531",
+                    "#2F4554",
+                    "#61A0A8",
+                    "#D48265",
+                    "#91C7AE",
+                    "#749F83",
+                    "#CA8622"
+                  ];
+                  return colorList[params.dataIndex];
+                },
+                label: {
+                  show: true, //显示文本
+                  position: "right", //数据值位置
+                  textStyle: {
+                    color: "#000",
+                    fontSize: "14"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      barChart.setOption(option);
     },
     drawPieChart(data) {
       let pieChart = this.$echarts.init(document.getElementById("pieChart"));

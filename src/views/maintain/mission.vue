@@ -5,7 +5,7 @@
         <a-col :span="6">
           <div class="header-info">
             <span>全部任务</span>
-            <p>{{ countData.all }}</p>
+            <p>{{ countData.total }}</p>
           </div>
         </a-col>
         <a-col :span="6">
@@ -17,13 +17,13 @@
         <a-col :span="6">
           <div class="header-info">
             <span>已完成</span>
-            <p>{{ countData.fin }}</p>
+            <p>{{ countData.completed }}</p>
           </div>
         </a-col>
         <a-col :span="6">
           <div class="header-info">
             <span>已关闭</span>
-            <p>{{ countData.unfin }}</p>
+            <p>{{ countData.close }}</p>
           </div>
         </a-col>
       </a-row>
@@ -65,17 +65,30 @@ export default {
     return {
       activeKey: "1",
       countData: {
-        all: 0,
+        total: 0,
         wait: 0,
-        fin: 0,
-        unfin: 0
+        close: 0,
+        completed: 0
       }
     };
   },
   methods: {
     newTask() {
       this.$refs.missionStation.$data.show = true;
+    },
+    getCountTask() {
+      this.$api.maintain.getCountTask().then(res => {
+        this.countData.total = res.data.data.total ? res.data.data.total : 0;
+        this.countData.wait = res.data.data.wait ? res.data.data.wait : 0;
+        this.countData.close = res.data.data.close ? res.data.data.close : 0;
+        this.countData.completed = res.data.data.completed
+          ? res.data.data.completed
+          : 0;
+      });
     }
+  },
+  mounted() {
+    this.getCountTask();
   }
 };
 </script>
