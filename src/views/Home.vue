@@ -148,7 +148,7 @@
       >
         <a-list item-layout="horizontal">
           <a-list-item>
-            <a-list-item-meta description="上次登录时间：2020-5-30 16:30:00">
+            <a-list-item-meta :description="'上次登录时间：' + lastLoginTime">
               <a slot="title" style="font-size: 18px; font-weight: 400"
                 >{{ username }}, {{ welcomeLine }}~</a
               >
@@ -342,6 +342,9 @@ export default {
     },
     username() {
       return JSON.parse(sessionStorage.getItem("userinfo")).username;
+    },
+    lastLoginTime() {
+      return JSON.parse(sessionStorage.getItem("userinfo")).behindTime;
     },
     includeArr() {
       return this.$store.state.includeArr;
