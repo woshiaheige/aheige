@@ -6,7 +6,7 @@
           <a-select
             defaultValue="all"
             style="width: 120px"
-            v-model="formInline.group"
+            v-model="formInline.groupId"
             showSearch
             :filterOption="filterOptions"
             @change="onSubmit"
@@ -22,7 +22,7 @@
         <a-form-item label="运维人员">
           <a-input
             placeholder="请输入"
-            v-model="formInline.member"
+            v-model="formInline.userName"
             :maxLength="30"
             @pressEnter="onSubmit"
           />
@@ -36,9 +36,12 @@
             :filterOption="filterOptions"
             @change="onSubmit"
           >
-            <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="1">已完成</a-select-option>
-            <a-select-option value="0">待处理</a-select-option>
+            <a-select-option
+              :value="item.value"
+              v-for="(item, index) of stationStatus"
+              :key="index"
+              >{{ item.name }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item>
@@ -57,7 +60,7 @@
           </a-form-item>
         </a-form-item>
         <a-form-item label="时间范围">
-          <a-range-picker @change="onChange" />
+          <a-range-picker @change="onChange" v-model="formInline.range" />
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit">
@@ -92,28 +95,55 @@ export default {
     return {
       groupOptions: [],
       formInline: {
-        group: "",
-        member: "",
+        groupId: "",
+        userName: "",
         type: "1",
+        range: [],
         isComplete: "all"
       },
-      execFormInline: {}
+      stationStatus: [
+        { name: "全部", value: "all" },
+        { name: "待处理", value: "1" },
+        { name: "处理中", value: "2" },
+        { name: "已完成", value: "3" },
+        { name: "已关闭", value: "4" }
+      ],
+      execFormInline: {
+        groupId: "",
+        userName: "",
+        type: "1",
+        range: [],
+        isComplete: "all"
+      }
     };
   },
   methods: {
-    onChange(e) {
-      console.log(e);
+    onChange() {
+      this.onSubmit();
     },
     resetFormInLine() {
       this.formInline = this.$options.data().formInline;
-      this.onSubmit();
+      this.execFormInline = this.formInline;
+      if (this.formInline.type == 1) {
+        this.$nextTick(() => {
+          this.$refs.missionDaily.reset();
+        });
+      } else {
+        this.$nextTick(() => {
+          this.$refs.missionOutburst.reset();
+        });
+      }
     },
     onSubmit() {
       this.execFormInline = this.formInline;
       if (this.formInline.type == 1) {
-        this.$refs.missionDaily.getTableData();
+        this.$nextTick(() => {
+          this.$refs.missionDaily.getTableData();
+        });
       } else {
-        this.$refs.missionOutburst.getTableData();
+        this.$nextTick(() => {
+          this.$refs.missionOutburst.getTableData();
+        });
       }
     },
     gellAllSysGroup() {

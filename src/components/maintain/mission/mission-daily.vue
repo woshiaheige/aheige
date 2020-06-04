@@ -45,7 +45,8 @@ export default {
           group: undefined,
           member: "",
           type: "1",
-          isComplete: "all"
+          isComplete: "all",
+          range: []
         };
       }
     }
@@ -96,13 +97,33 @@ export default {
     };
   },
   methods: {
+    reset() {
+      this.current = 1;
+      this.size = 10;
+      this.getTableData();
+    },
     getTableData() {
       console.log(this.execFormInline);
       let params = {
         type: 1,
         page: this.current,
         size: this.size,
-        pointId: this.pointId
+        groupId: this.execFormInline.groupId,
+        beginTime: this.execFormInline.range[0]
+          ? this.$moment(this.execFormInline.range[0]).format(
+              "YYYY-MM-DD 00:00:00"
+            )
+          : "",
+        endTime: this.execFormInline.range[1]
+          ? this.$moment(this.execFormInline.range[1]).format(
+              "YYYY-MM-DD 23:59:59"
+            )
+          : "",
+        userName: this.execFormInline.userName,
+        state:
+          this.execFormInline.isComplete == "all"
+            ? ""
+            : this.execFormInline.isComplete
       };
       this.loading = true;
       this.$api.maintain
