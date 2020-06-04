@@ -2,15 +2,6 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item label="时间">
-          <a-range-picker
-            :allowClear="false"
-            v-model="list.range"
-            :show-time="{ format: 'HH:mm:ss' }"
-            format="YYYY-MM-DD HH:mm:ss"
-            @change="handleChange"
-          />
-        </a-form-item>
         <a-form-item label="登录账号">
           <a-input
             placeholder="请输入"
@@ -26,6 +17,15 @@
             @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
+        </a-form-item>
+        <a-form-item label="时间">
+          <a-range-picker
+            :allowClear="false"
+            v-model="list.range"
+            :show-time="{ format: 'HH:mm:ss' }"
+            format="YYYY-MM-DD HH:mm:ss"
+            @change="handleChange"
+          />
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">

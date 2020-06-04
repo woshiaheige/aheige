@@ -4,20 +4,20 @@
       <a-row>
         <a-col :span="8">
           <div class="header-info">
-            <span>停运站点</span>
-            <p>{{ countData.stop }}</p>
+            <span>站点</span>
+            <p>{{ countData.total }}</p>
           </div>
         </a-col>
         <a-col :span="8">
           <div class="header-info">
-            <span>站点</span>
-            <p>{{ countData.point }}</p>
+            <span>停运站点</span>
+            <p>{{ countData.blockTotal }}</p>
           </div>
         </a-col>
         <a-col :span="8">
           <div class="header-info">
             <span>停运率</span>
-            <p>{{ countData.complate }}%</p>
+            <p>{{ countData.percentage }}%</p>
           </div>
         </a-col>
       </a-row>
@@ -231,15 +231,16 @@ export default {
       switchInfo: {},
       visible: false,
       countData: {
-        stop: 0,
-        point: 0,
-        complate: 0
+        total: 0,
+        blockTotal: 0,
+        percentage: "0.00"
       }
     };
   },
   mounted() {
     this.getTableData();
     this.getPointSelect();
+    this.getCount();
   },
   beforeRouteLeave(to, from, next) {
     if (
@@ -283,6 +284,17 @@ export default {
           console.log(error);
           that.loading = false;
         });
+    },
+    getCount() {
+      this.$api.customer.getCountNum({ enterpriseId: "" }).then(res => {
+        if (res.data.state == 0) {
+          res.data.data.percentage =
+            res.data.data.percentage == null
+              ? "0.00"
+              : res.data.data.percentage;
+          this.countData = res.data.data;
+        }
+      });
     },
     clickRow(row) {
       this.switchInfo = row;

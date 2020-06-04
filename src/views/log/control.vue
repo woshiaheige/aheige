@@ -2,15 +2,6 @@
   <div>
     <a-card :bordered="false">
       <a-form layout="inline">
-        <a-form-item label="时间">
-          <a-range-picker
-            :allowClear="false"
-            v-model="list.range"
-            :show-time="{ format: 'HH:mm:ss' }"
-            format="YYYY-MM-DD HH:mm:ss"
-            @change="handleChange"
-          />
-        </a-form-item>
         <a-form-item label="反控名称">
           <a-input
             placeholder="请输入"
@@ -22,10 +13,19 @@
         <a-form-item label="MN号">
           <a-input
             placeholder="请输入"
-            v-model="list.number"
+            v-model="list.mn"
             @pressEnter="onSubmit"
             :maxLength="30"
           ></a-input>
+        </a-form-item>
+        <a-form-item label="时间">
+          <a-range-picker
+            :allowClear="false"
+            v-model="list.range"
+            :show-time="{ format: 'HH:mm:ss' }"
+            format="YYYY-MM-DD HH:mm:ss"
+            @change="handleChange"
+          />
         </a-form-item>
         <a-form-item style="float: right">
           <a-button type="primary" @click="onSubmit()">
@@ -79,33 +79,36 @@ export default {
         range: [
           this.$moment(this.$moment().format("YYYY-MM-DD") + " 00:00:00"),
           this.$moment(this.$moment().format("YYYY-MM-DD") + " 23:59:59")
-        ]
+        ],
+        name: "",
+        mn: ""
       },
       columns: [
         {
           title: "反控名称",
-          dataIndex: "enterpriseName",
-          key: "enterpriseName"
+          dataIndex: "name",
+          key: "name"
         },
         {
           title: "MN号",
-          dataIndex: "number",
-          key: "number"
+          dataIndex: "mn",
+          key: "mn"
         },
         {
           title: "操作人",
-          dataIndex: "gmtEnd",
-          scopedSlots: { customRender: "period" }
+          dataIndex: "userName",
+          key: "userName"
         },
         {
           title: "操作时间",
-          dataIndex: "ip",
-          key: "ip"
+          dataIndex: "gmtCreate",
+          key: "gmtCreate",
+          width: 160
         },
         {
           title: "反控内容",
-          dataIndex: "i",
-          key: "i"
+          dataIndex: "content",
+          key: "content"
         }
       ],
       tableData: []
@@ -117,32 +120,35 @@ export default {
         range: [
           this.$moment(this.$moment().format("YYYY-MM-DD") + " 00:00:00"),
           this.$moment(this.$moment().format("YYYY-MM-DD") + " 23:59:59")
-        ]
+        ],
+        name: "",
+        mn: ""
       };
       this.onSubmit();
     },
     getTableData() {
-      //   let data = {
-      //     page: this.current,
-      //     size: this.pageSize,
-      //     enterpriseName: this.list.name,
-      //     number: this.list.number,
-      //     state: this.list.state
-      //   };
-      //   this.loading = true;
-      //   this.$api.customer
-      //     .getContractList(data)
-      //     .then(res => {
-      //       if (res.data.state == 0) {
-      //         this.loading = false;
-      //         this.tableData = res.data.data.records;
-      //         this.total = Number(res.data.data.total);
-      //       }
-      //     })
-      //     .catch(error => {
-      //       console.log(error);
-      //       this.loading = false;
-      //     });
+      let data = {
+        page: this.current,
+        size: this.pageSize,
+        beginTime: this.list.range[0].format("YYYY-MM-DD HH:mm:ss"),
+        endTime: this.list.range[1].format("YYYY-MM-DD HH:mm:ss"),
+        name: this.list.name,
+        mn: this.list.mn
+      };
+      this.loading = true;
+      this.$api.log
+        .getMsgList(data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            this.tableData = res.data.data.records;
+            this.total = Number(res.data.data.total);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     handleChange(date, dateString) {
       if (
