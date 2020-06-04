@@ -8,8 +8,18 @@ const maintain = {
       params: data
     });
   },
+  //获取统计任务数
+  getCountTask(data) {
+    return axios.get(base.api + "manageTask/countTask", {
+      params: data
+    });
+  },
   addManageTask(data) {
     return axios.post(base.api + "manageTask/addManageTask", data);
+  },
+  //修改突发任务
+  editManageTask(data) {
+    return axios.post(base.api + "manageTask/editManageTask", data);
   },
   //站点任务管理
   getManagePointTaskList(data) {

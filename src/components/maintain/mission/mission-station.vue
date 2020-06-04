@@ -64,12 +64,9 @@
           >{{ pointTypeName }}</a-tag
         >
       </template>
-      <span slot="action" slot-scope="row">
-        <!-- <a @click="delayShow = true">申请延期</a>
-          <a-divider type="vertical" />
-          <a @click="closeShow = true">任务关闭</a> -->
+      <!-- <span slot="action" slot-scope="row">
         <a @click="goDetail(row)">站点任务</a>
-      </span>
+      </span> -->
     </a-table>
     <a-pagination
       size="small"
@@ -131,14 +128,14 @@ export default {
         {
           title: "任务数量",
           dataIndex: "taskCount"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center",
-          width: 100
         }
+        // {
+        //   title: "操作",
+        //   key: "action",
+        //   scopedSlots: { customRender: "action" },
+        //   align: "center",
+        //   width: 100
+        // }
       ],
       tableData: [],
       enterpriseList: [],
@@ -181,8 +178,6 @@ export default {
     },
     cancel(value) {
       this.show = value;
-      this.delayShow = value;
-      this.closeShow = value;
       this.getTableData();
     },
     resetFormInLine() {
