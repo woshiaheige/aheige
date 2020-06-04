@@ -8,8 +8,18 @@ const maintain = {
       params: data
     });
   },
+  //获取统计任务数
+  getCountTask(data) {
+    return axios.get(base.api + "manageTask/countTask", {
+      params: data
+    });
+  },
   addManageTask(data) {
     return axios.post(base.api + "manageTask/addManageTask", data);
+  },
+  //修改突发任务
+  editManageTask(data) {
+    return axios.post(base.api + "manageTask/editManageTask", data);
   },
   //站点任务管理
   getManagePointTaskList(data) {
@@ -33,21 +43,18 @@ const maintain = {
       params: data
     });
   },
-
   //系统平台
   getAnnouncementList(data) {
     return axios.get(base.mock + "announcement/list", {
       params: data
     });
   },
-
   //部门管理列表
   getDepartmentList(data) {
     return axios.get(base.mock + "department/list", {
       params: data
     });
   },
-
   //成员管理列表
   getMemberList(data) {
     return axios.get(base.mock + "member/list", {
@@ -68,7 +75,6 @@ const maintain = {
       params: data
     });
   },
-
   //修改知识库分类
   updateKnowledgeClass(data) {
     return axios.post(base.api + "knowledgeClass/update", data);

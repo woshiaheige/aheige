@@ -44,6 +44,7 @@ router.beforeEach(async (to, from, next) => {
   if (
     client.client.engine.webkit != 0 ||
     client.client.browser.firefox != 0 ||
+    client.client.browser.safari >= 0 ||
     client.client.browser.ie >= 11
   ) {
     if (userinfo) {

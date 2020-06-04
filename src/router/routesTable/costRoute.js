@@ -5,7 +5,9 @@ const costRoutes = [
     key: "device-cost",
     meta: {
       title: "设备成本",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const costRoutes = [
     key: "lab-device-cost",
     meta: {
       title: "实验室设备",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const costRoutes = [
     key: "assembly-cost",
     meta: {
       title: "部件成本",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -47,7 +53,9 @@ const costRoutes = [
     key: "reagent-cost",
     meta: {
       title: "试剂成本",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -61,7 +69,9 @@ const costRoutes = [
     key: "standardgases-cost",
     meta: {
       title: "标气成本",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -75,7 +85,9 @@ const costRoutes = [
     key: "PPE-cost",
     meta: {
       title: "劳保用品",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -89,7 +101,9 @@ const costRoutes = [
     key: "car-cost",
     meta: {
       title: "车辆成本",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -103,7 +117,9 @@ const costRoutes = [
     key: "other-cost",
     meta: {
       title: "其他成本",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(
@@ -117,7 +133,9 @@ const costRoutes = [
     key: "cost-statistic",
     meta: {
       title: "成本分析",
-      back: false
+      back: false,
+      icon: "money-collect",
+      color: "#F29B29"
     },
     component: () =>
       import(

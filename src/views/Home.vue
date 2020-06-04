@@ -34,11 +34,13 @@
               subItem.title
             }}</a-menu-item>
           </a-sub-menu>
-          <a-menu-item v-else :key="item.key"
+          <!-- <a-menu-item
+            v-if="item.children.length <= 0 && item.id == 9"
+            :key="item.key"
             ><a-icon :type="item.icon" /><span>{{
               item.title
             }}</span></a-menu-item
-          >
+          > -->
         </template>
       </a-menu>
     </a-layout-sider>
@@ -122,6 +124,7 @@
         @back="() => $router.go(-1)"
         v-margin:top="66"
         :class="$route.meta.back ? 'back-show' : 'back-hide'"
+        v-if="$route.name !== 'dashboard'"
       >
         <a-breadcrumb :routes="routes">
           <template slot="itemRender" slot-scope="{ route, params, routes }">
@@ -137,6 +140,26 @@
           <a-icon type="arrow-left" v-show="$route.meta.back" />
         </template>
         <template slot="title">{{ $route.meta.title }}</template>
+      </a-page-header>
+      <a-page-header
+        v-margin:top="66"
+        style="padding-top: 72px"
+        v-if="$route.name === 'dashboard'"
+      >
+        <a-list item-layout="horizontal">
+          <a-list-item>
+            <a-list-item-meta :description="'上次登录时间：' + lastLoginTime">
+              <a slot="title" style="font-size: 18px; font-weight: 400"
+                >{{ username }}, {{ welcomeLine }}~</a
+              >
+              <a-avatar
+                :size="48"
+                slot="avatar"
+                :src="require('@/assets/img/people.png')"
+              />
+            </a-list-item-meta>
+          </a-list-item>
+        </a-list>
       </a-page-header>
       <a-layout-content class="main-content" v-padding="16">
         <keep-alive :include="includeArr">
@@ -167,6 +190,17 @@ export default {
     };
   },
   computed: {
+    welcomeLine() {
+      if (this.$moment().hour() >= 6 && this.$moment().hour() < 12) {
+        return "早上好";
+      } else if (this.$moment().hour() >= 12 && this.$moment().hour() < 18) {
+        return "下午好";
+      } else if (this.$moment().hour() >= 18 && this.$moment().hour() < 24) {
+        return "晚上好";
+      } else {
+        return "很晚了，快休息吧！";
+      }
+    },
     selectedMenu() {
       let selectedMenuArr = [];
       for (let i in routeTable[1].children) {
@@ -194,13 +228,13 @@ export default {
     menuList() {
       let permissionArr = JSON.parse(sessionStorage.getItem("permission"));
       let menuArr = [
-        {
-          title: "首页",
-          id: 9,
-          key: "dashboard",
-          icon: "appstore",
-          children: []
-        },
+        // {
+        //   title: "首页",
+        //   id: 9,
+        //   key: "dashboard",
+        //   icon: "appstore",
+        //   children: []
+        // },
         {
           title: "运维一览",
           id: 10,
@@ -265,6 +299,13 @@ export default {
           children: []
         },
         {
+          title: "日志管理",
+          id: 21,
+          key: "log",
+          icon: "book",
+          children: []
+        },
+        {
           title: "基础数据",
           id: 17,
           key: "platform",
@@ -302,12 +343,16 @@ export default {
     username() {
       return JSON.parse(sessionStorage.getItem("userinfo")).username;
     },
+    lastLoginTime() {
+      return JSON.parse(sessionStorage.getItem("userinfo")).behindTime;
+    },
     includeArr() {
       return this.$store.state.includeArr;
     }
   },
   watch: {
-    $route() {
+    $route(newVal) {
+      this.setHistory(newVal);
       this.setMenu();
       this.setBreadcrumbName();
     }
@@ -342,7 +387,6 @@ export default {
       this.visible = true;
     },
     changeMenu(object) {
-      console.log(object);
       for (let i in routeTable[1].children) {
         if (routeTable[1].children[i].key === object.key) {
           this.$router.push(routeTable[1].children[i].path);
@@ -356,10 +400,41 @@ export default {
       );
       this.openKeys = latestOpenKey ? [latestOpenKey] : [];
     },
+    //左侧菜单
     setMenu() {
       this.openKeys = this.openMenu;
       this.selectedKeys = this.selectedMenu;
     },
+    //浏览记录
+    setHistory(route) {
+      let arr = [];
+      if (localStorage.getItem("history")) {
+        arr = JSON.parse(localStorage.getItem("history"));
+      }
+      //删除重复路径
+      for (let i in arr) {
+        if (arr[i].path === route.path) {
+          arr.splice(i, 1);
+          break;
+        }
+      }
+
+      if (route.path !== "/dashboard" && !route.meta.back) {
+        arr.push({
+          path: route.path,
+          name: route.meta.title,
+          icon: route.meta.icon,
+          bgcolor: route.meta.color
+        });
+      }
+
+      //不得超于10个历史记录
+      if (arr.length > 10) {
+        arr.splice(0, 1);
+      }
+      localStorage.setItem("history", JSON.stringify(arr));
+    },
+    //面包屑
     setBreadcrumbName() {
       if (this.$route.path === "/dashboard") {
         this.routes = [

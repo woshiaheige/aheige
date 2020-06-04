@@ -5,7 +5,9 @@ const maintainRoutes = [
     key: "mission",
     meta: {
       title: "任务管理",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const maintainRoutes = [
     key: "maintain-mission-detail",
     meta: {
       title: "站点任务",
-      back: true
+      back: true,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const maintainRoutes = [
     key: "dispatch",
     meta: {
       title: "任务调度",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -47,7 +53,9 @@ const maintainRoutes = [
     key: "board",
     meta: {
       title: "计划看板",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -61,7 +69,9 @@ const maintainRoutes = [
     key: "plan",
     meta: {
       title: "运维计划",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -75,7 +85,9 @@ const maintainRoutes = [
     key: "scheme",
     meta: {
       title: "运维方案",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -89,7 +101,9 @@ const maintainRoutes = [
     key: "complaint",
     meta: {
       title: "客户投诉",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -103,7 +117,9 @@ const maintainRoutes = [
     key: "knowledge",
     meta: {
       title: "运维知识",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -117,7 +133,9 @@ const maintainRoutes = [
     key: "article",
     meta: {
       title: "文章查看",
-      back: true
+      back: true,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(
@@ -131,7 +149,9 @@ const maintainRoutes = [
     key: "notification",
     meta: {
       title: "报表推送",
-      back: false
+      back: false,
+      icon: "control",
+      color: "#3387B3"
     },
     component: () =>
       import(

@@ -38,7 +38,7 @@
             <a-tag
               slot="description"
               color="blue"
-              v-for="(role, key) of item.resourceNames"
+              v-for="(role, key) of item.userNames"
               :key="key"
               v-margin="5"
               >{{ role }}</a-tag

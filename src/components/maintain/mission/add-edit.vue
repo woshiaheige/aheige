@@ -247,7 +247,8 @@ export default {
         this.$api.maintain.addManageTask(data).then(res => {
           if (res.data.state == 0) {
             this.$message.success("添加成功");
-            this.handleCancel();
+            this.$refs.ruleForm.clearValidate();
+            this.$emit("refresh", false);
           }
         });
       });

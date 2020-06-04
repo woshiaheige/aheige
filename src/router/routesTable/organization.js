@@ -5,7 +5,9 @@ const organization = [
     key: "role",
     meta: {
       title: "权限管理",
-      back: false
+      back: false,
+      icon: "user",
+      color: "#9EADC9"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const organization = [
     key: "member",
     meta: {
       title: "用户管理",
-      back: false
+      back: false,
+      icon: "user",
+      color: "#9EADC9"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const organization = [
     key: "group",
     meta: {
       title: "小组管理",
-      back: false
+      back: false,
+      icon: "user",
+      color: "#9EADC9"
     },
     component: () =>
       import(

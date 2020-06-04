@@ -17,6 +17,8 @@
       </template>
       <span slot="action" slot-scope="row">
         <a @click="goDetail(row)">详情</a>
+        <a-divider type="vertical" v-show="row.status == 1" />
+        <a @click="onEdit(row)" v-show="row.status == 1">编辑</a>
       </span>
     </a-table>
     <a-pagination
@@ -33,15 +35,37 @@
       :visible.sync="visible"
       :detail="missionDetail"
     ></info-outburst>
+
+    <mission-outburst-edit
+      :visible.sync="visibleEdit"
+      :modelInfo="editInfo"
+      @updateTable="getTableData"
+    />
   </div>
 </template>
 <script>
 import infoOutburst from "@/components/maintain/mission/info-outburst";
-
+import missionOutburstEdit from "@/components/maintain/mission/mission-outburst-edit";
 export default {
-  components: { infoOutburst },
+  components: { infoOutburst, missionOutburstEdit },
+  props: {
+    execFormInline: {
+      type: Object,
+      default: function() {
+        return {
+          group: undefined,
+          member: "",
+          type: "2",
+          isComplete: "all",
+          range: []
+        };
+      }
+    }
+  },
   data() {
     return {
+      visibleEdit: false,
+      editInfo: {},
       pointId: "",
       current: 1,
       size: 10,
@@ -86,12 +110,29 @@ export default {
     };
   },
   methods: {
+    reset() {
+      this.current = 1;
+      this.size = 10;
+      this.getTableData();
+    },
     getTableData() {
       let params = {
         type: 2,
         page: this.current,
         size: this.size,
-        pointId: this.pointId
+        groupId: this.execFormInline.groupId,
+        beginTime: this.execFormInline.range[0]
+          ? this.$moment(this.execFormInline.range[0]).format("YYYY-MM-DD")
+          : "",
+        endTime: this.execFormInline.range[1]
+          ? this.$moment(this.execFormInline.range[1]).format("YYYY-MM-DD")
+          : "",
+        userName: this.execFormInline.userName,
+        state:
+          this.execFormInline.isComplete == "all"
+            ? ""
+            : this.execFormInline.isComplete,
+        pointId: this.execFormInline.pointId
       };
       this.loading = true;
       this.$api.maintain
@@ -115,12 +156,20 @@ export default {
           this.visible = true;
         }
       });
+    },
+    onEdit(row) {
+      this.$api.maintain.getManageTaskById({ id: row.id }).then(res => {
+        if (res.data.state == 0) {
+          this.editInfo = res.data.data;
+          this.visibleEdit = true;
+        }
+      });
     }
-  },
-  mounted() {
-    this.pointId = this.$route.query.pointId || "";
-    this.getTableData();
   }
+  // mounted() {
+  //   this.pointId = this.$route.query.pointId || "";
+  //   this.getTableData();
+  // }
 };
 </script>
 <style lang="less" scoped></style>

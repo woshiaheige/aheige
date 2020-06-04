@@ -6,7 +6,9 @@ const monitorRoute = [
     key: "monitor-standing",
     meta: {
       title: "监测数据",
-      back: false
+      back: false,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(
@@ -21,7 +23,9 @@ const monitorRoute = [
     key: "monitor-standing-data",
     meta: {
       title: "站点数据",
-      back: true
+      back: true,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(
@@ -36,7 +40,9 @@ const monitorRoute = [
     key: "monitor-exceed",
     meta: {
       title: "超标预警",
-      back: false
+      back: false,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(
@@ -51,7 +57,9 @@ const monitorRoute = [
     key: "monitor-unusual",
     meta: {
       title: "异常预警",
-      back: false
+      back: false,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(
@@ -66,7 +74,9 @@ const monitorRoute = [
     key: "monitor-unchange",
     meta: {
       title: "恒值预警",
-      back: false
+      back: false,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(
@@ -81,7 +91,9 @@ const monitorRoute = [
     key: "monitor-zero",
     meta: {
       title: "零值预警",
-      back: false
+      back: false,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(
@@ -96,7 +108,9 @@ const monitorRoute = [
     key: "monitor-report",
     meta: {
       title: "数据报表",
-      back: false
+      back: false,
+      icon: "table",
+      color: "#4491E9"
     },
     component: () =>
       import(

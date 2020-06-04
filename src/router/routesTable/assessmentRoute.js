@@ -5,7 +5,9 @@ const assessmentRoutes = [
     key: "monthly-assessment",
     meta: {
       title: "月度考评",
-      back: false
+      back: false,
+      icon: "file-done",
+      color: "#E3BF34"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const assessmentRoutes = [
     key: "season-assessment",
     meta: {
       title: "季度考评",
-      back: false
+      back: false,
+      icon: "file-done",
+      color: "#E3BF34"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const assessmentRoutes = [
     key: "yearly-assessment",
     meta: {
       title: "年度考评",
-      back: false
+      back: false,
+      icon: "file-done",
+      color: "#E3BF34"
     },
     component: () =>
       import(
@@ -47,7 +53,9 @@ const assessmentRoutes = [
     key: "monthly-assessment-detail",
     meta: {
       title: "月度考评分析",
-      back: true
+      back: true,
+      icon: "file-done",
+      color: "#E3BF34"
     },
     component: () =>
       import(
@@ -61,7 +69,9 @@ const assessmentRoutes = [
     key: "season-assessment-detail",
     meta: {
       title: "季度考评分析",
-      back: true
+      back: true,
+      icon: "file-done",
+      color: "#E3BF34"
     },
     component: () =>
       import(
@@ -75,7 +85,9 @@ const assessmentRoutes = [
     key: "yearly-assessment-detail",
     meta: {
       title: "年度考评分析",
-      back: true
+      back: true,
+      icon: "file-done",
+      color: "#E3BF34"
     },
     component: () =>
       import(

@@ -5,7 +5,9 @@ const platform = [
     key: "device",
     meta: {
       title: "设备管理",
-      back: false
+      back: false,
+      icon: "setting",
+      color: "#7D5D96"
     },
     component: () =>
       import(
@@ -19,7 +21,9 @@ const platform = [
     key: "factors",
     meta: {
       title: "因子设置",
-      back: false
+      back: false,
+      icon: "setting",
+      color: "#7D5D96"
     },
     component: () =>
       import(
@@ -33,7 +37,9 @@ const platform = [
     key: "operation",
     meta: {
       title: "运维设置",
-      back: false
+      back: false,
+      icon: "setting",
+      color: "#7D5D96"
     },
     component: () =>
       import(
@@ -47,7 +53,9 @@ const platform = [
     key: "dictionary",
     meta: {
       title: "数据字典",
-      back: false
+      back: false,
+      icon: "setting",
+      color: "#7D5D96"
     },
     component: () =>
       import(
@@ -61,7 +69,9 @@ const platform = [
     key: "industry",
     meta: {
       title: "行业设置",
-      back: false
+      back: false,
+      icon: "setting",
+      color: "#7D5D96"
     },
     component: () =>
       import(

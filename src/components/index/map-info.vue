@@ -34,7 +34,7 @@
           <a-tag color="green" v-if="list.isNormal == 0">
             正常
           </a-tag>
-          <a-tag color="red" v-else>
+          <a-tag color="orange" v-else>
             异常
           </a-tag>
         </a-descriptions-item>

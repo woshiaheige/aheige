@@ -37,6 +37,21 @@ import infoDaily from "@/components/maintain/mission/info-daily";
 
 export default {
   components: { infoDaily },
+  props: {
+    execFormInline: {
+      type: Object,
+      default: function() {
+        return {
+          pointId: "",
+          group: undefined,
+          member: "",
+          type: "1",
+          isComplete: "all",
+          range: []
+        };
+      }
+    }
+  },
   data() {
     return {
       pointId: "",
@@ -79,25 +94,38 @@ export default {
           width: 100
         }
       ],
-      tableData: [
-        // {
-        //   id: "1",
-        //   name: "方案1",
-        //   team: "A小组",
-        //   status: 1,
-        //   handleName: "张三",
-        //   gmtCreate: "2020-04-22"
-        // }
-      ]
+      tableData: []
     };
   },
   methods: {
+    reset() {
+      this.current = 1;
+      this.size = 10;
+      this.getTableData();
+    },
     getTableData() {
+      console.log(this.execFormInline);
       let params = {
         type: 1,
         page: this.current,
         size: this.size,
-        pointId: this.pointId
+        groupId: this.execFormInline.groupId,
+        beginTime: this.execFormInline.range[0]
+          ? this.$moment(this.execFormInline.range[0]).format(
+              "YYYY-MM-DD 00:00:00"
+            )
+          : "",
+        endTime: this.execFormInline.range[1]
+          ? this.$moment(this.execFormInline.range[1]).format(
+              "YYYY-MM-DD 23:59:59"
+            )
+          : "",
+        userName: this.execFormInline.userName,
+        state:
+          this.execFormInline.isComplete == "all"
+            ? ""
+            : this.execFormInline.isComplete,
+        pointId: this.execFormInline.pointId
       };
       this.loading = true;
       this.$api.maintain
@@ -122,11 +150,11 @@ export default {
         }
       });
     }
-  },
-  mounted() {
-    this.pointId = this.$route.query.pointId || "";
-    this.getTableData();
   }
+  // mounted() {
+  //   this.pointId = this.$route.query.pointId || "";
+  //   this.getTableData();
+  // }
 };
 </script>
 <style lang="less" scoped></style>

@@ -1,6 +1,28 @@
 <template>
   <div>
-    <a-card :bordered="false" class="customer">
+    <a-card :bordered="false">
+      <a-row>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>站点</span>
+            <p>{{ countData.total }}</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>停运站点</span>
+            <p>{{ countData.blockTotal }}</p>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="header-info">
+            <span>停运率</span>
+            <p>{{ countData.percentage }}%</p>
+          </div>
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card :bordered="false" class="customer" v-margin:top="16">
       <div class="title">
         {{ $route.query.enterpriseName }}
       </div>
@@ -201,12 +223,18 @@ export default {
       runInfo: {
         show: false
       },
-      switchInfo: {}
+      switchInfo: {},
+      countData: {
+        total: 0,
+        blockTotal: 0,
+        percentage: "0.00"
+      }
     };
   },
   mounted() {
     this.getTableData();
     this.getPointSelect();
+    this.getCount();
   },
   beforeRouteLeave(to, from, next) {
     if (
@@ -253,6 +281,19 @@ export default {
         .catch(error => {
           console.log(error);
           this.loading = false;
+        });
+    },
+    getCount() {
+      this.$api.customer
+        .getCountNum({ enterpriseId: this.$route.query.id })
+        .then(res => {
+          if (res.data.state == 0) {
+            res.data.data.percentage =
+              res.data.data.percentage == null
+                ? "0.00"
+                : res.data.data.percentage;
+            this.countData = res.data.data;
+          }
         });
     },
     clickRow(row) {

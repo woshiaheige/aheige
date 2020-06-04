@@ -37,6 +37,12 @@ const cost = {
     return axios.get(base.api + "assetGoods/queryTypeAll", {
       params: data
     });
+  },
+  //综合列表
+  getAllList(data) {
+    return axios.get(base.api + "assetStock/countPageCostListMap", {
+      params: data
+    });
   }
 };
 

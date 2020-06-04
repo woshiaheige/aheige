@@ -17,8 +17,8 @@
             :key="item.gmt_execution"
             class="count"
           >
-            <a-tag color="#87d068">任务:{{ item.task_count }}</a-tag>
-            <a-tag color="#87d068">站点:{{ item.point_count }}</a-tag>
+            <span>站点:{{ item.point_count }}</span>
+            <span>任务:{{ item.task_count }}</span>
           </div>
           <li v-for="(item, index) in getListData(value)" :key="index">
             <a-popover
@@ -199,8 +199,10 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // font-size: 16px;
-  // font-weight: 600;
-  // color: red;
+  font-size: 16px;
+  white-space: nowrap;
+  span {
+    margin: 0 10px;
+  }
 }
 </style>

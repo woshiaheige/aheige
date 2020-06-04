@@ -1,232 +1,94 @@
 <template>
   <div>
-    <a-card :bordered="false">
-      <a-form layout="inline">
-        <a-form-item label="企业名称">
-          <a-input
-            placeholder="请输入"
-            v-model="formInline.enterpriseName"
-            :maxLength="30"
-            @pressEnter="onSubmit"
-          />
-        </a-form-item>
-        <a-form-item label="站点名称">
-          <a-input
-            placeholder="请输入"
-            v-model="formInline.pointName"
-            :maxLength="30"
-            @pressEnter="onSubmit"
-          />
-        </a-form-item>
-        <a-form-item label="任务状态">
-          <a-select
-            defaultValue="all"
-            style="width: 120px"
-            v-model="formInline.isComplete"
-            showSearch
-            :filterOption="filterOptions"
-            @change="onSubmit"
-          >
-            <a-select-option value="all">全部</a-select-option>
-            <a-select-option value="1">已完成</a-select-option>
-            <a-select-option value="0">处理中</a-select-option>
-          </a-select>
-        </a-form-item>
-        <!-- <a-form-item label="任务时间">
-          <a-range-picker @change="onChange" />
-        </a-form-item> -->
-        <a-form-item style="float: right">
-          <a-button @click="resetFormInLine">
-            重置
-          </a-button>
-        </a-form-item>
-        <a-form-item style="float: right">
-          <a-button type="primary" @click="onSubmit()">
-            查询
-          </a-button>
-        </a-form-item>
-        <a-form-item> </a-form-item>
-      </a-form>
+    <a-card>
+      <a-row>
+        <a-col :span="6">
+          <div class="header-info">
+            <span>全部任务</span>
+            <p>{{ countData.total }}</p>
+          </div>
+        </a-col>
+        <a-col :span="6">
+          <div class="header-info">
+            <span>待处理</span>
+            <p>{{ countData.wait }}</p>
+          </div>
+        </a-col>
+        <a-col :span="6">
+          <div class="header-info">
+            <span>已完成</span>
+            <p>{{ countData.completed }}</p>
+          </div>
+        </a-col>
+        <a-col :span="6">
+          <div class="header-info">
+            <span>已关闭</span>
+            <p>{{ countData.close }}</p>
+          </div>
+        </a-col>
+      </a-row>
     </a-card>
     <a-card :bordered="false" class="maintain" v-margin:top="16">
       <div class="card-header">
-        <div class="title">站点列表</div>
-        <div class="extra">
-          <a-button type="primary" html-type="submit" @click="show = true">
+        <!-- <a-radio-group v-model="listType">
+          <a-radio-button :value="1">站点列表</a-radio-button>
+          <a-radio-button :value="2">任务列表</a-radio-button>
+        </a-radio-group> -->
+        <a-tabs v-model="activeKey" style="width:100%">
+          <a-tab-pane key="1" tab="站点列表">
+            <template v-if="activeKey == '1'">
+              <mission-station ref="missionStation" @refresh="getCountTask" />
+            </template>
+          </a-tab-pane>
+          <a-tab-pane key="2" tab="任务列表">
+            <template v-if="activeKey == '2'">
+              <mission-detail />
+            </template>
+          </a-tab-pane>
+          <a-button type="primary" slot="tabBarExtraContent" @click="newTask">
             <a-icon type="plus" />突发任务
           </a-button>
-        </div>
+        </a-tabs>
       </div>
-      <a-table
-        size="middle"
-        rowKey="id"
-        :columns="columns"
-        :dataSource="tableData"
-        :pagination="false"
-        :loading="loading"
-        v-margin:top="16"
-      >
-        <template slot="isComplete" slot-scope="isComplete">
-          <a-badge
-            :status="isComplete == 1 ? 'success' : 'warning'"
-            :text="isComplete == 1 ? '已完成' : '处理中'"
-          />
-        </template>
-        <template slot="pointTypeName" slot-scope="pointTypeName">
-          <a-tag color="blue" v-if="pointTypeName == '废气'">废气</a-tag>
-          <a-tag color="green" v-if="pointTypeName == '废水'">废水</a-tag>
-          <a-tag
-            color="green"
-            v-if="pointTypeName != '废气' && pointTypeName != '废水'"
-            >{{ pointTypeName }}</a-tag
-          >
-        </template>
-        <span slot="action" slot-scope="row">
-          <!-- <a @click="delayShow = true">申请延期</a>
-          <a-divider type="vertical" />
-          <a @click="closeShow = true">任务关闭</a> -->
-          <a @click="goDetail(row)">站点任务</a>
-        </span>
-      </a-table>
-      <a-pagination
-        size="small"
-        v-margin:top="16"
-        showSizeChanger
-        :total="total"
-        :showTotal="total => `共 ${total} 条`"
-        :current="current"
-        @change="pagechange"
-        @showSizeChange="sizechange"
-      />
-      <!--新建-->
-      <add-edit
-        :visible="show"
-        :planList="planList"
-        :stationList="stationList"
-        :enterpriseList="enterpriseList"
-        @cancel="cancel"
-      ></add-edit>
     </a-card>
   </div>
 </template>
 <script>
-import addEdit from "@/components/maintain/mission/add-edit";
+import missionStation from "@/components/maintain/mission/mission-station";
+import missionDetail from "@/components/maintain/mission/mission-detail";
 export default {
-  components: { addEdit },
+  components: {
+    missionStation,
+    missionDetail
+  },
   data() {
     return {
-      current: 1,
-      size: 10,
-      total: 0,
-      loading: false,
-      formInline: {
-        enterpriseName: "",
-        pointName: "",
-        isComplete: "all"
-      },
-      columns: [
-        {
-          title: "企业名称",
-          dataIndex: "enterpriseName"
-        },
-        {
-          title: "运维站点",
-          dataIndex: "pointName"
-        },
-        {
-          title: "站点类别",
-          dataIndex: "pointTypeName",
-          align: "center",
-          scopedSlots: { customRender: "pointTypeName" }
-        },
-        {
-          title: "任务状态",
-          dataIndex: "isComplete",
-          scopedSlots: { customRender: "isComplete" },
-          align: "center",
-          width: 150
-        },
-        {
-          title: "任务数量",
-          dataIndex: "taskCount"
-        },
-        {
-          title: "操作",
-          key: "action",
-          scopedSlots: { customRender: "action" },
-          align: "center",
-          width: 100
-        }
-      ],
-      tableData: [
-        // {
-        //   id: 1,
-        //   enterpriseName: "环保有限公司",
-        //   pointName: "站点1",
-        //   pointTypeName: "类别A",
-        //   isComplete: 2,
-        //   taskCount: 10
-        // }
-      ],
-      enterpriseList: [],
-      stationList: [],
-      planList: [],
-      show: false
+      activeKey: "1",
+      countData: {
+        total: 0,
+        wait: 0,
+        close: 0,
+        completed: 0
+      }
     };
   },
-  watch: {},
   methods: {
-    getSelectEnterprise() {
-      //企业
-      this.$api.common.selectEnterprise().then(res => {
-        this.enterpriseList = res.data.data;
-      });
+    newTask() {
+      this.$refs.missionStation.$data.show = true;
     },
-    getTableData() {
-      let params = {
-        page: this.current,
-        size: this.size,
-        enterpriseName: this.formInline.enterpriseName,
-        pointName: this.formInline.pointName,
-        isComplete:
-          this.formInline.isComplete == "all" ? "" : this.formInline.isComplete
-      };
-      this.loading = true;
-      this.$api.maintain
-        .managePointTask(params)
-        .then(res => {
-          if (res.data.state == 0) {
-            this.loading = false;
-            this.tableData = res.data.data.records;
-            this.total = +res.data.data.total;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.loading = false;
-        });
-    },
-    cancel(value) {
-      this.show = value;
-      this.delayShow = value;
-      this.closeShow = value;
-      this.getTableData();
-    },
-    resetFormInLine() {
-      this.formInline = this.$options.data().formInline;
-      this.getTableData();
-    },
-    goDetail(row) {
-      this.$router.push({
-        path: "/maintain/mission/detail",
-        query: { pointId: row.pointId }
+    getCountTask() {
+      this.$api.maintain.getCountTask().then(res => {
+        this.countData.total = res.data.data.total ? res.data.data.total : 0;
+        this.countData.wait = res.data.data.wait ? res.data.data.wait : 0;
+        this.countData.close = res.data.data.close ? res.data.data.close : 0;
+        this.countData.completed = res.data.data.completed
+          ? res.data.data.completed
+          : 0;
       });
     }
   },
   mounted() {
-    this.getTableData();
-    this.getSelectEnterprise();
+    this.getCountTask();
   }
 };
 </script>
-<style lang="less" scoped></style>

@@ -8,7 +8,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     includeArr: [], //缓存页面列表
-    routeTable: [] //用户路由表
+    routeTable: [], //用户路由表
+    historyList: [] //访问历史
   },
   mutations: {
     getRouterTable(state, data) {
@@ -16,12 +17,19 @@ export default new Vuex.Store({
     },
     getIncludeArr(state, data) {
       state.includeArr = data;
+    },
+    getHistoryList(state, data) {
+      state.historyList = data;
     }
   },
   actions: {
     createIncludeArr({ commit }, data) {
       sessionStorage.setItem("keepAlive", JSON.stringify(data));
       commit("getIncludeArr", data);
+    },
+    createHistoryList({ commit }, data) {
+      localStorage.setItem("history", JSON.stringify(data));
+      commit("getHistoryList", data);
     },
     createRouterTable({ commit }, data) {
       sessionStorage.setItem("permission", JSON.stringify(data));
