@@ -64,9 +64,9 @@
           >{{ pointTypeName }}</a-tag
         >
       </template>
-      <!-- <span slot="action" slot-scope="row">
+      <span slot="action" slot-scope="row">
         <a @click="goDetail(row)">站点任务</a>
-      </span> -->
+      </span>
     </a-table>
     <a-pagination
       size="small"
@@ -128,14 +128,14 @@ export default {
         {
           title: "任务数量",
           dataIndex: "taskCount"
+        },
+        {
+          title: "操作",
+          key: "action",
+          scopedSlots: { customRender: "action" },
+          align: "center",
+          width: 100
         }
-        // {
-        //   title: "操作",
-        //   key: "action",
-        //   scopedSlots: { customRender: "action" },
-        //   align: "center",
-        //   width: 100
-        // }
       ],
       tableData: [],
       enterpriseList: [],

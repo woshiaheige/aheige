@@ -131,7 +131,8 @@ export default {
         state:
           this.execFormInline.isComplete == "all"
             ? ""
-            : this.execFormInline.isComplete
+            : this.execFormInline.isComplete,
+        pointId: this.execFormInline.pointId
       };
       this.loading = true;
       this.$api.maintain

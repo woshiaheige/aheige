@@ -92,7 +92,6 @@ export default {
     return {
       groupOptions: [],
       formInline: {
-        pointId: "",
         groupId: "",
         userName: "",
         type: "1",

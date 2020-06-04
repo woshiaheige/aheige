@@ -42,6 +42,7 @@ export default {
       type: Object,
       default: function() {
         return {
+          pointId: "",
           group: undefined,
           member: "",
           type: "1",
@@ -123,7 +124,8 @@ export default {
         state:
           this.execFormInline.isComplete == "all"
             ? ""
-            : this.execFormInline.isComplete
+            : this.execFormInline.isComplete,
+        pointId: this.execFormInline.pointId
       };
       this.loading = true;
       this.$api.maintain
