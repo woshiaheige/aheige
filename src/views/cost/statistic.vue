@@ -162,57 +162,43 @@ export default {
         },
         {
           title: "设备成本（元）",
-          dataIndex: "goodsName",
-          key: "goodsName"
+          dataIndex: "totalAmount1",
+          key: "totalAmount1"
         },
         {
           title: "实验室设备（元）",
-          dataIndex: "brand",
-          key: "brand"
+          dataIndex: "totalAmount2",
+          key: "totalAmount2"
         },
         {
           title: "部件成本（元）",
-          dataIndex: "model",
-          key: "model"
+          dataIndex: "totalAmount3",
+          key: "totalAmount3"
         },
         {
           title: "试剂成本（元）",
-          dataIndex: "stockCount",
-          key: "stockCount"
+          dataIndex: "totalAmount4",
+          key: "totalAmount4"
         },
         {
           title: "标气成本（元）",
-          dataIndex: "unit",
-          key: "unit"
+          dataIndex: "totalAmount5",
+          key: "totalAmount5"
         },
         {
           title: "劳保用品（元）",
-          dataIndex: "price",
-          key: "price",
-          customRender: text => {
-            if (text) {
-              return "￥" + text;
-            } else {
-              return "-";
-            }
-          }
+          dataIndex: "totalAmount6",
+          key: "totalAmount6"
         },
         {
           title: "其他成本（元）",
-          dataIndex: "gmtCreate",
-          key: "gmtCreate"
+          dataIndex: "totalAmount7",
+          key: "totalAmount7"
         },
         {
           title: "总价（元）",
-          dataIndex: "totalPrices",
-          key: "totalPrices",
-          customRender: text => {
-            if (text) {
-              return "￥" + text;
-            } else {
-              return "-";
-            }
-          }
+          dataIndex: "totalAmount",
+          key: "totalAmount"
         }
       ],
       tableData: [],
@@ -241,19 +227,26 @@ export default {
     },
     reset() {
       let data = this.getLast3Month();
-      this.list.range = [this.$moment(data[0]), this.$moment(data[1])];
+      this.list = {
+        range: [this.$moment(data[0]), this.$moment(data[1])],
+        enterpriseId: "",
+        pointId: undefined
+      };
       this.getData();
     },
     getData() {
       let data = {
         beginTime: this.$moment(this.list.range[0]).format("YYYY-MM"),
-        endTime: this.$moment(this.list.range[1]).format("YYYY-MM")
+        endTime: this.$moment(this.list.range[1]).format("YYYY-MM"),
+        enterpriseId: this.list.enterpriseId,
+        pointId: this.list.pointId || ""
       };
       if (!this.validTime(data)) {
         return;
       }
       this.getLine(data);
       this.getPie(data);
+      this.getTableData();
     },
     validTime(data) {
       this.dateList = this.getMonthBetween(data.beginTime, data.endTime);
@@ -266,6 +259,33 @@ export default {
         return false;
       }
       return true;
+    },
+    //列表
+    getTableData() {
+      let _data = {
+        page: this.current,
+        size: this.pageSize,
+        beginTime: this.$moment(this.list.range[0]).format("YYYY-MM"),
+        endTime: this.$moment(this.list.range[1]).format("YYYY-MM"),
+        enterpriseId: this.list.enterpriseId,
+        pointId: this.list.pointId || ""
+      };
+      this.loading = true;
+      this.$api.cost
+        .getAllList(_data)
+        .then(res => {
+          if (res.data.state == 0) {
+            this.loading = false;
+            let result = res.data.data;
+            this.tableData = result.pageList.records;
+            this.total = Number(result.pageList.total);
+            this.costCount = Number(result.totalAmount);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     //曲线图
     getLine(data) {
